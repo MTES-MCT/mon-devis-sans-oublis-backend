@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe QuoteReader::Image, type: :service do
+RSpec.describe QuoteReader::Image::Tesseract, type: :service do
   let(:file) { fixture_file_upload("quote_files/Devis_test.png") }
   let(:content) { file.read }
 

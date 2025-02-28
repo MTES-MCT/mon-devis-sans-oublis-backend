@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-ActiveAdmin.register QuoteFile do
-  actions :index, :view_file
+ActiveAdmin.register QuoteFile do # rubocop:disable Metrics/BlockLength
+  actions :index, :show, :view_file
 
   config.filters = false
   config.sort_order = "created_at_desc"
@@ -12,7 +12,17 @@ ActiveAdmin.register QuoteFile do
     send_data quote_file.content,
               filename: quote_file.filename,
               type: quote_file.content_type,
-              disposition: params[:disposition] || "inline"
+              disposition: "inline"
+  end
+
+  member_action :view_imagified_page, method: :get do
+    quote_file = QuoteFile.find(params[:id])
+    imagified_page = quote_file.imagified_pages[params[:page].to_i]
+
+    send_data imagified_page,
+              filename: "#{quote_file.filename}_page_#{params[:page].to_i}.png",
+              type: "image/png",
+              disposition: "inline"
   end
 
   index do
@@ -25,9 +35,75 @@ ActiveAdmin.register QuoteFile do
     column :content_type
     column :created_at
 
+    column "Nombre d'images de pages (si PDF)" do |quote_file|
+      if quote_file.imagified_pages&.size&.positive?
+        safe_join([
+                    content_tag(:strong, "#{quote_file.imagified_pages.size} pages images : "),
+                    quote_file.imagified_pages.each_with_index.map do |_, index|
+                      safe_join([
+                                  link_to((index + 1).to_s,
+                                          view_imagified_page_admin_quote_file_path(quote_file, page: index),
+                                          target: "_blank", rel: "noopener"),
+                                  index < quote_file.imagified_pages.size - 1 ? content_tag(:span, " / ") : nil
+                                ])
+                    end
+                  ])
+      end
+    end
+
     actions defaults: true do
       link_to "Voir le fichier", view_file_admin_quote_file_path(it, format: it.extension),
               class: "button", target: "_blank", rel: "noopener"
+    end
+  end
+
+  show do # rubocop:disable Metrics/BlockLength
+    attributes_table do
+      row :id
+
+      row :filename do
+        link_to it.filename, view_file_admin_quote_file_path(it, format: it.extension),
+                target: "_blank", rel: "noopener"
+      end
+      row :content_type
+      row :created_at
+
+      row "Nombre d'images de pages (si PDF)" do |quote_file|
+        if quote_file.imagified_pages&.size&.positive?
+          safe_join([
+                      content_tag(:strong, "#{quote_file.imagified_pages.size} pages images : "),
+                      quote_file.imagified_pages.each_with_index.map do |_, index|
+                        safe_join([
+                                    link_to((index + 1).to_s,
+                                            view_imagified_page_admin_quote_file_path(quote_file, page: index),
+                                            target: "_blank", rel: "noopener"),
+                                    index < quote_file.imagified_pages.size - 1 ? content_tag(:span, " / ") : nil
+                                  ])
+                      end
+                    ])
+        end
+      end
+    end
+
+    if resource.imagified_pages&.size&.positive?
+      table do
+        tbody do
+          resource.imagified_pages.each_with_index.map do |_, index|
+            tr do
+              td style: "width: 5%" do
+                "Page #{index + 1}"
+              end
+              td style: "width: 95%; overflow: hidden; white-space: nowrap" do
+                link_to view_imagified_page_admin_quote_file_path(resource, page: index), target: "_blank",
+                                                                                          rel: "noopener" do
+                  image_tag view_imagified_page_admin_quote_file_path(resource, page: index),
+                            style: "width: 100%; max-width: 300px; height: auto; display: block"
+                end
+              end
+            end
+          end
+        end
+      end
     end
   end
 end
