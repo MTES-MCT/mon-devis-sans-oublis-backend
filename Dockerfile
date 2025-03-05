@@ -7,7 +7,11 @@ RUN apt-get update && apt-get upgrade -y && \
         build-essential git \
         libpq-dev libyaml-dev \
         nodejs npm \
-        tesseract-ocr tesseract-ocr-fra libtesseract-dev imagemagick poppler-utils
+        tesseract-ocr tesseract-ocr-fra libtesseract-dev imagemagick poppler-utils ghostscript && \
+        rm -rf /var/lib/apt/lists/*
+
+# 🛠️ Fix ImageMagick Security Policy for PDFs
+RUN sed -i 's#<policy domain="coder" rights="none" pattern="PDF" />#<policy domain="coder" rights="read|write" pattern="PDF" />#g' /etc/ImageMagick-6/policy.xml
 
 # do the bundle install in another directory with the strict essential
 # (Gemfile and Gemfile.lock) to allow further steps to be cached

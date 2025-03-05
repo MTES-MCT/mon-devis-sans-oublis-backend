@@ -26,7 +26,10 @@ composants DSFR](https://github.com/betagouv/dsfr-view-components)
 * Cucumber et Capybara pour les tests BDD ;
 * Rubocop (RSpec et Rails) pour le linting ;
 * Docker pour avoir un environnement de développement.
-* tesseract et la gem `mini_magick` pour la reconnaisance des images et lire leur contenu via OCR
+* traitement des documents
+  * tesseract pour la reconnaissance des images et lire leur contenu via OCR
+  * la librairie Poppler `pdftoppm` pour transformer les PDF en images
+  * ou bien la gem MiniMagick (IM) `mini_magick` avec ImageMagick 6.9 (comme sur Scalingo)
 
 ## Moteur et fonctionnement interne / Architecture
 

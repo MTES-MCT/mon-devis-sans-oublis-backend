@@ -85,6 +85,7 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
       quote_check.file.content,
       quote_check.file.content_type
     )
+    QuoteFileImagifyPdfJob.perform_later(quote_check.file_id) # TODO: Move it to reader?
 
     begin
       quote_reader.read(llm: llm)

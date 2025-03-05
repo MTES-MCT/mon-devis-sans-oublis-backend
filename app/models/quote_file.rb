@@ -7,6 +7,8 @@ require "mime/types"
 # AND also via active_storage-postgresq gem specific table via Postgres File OID
 # See .find_or_create_file and #content methods
 class QuoteFile < ApplicationRecord
+  include QuoteFileImagifiedPages
+
   has_one_attached :file
   has_many :quote_checks, dependent: :nullify, inverse_of: :file
 
