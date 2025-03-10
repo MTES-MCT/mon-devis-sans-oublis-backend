@@ -9,9 +9,14 @@ end
 
 # rubocop:disable Rails/I18nLocaleTexts
 ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
-  actions :index, :show, :edit, :update
+  actions :index, :show, :edit, :update, :new, :create
 
-  permit_params :expected_validation_errors
+  permit_params :expected_validation_errors,
+                :file,
+                :parent_id,
+                :profile,
+                :aides, :gestes, # Virtual attributes
+                :ocr, :qa_llm # Check params
 
   includes :file, :feedbacks
 
@@ -23,7 +28,34 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
   scope "fichier en erreur", :with_file_error
   scope "devis avec corrections", :with_edits
 
-  controller do
+  controller do # rubocop:disable Metrics/BlockLength
+    # rubocop:disable Metrics/AbcSize
+    def create # rubocop:disable Metrics/MethodLength
+      upload_file = new_quote_check_params[:file]
+
+      quote_check_service = QuoteCheckService.new(
+        upload_file.tempfile, upload_file.original_filename,
+        new_quote_check_params[:profile],
+        metadata: QuoteCheck.new(
+          aides: new_quote_check_params[:aides],
+          gestes: new_quote_check_params[:gestes]
+        ).metadata,
+        parent_id: new_quote_check_params[:parent_id]
+      )
+
+      @quote_check = quote_check_service.quote_check
+      if @quote_check
+        QuoteCheckCheckJob.perform_later(
+          @quote_check.id,
+          llm: new_quote_check_params[:qa_llm]
+        )
+        redirect_to admin_quote_check_path(@quote_check), notice: "Devis uploadé, en cours d'analyse."
+      else
+        render :new
+      end
+    end
+    # rubocop:enable Metrics/AbcSize
+
     def update # rubocop:disable Metrics/MethodLength
       quote_check = resource
 
@@ -41,6 +73,16 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
       else
         render :edit, status: :unprocessable_entity
       end
+    end
+
+    private
+
+    def new_quote_check_params
+      params.require(:quote_check).permit(
+        :file, :parent_id, :profile,
+        :ocr, :qa_llm, # Check params
+        aides: [], gestes: [] # Virtual attributes
+      )
     end
   end
 
@@ -76,6 +118,8 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
     column "Date soumission" do
       it.started_at
     end
+
+    column "Statut", :status
 
     column "Correction" do
       link_to "Devis #{it.id}", it.frontend_webapp_url,
@@ -136,6 +180,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
         resource.started_at
       end
 
+      row :status, lael: "Statut"
       row :profile, label: "Persona"
       row :tokens_count, "Nombre de tokens" do
         number_with_delimiter(it.tokens_count, delimiter: " ")
@@ -406,15 +451,56 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
     end
   end
 
-  form do |f|
-    f.inputs "Quote Check Details" do
-      f.input :expected_validation_errors,
-              input_html: {
-                value: JSON.pretty_generate(
-                  f.object.expected_validation_errors.presence ||
-                  f.object.validation_errors
-                )
-              }
+  form do |f| # rubocop:disable Metrics/BlockLength
+    f.inputs "Quote Check Details" do # rubocop:disable Metrics/BlockLength
+      if f.object.new_record?
+        f.input :profile,
+                as: :select,
+                collection: QuoteCheck::PROFILES,
+                include_blank: false,
+                selected: (QuoteCheck::PROFILES & ["conseiller"]).first || QuoteCheck::PROFILES.first
+        f.input :file, as: :file
+
+        f.input :gestes,
+                as: :select,
+                collection: QuoteCheck.metadata_values("gestes"),
+                include_blank: false,
+                multiple: true
+        f.input :aides,
+                as: :select,
+                collection: QuoteCheck.metadata_values("aides"),
+                include_blank: false,
+                multiple: true
+
+        if QuoteCheck.count.positive?
+          f.input :parent_id,
+                  as: :select,
+                  collection: QuoteCheck.order(created_at: :desc).all.map { [it.id, it.id] }
+        end
+
+        hr
+
+        # f.input :ocr, as: :select # TODO
+
+        f.input :qa_llm,
+                as: :select,
+                collection: Rails.application.config.llms_configured,
+                include_blank: false, selected:
+                  f.object&.qa_llm ||
+                  Rails.application.config.llms_configured.detect { it.match(/#{QuoteReader::Qa::DEFAULT_LLM}/i) } ||
+                  Rails.application.config.llms_configured.first
+
+      end
+
+      unless f.object.new_record?
+        f.input :expected_validation_errors,
+                input_html: {
+                  value: JSON.pretty_generate(
+                    f.object.expected_validation_errors.presence ||
+                    f.object.validation_errors
+                  )
+                }
+      end
     end
     f.actions
   end

@@ -14,6 +14,35 @@ module QuoteCheckInputMetadata
     validate :metadata_data
   end
 
+  class_methods do
+    def metadata_values(key)
+      key_values = I18n.t("quote_checks.metadata").with_indifferent_access.fetch(key)
+      return key_values unless key_values.first.is_a?(Hash)
+
+      key_values.flat_map { it.fetch(:values) }
+    end
+  end
+
+  def aides
+    metadata&.fetch("aides", [])
+  end
+
+  def aides=(values)
+    self.metadata ||= {}
+    self.metadata["aides"] = values&.filter(&:presence).presence
+    self.metadata.presence
+  end
+
+  def gestes
+    metadata&.fetch("gestes", [])
+  end
+
+  def gestes=(values)
+    self.metadata ||= {}
+    self.metadata["gestes"] = values&.filter(&:presence).presence
+    self.metadata.presence
+  end
+
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/CyclomaticComplexity
   # rubocop:disable Metrics/MethodLength
@@ -37,26 +66,17 @@ module QuoteCheckInputMetadata
   # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/AbcSize
 
-  # rubocop:disable Metrics/AbcSize
-  # rubocop:disable Metrics/CyclomaticComplexity
-  # rubocop:disable Metrics/PerceivedComplexity
-  def metadata_data # rubocop:disable Metrics/MethodLength
+  def metadata_data
     return unless metadata
 
-    metadata_values = I18n.t("quote_checks.metadata").with_indifferent_access
     metadata.each do |key, values|
       next unless values
 
-      errors.add(:metadata, "clé #{key} non autorisée") unless metadata_values.key?(key)
-
-      key_values = metadata_values.fetch(key)
-      key_values = key_values.flat_map { it.fetch(:values) } if key_values.first.is_a?(Hash)
+      key_values = self.class.metadata_values(key)
+      errors.add(:metadata, "clé #{key} non autorisée") unless key_values
       values.each do |value|
         errors.add(:metadata, "valeur #{value} non autorisée pour #{key}") unless key_values.include?(value)
       end
     end
   end
-  # rubocop:enable Metrics/PerceivedComplexity
-  # rubocop:enable Metrics/CyclomaticComplexity
-  # rubocop:enable Metrics/AbcSize
 end
