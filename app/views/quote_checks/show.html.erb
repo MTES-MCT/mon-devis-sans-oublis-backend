@@ -1,6 +1,6 @@
 <h1>Fichier du Devis :</h1>
 <%= form_tag new_quote_check_path(profile: @quote_check&.profile || @profile), multipart: true do %>
-  <p><%= file_field_tag :quote_file %></p>
+  <p><%= file_field_tag :file %></p>
   <p><%= select_tag :llm, options_for_select(
     Rails.application.config.llms_configured.map { |llm| [llm, llm] },
     params[:llm] || @quote_check&.qa_llm ||

@@ -19,7 +19,7 @@ class QuoteChecksController < ApplicationController
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/MethodLength
   def new
-    upload_file = params[:quote_file]
+    upload_file = params[:file]
 
     # Default web form
     if request.format.html? && upload_file.blank?
