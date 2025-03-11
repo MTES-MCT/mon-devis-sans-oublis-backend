@@ -3,8 +3,6 @@
 require "rails_helper"
 require "uri"
 
-APPLICATION_HOST = UriExtended.host_with_port(ENV.fetch("APPLICATION_HOST", "localhost:3000"))
-
 # Via Rswag gems
 RSpec.configure do |config|
   # Specify a root folder where Swagger JSON files are generated
@@ -267,10 +265,10 @@ RSpec.configure do |config|
         },
         if ENV.key?("APPLICATION_HOST") # current host
           {
-            url: "http#{Rails.env.development? ? '' : 's'}://#{APPLICATION_HOST}",
+            url: "http#{Rails.env.development? ? '' : 's'}://#{Rails.application.config.application_host}",
             variables: {
               defaultHost: {
-                default: APPLICATION_HOST
+                default: Rails.application.config.application_host
               }
             }
           }
@@ -279,12 +277,12 @@ RSpec.configure do |config|
           url: "http#{Rails.env.development? ? '' : 's'}://{defaultHost}",
           variables: {
             defaultHost: {
-              default: APPLICATION_HOST
+              default: Rails.application.config.application_host
             }
           }
         }
       ].compact.uniq { UriExtended.host_with_port(it[:url]) }
-                         .sort_by { |server| UriExtended.host_with_port(server[:url]) == APPLICATION_HOST ? 0 : 1 }
+                         .sort_by { |server| UriExtended.host_with_port(server[:url]) == Rails.application.config.application_host ? 0 : 1 }
     }
   }
 

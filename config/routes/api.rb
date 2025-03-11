@@ -1,6 +1,16 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  # mount ActiveStorage::Engine => "/rails/active_storage" # For temporary URL generation to share files
+  # rails_postgresql_blob GET      /rails/active_storage/postgresql/:signed_id/*filename(.:format)                                    active_storage/fixed_postgresql#show
+  # rails_postgresql_service GET      /rails/active_storage/postgresql/:encoded_key/*filename(.:format)
+  mount ActiveStorage::PostgreSQL::Engine => "/rails/active_storage" # For temporary URL generation to share files
+  # ⚠️ Missing common route rails_postgresql_blob with signed_id
+  # rails_postgresql_service GET      /rails/active_storage/postgresql/:encoded_key/*filename(.:format)
+  # So override Active Storage PostgreSQL route, see ActiveStorage::FixedPostgresqlController for the fix
+  get "/rails/active_storage/postgresql/:signed_id/*filename" => "active_storage/fixed_postgresql#show",
+      as: :rails_postgresql_blob
+
   namespace :api do
     namespace :v1 do
       resources :profiles, only: %i[index]
