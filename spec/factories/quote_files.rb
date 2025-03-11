@@ -1,21 +1,35 @@
 # frozen_string_literal: true
 
+require "marcel"
+
 FactoryBot.define do
   factory :quote_file do
-    filename { "Mon Devis.pdf" }
-    sequence(:hexdigest) { "file_fixture quote.pdf #{it}" }
-    content_type { "application/pdf" }
     uploaded_at { Time.zone.now }
 
-    after(:build) do |quote_file|
-      data = Rails.root.join("spec/fixtures/files/quote_files/Devis_test.pdf").open
+    transient do
+      filepath { Rails.root.join("spec/fixtures/files/quote_files/Devis_test.pdf") }
+    end
 
-      quote_file.data = data
-      quote_file.file.attach(
-        io: data,
-        filename: "Devis_test.pdf",
-        content_type: "application/pdf"
-      )
+    filename { filepath&.basename&.to_s }
+    sequence(:hexdigest) { filepath ? "#{QuoteFile.hexdigest_for_file(filepath)} #{it}" : nil }
+    content_type do
+      if filepath
+        MIME::Types.type_for(filepath.to_s).first&.content_type || # From file name
+          Marcel::MimeType.for(Pathname.new(filepath).to_s) # From file content
+      end
+    end
+
+    after(:build) do |quote_file, evaluator|
+      if evaluator.filepath
+        data = evaluator.filepath.open
+
+        quote_file.data = data
+        quote_file.file.attach(
+          io: data,
+          filename: quote_file.filename,
+          content_type: quote_file.content_type
+        )
+      end
     end
   end
 end

@@ -1,12 +1,20 @@
 <h1>Fichier du Devis :</h1>
 <%= form_tag new_quote_check_path(profile: @quote_check&.profile || @profile), multipart: true do %>
   <p><%= file_field_tag :file %></p>
-  <p><%= select_tag :llm, options_for_select(
+
+  <p><%= select_tag :ocr, options_for_select(
+    Rails.application.config.ocrs_configured.map { |ocr| [ocr, ocr] },
+    params[:ocr] || @quote_check&.ocr ||
+      Rails.application.config.ocrs_configured.detect { it.match /#{QuoteReader::Global::DEFAULT_OCR}/i } ||
+      Rails.application.config.ocrs_configured.first
+  ), class: "fr-select" %></p>
+  <p><%= select_tag :qa_llm, options_for_select(
     Rails.application.config.llms_configured.map { |llm| [llm, llm] },
-    params[:llm] || @quote_check&.qa_llm ||
+    params[:qa_llm] || @quote_check&.qa_llm ||
       Rails.application.config.llms_configured.detect { it.match /#{QuoteReader::Qa::DEFAULT_LLM}/i } ||
       Rails.application.config.llms_configured.first
   ), class: "fr-select" %></p>
+
   <%= hidden_field_tag :profile, @profile %>
   <%= submit_tag "Vérifier", class: "fr-btn fr-btn--primary fr-btn--lg" %>
 <% end %>
@@ -49,7 +57,9 @@
 
   <hr />
 
-  <h1>LLM : <code><%= @quote_check.qa_llm %></code></h1>
+  <h1>OCR: <code><%= @quote_check.ocr %></code></h1>
+
+  <h1>QA LLM : <code><%= @quote_check.qa_llm %></code></h1>
   <h2>Model : <code><%= @quote_check.qa_model %></code></h2>
 
   <%= link_to "#qa_attributes" do %>

@@ -55,6 +55,7 @@ gem "dsfr-view-components"
 # Mon Devis Sans Oublis custom gems
 gem "active_model_serializers"
 gem "active_storage-postgresql" # Store file in database
+# gem "active_storage-postgresql", github: "shayonj/active_storage-postgresql", branch: "s/rails-7"
 gem "active_storage_validations" # Validate ActiveStorage attachments
 gem "diff-lcs", require: false
 gem "good_job" # Postgres-backed job queue
@@ -68,6 +69,7 @@ gem "mime-types", require: false
 gem "mini_magick", require: false
 gem "pdf-reader", require: false
 gem "rtesseract", require: false
+gem "ruby_llm", require: false
 
 # Efficiency
 gem "concurrent-ruby", require: false

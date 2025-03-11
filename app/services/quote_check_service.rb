@@ -42,12 +42,12 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
   end
 
   # rubocop:disable Metrics/AbcSize
-  def check(llm: nil) # rubocop:disable Metrics/MethodLength
+  def check(ocr: nil, qa_llm: nil) # rubocop:disable Metrics/MethodLength
     ErrorNotifier.set_context(:quote_check, { id: quote_check.id })
 
     begin
       reset_check
-      read_quote(llm:)
+      read_quote(ocr:, qa_llm:)
       validate_quote if quote_check.validation_errors.blank?
       quote_check.finished_at = Time.current
     ensure
@@ -80,15 +80,16 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
 
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/MethodLength
-  def read_quote(llm: nil)
+  def read_quote(ocr: nil, qa_llm: nil)
     quote_reader = QuoteReader::Global.new(
       quote_check.file.content,
-      quote_check.file.content_type
+      quote_check.file.content_type,
+      quote_file: quote_check.file
     )
     QuoteFileImagifyPdfJob.perform_later(quote_check.file_id) # TODO: Move it to reader?
 
     begin
-      quote_reader.read(llm: llm)
+      quote_reader.read(ocr:, qa_llm:)
 
       unless quote_reader.text&.strip.presence
         add_error("file_reading_error",

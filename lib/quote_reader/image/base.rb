@@ -8,12 +8,21 @@ module QuoteReader
     # Read Quote from image file to extract Quote text
     class Base
       class ReadError < QuoteReader::ReadError; end
+      class ResultError < QuoteReader::ReadError; end
+      class TimeoutError < ResultError; end
 
-      attr_reader :content, :content_type, :text
+      attr_reader :content, :content_type,
+                  :quote_file,
+                  :pages_text, :text
 
-      def initialize(content, content_type)
+      def self.configured?
+        raise NotImplementedError
+      end
+
+      def initialize(content, content_type, quote_file: nil)
         @content = content
         @content_type = content_type
+        @quote_file = quote_file
       end
 
       def extract_text
@@ -23,6 +32,21 @@ module QuoteReader
         @text = extract_text_from_image # TODO: fix_french_characters if needed
       rescue StandardError => e
         raise parse_error(e)
+      end
+
+      def ocr
+        raise NotImplementedError
+      end
+
+      protected
+
+      def determine_extension
+        case content_type
+        when "image/jpeg", "image/jpg" then ".jpg"
+        when "image/tiff" then ".tiff"
+        # when "image/png" # Default fallback
+        else ".png"
+        end
       end
 
       private
