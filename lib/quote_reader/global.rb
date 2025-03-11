@@ -7,6 +7,8 @@ module QuoteReader
   # Read Quote from PDF file to extract Quote attributes
   class Global
     attr_reader :content, :content_type,
+                :quote_file,
+                :ocr,
                 :text,
                 :shrinked_text,
                 :anonymised_text,
@@ -15,19 +17,30 @@ module QuoteReader
                 :qa_attributes, :qa_result, :qa_version,
                 :read_attributes
 
+    DEFAULT_OCR = "Tesseract"
     VERSION = "0.0.1"
 
-    def initialize(content, content_type)
+    def initialize(content, content_type, quote_file: nil)
       @content = content
       @content_type = content_type
+
+      @quote_file = quote_file
     end
 
     # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/CyclomaticComplexity
     # rubocop:disable Metrics/MethodLength
-    def read(llm: nil)
+    def read(ocr: nil, qa_llm: nil)
       @text = case content_type
               when %r{^image/}
-                Image.new(content, content_type).extract_text
+                case ocr || DEFAULT_OCR
+                when "MistralOcr"
+                  Image::MistralOcr.new(content, content_type, quote_file:).extract_text
+                when "Tesseract"
+                  Image::Tesseract.new(content, content_type).extract_text
+                else
+                  raise NotImplementedError, "OCR #{ocr} is not implemented"
+                end
               when "application/pdf"
                 Pdf.new(content).extract_text
               else
@@ -62,7 +75,7 @@ module QuoteReader
 
       qa_reader = Qa.new(anonymised_text)
       begin
-        @qa_attributes = qa_reader.read(llm:) || {}
+        @qa_attributes = qa_reader.read(llm: qa_llm) || {}
       ensure
         @qa_result = qa_reader.result
         @qa_version = qa_reader.version
@@ -77,6 +90,7 @@ module QuoteReader
       )
     end
     # rubocop:enable Metrics/MethodLength
+    # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/AbcSize
 
     private

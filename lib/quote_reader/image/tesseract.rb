@@ -9,7 +9,9 @@ module QuoteReader
   module Image
     # Read Quote from image file to extract Quote text via Tesseract OCR
     class Tesseract < Base
-      private
+      def self.configured?
+        true
+      end
 
       # Using Tesseract OCR
       def extract_text_from_image
@@ -25,15 +27,6 @@ module QuoteReader
           processed_image.format("png") unless extension == ".png"
 
           RTesseract.new(processed_image.path, lang: "fra").to_s # French language
-        end
-      end
-
-      def determine_extension
-        case content_type
-        when "image/jpeg", "image/jpg" then ".jpg"
-        when "image/tiff" then ".tiff"
-        # when "image/png" # Default fallback
-        else ".png"
         end
       end
     end

@@ -5,6 +5,8 @@ module QuoteCheckPostCheckMetadata
   extend ActiveSupport::Concern
 
   included do
+    attr_writer :ocr, :qa_llm
+
     scope :with_valid_processing_time, lambda {
       where.not(finished_at: nil)
            .where("finished_at - started_at > ? AND finished_at - started_at < ?", 0, 1_000.seconds.to_i)
@@ -22,6 +24,10 @@ module QuoteCheckPostCheckMetadata
     )
   end
 
+  def ocr
+    @ocr ||= QuoteReader::Global::DEFAULT_OCR # TODO: save in a field
+  end
+
   def processing_time
     return unless finished_at
 
@@ -29,12 +35,12 @@ module QuoteCheckPostCheckMetadata
   end
 
   def qa_llm
-    case qa_result&.dig("id")
-    when /\Achatcmpl-/
-      "Albert"
-    else
-      "Mistral" if qa_model&.start_with?("mistral-")
-    end
+    @qa_llm ||= case qa_result&.dig("id")
+                when /\Achatcmpl-/
+                  "Albert"
+                else
+                  "Mistral" if qa_model&.start_with?("mistral-")
+                end
   end
 
   def qa_model
