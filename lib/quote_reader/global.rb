@@ -31,14 +31,14 @@ module QuoteReader
     # rubocop:disable Metrics/CyclomaticComplexity
     # rubocop:disable Metrics/MethodLength
     def read(ocr: nil, qa_llm: nil)
-      case ocr || DEFAULT_OCR
-      when "MistralOcr"
-        Image::MistralOcr.new(content, content_type, quote_file:).extract_text
-      when "Tesseract"
-        Image::Tesseract.new(content, content_type).extract_text
-      else
-        raise NotImplementedError, "OCR #{ocr} is not implemented"
-      end
+      @text = case ocr || DEFAULT_OCR
+              when "MistralOcr"
+                Image::MistralOcr.new(content, content_type, quote_file:).extract_text
+              when "Tesseract"
+                Image::Tesseract.new(content, content_type).extract_text
+              else
+                raise NotImplementedError, "OCR #{ocr} is not implemented"
+              end
       # @text = case content_type
       #         when %r{^image/}
       #           case ocr || DEFAULT_OCR
