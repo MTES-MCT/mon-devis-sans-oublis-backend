@@ -29,10 +29,11 @@ module QuoteReader
         body = {
           model: "mistral-ocr-latest",
           document: {
-            type: "image_url",
+            type: "document_url",
             # TODO: sending full file content in Base64 is not working
             # image_url: "data:#{content_type};base64,#{Base64.encode64(content)}"
-            image_url: file_image_url
+            image_url: file_image_url, 
+            include_image_base64: true
           }
         }
 
