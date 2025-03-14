@@ -42,15 +42,12 @@ module QuoteReader
                   raise NotImplementedError, "OCR #{ocr} is not implemented"
                 end
               when "application/pdf"
-                Pdf.new(content).extract_text
+                Image::MistralOcr.new(content, content_type, quote_file:).extract_text
               else
                 raise QuoteReader::UnsupportedFileType,
                       "File type #{content_type} not supported"
               end
 
-      unless text&.strip.presence
-        @text = Image::MistralOcr.new(content, content_type, quote_file:).extract_text
-      end
 
       naive_reader = NaiveText.new(text)
       @naive_attributes = naive_reader.read
