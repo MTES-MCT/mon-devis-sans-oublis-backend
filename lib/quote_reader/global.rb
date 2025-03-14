@@ -48,6 +48,10 @@ module QuoteReader
                       "File type #{content_type} not supported"
               end
 
+      unless text&.strip.presence
+        @text = Image::MistralOcr.new(content, content_type, quote_file:).extract_text
+      end
+
       naive_reader = NaiveText.new(text)
       @naive_attributes = naive_reader.read
       @naive_version = naive_reader.version
