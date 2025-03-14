@@ -96,7 +96,7 @@ module QuoteCheckEdits
     validation_error_edits.each do |error_id, edit|
       next unless edit
 
-      if validation_error_details.none? { it.fetch("id") == error_id }
+      unless validation_error_details&.any? { it.fetch("id") == error_id }
         errors.add(:validation_error_edits, "erreur #{error_id} inconnue")
       end
 

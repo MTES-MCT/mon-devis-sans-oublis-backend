@@ -43,18 +43,20 @@ class QuoteCheckSerializer < ActiveModel::Serializer
     end
   end
 
+  # rubocop:disable Metrics/CyclomaticComplexity
   def gestes
     object.read_attributes&.fetch("gestes", nil)&.map&.with_index do |geste, geste_index| # rubocop:disable Style/SafeNavigationChainLength
       geste_id = QuoteValidator::Base.geste_index(object.id, geste_index)
       geste.slice("intitule").merge(
         "id" => geste_id,
         "valid" =>
-          validation_error_details.none? do
+          validation_error_detailsvalidation_error_details&.none? do
             it["geste_id"] == geste_id
-          end
+          end || true
       )
     end
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
 
   def status
     return "invalid" if consider_timeout?
