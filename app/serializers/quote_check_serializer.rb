@@ -52,7 +52,7 @@ class QuoteCheckSerializer < ActiveModel::Serializer
       geste.slice("intitule").merge(
         "id" => geste_id,
         "valid" =>
-          validation_error_details&.validation_error_details&.none? do
+          validation_error_details&.none? do
             it["geste_id"] == geste_id
           end || true
       )
