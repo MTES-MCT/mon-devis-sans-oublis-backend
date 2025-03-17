@@ -33,8 +33,9 @@ module QuoteValidator
         # externe/interne, neuf/existant, Textile/maconner
         add_error("chaudiere_type_silo_manquant", geste) if geste[:type_silo].blank?
         add_error("chaudiere_contenance_silo_manquant", geste) if geste[:contenance_silo].blank?
-        add_error("chaudiere_contenance_silo_trop_petit", geste, type: "wrong") if geste[:contenance_silo].present? &&
-                                                                                   geste[:contenance_silo] < 225
+        if geste[:contenance_silo].present? && geste[:contenance_silo].to_i && Integer(geste[:contenance_silo]) < 225
+          add_error("chaudiere_contenance_silo_trop_petit", geste, type: "wrong")
+        end
 
         # TODO: V1 : Valeur EtAS :
         # - ≥ 77 % pour les chaudières ≤ 20 kW
