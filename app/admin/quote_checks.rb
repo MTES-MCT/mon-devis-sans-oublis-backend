@@ -20,7 +20,11 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
 
   includes :file, :feedbacks
 
-  config.filters = false
+  filter :file_filename, as: :string
+  filter :created_at, as: :date_range
+  filter :status, as: :select, collection: QuoteCheck::STATUSES
+  filter :profile, as: :select, collection: QuoteCheck::PROFILES
+
   config.sort_order = "created_at_desc"
 
   scope "tous", :all, default: true

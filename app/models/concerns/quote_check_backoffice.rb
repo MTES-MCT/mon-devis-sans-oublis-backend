@@ -5,11 +5,21 @@ module QuoteCheckBackoffice
   extend ActiveSupport::Concern
 
   class_methods do
+    def ransackable_associations(_auth_object = nil)
+      [:file]
+    end
+
     def ransackable_attributes(_auth_object = nil)
-      %i[
+      %w[
+        created_at
+        profile
+        status
+
+        quote_file_filename
+
+        with_edits
         with_expected_value
         with_file_error
-        with_edits
       ]
     end
   end
