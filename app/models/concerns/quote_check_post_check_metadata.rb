@@ -5,6 +5,23 @@ module QuoteCheckPostCheckMetadata
   extend ActiveSupport::Concern
 
   included do
+    STATUSES = %w[pending valid invalid].freeze # rubocop:disable Lint/ConstantDefinitionInBlock
+
+    ransacker :status, type: :string, formatter: proc { |value|
+      case value
+      when "pending"
+        arel_table[:finished_at].eq(nil)
+      when "valid"
+        arel_table[:finished_at].not_eq(nil).and(arel_table[:validation_errors].eq(nil))
+      when "invalid"
+        arel_table[:finished_at].not_eq(nil).and(arel_table[:validation_errors].not_eq(nil))
+      else
+        raise ArgumentError, "Invalid value: #{value}" unless STATUSES.include?(status)
+      end
+    } do |parent|
+      parent.table[:finished_at]
+    end
+
     scope :with_valid_processing_time, lambda {
       where.not(finished_at: nil)
            .where("finished_at - started_at > ? AND finished_at - started_at < ?", 0, 1_000.seconds.to_i)
