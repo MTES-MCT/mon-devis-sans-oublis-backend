@@ -14,8 +14,6 @@ class QuoteCheck < ApplicationRecord
   belongs_to :parent, class_name: "QuoteFile", optional: true
   has_many :children, class_name: "QuoteFile", foreign_key: :parent_id, inverse_of: :parent, dependent: :nullify
 
-  STATUSES = %w[pending valid invalid].freeze
-
   after_initialize :set_application_version
   strip_attributes
 
