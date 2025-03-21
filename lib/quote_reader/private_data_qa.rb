@@ -23,6 +23,8 @@ module QuoteReader
     private
 
     # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/CyclomaticComplexity
+    # rubocop:disable Metrics/PerceivedComplexity
     def llm_read_attributes # rubocop:disable Metrics/MethodLength
       return unless Llms::Albert.configured?
 
@@ -50,22 +52,24 @@ module QuoteReader
           }.compact.presence,
           pro: {
             adresse: @read_attributes.dig(:pro_adresses, 0),
-            numero_tva: @read_attributes.dig(:numeros_tva, 0),
+            numero_tva: @read_attributes.dig(:numeros_tva, 0)&.to_s,
             raison_sociale: @read_attributes.dig(:raison_sociales, 0),
             forme_juridique: @read_attributes.dig(:forme_juridiques, 0),
-            assurance: @read_attributes.dig(:assurances, 0),
-            capital: @read_attributes.dig(:capital_social, 0),
-            rge_labels: @read_attributes&.fetch(:numero_rge, []),
-            siret: @read_attributes.dig(:sirets, 0),
-            rcs: @read_attributes.dig(:numero_rcss, 0),
+            assurance: @read_attributes.dig(:assurances, 0)&.to_s,
+            capital: @read_attributes.dig(:capital_social, 0)&.to_s,
+            rge_labels: @read_attributes&.fetch(:numero_rge, [])&.map(&:to_s),
+            siret: @read_attributes.dig(:sirets, 0)&.to_s,
+            rcs: @read_attributes.dig(:numero_rcss, 0)&.to_s,
             rcs_ville: @read_attributes.dig(:ville_immatriculation_rcss, 0),
-            rne: @read_attributes.dig(:rnes, 0)
+            rne: @read_attributes.dig(:rnes, 0)&.to_s
           }.compact.presence
         )&.compact.presence
       end
 
       @read_attributes
     end
+    # rubocop:enable Metrics/PerceivedComplexity
+    # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/AbcSize
 
     def prompt

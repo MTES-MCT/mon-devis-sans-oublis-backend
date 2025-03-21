@@ -44,7 +44,7 @@ module QuoteReader
         tmp_anonymised_text = text
         values.each do |value|
           tmp_anonymised_text = tmp_anonymised_text&.gsub(
-            /#{Regexp.escape(value)}/i,
+            /#{Regexp.escape(value.to_s)}/i,
             (fields_or_field.to_s.singularize.upcase * 10)[0...[value.size, max_size].compact.min]
           )
         rescue TypeError => e
