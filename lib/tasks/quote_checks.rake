@@ -133,4 +133,12 @@ namespace :quote_checks do # rubocop:disable Metrics/BlockLength
       exit 1 unless succeed
     end
   end
+
+  desc "Recheck a QuoteCheck"
+  task :recheck, [:quote_check_id] => :environment do |_t, args|
+    raise ArgumentError, "You must provide quote_check_id" unless args[:quote_check_id]
+
+    QuoteCheckCheckJob.perform_later(args[:quote_check_id])
+    puts "QuoteCheckCheckJob enqueued for ID: #{args[:quote_check_id]}"
+  end
 end
