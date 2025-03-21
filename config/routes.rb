@@ -10,6 +10,4 @@ Rails.application.routes.draw do
 
   draw(:api)
   draw(:internal)
-  draw(:webapp)
-  draw(:website)
 end
