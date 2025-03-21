@@ -7,7 +7,6 @@ plugins:
   - rubocop-rspec
   - rubocop-rails
 require:
-  - rubocop-capybara
   - rubocop-factory_bot
   - rubocop-rspec_rails
 
