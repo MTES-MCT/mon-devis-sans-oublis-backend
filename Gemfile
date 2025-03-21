@@ -99,20 +99,11 @@ group :development, :test do
 end
 
 group :test do
-  gem "capybara"
-  gem "cucumber-rails", require: false
   gem "faker", require: false
   gem "guard"
-  gem "guard-cucumber"
-  # Ruby 3.4+ compatibility
-  # TODO: Use new > 9.0.0 version when available
-  # See https://github.com/cucumber/cucumber-ruby/commit/a468bc682eec68ef5b5660a17c4c0e7e52cfc67b
-  # And also https://github.com/cucumber/cucumber-ruby/pull/1771
-  gem "cucumber", require: false, github: "cucumber/cucumber-ruby", ref: "a468bc6"
   gem "guard-rspec"
   gem "rspec"
   gem "rubocop"
-  gem "rubocop-capybara"
   gem "rubocop-factory_bot"
   gem "rubocop-rails"
   gem "rubocop-rspec"
