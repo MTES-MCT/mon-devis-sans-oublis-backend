@@ -31,7 +31,7 @@ class QuoteChecksController < ApplicationController
     if upload_file.present?
       @quote_check = QuoteCheckService.new(
         upload_file.tempfile, upload_file.original_filename, params[:profile]
-      ).check(llm: params[:llm])
+      ).check(ocr: params[:ocr], qa_llm: params[:qa_llm])
     end
 
     QuoteCheckMailer.created(@quote_check).deliver_later

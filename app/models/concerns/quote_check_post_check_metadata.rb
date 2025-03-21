@@ -5,6 +5,8 @@ module QuoteCheckPostCheckMetadata
   extend ActiveSupport::Concern
 
   included do
+    attr_writer :ocr, :qa_llm
+
     STATUSES = %w[pending valid invalid].freeze # rubocop:disable Lint/ConstantDefinitionInBlock
 
     ransacker :status, type: :string, formatter: proc { |value|
@@ -39,6 +41,10 @@ module QuoteCheckPostCheckMetadata
     )
   end
 
+  def ocr
+    @ocr ||= QuoteReader::Global::DEFAULT_OCR # TODO: save in a field
+  end
+
   def processing_time
     return unless finished_at
 
@@ -46,12 +52,12 @@ module QuoteCheckPostCheckMetadata
   end
 
   def qa_llm
-    case qa_result&.dig("id")
-    when /\Achatcmpl-/
-      "Albert"
-    else
-      "Mistral" if qa_model&.start_with?("mistral-")
-    end
+    @qa_llm ||= case qa_result&.dig("id")
+                when /\Achatcmpl-/
+                  "Albert"
+                else
+                  "Mistral" if qa_model&.start_with?("mistral-")
+                end
   end
 
   def qa_model

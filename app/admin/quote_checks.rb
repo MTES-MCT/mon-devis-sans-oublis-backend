@@ -36,6 +36,12 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
     # rubocop:disable Metrics/AbcSize
     def create # rubocop:disable Metrics/MethodLength
       upload_file = new_quote_check_params[:file]
+      if upload_file.blank?
+        flash.now[:error] = "Veuillez sélectionner un fichier"
+        build_resource
+        render :new, status: :unprocessable_entity
+        return
+      end
 
       quote_check_service = QuoteCheckService.new(
         upload_file.tempfile, upload_file.original_filename,
@@ -51,11 +57,14 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
       if @quote_check
         QuoteCheckCheckJob.perform_later(
           @quote_check.id,
-          llm: new_quote_check_params[:qa_llm]
+          ocr: new_quote_check_params[:ocr],
+          qa_llm: new_quote_check_params[:qa_llm]
         )
         redirect_to admin_quote_check_path(@quote_check), notice: "Devis uploadé, en cours d'analyse."
       else
-        render :new
+        flash.now[:error] = "Erreur dans les données du devis"
+        build_resource
+        render :new, status: :unprocessable_entity
       end
     end
     # rubocop:enable Metrics/AbcSize
@@ -159,6 +168,8 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
     end
 
     column "Persona", :profile
+    column :ocr
+    column :qa_llm
     column "Nb tokens" do
       number_with_delimiter(it.tokens_count, delimiter: " ")
     end
@@ -186,6 +197,8 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
 
       row :status, lael: "Statut"
       row :profile, label: "Persona"
+      row :ocr
+      row :qa_llm
       row :tokens_count, "Nombre de tokens" do
         number_with_delimiter(it.tokens_count, delimiter: " ")
       end
@@ -484,25 +497,34 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
 
         hr
 
-        # f.input :ocr, as: :select # TODO
+        f.input :ocr,
+                as: :select,
+                collection: Rails.application.config.ocrs_configured,
+                include_blank: false,
+                selected: f.object&.ocr ||
+                          Rails.application.config.ocrs_configured.detect { # rubocop:disable Style/BlockDelimiters
+                            it.match(/#{QuoteReader::Global::DEFAULT_OCR}/i)
+                          } ||
+                          Rails.application.config.ocrs_configured.first
 
         f.input :qa_llm,
                 as: :select,
                 collection: Rails.application.config.llms_configured,
-                include_blank: false, selected:
-                  f.object&.qa_llm ||
-                  Rails.application.config.llms_configured.detect { it.match(/#{QuoteReader::Qa::DEFAULT_LLM}/i) } ||
-                  Rails.application.config.llms_configured.first
+                include_blank: false,
+                selected: f.object&.qa_llm ||
+                          Rails.application.config.llms_configured.detect { # rubocop:disable Style/BlockDelimiters
+                            it.match(/#{QuoteReader::Qa::DEFAULT_LLM}/i)
+                          } ||
+                          Rails.application.config.llms_configured.first
 
       end
 
       unless f.object.new_record?
+        expected_validation_errors = f.object.expected_validation_errors.presence ||
+                                     f.object.validation_errors
         f.input :expected_validation_errors,
                 input_html: {
-                  value: JSON.pretty_generate(
-                    f.object.expected_validation_errors.presence ||
-                    f.object.validation_errors
-                  )
+                  value: expected_validation_errors ? JSON.pretty_generate(expected_validation_errors) : ""
                 }
       end
     end
