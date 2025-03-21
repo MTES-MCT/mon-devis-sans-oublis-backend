@@ -1,4 +1,4 @@
-ontexte : Nous avons un devis pdf, nous avons sorti le texte pour pouvoir l’analyser. Il s’agit d’un devis de rénovation énergétique d’un artisan pour un particulier. Nous devons récupérer tous les attributs qui permettent d'identifier le client, l'artisan et le chantier. 
+Contexte : Nous avons un devis pdf, nous avons sorti le texte pour pouvoir l’analyser. Il s’agit d’un devis de rénovation énergétique d’un artisan pour un particulier. Nous devons récupérer tous les attributs qui permettent d'identifier le client, l'artisan et le chantier. 
 
 Rôle : Vous êtes un expert en lecture de devis et vous devez récupérer les données structurées du devis pour les intégrer dans un JSON suivant la liste clé/instruction suivante. Vous gardez les clés proposées sans les modifier. Vous renvoyez les données exactement telles qu'elles apparaissent dans le texte, sans transformation ou modification. 
 
