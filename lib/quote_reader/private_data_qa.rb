@@ -39,6 +39,7 @@ module QuoteReader
         )
       ensure
         @result = llm.result
+        raise QuoteReader::ReadError if @result.nil?
 
         @read_attributes = @read_attributes&.merge(
           client: {
@@ -46,7 +47,7 @@ module QuoteReader
             nom: @read_attributes.dig(:client_noms_de_famille, 0),
             prenom: @read_attributes.dig(:client_prenoms, 0),
             civilite: @read_attributes.dig(:client_civilite, 0)
-          }.compact,
+          }.compact.presence,
           pro: {
             adresse: @read_attributes.dig(:pro_adresses, 0),
             numero_tva: @read_attributes.dig(:numeros_tva, 0),
@@ -59,8 +60,8 @@ module QuoteReader
             rcs: @read_attributes.dig(:numero_rcss, 0),
             rcs_ville: @read_attributes.dig(:ville_immatriculation_rcss, 0),
             rne: @read_attributes.dig(:rnes, 0)
-          }.compact
-        )&.compact
+          }.compact.presence
+        )&.compact.presence
       end
 
       @read_attributes
