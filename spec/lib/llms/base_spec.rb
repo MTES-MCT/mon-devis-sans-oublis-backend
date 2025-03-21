@@ -41,6 +41,18 @@ RSpec.describe Llms::Base, type: :service do
       json = described_class.extract_json(text)
       expect(JSON.parse(json)).to include("version" => "2.0.2")
     end
+
+    context "with null result" do
+      let(:text) do
+        <<~TEXT
+          null
+        TEXT
+      end
+
+      it "returns nil" do
+        expect(described_class.extract_json(text)).to be_nil
+      end
+    end
   end
 
   describe ".extract_numbered_list" do

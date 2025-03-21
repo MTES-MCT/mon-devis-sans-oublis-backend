@@ -26,10 +26,13 @@ RSpec.describe QuoteCheckService, type: :service do
   describe "#check" do
     subject(:quote_check) { described_class.new(tempfile, filename, profile).check }
 
+    before do
+      stub_request(:post, /albert\.api\.etalab\.gouv\.fr/)
+        .to_return(status: 200, body: "{\"bad_file\": false }")
+    end
+
     # rubocop:disable RSpec/MultipleExpectations
     it "returns the completed quote check" do # rubocop:disable RSpec/ExampleLength
-      quote_check = described_class.new(tempfile, filename, profile).check
-
       expect(quote_check).to be_a(QuoteCheck)
       expect(quote_check.text).to be_a(String)
       expect(quote_check.anonymised_text).to be_a(String)
