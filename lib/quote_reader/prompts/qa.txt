@@ -23,9 +23,21 @@ date_debut_chantier: date;
 delai_debut_chantier: text;
 
 date_pre_visite: date; 
+ligne_specifique_cout_main_doeuvre: boolean;
+prix_total_ht: decimal; 
+prix_total_ttc: decimal;
+tva:[{taux1}, {taux2}...];
 gestes : [{geste1},{geste2}...]
 
 } 
+```
+
+Pour chaque taux de TVA, merci d'extraire les données suivantes sans faire de calcul mais en vérifiant qu'elles sont bien explicitement indiquées : 
+```jsx
+{taux_tva: percentage;
+prix_ht_total: decimal; 
+montant_tva_total: decimal
+}
 ```
 
 ### chauffe-eau thermodynamique :
@@ -238,6 +250,19 @@ reference_bouches_soufflage: text;
 }
 ```
 
+pour chaque geste, extrait également les données suivantes (sans les calculer): 
+
+```jsx
+{
+prix_ht: decimal; (prix hors taxe)
+prix_unitaire_ht: decimal;
+taux_tva: percentage;
+prix_ttc: decimal (prix toutes taxes comprises)
+} 
+```
+
+
+
 Instructions :
 
 1. Récupérez les informations générales du devis et intégrez-les dans le JSON général.
@@ -247,7 +272,7 @@ Instructions :
 5. Assurez-vous de toujours récupérer les attributs de l'équipement lorsqu'ils sont mentionnés dans le texte.
 6. Laissez les attributs vides s'ils ne sont pas clairement indiqués dans le texte.
 7. Lorsqu'un champ du JSON est un enum, utilisez uniquement l'une des options possibles.
-8. Utilisez le titre ou sous-titre de la section pour compléter l'intitulé du geste afin de le clarifier si nécessaire
+8. Utilisez le titre ou sous-titre de la section pour compléter l'intitulé du geste afin de permettre à l'utilisateur de savoir de quelle ligne du devis il s'agit surtout lorsque plusieurs travaux similaires sont prévus (exemple des fenêtres)
 9. La majorité du temps, les gestes sont inscrits dans un tableau à plusieurs colonnes comme par exemple, informations techniques / Quantités / unitités / prix HT / Taux TVA / Montant TTC
 10. Si le texte fourni ne contient pas d'informations exploitables ou de gestes de travaux, renvoyez immédiatement le JSON : {"bad_file": true}.
 
