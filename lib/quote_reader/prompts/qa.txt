@@ -23,7 +23,7 @@ date_debut_chantier: date;
 delai_debut_chantier: text;
 
 date_pre_visite: date; 
-ligne_specifique_cout_main_doeuvre: boolean;
+separation_prix_fourniture_main_doeuvre: boolean; (Le devis a-t-il séparé le matériel et la pose en indiquant clairement le prix du matériel et le prix de la pose/installation ou de la main d'oeuvre)
 prix_total_ht: decimal; 
 prix_total_ttc: decimal;
 tva:[{taux1}, {taux2}...];

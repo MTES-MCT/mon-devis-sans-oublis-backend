@@ -163,7 +163,7 @@ module QuoteValidator
     def validate_prix 
       # Valider qu'on a une séparation matériaux et main d'oeuvre 
       #TODO V2, il faudra sûrement vérifier la séparation pose / fourniture par geste et non juste un boolean.
-      add_error("cout_main_doeuvre_manquant", category: "admin", type:"missing") unless quote[:ligne_specifique_cout_main_doeuvre]
+      add_error("cout_main_doeuvre_manquant", category: "admin", type:"missing") unless quote[:separation_prix_fourniture_main_doeuvre]
 
       # Valider qu'on a le prix total HT / TTC 
       add_error("prix_total_ttc_manquant", category: "admin", type:"missing") if quote[:prix_total_ttc].blank?
