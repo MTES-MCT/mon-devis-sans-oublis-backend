@@ -190,9 +190,9 @@ module QuoteValidator
         #   quantite: decimal
         #   unite: texte
         # } 
-        add_error("geste_prix_ht_manquant", category: "gestes", type: "missing", provided_value: geste[:intitule])
-        add_error("geste_prix_unitaire_ht_manquant", category: "gestes", type: "missing", provided_value: geste[:intitule])
-        add_error("geste_taux_tva_manquant", category: "gestes", type: "missing", provided_value: geste[:intitule])
+        add_error("geste_prix_ht_manquant", category: "gestes", type: "missing", provided_value: geste[:intitule], geste: geste) if geste[:prix_ht].blank?
+        add_error("geste_prix_unitaire_ht_manquant", category: "gestes", type: "missing", provided_value: geste[:intitule], geste: geste) if geste[:prix_unitaire_ht].blank?
+        add_error("geste_taux_tva_manquant", category: "gestes", type: "missing", provided_value: geste[:intitule], geste: geste) if geste[:taux_tva].blank?
 
     end
 
