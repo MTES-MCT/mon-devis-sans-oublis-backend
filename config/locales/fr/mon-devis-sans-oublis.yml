@@ -113,8 +113,8 @@ fr:
 
 
       # Prix / TVA : 
-      cout_main_doeuvre_manquant: "La séparation fourniture et pose est manquante"
-      cout_main_doeuvre_manquant_infos: "Il est obligatoire de bien séparer la fourniture et la pose du matériel en indiquant clairement les prix associés."
+      separation_fourniture_pose_manquant: "La séparation fourniture et pose est manquante"
+      separation_fourniture_pose_manquant_infos: "Il est obligatoire de bien séparer la fourniture et la pose du matériel en indiquant clairement les prix associés."
       prix_total_ttc_manquant: "Le prix total TTC du devis est manquant"
       prix_total_ht_manquant: "Le prix total HT du devis est manquant"
       
