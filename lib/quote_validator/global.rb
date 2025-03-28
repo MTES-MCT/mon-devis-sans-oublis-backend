@@ -162,20 +162,22 @@ module QuoteValidator
 
     def validate_prix 
       # Valider qu'on a une séparation matériaux et main d'oeuvre 
+      #TODO V2, il faudra sûrement vérifier la séparation pose / fourniture par geste et non juste un boolean.
       add_error("cout_main_doeuvre_manquant", category: "admin", type:"missing") unless quote[:ligne_specifique_cout_main_doeuvre]
 
       # Valider qu'on a le prix total HT / TTC 
       add_error("prix_total_ttc_manquant", category: "admin", type:"missing") if quote[:prix_total_ttc].blank?
-      add_error("rix_total_ht_manquant", category: "admin", type:"missing") if quote[:prix_total_ht].blank?
+      add_error("prix_total_ht_manquant", category: "admin", type:"missing") if quote[:prix_total_ht].blank?
       # Valider qu'on a le montant de TVA pour chacun des taux
-      # {taux_tva: percentage;
+      # {taux_tva: decimal;
       # prix_ht_total: decimal; 
       # montant_tva_total: decimal
       # } 
-      tvas = quote[:tva] || []
-      tvas.each do |tva|
+      # TODO Vérifier si utile de le faire ? 
+      # tvas = quote[:tva] || []
+      # tvas.each do |tva|
 
-      end
+      # end
 
     end
     def validate_prix_geste geste
@@ -183,10 +185,15 @@ module QuoteValidator
         # { 
         #   prix_ht: decimal; 
         #   prix_unitaire_ht: decimal;
-        #   taux_tva: percentage
+        #   taux_tva: decimal
         #   prix_ttc: decimal
+        #   quantite: decimal
+        #   unite: texte
         # } 
         add_error("geste_prix_ht_manquant", category: "gestes", type: "missing", provided_value: geste[:intitule])
+        add_error("geste_prix_unitaire_ht_manquant", category: "gestes", type: "missing", provided_value: geste[:intitule])
+        add_error("geste_taux_tva_manquant", category: "gestes", type: "missing", provided_value: geste[:intitule])
+
     end
 
     # doit valider les critères techniques associés aux gestes présents dans le devis

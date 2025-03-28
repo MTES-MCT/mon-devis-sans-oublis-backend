@@ -34,7 +34,7 @@ gestes : [{geste1},{geste2}...]
 
 Pour chaque taux de TVA, merci d'extraire les données suivantes sans faire de calcul mais en vérifiant qu'elles sont bien explicitement indiquées : 
 ```jsx
-{taux_tva: percentage;
+{taux_tva: decimal;
 prix_ht_total: decimal; 
 montant_tva_total: decimal
 }
@@ -256,8 +256,10 @@ pour chaque geste, extrait également les données suivantes (sans les calculer)
 {
 prix_ht: decimal; (prix hors taxe)
 prix_unitaire_ht: decimal;
-taux_tva: percentage;
-prix_ttc: decimal (prix toutes taxes comprises)
+taux_tva: decimal; (il s'agit d'un pourcentage - attention sur certains devis, il y a une liste à la fin du devis regroupant les différents taux de tva identifié par un numéro utilisé sur les lignes du devis)
+prix_ttc: decimal; (prix toutes taxes comprises)
+quantite: decimal; (quantité de matériaux installé selon l'unité choisie)
+unite: text (unité pouvant être m2, metre, nombre ... permettant de savoir combien de matériaux sont installés)
 } 
 ```
 
