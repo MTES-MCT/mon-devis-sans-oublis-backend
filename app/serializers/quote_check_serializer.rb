@@ -46,13 +46,14 @@ class QuoteCheckSerializer < ActiveModel::Serializer
   def gestes # rubocop:disable Metrics/AbcSize
     object.read_attributes&.fetch("gestes", nil)&.map&.with_index do |geste, geste_index| # rubocop:disable Style/SafeNavigationChainLength
       geste_id = QuoteValidator::Base.geste_index(object.id, geste_index)
-      geste.slice("intitule").merge(
+      {
+        "intitule" => "#{geste['numero_ligne']} #{geste['intitule']}",
         "id" => geste_id,
-        "valid" =>
-          validation_error_details.nil? || validation_error_details.none? do
+        "valid" => 
+          validation_error_details.nil? || validation_error_details.none? do 
             it["geste_id"] == geste_id
           end
-      )
+      }
     end
   end
 
