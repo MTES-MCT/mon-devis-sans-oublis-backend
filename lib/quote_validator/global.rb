@@ -192,14 +192,31 @@ module QuoteValidator
       #   unite: texte
       # }
       if geste[:prix_ht].blank?
-        add_error("geste_prix_ht_manquant", category: "gestes", type: "missing", provided_value: geste[:intitule], geste: geste)
+        add_error(
+          "geste_prix_ht_manquant",
+          category: "gestes",
+          type: "missing",
+          provided_value: geste[:intitule],
+          geste: geste
+        )
       end
       if geste[:prix_unitaire_ht].blank?
-        add_error("geste_prix_unitaire_ht_manquant", category: "gestes", type: "missing", provided_value: geste[:intitule], geste: geste)
+        add_error(
+          "geste_prix_unitaire_ht_manquant",
+          category: "gestes",
+          type: "missing",
+          provided_value: geste[:intitule],
+          geste: geste
+        )
       end
-      if geste[:taux_tva].blank?
-        add_error("geste_taux_tva_manquant", category: "gestes", type: "missing", provided_value: geste[:intitule], geste: geste)
-      end
+      return unless geste[:taux_tva].blank?
+      add_error(
+        "geste_taux_tva_manquant",
+        category: "gestes",
+        type: "missing",
+        provided_value: geste[:intitule],
+        geste: geste
+      )
     end
 
     # doit valider les critères techniques associés aux gestes présents dans le devis
@@ -291,9 +308,8 @@ module QuoteValidator
 
           "geste_inconnu"
         end
-        if geste_reconnu
-          validate_prix_geste(geste)
-        end
+        
+        validate_prix_geste(geste) if geste_reconnu
       end
     end
     # rubocop:enable Metrics/MethodLength
