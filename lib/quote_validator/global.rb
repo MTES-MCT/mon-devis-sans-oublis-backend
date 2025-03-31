@@ -40,6 +40,7 @@ module QuoteValidator
       validate_pro
       validate_client
       validate_rge
+      validate_prix
     end
 
     # date d'emission, date de pré-visite (CEE uniquement ?),
@@ -159,10 +160,71 @@ module QuoteValidator
       end
     end
 
+    def validate_prix
+      # Valider qu'on a une séparation matériaux et main d'oeuvre
+      # TODO V2, il faudra sûrement vérifier la séparation pose / fourniture par geste et non juste un boolean.
+      unless quote[:separation_prix_fourniture_pose]
+        add_error("separation_fourniture_pose_manquant", category: "admin", type: "missing")
+      end
+
+      # Valider qu'on a le prix total HT / TTC
+      add_error("prix_total_ttc_manquant", category: "admin", type: "missing") if quote[:prix_total_ttc].blank?
+      add_error("prix_total_ht_manquant", category: "admin", type: "missing") if quote[:prix_total_ht].blank?
+      # Valider qu'on a le montant de TVA pour chacun des taux
+      # {taux_tva: decimal;
+      # prix_ht_total: decimal;
+      # montant_tva_total: decimal
+      # }
+      # TODO Vérifier si utile de le faire ?
+      # tvas = quote[:tva] || []
+      # tvas.each do |tva|
+      # end
+    end
+
+    def validate_prix_geste(geste) # rubocop:disable Metrics/MethodLength
+      # Valider qu'on a le prix HT sur chaque geste et son taux de TVA
+      # {
+      #   prix_ht: decimal;
+      #   prix_unitaire_ht: decimal;
+      #   taux_tva: decimal
+      #   prix_ttc: decimal
+      #   quantite: decimal
+      #   unite: texte
+      # }
+      if geste[:prix_ht].blank?
+        add_error(
+          "geste_prix_ht_manquant",
+          category: "gestes",
+          type: "missing",
+          provided_value: geste[:intitule],
+          geste: geste
+        )
+      end
+      if geste[:prix_unitaire_ht].blank?
+        add_error(
+          "geste_prix_unitaire_ht_manquant",
+          category: "gestes",
+          type: "missing",
+          provided_value: geste[:intitule],
+          geste: geste
+        )
+      end
+      return if geste[:taux_tva].present?
+
+      add_error(
+        "geste_taux_tva_manquant",
+        category: "gestes",
+        type: "missing",
+        provided_value: geste[:intitule],
+        geste: geste
+      )
+    end
+
     # doit valider les critères techniques associés aux gestes présents dans le devis
     # rubocop:disable Metrics/AbcSize
     # rubocop:disable Metrics/CyclomaticComplexity
     # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/PerceivedComplexity
     def validate_works
       isolation = Works::Isolation.new(quote, quote_id:, error_details:)
       menuiserie = Works::Menuiserie.new(quote, quote_id:, error_details:)
@@ -171,8 +233,11 @@ module QuoteValidator
       ventilation = Works::Ventilation.new(quote, quote_id:, error_details:)
 
       gestes = quote[:gestes] || []
+      geste_reconnu = true
+
       gestes.each_with_index do |geste, index| # rubocop:disable Metrics/BlockLength
         geste[:index] = index
+        geste_reconnu = true
 
         case geste[:type]
 
@@ -235,16 +300,21 @@ module QuoteValidator
         # AUDIT ENERGETIQUE
 
         when "", nil
+          geste_reconnu = false
           next
 
         else
+          geste_reconnu = false
           e = NotImplementedError.new("Geste inconnu '#{geste[:type]}' is not listed")
           ErrorNotifier.notify(e)
 
           "geste_inconnu"
         end
+
+        validate_prix_geste(geste) if geste_reconnu
       end
     end
+    # rubocop:enable Metrics/PerceivedComplexity
     # rubocop:enable Metrics/MethodLength
     # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/AbcSize

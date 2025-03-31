@@ -370,7 +370,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
           if gestes&.any?
             table_for gestes.each_with_index do # rubocop:disable Metrics/BlockLength
               column "Type" do |geste,|
-                geste.fetch("type")
+                geste["type"]
               end
               column "Attributs" do |geste,|
                 pre JSON.pretty_generate(geste)
