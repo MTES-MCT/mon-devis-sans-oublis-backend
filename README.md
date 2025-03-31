@@ -23,10 +23,6 @@ composants DSFR](https://github.com/betagouv/dsfr-view-components)
 * Rswag comme outil de documentation au format Swagger/ OpenAPI de l'API à travers des tests ;
 * Rubocop (RSpec et Rails) pour le linting ;
 * Docker pour avoir un environnement de développement.
-* traitement des documents
-  * tesseract pour la reconnaissance des images et lire leur contenu via OCR
-  * la librairie Poppler `pdftoppm` pour transformer les PDF en images
-  * ou bien la gem MiniMagick (IM) `mini_magick` avec ImageMagick 6.9 (comme sur Scalingo)
 
 ## Moteur et fonctionnement interne / Architecture
 
@@ -38,6 +34,17 @@ Nous suivons les recommendations et les conventions du framework Ruby on Rails e
 Les fichiers devis sont traités par le `QuoteChecksController` qui les envoient aux services:
 - `QuoteReader` lisant le devis brut puis extractant les information du devis de manière naïve en se basant sur le texte du PDF et via solutions LLM avec croisement de données d'annuaires publiques de la rénovation
 - puis ces attributs de devis sont vérifier par le `QuoteValdiator` qui controlle un ensemble de règles et renvoit les erreurs correspondantes
+
+### Traitement des images / OCR
+
+Différentes briques sont mises à contribution et encore en évaluation:
+
+* pour la reconnaissance des images et lire leur contenu via OCR
+  * Surya (Python) 
+  * tesseract (natif)
+* pour transformer les PDF en images
+  * librairie Poppler `pdftoppm` (natif)
+  * la gem MiniMagick (IM) `mini_magick` avec ImageMagick 6.9 (comme sur Scalingo) (natif)
 
 ### Tester un devis en local
 
