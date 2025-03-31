@@ -49,8 +49,8 @@ class QuoteCheckSerializer < ActiveModel::Serializer
       {
         "intitule" => "#{geste['numero_ligne']} #{geste['intitule']}",
         "id" => geste_id,
-        "valid" => 
-          validation_error_details.nil? || validation_error_details.none? do 
+        "valid" =>
+          validation_error_details.nil? || validation_error_details.none? do
             it["geste_id"] == geste_id
           end
       }
