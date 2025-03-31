@@ -37,7 +37,6 @@ gestes : [{geste1},{geste2}...]
 } 
 ```
 
-
 ### chauffe-eau thermodynamique :
 
 ```jsx
