@@ -50,13 +50,7 @@ ETAS: pourcentage;
 profil_soutirage: enum(M,L,XL,XXL); 
 type_installation: enum(air exterieur, air extrait, air ambiant);
 COP: decimal;
-prix_ht: decimal; (prix hors taxe)
-prix_unitaire_ht: decimal;
-taux_tva: decimal; (il s'agit d'un pourcentage - attention sur certains devis, il y a une liste à la fin du devis regroupant les différents taux de tva identifié par un numéro utilisé sur les lignes du devis)
-prix_ttc: decimal; (prix toutes taxes comprises)
-quantite: decimal; (quantité de matériaux installé selon l'unité choisie)
-unite: text; (unité pouvant être m2, metre, nombre ... permettant de savoir combien de matériaux sont installés)
-numero_ligne: text (Numéro de la ligne du devis, lorsqu'il est présent, il se trouve très souvent en première colonne du tableau)
+
 }
 ```
 
@@ -74,13 +68,7 @@ type_appoint: enum (electrique, autre);
 surface_capteur: Decimal (m2); 
 classe_energetique_ballon: text; 
 fluide_capteur: enum(eau, eau glycolée, air);
-prix_ht: decimal; (prix hors taxe)
-prix_unitaire_ht: decimal;
-taux_tva: decimal; (il s'agit d'un pourcentage - attention sur certains devis, il y a une liste à la fin du devis regroupant les différents taux de tva identifié par un numéro utilisé sur les lignes du devis)
-prix_ttc: decimal; (prix toutes taxes comprises)
-quantite: decimal; (quantité de matériaux installé selon l'unité choisie)
-unite: text; (unité pouvant être m2, metre, nombre ... permettant de savoir combien de matériaux sont installés)
-numero_ligne: text (Numéro de la ligne du devis, lorsqu'il est présent, il se trouve très souvent en première colonne du tableau)
+
 }
 ```
 
@@ -96,13 +84,7 @@ epaisseur_isolant: Decimal (cm);
 resistance_thermique: Decimal (m².K/W);
 norme_calcul_resistance: text; (une des normes NF elligible, comme par exemple : NF EN 12664); 
 numero_acermi: text; (dont le format est : XX/XX/XXX)
-prix_ht: decimal; (prix hors taxe)
-prix_unitaire_ht: decimal;
-taux_tva: decimal; (il s'agit d'un pourcentage - attention sur certains devis, il y a une liste à la fin du devis regroupant les différents taux de tva identifié par un numéro utilisé sur les lignes du devis)
-prix_ttc: decimal; (prix toutes taxes comprises)
-quantite: decimal; (quantité de matériaux installé selon l'unité choisie)
-unite: text; (unité pouvant être m2, metre, nombre ... permettant de savoir combien de matériaux sont installés)
-numero_ligne: text (Numéro de la ligne du devis, lorsqu'il est présent, il se trouve très souvent en première colonne du tableau)
+
 }
 ```
 
@@ -145,13 +127,7 @@ localisation: text;
 position_paroie: enum(nu_interieur, nu_exterieur, tunnel); 
 uw: decimal (W/m2.K); 
 sw: decimal;
-prix_ht: decimal; (prix hors taxe)
-prix_unitaire_ht: decimal;
-taux_tva: decimal; (il s'agit d'un pourcentage - attention sur certains devis, il y a une liste à la fin du devis regroupant les différents taux de tva identifié par un numéro utilisé sur les lignes du devis)
-prix_ttc: decimal; (prix toutes taxes comprises)
-quantite: decimal; (quantité de matériaux installé selon l'unité choisie)
-unite: text; (unité pouvant être m2, metre, nombre ... permettant de savoir combien de matériaux sont installés)
-numero_ligne: text (Numéro de la ligne du devis, lorsqu'il est présent, il se trouve très souvent en première colonne du tableau)
+
 }
 ```
 
@@ -186,13 +162,7 @@ emission_monoxyde_carbone: Integer (mg/Nm3) (emission de CO);
 emission_composés_organique: Integer (mgC/Nm3) (emission de COG);
 emission_particules: Integer (mg/Nm3); 
 emission_oxydes_azotes: Integer (mg/Nm3) (emission de Nox);
-prix_ht: decimal; (prix hors taxe)
-prix_unitaire_ht: decimal;
-taux_tva: decimal; (il s'agit d'un pourcentage - attention sur certains devis, il y a une liste à la fin du devis regroupant les différents taux de tva identifié par un numéro utilisé sur les lignes du devis)
-prix_ttc: decimal; (prix toutes taxes comprises)
-quantite: decimal; (quantité de matériaux installé selon l'unité choisie)
-unite: text; (unité pouvant être m2, metre, nombre ... permettant de savoir combien de matériaux sont installés)
-numero_ligne: text (Numéro de la ligne du devis, lorsqu'il est présent, il se trouve très souvent en première colonne du tableau)
+
 }
 ```
 
@@ -211,13 +181,7 @@ type_fluide_frigorigene: text;
 COP: decimal;
 SCOP: decimal; ##Attention de ne pas confondre le COP et le SCOP !
 puissance_nominale: decimal; **(kW) (puissance standardisée utilisée pour le dimensionnement et la comparaison)**
-prix_ht: decimal; (prix hors taxe)
-prix_unitaire_ht: decimal;
-taux_tva: decimal; (il s'agit d'un pourcentage - attention sur certains devis, il y a une liste à la fin du devis regroupant les différents taux de tva identifié par un numéro utilisé sur les lignes du devis)
-prix_ttc: decimal; (prix toutes taxes comprises)
-quantite: decimal; (quantité de matériaux installé selon l'unité choisie)
-unite: text; (unité pouvant être m2, metre, nombre ... permettant de savoir combien de matériaux sont installés)
-numero_ligne: text (Numéro de la ligne du devis, lorsqu'il est présent, il se trouve très souvent en première colonne du tableau)
+
 }
 ```
 
@@ -244,13 +208,7 @@ contenance_silo: Decimal (La contenance peut être définie en litres (L), mètr
 marque_regulateur: text; 
 reference_regulateur: text; 
 classe_regulateur: text;
-prix_ht: decimal; (prix hors taxe)
-prix_unitaire_ht: decimal;
-taux_tva: decimal; (il s'agit d'un pourcentage - attention sur certains devis, il y a une liste à la fin du devis regroupant les différents taux de tva identifié par un numéro utilisé sur les lignes du devis)
-prix_ttc: decimal; (prix toutes taxes comprises)
-quantite: decimal; (quantité de matériaux installé selon l'unité choisie)
-unite: text; (unité pouvant être m2, metre, nombre ... permettant de savoir combien de matériaux sont installés)
-numero_ligne: text (Numéro de la ligne du devis, lorsqu'il est présent, il se trouve très souvent en première colonne du tableau)
+
 }
 
 ```
@@ -273,13 +231,7 @@ productivite_capteurs: decimal (W/m2);
 volume_ballon: decimal (litre);
 profil_soutirage: enum(M,L,XL,XXL); 
 energie_appoint: (electricite, gaz,...);
-prix_ht: decimal; (prix hors taxe)
-prix_unitaire_ht: decimal;
-taux_tva: decimal; (il s'agit d'un pourcentage - attention sur certains devis, il y a une liste à la fin du devis regroupant les différents taux de tva identifié par un numéro utilisé sur les lignes du devis)
-prix_ttc: decimal; (prix toutes taxes comprises)
-quantite: decimal; (quantité de matériaux installé selon l'unité choisie)
-unite: text; (unité pouvant être m2, metre, nombre ... permettant de savoir combien de matériaux sont installés)
-numero_ligne: text (Numéro de la ligne du devis, lorsqu'il est présent, il se trouve très souvent en première colonne du tableau)
+
 }
 ```
 
@@ -305,30 +257,44 @@ nombre_bouches_soufflage: integer;
 emplacement_bouches_soufflage: text;
 marque_bouches_soufflage: text;
 reference_bouches_soufflage: text;
+}
+```
+
+# Liste des types de gestes pertinents
+gestes_pertinents = [
+    "pac_air_eau", "chauffe_eau_thermo", "chauffe_eau_solaire_individuel",
+    "isolation_comble_perdu", "isolation_rampants_toiture", "isolation_toiture_terrasse",
+    "isolation_thermique_par_interieur_ITI", "isolation_thermique_par_exterieur_ITE",
+    "isolation_plancher_bas", "menuiserie_fenetre", "menuiserie_fenetre_toit",
+    "menuiserie_porte", "menuiserie_volet_isolant", "poele_insert", "chaudiere_biomasse",
+    "systeme_solaire_combine", "vmc_simple_flux", "vmc_double_flux", "pac_eau_eau", "pac_air_air", "pac_hybride"
+]
+
+Attributs supplémentaires : 
+{
 prix_ht: decimal; (prix hors taxe)
 prix_unitaire_ht: decimal;
 taux_tva: decimal; (il s'agit d'un pourcentage - attention sur certains devis, il y a une liste à la fin du devis regroupant les différents taux de tva identifié par un numéro utilisé sur les lignes du devis)
 prix_ttc: decimal; (prix toutes taxes comprises)
 quantite: decimal; (quantité de matériaux installé selon l'unité choisie)
 unite: text; (unité pouvant être m2, metre, nombre ... permettant de savoir combien de matériaux sont installés)
-numero_ligne: text (Numéro de la ligne du devis, lorsqu'il est présent, il se trouve très souvent en première colonne du tableau)
+numero_ligne: text (Numéro ou identifiant de la ligne du devis, il se trouve très souvent en première colonne du tableau)
 }
-```
-
-
 
 Instructions :
 
 1. Récupérez les informations générales du devis et intégrez-les dans le JSON général.
-2. Pour chaque geste, identifiez le type de geste et récupérez les informations spécifiques en suivant les définitions des JSON spécifiques fournies.
-3. Si un geste ne correspond pas exactement à l'un des types définis dans les JSON spécifiques fournis, ne l'incluez pas dans le JSON final.
-4. Assurez-vous de ne pas mélanger les informations des différents gestes et de bien identifier les sections et titres. Repérez les titres et sous-titres dans le devis. Ils sont souvents utilisés pour regrouper les informations par gestes et pour donner du contexte au geste (notamment la localisation dans le logement).
-5. Assurez-vous de toujours récupérer les attributs de l'équipement lorsqu'ils sont mentionnés dans le texte.
-6. Laissez les attributs vides s'ils ne sont pas clairement indiqués dans le texte.
-7. Lorsqu'un champ du JSON est un enum, utilisez uniquement l'une des options possibles.
-8. Utilisez le titre ou sous-titre de la section pour compléter l'intitulé du geste afin de permettre à l'utilisateur de savoir de quelle ligne du devis surtout lorsque plusieurs travaux similaires sont prévus (exemple des fenêtres)
-9. La majorité du temps, les gestes sont inscrits dans un tableau à plusieurs colonnes comme par exemple, identifiant / informations techniques / Quantités / unitités / prix HT / Taux TVA / Montant TTC
-10. Si le texte fourni ne contient pas d'informations exploitables ou de gestes de travaux, renvoyez immédiatement le JSON : {"bad_file": true}.
+2. Identifier les gestes pertinents : Parcourez les lignes du devis et identifiez celles qui incluent des termes ou des descriptions correspondant aux gestes pertinents listés dans gestes_pertinents.
+3. Ajouter les attributs uniquement pour les gestes pertinents : Une fois que vous avez identifié un geste pertinent, récupérez les informations spécifiques en suivant les définitions des JSON spécifiques fournies et ajoutez les attributs supplémentaires uniquement pour ce geste.
+4. Ignorez les lignes non pertinentes : Si une ligne du devis ne correspond pas parfaitement à un gestes_pertinents, ignorez-la et ne l'ajoutez pas au JSON final.
+5. Si un geste ne correspond pas exactement à l'un des types définis dans les JSON spécifiques fournis, ne l'incluez pas dans le JSON final.
+6. Assurez-vous de ne pas mélanger les informations des différents gestes et de bien identifier les sections et titres. Repérez les titres et sous-titres dans le devis. Ils sont souvents utilisés pour regrouper les informations par gestes et pour donner du contexte au geste (notamment la localisation dans le logement).
+7. Assurez-vous de toujours récupérer les attributs de l'équipement lorsqu'ils sont mentionnés dans le texte.
+8. Laissez les attributs vides s'ils ne sont pas clairement indiqués dans le texte.
+9. Lorsqu'un champ du JSON est un enum, utilisez uniquement l'une des options possibles.
+10. Utilisez le titre ou sous-titre de la section pour compléter l'intitulé du geste afin de permettre à l'utilisateur de savoir de quelle ligne du devis surtout lorsque plusieurs travaux similaires sont prévus (exemple des fenêtres)
+11. La majorité du temps, les gestes sont inscrits dans un tableau à plusieurs colonnes comme par exemple, identifiant / informations techniques / Quantités / unitités / prix HT / Taux TVA / Montant TTC
+12. Si le texte fourni ne contient pas d'informations exploitables ou de gestes de travaux, renvoyez immédiatement le JSON : {"bad_file": true}.
 
 
 Réfléchissez étape par étape.
@@ -336,4 +302,6 @@ Réfléchissez étape par étape.
 
 Vous ne répondrez que par un objet JSON qui concatene le JSON général et tous les JSON des gestes présent dans le devis
 Ne fournissez pas d’explications.
+
+Attention, assures-toi de bien filtrer les lignes pour ne pas retourner toutes les lignes du devis mais uniquement les gestes pertinents ! 
 voici le texte du devis anonymise :
