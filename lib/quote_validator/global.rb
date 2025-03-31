@@ -181,7 +181,7 @@ module QuoteValidator
       # end
     end
 
-    def validate_prix_geste(geste)
+    def validate_prix_geste(geste) # rubocop:disable Metrics/MethodLength
       # Valider qu'on a le prix HT sur chaque geste et son taux de TVA
       # {
       #   prix_ht: decimal;
@@ -209,7 +209,8 @@ module QuoteValidator
           geste: geste
         )
       end
-      return unless geste[:taux_tva].blank?
+      return if geste[:taux_tva].present?
+
       add_error(
         "geste_taux_tva_manquant",
         category: "gestes",
@@ -223,6 +224,7 @@ module QuoteValidator
     # rubocop:disable Metrics/AbcSize
     # rubocop:disable Metrics/CyclomaticComplexity
     # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/PerceivedComplexity
     def validate_works
       isolation = Works::Isolation.new(quote, quote_id:, error_details:)
       menuiserie = Works::Menuiserie.new(quote, quote_id:, error_details:)
@@ -308,10 +310,11 @@ module QuoteValidator
 
           "geste_inconnu"
         end
-        
+
         validate_prix_geste(geste) if geste_reconnu
       end
     end
+    # rubocop:enable Metrics/PerceivedComplexity
     # rubocop:enable Metrics/MethodLength
     # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/AbcSize
