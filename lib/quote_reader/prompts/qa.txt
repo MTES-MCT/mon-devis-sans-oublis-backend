@@ -23,7 +23,7 @@ date_debut_chantier: date;
 delai_debut_chantier: text;
 
 date_pre_visite: date; 
-separation_prix_fourniture_pose: boolean; (Le devis a-t-il clairement distingué le coût du matériel de celui de la pose, de l'installation, ou de la main d'œuvre, que ce soit par des lignes séparées ou des descriptions détaillées ?)
+separation_prix_fourniture_pose: boolean; (Verifiez que le devis a bien une ligne distinct pour la pose, l'installation, ou la main d'œuvre)
 prix_total_ht: decimal; 
 prix_total_ttc: decimal;
 tva:[
