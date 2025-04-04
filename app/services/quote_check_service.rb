@@ -120,6 +120,8 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
     end
 
     quote_check.assign_attributes(
+      ocr: quote_reader.ocr,
+
       # Avoid null bytes inside text field to not break PostgreSQL
       # TODO: Better fix null bytes at chore to not have them
       text: Llms::Base.remove_null_bytes(text),

@@ -30,29 +30,34 @@ module QuoteReader
     # rubocop:disable Metrics/AbcSize
     # rubocop:disable Metrics/CyclomaticComplexity
     # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/PerceivedComplexity
     def read(ocr: nil, qa_llm: nil)
       @text = case content_type
-              when %r{^image/}
-                begin
-                  ocr_instance = case ocr || DEFAULT_OCR
-                                 when "MistralOcr"
-                                   Image::MistralOcr.new(content, content_type, quote_file:)
-                                 when "Tesseract"
-                                   Image::Tesseract.new(content, content_type, quote_file:)
-                                 else
-                                   raise NotImplementedError, "OCR #{ocr} is not implemented"
-                                 end
-
-                  ocr_instance.extract_text
-                ensure
-                  quote_file&.update!(ocr: ocr_instance.ocr)
-                  ocr_instance.text
-                end
               when "application/pdf"
                 Pdf.new(content).extract_text
               else
-                raise QuoteReader::UnsupportedFileType,
-                      "File type #{content_type} not supported"
+                if QuoteFile.new(content_type:).ocrable?
+                  begin
+                    ocr_instance = case ocr || DEFAULT_OCR
+                                   when "AlbertOcr"
+                                     Image::AlbertOcr.new(content, content_type, quote_file:)
+                                   when "MistralOcr"
+                                     Image::MistralOcr.new(content, content_type, quote_file:)
+                                   when "Tesseract"
+                                     Image::Tesseract.new(content, content_type, quote_file:)
+                                   else
+                                     raise NotImplementedError, "OCR #{ocr} is not implemented"
+                                   end
+
+                    ocr_instance.extract_text
+                  ensure
+                    quote_file&.update!(ocr: ocr_instance&.ocr || ocr)
+                    ocr_instance&.text
+                  end
+                else
+                  raise QuoteReader::UnsupportedFileType,
+                        "File type #{content_type} not supported"
+                end
               end
 
       naive_reader = NaiveText.new(text)
@@ -96,6 +101,7 @@ module QuoteReader
         compact: true
       )
     end
+    # rubocop:enable Metrics/PerceivedComplexity
     # rubocop:enable Metrics/MethodLength
     # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/AbcSize

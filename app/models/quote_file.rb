@@ -9,6 +9,7 @@ require "mime/types"
 class QuoteFile < ApplicationRecord
   include QuoteFileBackoffice
   include QuoteFileImagifiedPages
+  include QuoteFileOcr
 
   has_one_attached :file
   has_many :quote_checks, dependent: :nullify, inverse_of: :file
