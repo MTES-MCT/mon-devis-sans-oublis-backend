@@ -8,6 +8,8 @@ require "llms/ollama"
 
 require "quote_reader/read_error"
 require "quote_reader/image/base"
+require "quote_reader/image/albert_ocr"
+require "quote_reader/image/mdso_ocr"
 require "quote_reader/image/mistral_ocr"
 require "quote_reader/image/tesseract"
 
@@ -31,6 +33,8 @@ Rails.application.configure do
   ].keep_if(&:configured?).map { it.name.split("::").last }
 
   config.ocrs_configured = [
+    QuoteReader::Image::AlbertOcr,
+    QuoteReader::Image::MdsoOcr,
     QuoteReader::Image::MistralOcr,
     QuoteReader::Image::Tesseract
   ].keep_if(&:configured?).map { it.name.split("::").last }

@@ -58,6 +58,19 @@ module QuoteReader
       def extract_text_from_image
         raise NotImplementedError, "Implement in subclass"
       end
+
+      # Ensure temporary HTTPS secure URL for Mdso to fetch the image
+      def file_image_url
+        url = Rails.application.routes.url_helpers.rails_blob_url(
+          quote_file.file,
+          expires_in: 10.minutes,
+          host: Rails.application.config.application_host
+        )
+
+        uri = URI.parse(url)
+        uri.scheme = "https"
+        uri.to_s
+      end
     end
   end
 end

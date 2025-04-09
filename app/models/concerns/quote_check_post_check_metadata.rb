@@ -5,6 +5,9 @@ module QuoteCheckPostCheckMetadata
   extend ActiveSupport::Concern
 
   included do
+    delegate :ocr, to: :file, allow_nil: true
+    delegate :ocrable?, to: :file, allow_nil: true
+
     attr_writer :ocr, :qa_llm
 
     STATUSES = %w[pending valid invalid].freeze # rubocop:disable Lint/ConstantDefinitionInBlock
@@ -41,10 +44,6 @@ module QuoteCheckPostCheckMetadata
     )
   end
 
-  def ocr
-    @ocr ||= QuoteReader::Global::DEFAULT_OCR # TODO: save in a field
-  end
-
   def processing_time
     return unless finished_at
 
@@ -52,7 +51,8 @@ module QuoteCheckPostCheckMetadata
   end
 
   def qa_llm
-    @qa_llm ||= case qa_result&.dig("id")
+    @qa_llm ||= read_attribute(:qa_llm) ||
+                case qa_result&.dig("id")
                 when /\Achatcmpl-/
                   "Albert"
                 else

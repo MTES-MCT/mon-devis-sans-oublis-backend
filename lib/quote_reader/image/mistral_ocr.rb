@@ -65,19 +65,6 @@ module QuoteReader
       def api_key
         ENV.fetch("MISTRAL_API_KEY")
       end
-
-      # Ensure temporary HTTPS secure URL for Mistral to fetch the image
-      def file_image_url
-        url = Rails.application.routes.url_helpers.rails_blob_url(
-          quote_file.file,
-          expires_in: 10.minutes,
-          host: Rails.application.config.application_host
-        )
-
-        uri = URI.parse(url)
-        uri.scheme = "https"
-        uri.to_s
-      end
     end
   end
 end
