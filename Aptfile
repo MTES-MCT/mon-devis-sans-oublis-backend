@@ -1,6 +1,6 @@
+ghostscript
+imagemagick
+libtesseract-dev
+poppler-utils
 tesseract-ocr
 tesseract-ocr-fra
-libtesseract-dev
-imagemagick
-poppler-utils
-ghostscript
