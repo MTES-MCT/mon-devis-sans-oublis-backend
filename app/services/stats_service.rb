@@ -39,7 +39,7 @@ class StatsService
     quote_checks_finished = QuoteCheck.with_valid_processing_time
     return nil if quote_checks_finished.count.zero?
 
-    total_processing_time = quote_checks_finished.select(:finished_at, :started_at).sum { it.processing_time }
+    total_processing_time = quote_checks_finished.select(:finished_at, :started_at).sum(&:processing_time)
     (total_processing_time.to_f / quote_checks_finished.count).ceil
   end
 

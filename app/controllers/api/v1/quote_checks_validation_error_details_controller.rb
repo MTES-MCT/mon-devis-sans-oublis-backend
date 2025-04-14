@@ -32,8 +32,8 @@ module Api
       end
 
       def validation_error_detail_deletion_reasons
-        data = QuoteCheck::VALIDATION_ERROR_DELETION_REASONS.to_h do
-          [it, I18n.t("quote_checks.validation_error_detail_deletion_reasons.#{it}")]
+        data = QuoteCheck::VALIDATION_ERROR_DELETION_REASONS.index_with do
+          I18n.t("quote_checks.validation_error_detail_deletion_reasons.#{it}")
         end
 
         render json: { data: }

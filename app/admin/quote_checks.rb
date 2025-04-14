@@ -128,9 +128,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
       end
     end
 
-    column "Date soumission" do
-      it.started_at
-    end
+    column "Date soumission", &:started_at
 
     column "Statut", :status
 
@@ -159,13 +157,9 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
       it.feedbacks.any?
     end
 
-    column "Commentaire ?" do
-      it.commented?
-    end
+    column "Commentaire ?", &:commented?
 
-    column "Date édition" do
-      it.edited_at
-    end
+    column "Date édition", &:edited_at
 
     column "Persona", :profile
     column :ocr
@@ -231,13 +225,9 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
         it.feedbacks.any?
       end
 
-      row "Présence de commentaire ?" do
-        it.commented?
-      end
+      row "Présence de commentaire ?", &:commented?
 
-      row "Date de dernière édition" do
-        it.edited_at
-      end
+      row "Date de dernière édition", &:edited_at
 
       row :comment, label: "Commentaire global"
 

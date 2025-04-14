@@ -51,7 +51,7 @@ module QuoteCheckEdits
     save!
   end
 
-  def edited_at # rubocop:disable Metrics/AbcSize
+  def edited_at
     (
       [
         validation_error_edited_at,

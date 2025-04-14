@@ -43,7 +43,6 @@ class QuoteCheckSerializer < ActiveModel::Serializer
     end
   end
 
-  # rubocop:disable Metrics/AbcSize
   def gestes # rubocop:disable Metrics/MethodLength
     object.read_attributes&.fetch("gestes", nil)&.map&.with_index do |geste, geste_index| # rubocop:disable Style/SafeNavigationChainLength
       geste_id = QuoteValidator::Base.geste_index(object.id, geste_index)
@@ -57,7 +56,6 @@ class QuoteCheckSerializer < ActiveModel::Serializer
       }
     end
   end
-  # rubocop:enable Metrics/AbcSize
 
   def status
     return "invalid" if consider_timeout?
