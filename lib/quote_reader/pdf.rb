@@ -23,7 +23,6 @@ module QuoteReader
 
     # Array of page images (as MiniMagick::Image objects)
     # rubocop:disable Metrics/AbcSize
-    # rubocop:disable Metrics/CyclomaticComplexity
     def to_images # rubocop:disable Metrics/MethodLength
       FileUtils.mkdir_p(temp_directory) unless File.directory?(temp_directory)
 
@@ -62,7 +61,6 @@ module QuoteReader
       FileUtils.rmdir(output_dir) if output_dir
       pdf_file&.unlink
     end
-    # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/AbcSize
 
     private

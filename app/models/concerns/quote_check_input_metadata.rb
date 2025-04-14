@@ -44,7 +44,6 @@ module QuoteCheckInputMetadata
   end
 
   # rubocop:disable Metrics/AbcSize
-  # rubocop:disable Metrics/CyclomaticComplexity
   # rubocop:disable Metrics/MethodLength
   def format_metadata
     self.metadata = metadata&.presence
@@ -63,7 +62,6 @@ module QuoteCheckInputMetadata
     metadata
   end
   # rubocop:enable Metrics/MethodLength
-  # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/AbcSize
 
   def metadata_data
