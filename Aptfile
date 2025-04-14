@@ -1,3 +1,5 @@
+clamav
+clamav-daemon
 ghostscript
 imagemagick
 libtesseract-dev
