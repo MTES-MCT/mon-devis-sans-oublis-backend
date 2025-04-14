@@ -5,6 +5,10 @@ require "rails_helper"
 RSpec.describe "/api/v1/quote_checks" do
   let(:json) { response.parsed_body }
 
+  before do
+    ClamAv.download_database! unless ClamAv.database_exists?
+  end
+
   describe "GET /api/v1/quote_checks/metadata" do
     it "returns a successful response" do
       get metadata_api_v1_quote_checks_url

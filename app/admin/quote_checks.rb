@@ -62,6 +62,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
 
       @quote_check = quote_check_service.quote_check
       if @quote_check
+        QuoteFileSecurityScanJob.perform_later(@quote_check.file.id)
         QuoteCheckCheckJob.perform_later(
           @quote_check.id,
           ocr: new_quote_check_params[:ocr],
@@ -130,8 +131,12 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
 
     column "Nom de fichier" do
       if it.file
-        link_to it.filename, view_file_admin_quote_file_path(it.file, format: it.file.extension),
-                target: "_blank", rel: "noopener"
+        if it.file.security_scan_good == false
+          "#{it.file.filename} (⚠ virus)"
+        else
+          link_to it.file.filename, view_file_admin_quote_file_path(it.file, format: it.file.extension),
+                  target: "_blank", rel: "noopener"
+        end
       end
     end
 
@@ -186,8 +191,11 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
   show do # rubocop:disable Metrics/BlockLength
     attributes_table do # rubocop:disable Metrics/BlockLength
       row "Nom de fichier" do
-        if resource.file
-          link_to resource.filename, view_file_admin_quote_file_path(resource.file, format: resource.file.extension),
+        if resource.file.security_scan_good == false
+          "#{resource.file.filename} (⚠ virus)"
+        else
+          link_to resource.file.filename,
+                  view_file_admin_quote_file_path(resource.file, format: resource.file.extension),
                   target: "_blank", rel: "noopener"
         end
       end
