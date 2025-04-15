@@ -34,10 +34,10 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
     # Overwrite "includes :file, :feedbacks" to not load File contents
     def scoped_collection
       super.eager_load(:file, :feedbacks)
-           .select((
+           .select(*(
              ["#{QuoteCheck.table_name}.*", "#{QuoteCheckFeedback.table_name}.*"] +
              (QuoteFile.column_names - ["content"]).map { "#{QuoteFile.table_name}.#{it}" }
-           ).join(", "))
+           ))
     end
 
     # rubocop:disable Metrics/AbcSize

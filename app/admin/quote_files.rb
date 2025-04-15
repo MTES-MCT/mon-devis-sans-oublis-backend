@@ -6,6 +6,12 @@ ActiveAdmin.register QuoteFile do # rubocop:disable Metrics/BlockLength
   config.filters = false
   config.sort_order = "created_at_desc"
 
+  controller do
+    def scoped_collection
+      super.select(*(QuoteFile.column_names - ["content"]))
+    end
+  end
+
   member_action :view_file, method: :get do
     quote_file = QuoteFile.find(params[:id])
 
@@ -38,9 +44,9 @@ ActiveAdmin.register QuoteFile do # rubocop:disable Metrics/BlockLength
     end
     column :content_type
     column :security_scan_good do
-      return if it.security_scan_good.nil?
-
-      it.security_scan_good ? "Oui" : "Non"
+      unless it.security_scan_good.nil?
+        it.security_scan_good ? "Oui" : "Non"
+      end
     end
     column :created_at
 
@@ -82,9 +88,9 @@ ActiveAdmin.register QuoteFile do # rubocop:disable Metrics/BlockLength
       end
       row :content_type
       row :security_scan_good do
-        return if it.security_scan_good.nil?
-
-        it.security_scan_good ? "Oui" : "Non"
+        unless it.security_scan_good.nil?
+          it.security_scan_good ? "Oui" : "Non"
+        end
       end
       row :created_at
 
