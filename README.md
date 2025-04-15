@@ -22,7 +22,8 @@ composants DSFR](https://github.com/betagouv/dsfr-view-components)
 * RSpec comme framework de tests ;
 * Rswag comme outil de documentation au format Swagger/ OpenAPI de l'API à travers des tests ;
 * Rubocop (RSpec et Rails) pour le linting ;
-* Docker pour avoir un environnement de développement.
+* Docker pour avoir un environnement de développement ;
+* ClamAV pour scanner les fichiers déposés.
 
 ## Moteur et fonctionnement interne / Architecture
 

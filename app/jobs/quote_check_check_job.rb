@@ -6,6 +6,7 @@ class QuoteCheckCheckJob < ApplicationJob
 
   def perform(quote_check_id, ocr: nil, qa_llm: nil)
     quote_check = QuoteCheck.find(quote_check_id)
+    return unless quote_check
 
     ocr ||= quote_check.ocr
     qa_llm ||= quote_check.qa_llm

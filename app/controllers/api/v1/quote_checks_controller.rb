@@ -30,6 +30,7 @@ module Api
         )
         @quote_check = quote_check_service.quote_check
 
+        QuoteFileSecurityScanJob.perform_later(@quote_check.file.id)
         QuoteCheckCheckJob.perform_later(@quote_check.id)
 
         QuoteCheckMailer.created(@quote_check).deliver_later

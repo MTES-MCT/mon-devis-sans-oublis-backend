@@ -25,14 +25,23 @@ ActiveAdmin.register QuoteFile do # rubocop:disable Metrics/BlockLength
               disposition: "inline"
   end
 
-  index do
+  index do # rubocop:disable Metrics/BlockLength
     id_column
 
     column :filename do
-      link_to it.filename, view_file_admin_quote_file_path(it, format: it.extension),
-              target: "_blank", rel: "noopener"
+      if it.security_scan_good == false
+        "#{it.filename} (⚠ virus)"
+      else
+        link_to it.filename, view_file_admin_quote_file_path(it, format: it.extension),
+                target: "_blank", rel: "noopener"
+      end
     end
     column :content_type
+    column :security_scan_good do
+      return if it.security_scan_good.nil?
+
+      it.security_scan_good ? "Oui" : "Non"
+    end
     column :created_at
 
     column "Nombre d'images de pages (si PDF)" do |quote_file|
@@ -52,20 +61,31 @@ ActiveAdmin.register QuoteFile do # rubocop:disable Metrics/BlockLength
     end
 
     actions defaults: true do
-      link_to "Voir le fichier", view_file_admin_quote_file_path(it, format: it.extension),
-              class: "button", target: "_blank", rel: "noopener"
+      unless it.security_scan_good == false
+        link_to it.filename, view_file_admin_quote_file_path(it, format: it.extension),
+                target: "_blank", rel: "noopener"
+      end
     end
   end
 
   show do # rubocop:disable Metrics/BlockLength
-    attributes_table do
+    attributes_table do # rubocop:disable Metrics/BlockLength
       row :id
 
       row :filename do
-        link_to it.filename, view_file_admin_quote_file_path(it, format: it.extension),
-                target: "_blank", rel: "noopener"
+        if it.security_scan_good == false
+          "#{it.filename} (⚠ virus)"
+        else
+          link_to it.filename, view_file_admin_quote_file_path(it, format: it.extension),
+                  target: "_blank", rel: "noopener"
+        end
       end
       row :content_type
+      row :security_scan_good do
+        return if it.security_scan_good.nil?
+
+        it.security_scan_good ? "Oui" : "Non"
+      end
       row :created_at
 
       row "Nombre d'images de pages (si PDF)" do |quote_file|
