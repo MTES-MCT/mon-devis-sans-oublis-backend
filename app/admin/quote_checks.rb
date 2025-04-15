@@ -18,7 +18,6 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
                 :aides, :gestes, # Virtual attributes
                 :ocr, :qa_llm # Check params
 
-  includes :file, :feedbacks
 
   filter :file_filename, as: :string
   filter :created_at, as: :date_range
@@ -33,6 +32,15 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
   scope "devis avec corrections", :with_edits
 
   controller do # rubocop:disable Metrics/BlockLength
+    # Overwrite "includes :file, :feedbacks" to not load File contents
+    def scoped_collection
+      super.eager_load(:file, :feedbacks)
+           .select((
+             ["#{QuoteCheck.table_name}.*", "#{QuoteCheckFeedback.table_name}.*"] +
+             (QuoteFile.column_names - ["content"]).map { "#{QuoteFile.table_name}.#{it}" }
+           ).join(", "))
+    end
+
     # rubocop:disable Metrics/AbcSize
     def create # rubocop:disable Metrics/MethodLength
       upload_file = new_quote_check_params[:file]
