@@ -18,7 +18,6 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
                 :aides, :gestes, # Virtual attributes
                 :ocr, :qa_llm # Check params
 
-
   filter :file_filename, as: :string
   filter :created_at, as: :date_range
   filter :status, as: :select, collection: QuoteCheck::STATUSES

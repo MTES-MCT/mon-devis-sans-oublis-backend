@@ -4,10 +4,9 @@ inherit_gem:
   rswag-specs: .rubocop_rspec_alias_config.yml
 
 plugins:
-  - rubocop-rspec
-  - rubocop-rails
-require:
   - rubocop-factory_bot
+  - rubocop-rails
+  - rubocop-rspec
   - rubocop-rspec_rails
 
 AllCops:
