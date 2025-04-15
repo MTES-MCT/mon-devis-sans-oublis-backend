@@ -2,12 +2,14 @@ FROM ruby:3.4-slim
 
 EXPOSE 3000
 
+COPY Aptfile /app/Aptfile
+
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install --no-install-recommends -y \
         build-essential git \
         libpq-dev libyaml-dev \
-        nodejs npm \
-        tesseract-ocr tesseract-ocr-fra libtesseract-dev imagemagick poppler-utils ghostscript && \
+        nodejs npm && \
+    xargs -a /app/Aptfile apt-get install --no-install-recommends -y && \
         rm -rf /var/lib/apt/lists/*
 
 # 🛠️ Fix ImageMagick Security Policy for PDFs
