@@ -1,0 +1,78 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.mistral.ai/v1/ocr
+    body:
+      encoding: UTF-8
+      string: '{"model":"mistral-ocr-latest","document":{"type":"image_url","image_url":"https://59bf-2a01-cb16-21-cc46-38db-e535-3e24-2a4.ngrok-free.app/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6ImE3ODkwYzE0LTEwYWYtNDQyZS05MDk3LThhYjEzNzVlNTlmMSIsImV4cCI6IjIwMjUtMDQtMTZUMTE6MjM6MjYuMTYyWiIsInB1ciI6ImJsb2JfaWQifX0=--9458b35f515cfd90712cf10431bc9cc5e9d017ba/Devis_test.png"}}'
+    headers:
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <MISTRAL_API_KEY>
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - api.mistral.ai
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Wed, 16 Apr 2025 11:14:22 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Ratelimitbysize-Limit-Minute:
+      - '2000000'
+      X-Ratelimitbysize-Limit-Month:
+      - '10000000000'
+      Ratelimitbysize-Reset:
+      - '40'
+      Ratelimitbysize-Query-Cost:
+      - '0'
+      Ratelimitbysize-Limit:
+      - '2000000'
+      Ratelimitbysize-Remaining:
+      - '2000000'
+      X-Ratelimitbysize-Remaining-Month:
+      - '9971751790'
+      X-Ratelimitbysize-Remaining-Minute:
+      - '2000000'
+      X-Envoy-Upstream-Service-Time:
+      - '1480'
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Kong-Upstream-Latency:
+      - '1481'
+      X-Kong-Proxy-Latency:
+      - '9'
+      X-Kong-Request-Id:
+      - 492c3a32557d6813a5cee71fcb189a31
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=D6fb2sW88aJDb20YcFumti6LI9BMyvU89yof7VB2G6c-1744802062-1.0.1.1-LL3TcH4TmwWZjBUj5WFknQLiW9r7wPHgevTlqXOJ0oDK8mCFlw_QnFSWTNLDHh9bqY2ORtYseEVO4W.0BKdHAz_lXQEekNYGemViTBijmuk;
+        path=/; expires=Wed, 16-Apr-25 11:44:22 GMT; domain=.mistral.ai; HttpOnly;
+        Secure; SameSite=None
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 931342301922872b-MRS
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        eyJwYWdlcyI6W3siaW5kZXgiOjAsIm1hcmtkb3duIjoiRFVQT05EIE1hcnRpblxuMTIzIHJ1ZSBkZSBsJ8OpY2hpcXVpZXJcbjc1MDA4IFBhcmlzXG4wMTIzNDU2Nzg5XG5cbkVudHJlcHJpc2UgUsOpbm92XG40NTYgcnVlIGRlcyBDZXJpc2VzXG4wNjMwMCBOaWNlXG4wMjM0NTY3ODkwXG5cblBvbXBlIMOgIGNoYWxldXIgUMOgQyAkMTAwMCDigqwkXG5cblJHRSBuLiA6IEUxMjM0NTZcblRWQSBpbnRyYSBGUjg2NTA0MzIxMjM0IC0gU0lSRVQgMTIzNDU2Nzg5MDAwMDAiLCJpbWFnZXMiOltdLCJkaW1lbnNpb25zIjp7ImRwaSI6MjAwLCJoZWlnaHQiOjUwNiwid2lkdGgiOjYzNn19XSwibW9kZWwiOiJtaXN0cmFsLW9jci0yNTAzLWNvbXBsZXRpb24iLCJ1c2FnZV9pbmZvIjp7InBhZ2VzX3Byb2Nlc3NlZCI6MSwiZG9jX3NpemVfYnl0ZXMiOjQ1OTM1fX0=
+  recorded_at: Wed, 16 Apr 2025 11:14:22 GMT
+recorded_with: VCR 6.3.1

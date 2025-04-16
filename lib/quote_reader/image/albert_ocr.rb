@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "faraday"
+require "faraday/multipart"
 require "json"
 require "net/http"
 require "uri"
@@ -23,58 +25,16 @@ module QuoteReader
       end
 
       # Using Albert OCR model
-      # rubocop:disable Metrics/AbcSize
-      # rubocop:disable Metrics/CyclomaticComplexity
-      # rubocop:disable Metrics/MethodLength
-      # rubocop:disable Metrics/PerceivedComplexity
       def extract_text_from_image(model: nil)
         @model = model if model
 
-        uri = URI("#{HOST}/chat/completions")
-        body = {
-          model: @model,
-          messages: [
-            { role: "system", content: "retranscrit le fichier au format texte" },
-            { role: "user", content: [
-              { type: "text", text: "donnes-moi la transcription complète" },
-              { type: "image_url",
-                # TODO: sending full file content in Base64 is not working
-                # image_url: "data:#{content_type};base64,#{Base64.encode64(content)}"
-                image_url: file_image_url }
-            ] }
-          ],
-          temperature: 0.15
-        }
-
-        http = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true)
-        http.read_timeout = 120 # seconds
-        request = Net::HTTP::Post.new(uri, headers)
-        request.body = body.to_json
-        response = http.request(request)
-        raise TimeoutError if response.code == "504"
-
-        # Auto switch model if not found
-        if response.code == "404" && model_fallback
-          backup_model = (self.class.sort_models(
-            models.filter { it.fetch("type") == "text-generation" }
-                  .map { it.fetch("id") }
-          ) - [model].compact).first
-          return chat_completion(text, model: backup_model) if backup_model
-        end
-        raise ResultError, "Error: #{response.code} - #{response.message}" unless response.is_a?(Net::HTTPSuccess)
-
-        @result = JSON.parse(response.body)
-        content = result.dig("choices", 0, "message", "content")
+        content = albert_ocr(model:)
         raise ResultError, "Content empty" unless content
 
         @pages_text = @text = content
       rescue Net::ReadTimeout => e
         raise TimeoutError, e
       end
-      # rubocop:enable Metrics/PerceivedComplexity
-      # rubocop:enable Metrics/MethodLength
-      # rubocop:enable Metrics/CyclomaticComplexity
-      # rubocop:enable Metrics/AbcSize
 
       def ocr
         "AlbertOcr"
@@ -92,6 +52,77 @@ module QuoteReader
           "Authorization" => "Bearer #{@api_key}"
         }
       end
+
+      # rubocop:disable Metrics/AbcSize
+      def albert_chat(model: nil) # rubocop:disable Metrics/MethodLength
+        # LLM Chat way
+
+        uri = URI("#{HOST}/chat/completions")
+        body = {
+          model:,
+          messages: [
+            { role: "system", content: "retranscrit le fichier au format texte" },
+            { role: "user", content: [
+              { type: "text", text: "donnes-moi la transcription complète" },
+              { type: "image_url",
+                # TODO: sending full file content in Base64 is not working
+                # image_url: "data:#{content_type};base64,#{Base64.encode64(content)}"
+                image_url: file_image_url }
+            ] }
+          ]
+        }
+
+        http = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true)
+        http.read_timeout = 120 # seconds
+        request = Net::HTTP::Post.new(uri, headers)
+        request.body = body.to_json
+        response = http.request(request)
+        raise TimeoutError if response.status == "504"
+
+        # Auto switch model if not found
+        if response.code == "404" && model_fallback
+          backup_model = (self.class.sort_models(
+            models.filter { it.fetch("type") == "text-generation" }
+                  .map { it.fetch("id") }
+          ) - [model].compact).first
+          return chat_completion(text, model: backup_model) if backup_model
+        end
+        raise ResultError, "Error: #{response.code} - #{response.message}" unless response.is_a?(Net::HTTPSuccess)
+
+        @result = JSON.parse(response.body)
+        result.dig("choices", 0, "message", "content")
+      end
+      # rubocop:enable Metrics/AbcSize
+
+      # Packaged way
+      # See documentation https://albert.api.etalab.gouv.fr/documentation#tag/Ocr/operation/ocr_v1_ocr_beta_post
+      # Currently ONLY PDF
+      # rubocop:disable Metrics/AbcSize
+      def albert_ocr(model: nil) # rubocop:disable Metrics/MethodLength
+        connection = Faraday.new(url: "#{HOST}/ocr-beta", headers:) do |f|
+          f.request :multipart
+          f.request :url_encoded
+          f.adapter Faraday.default_adapter
+        end
+
+        io = StringIO.new(quote_file.content)
+        payload = {
+          file: Faraday::Multipart::FilePart.new(io, content_type, quote_file.filename),
+          model:
+        }
+
+        response = connection.post("/ocr-beta", payload).body
+        @result = JSON.parse(response.body)
+
+        if sponse.status == 400 && @result["detail"]&.include?(/file must be/i)
+          raise QuoteReader::UnsupportedFileType, @result.fetch("detail")
+        end
+
+        result.fetch("data").filter_map do
+          Llms::Base.extract_markdown(it.fetch("text").replace("Aucun texte détecté", ""))
+        end.join("\n\n\n")
+      end
+      # rubocop:enable Metrics/AbcSize
     end
   end
 end

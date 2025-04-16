@@ -79,6 +79,10 @@ module Llms
       text[/(\{.+\})/im, 1] if text&.match?(/```jsx\n/i)
     end
 
+    def self.extract_markdown(text)
+      text[/```markdown(.+)```/im, 1]&.strip if text&.match?(/```markdown\n/i)
+    end
+
     def self.include_null_bytes?(text)
       text&.gsub("\x00", "")
     end
