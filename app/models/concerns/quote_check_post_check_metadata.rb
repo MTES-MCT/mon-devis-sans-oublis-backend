@@ -5,10 +5,11 @@ module QuoteCheckPostCheckMetadata
   extend ActiveSupport::Concern
 
   included do
+    delegate :force_ocr, to: :file, allow_nil: true
     delegate :ocr, to: :file, allow_nil: true
     delegate :ocrable?, to: :file, allow_nil: true
 
-    attr_writer :ocr, :qa_llm
+    attr_writer :force_ocr, :ocr, :qa_llm
 
     STATUSES = %w[pending valid invalid].freeze # rubocop:disable Lint/ConstantDefinitionInBlock
 

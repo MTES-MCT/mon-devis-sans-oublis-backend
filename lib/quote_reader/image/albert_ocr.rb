@@ -17,6 +17,7 @@ module QuoteReader
 
       def initialize(content, content_type, quote_file: nil, model: DEFAULT_MODEL)
         super(content, content_type, quote_file:)
+        @api_key = ENV.fetch("ALBERT_API_KEY")
         @model = model
       end
 
@@ -41,10 +42,6 @@ module QuoteReader
       end
 
       private
-
-      def api_key
-        ENV.fetch("ALBERT_API_KEY")
-      end
 
       def headers
         {
@@ -99,7 +96,7 @@ module QuoteReader
       # Currently ONLY PDF
       # rubocop:disable Metrics/AbcSize
       def albert_ocr(model: nil) # rubocop:disable Metrics/MethodLength
-        connection = Faraday.new(url: "#{HOST}/ocr-beta", headers:) do |f|
+        connection = Faraday.new(url: HOST, headers: headers.slice("Authorization")) do |f|
           f.request :multipart
           f.request :url_encoded
           f.adapter Faraday.default_adapter
@@ -110,16 +107,15 @@ module QuoteReader
           file: Faraday::Multipart::FilePart.new(io, content_type, quote_file.filename),
           model:
         }
-
-        response = connection.post("/ocr-beta", payload).body
+        response = connection.post("/v1/ocr-beta", payload)
         @result = JSON.parse(response.body)
 
-        if sponse.status == 400 && @result["detail"]&.include?(/file must be/i)
+        if response.status == 400 && @result["detail"]&.include?(/file must be/i)
           raise QuoteReader::UnsupportedFileType, @result.fetch("detail")
         end
 
         result.fetch("data").filter_map do
-          Llms::Base.extract_markdown(it.fetch("text").replace("Aucun texte détecté", ""))
+          Llms::Base.extract_markdown(it.fetch("text").gsub("Aucun texte détecté", ""))
         end.join("\n\n\n")
       end
       # rubocop:enable Metrics/AbcSize
