@@ -55,6 +55,30 @@ RSpec.describe Llms::Base, type: :service do
     end
   end
 
+  describe ".extract_markdown" do
+    let(:text) do
+      <<~TEXT
+        ```markdown\n# SARL...\n```
+      TEXT
+    end
+
+    it "returns a text" do
+      expect(described_class.extract_markdown(text)).to eq("# SARL...")
+    end
+
+    context "with null result" do
+      let(:text) do
+        <<~TEXT
+          null
+        TEXT
+      end
+
+      it "returns nil" do
+        expect(described_class.extract_json(text)).to be_nil
+      end
+    end
+  end
+
   describe ".extract_numbered_list" do
     context "when the text is made of one liners" do
       let(:text) do
