@@ -17,7 +17,7 @@ module QuoteReader
                 :qa_attributes, :qa_result, :qa_version,
                 :read_attributes
 
-    DEFAULT_OCR = "Tesseract"
+    DEFAULT_OCR = "AlbertOcr"
     VERSION = "0.0.1"
 
     def initialize(content, content_type, quote_file: nil)
