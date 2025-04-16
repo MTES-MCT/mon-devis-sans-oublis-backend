@@ -68,6 +68,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
         QuoteFileSecurityScanJob.perform_later(@quote_check.file.id)
         QuoteCheckCheckJob.perform_later(
           @quote_check.id,
+          force_ocr: ActiveModel::Type::Boolean.new.cast(new_quote_check_params[:force_ocr]),
           ocr: new_quote_check_params[:ocr],
           qa_llm: new_quote_check_params[:qa_llm]
         )
@@ -104,7 +105,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
     def new_quote_check_params
       params.require(:quote_check).permit(
         :file, :parent_id, :profile,
-        :ocr, :qa_llm, # Check params
+        :force_ocr, :ocr, :qa_llm, # Check params
         aides: [], gestes: [] # Virtual attributes
       )
     end
@@ -177,6 +178,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
     column "Date édition", &:edited_at
 
     column "Persona", :profile
+    column :force_ocr
     column :ocr
     column :qa_llm
     column "Nb tokens" do
@@ -213,6 +215,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
 
           row :status, lael: "Statut"
           row :profile, label: "Persona"
+          row :force_ocr
           row :ocr
           row :qa_llm
           row :tokens_count, "Nombre de tokens" do
@@ -541,6 +544,11 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
         end
 
         hr
+
+        f.input :force_ocr,
+                as: :boolean,
+                label: "Forcer l'OCR",
+                hint: "Forcer l'OCR même si le fichier est déjà PDF"
 
         f.input :ocr,
                 as: :select,
