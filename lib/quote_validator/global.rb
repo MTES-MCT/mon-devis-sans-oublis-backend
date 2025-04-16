@@ -311,7 +311,7 @@ module QuoteValidator
           "geste_inconnu"
         end
 
-        validate_prix_geste(geste) if geste_reconnu
+        # validate_prix_geste(geste) if geste_reconnu
       end
     end
     # rubocop:enable Metrics/PerceivedComplexity
