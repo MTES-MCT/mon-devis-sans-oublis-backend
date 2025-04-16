@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register QuoteFile do # rubocop:disable Metrics/BlockLength
+  config.per_page = 10
+
   actions :index, :show, :view_file
 
   config.filters = false

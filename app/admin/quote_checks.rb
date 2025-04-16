@@ -9,6 +9,8 @@ end
 
 # rubocop:disable Rails/I18nLocaleTexts
 ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
+  config.per_page = 10
+
   actions :index, :show, :edit, :update, :new, :create
 
   permit_params :expected_validation_errors,
@@ -188,74 +190,111 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
     end
   end
 
-  show do # rubocop:disable Metrics/BlockLength
-    attributes_table do # rubocop:disable Metrics/BlockLength
-      row "Nom de fichier" do
-        if resource.file.security_scan_good == false
-          "#{resource.file.filename} (⚠ virus)"
-        else
-          link_to resource.file.filename,
-                  view_file_admin_quote_file_path(resource.file, format: resource.file.extension),
-                  target: "_blank", rel: "noopener"
+  show title: proc { # rubocop:disable Metrics/BlockLength
+    link_to("Devis ##{resource.id}", resource.frontend_webapp_url, target: "_blank", rel: "noopener")
+  } do
+    columns do # rubocop:disable Metrics/BlockLength
+      column do # rubocop:disable Metrics/BlockLength
+        attributes_table do # rubocop:disable Metrics/BlockLength
+          row "Nom de fichier" do
+            if resource.file.security_scan_good == false
+              "#{resource.file.filename} (⚠ virus)"
+            else
+              link_to resource.file.filename,
+                      view_file_admin_quote_file_path(resource.file, format: resource.file.extension),
+                      target: "_blank", rel: "noopener"
+            end
+          end
+
+          row "Date de soumission" do
+            resource.started_at
+          end
+
+          row :status, lael: "Statut"
+          row :profile, label: "Persona"
+          row :ocr
+          row :qa_llm
+          row :tokens_count, "Nombre de tokens" do
+            number_with_delimiter(it.tokens_count, delimiter: " ")
+          end
+          row "temps traitement (de soumission à fin d'analyse auto)" do
+            "#{resource.processing_time.ceil(1)}s" if resource.processing_time
+          end
+
+          row "Gestes demandés" do
+            it.metadata&.dig("gestes")&.join("\n")
+          end
+
+          row "Gestes détectés" do
+            it.read_attributes&.dig("gestes")&.map { it["type"] }&.uniq&.join("\n")
+          end
+
+          row "Aides demandées" do
+            it.metadata&.dig("aides")&.join("\n")
+          end
+
+          row "Nombre d'erreurs" do
+            it.validation_errors&.count
+          end
+
+          row "Correction" do
+            link_to "Devis #{it.id}", it.frontend_webapp_url,
+                    target: "_blank", rel: "noopener"
+          end
+
+          row "Présence de feedback ?" do
+            it.feedbacks.any?
+          end
+
+          row "Présence de commentaire ?", &:commented?
+
+          row "Date de dernière édition", &:edited_at
+
+          row :comment, label: "Commentaire global"
+
+          row "version application" do
+            if resource.application_version && resource.application_version != "unknown"
+              link_to resource.application_version,
+                      "https://github.com/betagouv/mon-devis-sans-oublis-backend/tree/#{resource.application_version}",
+                      target: "_blank", rel: "noopener"
+            end
+          end
+
+          row "expected_validation_errors" do
+            pre JSON.pretty_generate(resource.expected_validation_errors) if resource.expected_validation_errors
+          end
         end
       end
 
-      row "Date de soumission" do
-        resource.started_at
-      end
-
-      row :status, lael: "Statut"
-      row :profile, label: "Persona"
-      row :ocr
-      row :qa_llm
-      row :tokens_count, "Nombre de tokens" do
-        number_with_delimiter(it.tokens_count, delimiter: " ")
-      end
-      row "temps traitement (de soumission à fin d'analyse auto)" do
-        "#{resource.processing_time.ceil(1)}s" if resource.processing_time
-      end
-
-      row "Gestes demandés" do
-        it.metadata&.dig("gestes")&.join("\n")
-      end
-
-      row "Gestes détectés" do
-        it.read_attributes&.dig("gestes")&.map { it["type"] }&.uniq&.join("\n")
-      end
-
-      row "Aides demandées" do
-        it.metadata&.dig("aides")&.join("\n")
-      end
-
-      row "Nombre d'erreurs" do
-        it.validation_errors&.count
-      end
-
-      row "Correction" do
-        link_to "Devis #{it.id}", it.frontend_webapp_url,
-                target: "_blank", rel: "noopener"
-      end
-
-      row "Présence de feedback ?" do
-        it.feedbacks.any?
-      end
-
-      row "Présence de commentaire ?", &:commented?
-
-      row "Date de dernière édition", &:edited_at
-
-      row :comment, label: "Commentaire global"
-
-      row "version application" do
-        if resource.application_version && resource.application_version != "unknown"
-          link_to resource.application_version,
-                  "https://github.com/betagouv/mon-devis-sans-oublis-backend/tree/#{resource.application_version}",
-                  target: "_blank", rel: "noopener"
+      column do
+        panel "Process théorique" do
+          content_tag(:table) do
+            [
+              content_tag(:tr) do
+                content_tag(:td, "1.") +
+                  content_tag(
+                    :td,
+                    "Texte brut (en // détectection virus via Clam AV pour ne pas afficher dans BO si risque)"
+                  )
+              end,
+              content_tag(:tr) do
+                content_tag(:td, "2.") + content_tag(:td, "Données privées via méthode naïve hors ligne")
+              end,
+              content_tag(:tr) do
+                content_tag(:td, "3.") + content_tag(:td, "Données privées et Attributs via par Albert (Gouv)")
+              end,
+              content_tag(:tr) do
+                content_tag(:td, "4.") + content_tag(:td, "Texte Anonymisé")
+              end,
+              content_tag(:tr) do
+                content_tag(:td, "5.") + content_tag(:td, "Attributs via par Mistral")
+              end,
+              content_tag(:tr) do
+                content_tag(:td, "6.") + content_tag(:td, "Retour API pour frontend")
+              end
+            ].join.html_safe # rubocop:disable Rails/OutputSafety
+          end
         end
-      end
-
-      row "expected_validation_errors" do
-        pre JSON.pretty_generate(resource.expected_validation_errors) if resource.expected_validation_errors
       end
     end
 
