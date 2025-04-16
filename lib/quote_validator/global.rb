@@ -224,7 +224,6 @@ module QuoteValidator
     # rubocop:disable Metrics/AbcSize
     # rubocop:disable Metrics/CyclomaticComplexity
     # rubocop:disable Metrics/MethodLength
-    # rubocop:disable Metrics/PerceivedComplexity
     def validate_works
       isolation = Works::Isolation.new(quote, quote_id:, error_details:)
       menuiserie = Works::Menuiserie.new(quote, quote_id:, error_details:)
@@ -314,7 +313,6 @@ module QuoteValidator
         # validate_prix_geste(geste) if geste_reconnu
       end
     end
-    # rubocop:enable Metrics/PerceivedComplexity
     # rubocop:enable Metrics/MethodLength
     # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/AbcSize
