@@ -10,16 +10,12 @@ ActiveAdmin.register QuoteFile do # rubocop:disable Metrics/BlockLength
 
   controller do
     def scoped_collection
-      if params[:action] == "index"
-        super.select(*(QuoteFile.column_names - ["content"]))
-      else
-        super
-      end
+      super.select(*(QuoteFile.column_names - ["data imagified_pages"]))
     end
   end
 
   member_action :view_file, method: :get do
-    quote_file = QuoteFile.find(params[:id])
+    quote_file = QuoteFile.select(:filename, :content, :content_type).find(params[:id])
 
     send_data quote_file.content,
               filename: quote_file.filename,
@@ -28,7 +24,7 @@ ActiveAdmin.register QuoteFile do # rubocop:disable Metrics/BlockLength
   end
 
   member_action :view_imagified_page, method: :get do
-    quote_file = QuoteFile.find(params[:id])
+    quote_file = QuoteFile.select(:filename, :imagified_pages).find(params[:id])
     imagified_page = quote_file.imagified_pages[params[:page].to_i]
 
     send_data imagified_page,
