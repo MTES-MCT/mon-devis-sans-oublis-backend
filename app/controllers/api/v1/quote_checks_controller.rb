@@ -55,7 +55,14 @@ module Api
       protected
 
       def quote_check
-        @quote_check ||= QuoteCheck.find(params[:id])
+        @quote_check ||= QuoteCheck
+                         .select(*(QuoteCheck.column_names - %w[
+                           text anonymised_text
+                           file_text file_markdown
+                         ]))
+                         .eager_load(:file)
+                         .select("#{QuoteFile.table_name}.filename")
+                         .find(params[:id])
       end
 
       def quote_check_json(quote_check_provided = nil)

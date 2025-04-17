@@ -33,21 +33,23 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
   scope "devis avec corrections", :with_edits
 
   controller do # rubocop:disable Metrics/BlockLength
-    # Overwrite "includes :file, :feedbacks" to not load File contents
+    # Overwrite "includes :file, :feedbacks" to not load full File data
     def scoped_collection # rubocop:disable Metrics/MethodLength
-      if params[:action] == "index"
-        super.eager_load(:file, :feedbacks)
-             .select(
-               *(QuoteCheck.column_names - %w[
-                 text anonymised_text
-                 file_text file_markdown
-               ]).map { "#{QuoteCheck.table_name}.#{it}" },
-               "#{QuoteCheckFeedback.table_name}.id AS feedback_id",
-               *(QuoteFile.column_names - %w[id content]).map { "#{QuoteFile.table_name}.#{it}" }
-             )
-      else
-        super.eager_load(:file, :feedbacks)
-      end
+      hidable_fields = if params[:action] == "index"
+                         %w[
+                           text anonymised_text
+                           file_text file_markdown
+                         ]
+                       else
+                         []
+                       end
+
+      super.eager_load(:file, :feedbacks)
+           .select(
+             *(QuoteCheck.column_names - (hidable_fields || [])).map { "#{QuoteCheck.table_name}.#{it}" },
+             "#{QuoteCheckFeedback.table_name}.id AS feedback_id",
+             *(QuoteFile.column_names - %w[id data imagified_pages]).map { "#{QuoteFile.table_name}.#{it}" }
+           )
     end
 
     # rubocop:disable Metrics/AbcSize
