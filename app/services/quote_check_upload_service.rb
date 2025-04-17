@@ -4,12 +4,14 @@
 class QuoteCheckUploadService
   attr_reader :tempfile, :filename, :profile,
               :content_type, :metadata, :parent_id,
+              :file_text, :file_markdown,
               :quote_check
 
   # rubocop:disable Metrics/ParameterLists
   def initialize(
     tempfile, filename, profile,
-    content_type: nil, metadata: nil, parent_id: nil
+    content_type: nil, metadata: nil, parent_id: nil,
+    file_text: nil, file_markdown: nil
   )
     @tempfile = tempfile
     @filename = filename
@@ -18,6 +20,9 @@ class QuoteCheckUploadService
     @content_type = content_type
     @metadata = metadata
     @parent_id = parent_id
+
+    @file_text = file_text
+    @file_markdown = file_markdown
   end
   # rubocop:enable Metrics/ParameterLists
 
@@ -30,7 +35,10 @@ class QuoteCheckUploadService
       started_at: Time.current,
 
       metadata:,
-      parent_id:
+      parent_id:,
+
+      file_text:,
+      file_markdown:
     )
   end
 end

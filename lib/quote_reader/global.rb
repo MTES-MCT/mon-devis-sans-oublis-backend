@@ -66,8 +66,12 @@ module QuoteReader
 
     # rubocop:disable Metrics/AbcSize
     # rubocop:disable Metrics/MethodLength
-    def read(force_ocr: false, ocr: nil, qa_llm: nil)
-      @text = get_text(force_ocr:, ocr:)
+    def read(
+      force_ocr: false, ocr: nil, qa_llm: nil,
+      file_text: nil, file_markdown: nil
+    )
+      @text = file_markdown || file_text ||
+              get_text(force_ocr:, ocr:)
 
       naive_reader = NaiveText.new(text)
       @naive_attributes = naive_reader.read

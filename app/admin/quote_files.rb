@@ -10,7 +10,11 @@ ActiveAdmin.register QuoteFile do # rubocop:disable Metrics/BlockLength
 
   controller do
     def scoped_collection
-      super.select(*(QuoteFile.column_names - ["content"]))
+      if params[:action] == "index"
+        super.select(*(QuoteFile.column_names - ["content"]))
+      else
+        super
+      end
     end
   end
 
