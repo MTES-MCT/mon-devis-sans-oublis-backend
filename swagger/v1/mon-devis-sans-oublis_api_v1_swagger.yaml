@@ -296,6 +296,14 @@ paths:
                 file:
                   type: string
                   format: binary
+                file_text:
+                  type: string
+                  description: Texte brut du contenu du fichier
+                  nullable: true
+                file_markdown:
+                  type: string
+                  description: Représentation Markdown du contenu du fichier
+                  nullable: true
                 metadata:
                   "$ref": "#/components/schemas/quote_check_metadata"
                   nullable: true
@@ -625,7 +633,3 @@ servers:
   description: Staging server
 - url: https://api.mon-devis-sans-oublis.beta.gouv.fr/api/v1
   description: Production server
-- url: https://{defaultHost}
-  variables:
-    defaultHost:
-      default: localhost:3000

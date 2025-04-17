@@ -75,6 +75,22 @@ RSpec.describe "/api/v1/quote_checks" do
         expect(json.fetch("parent_id")).to eq(quote_check.id)
       end
     end
+
+    context "with file_text" do
+      let(:quote_check) { create(:quote_check) }
+      let(:quote_check_params) do
+        {
+          file: file,
+          profile: "artisan",
+          file_text: "Devis 12"
+        }
+      end
+
+      it "uses the file_text provided" do
+        post api_v1_quote_checks_url, params: quote_check_params, headers: basic_auth_header
+        expect(QuoteCheck.find(json.fetch("id")).text).to eq("Devis 12")
+      end
+    end
   end
 
   describe "GET /api/v1/quote_checks/:id" do

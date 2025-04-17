@@ -272,7 +272,7 @@ RSpec.configure do |config|
               }
             }
           }
-        end,
+        end || nil,
         { # example host
           url: "http#{Rails.env.development? ? '' : 's'}://{defaultHost}",
           variables: {
@@ -281,8 +281,11 @@ RSpec.configure do |config|
             }
           }
         }
-      ].compact.uniq { UriExtended.host_with_port(it[:url]) rescue it[:url] } # rubocop:disable Style/RescueModifier
-       .sort_by do |server| # rubocop:disable Layout/MultilineMethodCallIndentation
+      ].compact.uniq do
+        url = it.fetch(:url).gsub("{defaultHost}", it.dig(:variables, :defaultHost, :default) || "")
+        UriExtended.host_with_port(url)
+      end # rubocop:disable Style/MultilineBlockChain
+       .sort_by do |server|
          UriExtended.host_with_port(server[:url]) == Rails.application.config.application_host ? 0 : 1
        rescue URI::InvalidURIError
          1

@@ -9,6 +9,7 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
     tempfile_or_quote_check, filename = nil,
     profile = nil,
     content_type: nil, metadata: nil, parent_id: nil,
+    file_text: nil, file_markdown: nil,
     save: true
   )
     @quote_check = if tempfile_or_quote_check.is_a?(QuoteCheck)
@@ -16,6 +17,7 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
                    else
                      QuoteCheckUploadService.new(
                        tempfile_or_quote_check, filename, profile,
+                       file_text:, file_markdown:,
                        content_type:, metadata:, parent_id:
                      ).upload
                    end
@@ -89,7 +91,11 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
     QuoteFileImagifyPdfJob.perform_later(quote_check.file_id) # TODO: Move it to reader?
 
     begin
-      quote_reader.read(force_ocr:, ocr:, qa_llm:)
+      quote_reader.read(
+        force_ocr:, ocr:, qa_llm:,
+        file_text: quote_check.file_text,
+        file_markdown: quote_check.file_markdown
+      )
 
       unless quote_reader.text&.strip.presence
         add_error("file_reading_error",

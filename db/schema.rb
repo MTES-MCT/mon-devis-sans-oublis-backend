@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_16_145906) do
+ActiveRecord::Schema[7.2].define(version: 2025_04_17_084436) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -177,6 +177,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_16_145906) do
     t.text "comment"
     t.datetime "commented_at"
     t.datetime "validation_error_edited_at"
+    t.text "file_text"
+    t.text "file_markdown"
     t.index ["file_id"], name: "index_quote_checks_on_file_id"
     t.index ["parent_id"], name: "index_quote_checks_on_parent_id"
   end
@@ -192,7 +194,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_16_145906) do
     t.text "imagified_pages", array: true
     t.string "ocr"
     t.boolean "security_scan_good"
-    t.boolean "force_ocr", default: false, null: false
+    t.boolean "force_ocr", default: false
     t.index ["hexdigest", "filename"], name: "index_quote_files_on_hexdigest_and_filename", unique: true
   end
 

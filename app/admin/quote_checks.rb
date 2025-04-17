@@ -34,13 +34,20 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
 
   controller do # rubocop:disable Metrics/BlockLength
     # Overwrite "includes :file, :feedbacks" to not load File contents
-    def scoped_collection
-      super.eager_load(:file, :feedbacks)
-           .select(
-             "#{QuoteCheck.table_name}.*",
-             "#{QuoteCheckFeedback.table_name}.id AS feedback_id",
-             *(QuoteFile.column_names - %w[id content]).map { "#{QuoteFile.table_name}.#{it}" }
-           )
+    def scoped_collection # rubocop:disable Metrics/MethodLength
+      if params[:action] == "index"
+        super.eager_load(:file, :feedbacks)
+             .select(
+               *(QuoteCheck.column_names - %w[
+                 text anonymised_text
+                 file_text file_markdown
+               ]).map { "#{QuoteCheck.table_name}.#{it}" },
+               "#{QuoteCheckFeedback.table_name}.id AS feedback_id",
+               *(QuoteFile.column_names - %w[id content]).map { "#{QuoteFile.table_name}.#{it}" }
+             )
+      else
+        super.eager_load(:file, :feedbacks)
+      end
     end
 
     # rubocop:disable Metrics/AbcSize
@@ -60,7 +67,9 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
           aides: new_quote_check_params[:aides],
           gestes: new_quote_check_params[:gestes]
         ).metadata,
-        parent_id: new_quote_check_params[:parent_id]
+        parent_id: new_quote_check_params[:parent_id],
+        file_text: new_quote_check_params[:file_text],
+        file_markdown: new_quote_check_params[:file_markdown]
       )
 
       @quote_check = quote_check_service.quote_check
@@ -105,6 +114,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
     def new_quote_check_params
       params.require(:quote_check).permit(
         :file, :parent_id, :profile,
+        :file_text, :file_markdown,
         :force_ocr, :ocr, :qa_llm, # Check params
         aides: [], gestes: [] # Virtual attributes
       )
@@ -218,6 +228,8 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
           row :force_ocr
           row :ocr
           row :qa_llm
+          row :file_text
+          row :file_markdown
           row :tokens_count, "Nombre de tokens" do
             number_with_delimiter(it.tokens_count, delimiter: " ")
           end
@@ -570,6 +582,8 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
                           } ||
                           Rails.application.config.llms_configured.first
 
+        f.input :file_text, as: :text
+        f.input :file_markdown, as: :text
       end
 
       unless f.object.new_record?

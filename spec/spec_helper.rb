@@ -2,6 +2,7 @@
 
 require "factory_bot_rails"
 require "faker"
+require "rswag/specs"
 
 require_relative "support/api_helper"
 

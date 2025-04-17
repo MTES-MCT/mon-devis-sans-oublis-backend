@@ -47,6 +47,16 @@ describe "Devis API" do
             type: :string,
             format: :binary
           },
+          file_text: {
+            type: :string,
+            description: "Texte brut du contenu du fichier",
+            nullable: true
+          },
+          file_markdown: {
+            type: :string,
+            description: "Représentation Markdown du contenu du fichier",
+            nullable: true
+          },
           metadata: { "$ref" => "#/components/schemas/quote_check_metadata", nullable: true },
           profile: { "$ref" => "#/components/schemas/profile" },
           parent_id: { type: :string, nullable: true }
