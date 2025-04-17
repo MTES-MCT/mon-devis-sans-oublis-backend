@@ -45,6 +45,8 @@ ActiveAdmin.register QuoteFile do # rubocop:disable Metrics/BlockLength
       end
     end
     column :content_type
+    column :ocr
+    column :force_ocr
     column :security_scan_good do
       unless it.security_scan_good.nil?
         it.security_scan_good ? "Oui" : "Non"
@@ -89,6 +91,8 @@ ActiveAdmin.register QuoteFile do # rubocop:disable Metrics/BlockLength
         end
       end
       row :content_type
+      row :ocr
+      row :force_ocr
       row :security_scan_good do
         unless it.security_scan_good.nil?
           it.security_scan_good ? "Oui" : "Non"
