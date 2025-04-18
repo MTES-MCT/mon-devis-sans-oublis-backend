@@ -98,7 +98,7 @@ Et qu'il faut boucler sur l'appel /quote_check/:id pour récupérer le devis à 
 
         let(:file) { fixture_file_upload("quote_files/Devis_test.pdf") }
         # See https://github.com/rswag/rswag/issues/316
-        let(:Authorization) { basic_auth_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
+        let(:Authorization) { api_key_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
         let(:profile) { "artisan" }
         let(:metadata) { nil }
 
@@ -113,7 +113,7 @@ Et qu'il faut boucler sur l'appel /quote_check/:id pour récupérer le devis à 
         let(:profile) { nil }
         let(:metadata) { nil }
 
-        let(:Authorization) { basic_auth_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
+        let(:Authorization) { api_key_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
 
         run_test!
       end
@@ -125,7 +125,7 @@ Et qu'il faut boucler sur l'appel /quote_check/:id pour récupérer le devis à 
         let(:profile) { "blabla" }
         let(:metadata) { nil }
 
-        let(:Authorization) { basic_auth_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
+        let(:Authorization) { api_key_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
 
         run_test!
       end
@@ -137,7 +137,7 @@ Et qu'il faut boucler sur l'appel /quote_check/:id pour récupérer le devis à 
         let(:profile) { "artisan" }
         let(:metadata) { { toto: "tata " } }
 
-        let(:Authorization) { basic_auth_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
+        let(:Authorization) { api_key_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
 
         run_test!
       end
@@ -157,7 +157,7 @@ Et qu'il faut boucler sur l'appel /quote_check/:id pour récupérer le devis à 
 
         let(:id) { create(:quote_check).id }
 
-        let(:Authorization) { basic_auth_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
+        let(:Authorization) { api_key_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
 
         run_test!
       end
@@ -167,7 +167,7 @@ Et qu'il faut boucler sur l'appel /quote_check/:id pour récupérer le devis à 
 
         let(:id) { SecureRandom.uuid }
 
-        let(:Authorization) { basic_auth_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
+        let(:Authorization) { api_key_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
 
         run_test!
       end
@@ -193,7 +193,7 @@ Et qu'il faut boucler sur l'appel /quote_check/:id pour récupérer le devis à 
         let(:id) { create(:quote_check).id }
         let(:quote_check) { { comment: "test" } }
 
-        let(:Authorization) { basic_auth_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
+        let(:Authorization) { api_key_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
 
         run_test!
       end

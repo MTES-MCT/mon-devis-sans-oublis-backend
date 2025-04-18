@@ -38,7 +38,7 @@ describe "Devis API" do
         schema "$ref" => "#/components/schemas/quote_check_feedback"
 
         # See https://github.com/rswag/rswag/issues/316
-        let(:Authorization) { basic_auth_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
+        let(:Authorization) { api_key_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
 
         run_test!
       end
@@ -52,7 +52,7 @@ describe "Devis API" do
                                       .merge("comment" => nil)
         end
 
-        let(:Authorization) { basic_auth_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
+        let(:Authorization) { api_key_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
 
         run_test!
       end
