@@ -40,23 +40,23 @@ RSpec.describe "/api/v1/quote_checks" do
     end
 
     it "returns a successful response" do
-      post api_v1_quote_checks_url, params: quote_check_params, headers: basic_auth_header
+      post api_v1_quote_checks_url, params: quote_check_params, headers: api_key_header
       expect(response).to be_successful
     end
 
     it "returns a created response" do
-      post api_v1_quote_checks_url, params: quote_check_params, headers: basic_auth_header
+      post api_v1_quote_checks_url, params: quote_check_params, headers: api_key_header
       expect(response).to have_http_status(:created)
     end
 
     it "returns a pending treatment response" do
-      post api_v1_quote_checks_url, params: quote_check_params, headers: basic_auth_header
+      post api_v1_quote_checks_url, params: quote_check_params, headers: api_key_header
       expect(json.fetch("status")).to eq("pending")
     end
 
     it "creates a QuoteCheck" do
       expect do
-        post api_v1_quote_checks_url, params: quote_check_params, headers: basic_auth_header
+        post api_v1_quote_checks_url, params: quote_check_params, headers: api_key_header
       end.to change(QuoteCheck, :count).by(1)
     end
 
@@ -71,7 +71,7 @@ RSpec.describe "/api/v1/quote_checks" do
       end
 
       it "returns the parent_id" do
-        post api_v1_quote_checks_url, params: quote_check_params, headers: basic_auth_header
+        post api_v1_quote_checks_url, params: quote_check_params, headers: api_key_header
         expect(json.fetch("parent_id")).to eq(quote_check.id)
       end
     end
@@ -87,7 +87,7 @@ RSpec.describe "/api/v1/quote_checks" do
       end
 
       it "uses the file_text provided" do
-        post api_v1_quote_checks_url, params: quote_check_params, headers: basic_auth_header
+        post api_v1_quote_checks_url, params: quote_check_params, headers: api_key_header
         expect(QuoteCheck.find(json.fetch("id")).text).to eq("Devis 12")
       end
     end
@@ -103,7 +103,7 @@ RSpec.describe "/api/v1/quote_checks" do
 
     # rubocop:disable RSpec/MultipleExpectations
     it "renders a successful response" do # rubocop:disable RSpec/ExampleLength
-      get api_v1_quote_check_url(quote_check), as: :json, headers: basic_auth_header
+      get api_v1_quote_check_url(quote_check), as: :json, headers: api_key_header
       expect(response).to be_successful
       expect(json.fetch("status")).to eq("invalid")
       expect(json.fetch("error_details").first).to include({
@@ -119,7 +119,7 @@ RSpec.describe "/api/v1/quote_checks" do
 
       # rubocop:disable RSpec/MultipleExpectations
       it "returns a direct error response" do # rubocop:disable RSpec/ExampleLength
-        get api_v1_quote_check_url(quote_check), as: :json, headers: basic_auth_header
+        get api_v1_quote_check_url(quote_check), as: :json, headers: api_key_header
         expect(response).to be_successful
         expect(json.fetch("status")).to eq("invalid")
         expect(json.fetch("errors")).to include("file_reading_error")
@@ -142,7 +142,7 @@ RSpec.describe "/api/v1/quote_checks" do
     end
 
     before do
-      patch api_v1_quote_check_url(quote_check), params: quote_check_params, as: :json, headers: basic_auth_header
+      patch api_v1_quote_check_url(quote_check), params: quote_check_params, as: :json, headers: api_key_header
     end
 
     it "returns a successful response" do

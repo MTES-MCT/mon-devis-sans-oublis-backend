@@ -58,7 +58,7 @@ describe "Devis API" do
           schema "$ref" => "#/components/schemas/quote_check_feedback"
 
           # See https://github.com/rswag/rswag/issues/316
-          let(:Authorization) { basic_auth_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
+          let(:Authorization) { api_key_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
 
           run_test!
         end
@@ -68,7 +68,7 @@ describe "Devis API" do
 
           let(:quote_check_feedback) { build(:quote_check_feedback, :global).attributes.merge("rating" => nil) }
 
-          let(:Authorization) { basic_auth_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
+          let(:Authorization) { api_key_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
 
           run_test!
         end
@@ -83,7 +83,7 @@ describe "Devis API" do
           schema "$ref" => "#/components/schemas/quote_check_feedback"
 
           # See https://github.com/rswag/rswag/issues/316
-          let(:Authorization) { basic_auth_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
+          let(:Authorization) { api_key_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
 
           run_test!
         end
@@ -95,7 +95,7 @@ describe "Devis API" do
             build(:quote_check_feedback, :error_detail).attributes.merge("comment" => nil)
           end
 
-          let(:Authorization) { basic_auth_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
+          let(:Authorization) { api_key_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
 
           run_test!
         end

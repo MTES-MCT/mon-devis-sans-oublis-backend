@@ -37,7 +37,7 @@ describe "Error Details edition API" do
       let(:error_details_id) { quote_check.validation_error_details.first.fetch("id") }
 
       response "201", "détail d'erreur ré-ajouté" do
-        let(:Authorization) { basic_auth_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
+        let(:Authorization) { api_key_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
 
         run_test!
       end
@@ -68,7 +68,7 @@ describe "Error Details edition API" do
       let(:reason) { "doublon" }
 
       response "204", "détail d'erreur supprimé" do
-        let(:Authorization) { basic_auth_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
+        let(:Authorization) { api_key_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
 
         run_test!
       end
@@ -96,7 +96,7 @@ describe "Error Details edition API" do
       let(:error_details) { { comment: "test" } }
 
       response "200", "détail d'erreur mis à jour" do
-        let(:Authorization) { basic_auth_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
+        let(:Authorization) { api_key_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
 
         run_test!
       end
