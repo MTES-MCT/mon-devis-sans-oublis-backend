@@ -9,6 +9,7 @@ RSpec.describe Llms::Base, type: :service do
       expect(described_class.clean_value("**")).to be_nil
       expect(described_class.clean_value(" Non mentionné ")).to be_nil
       expect(described_class.clean_value("Non disponible")).to be_nil
+      expect(described_class.clean_value("non spécifié")).to be_nil
       expect(described_class.clean_value("Aucun IBAN n'est mentionné.")).to be_nil
       expect(described_class.clean_value("Aucun IBAN mentionné.")).to be_nil
       expect(described_class.clean_value("Aucun label mentionné")).to be_nil
