@@ -58,6 +58,8 @@ class StatsService
 
   def unique_visitors_count
     MatomoApi.new.value(method: "VisitsSummary.getUniqueVisitors") if MatomoApi.auto_configured?
+  rescue MatomoApi::TimeoutError
+    nil
   end
 
   private
