@@ -25,7 +25,7 @@ module Llms
           &.gsub(/^[\W\s]+$/i, "")
           &.gsub(/^\**\s*/i, "")
           &.gsub(/^Aucune?s?(?:\s+.+\s+)?(?: *mention(?:née?)?s?)?\.?(?:\s*.+)?$/i, "")
-          &.gsub(/\(?(?:Non (?:mention(?:née?)?s?|disponibles?)\.?|Aucune?s? .+ n'est mentionnée?s?\.?|Inconnue?s? \(pas de [^\)]+\))\)?\.?/i, "") # rubocop:disable Layout/LineLength
+          &.gsub(/\(?(?:Non (?:disponibles?|mention(?:née?)?s?|spécifiée?s?)\.?|Aucune?s? .+ n'est mentionnée?s?\.?|Inconnue?s? \(pas de [^\)]+\))\)?\.?/i, "") # rubocop:disable Layout/LineLength
           &.presence
       # rubocop:enable Style/SafeNavigationChainLength
     end
