@@ -65,13 +65,14 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
       quote_check_service = QuoteCheckService.new(
         upload_file.tempfile, upload_file.original_filename,
         new_quote_check_params[:profile],
+        file_text: new_quote_check_params[:file_text],
+        file_markdown: new_quote_check_params[:file_markdown],
         metadata: QuoteCheck.new(
           aides: new_quote_check_params[:aides],
           gestes: new_quote_check_params[:gestes]
         ).metadata,
         parent_id: new_quote_check_params[:parent_id],
-        file_text: new_quote_check_params[:file_text],
-        file_markdown: new_quote_check_params[:file_markdown]
+        source_name: "mdso_bo"
       )
 
       @quote_check = quote_check_service.quote_check
@@ -158,6 +159,8 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
 
     column "Date soumission", &:started_at
 
+    column "Source", :source_name
+
     column "Statut", :status
 
     column "Correction" do
@@ -225,6 +228,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
             resource.started_at
           end
 
+          row :source_name, lael: "Source"
           row :status, lael: "Statut"
           row :profile, label: "Persona"
           row :force_ocr

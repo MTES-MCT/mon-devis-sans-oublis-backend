@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_17_084436) do
+ActiveRecord::Schema[7.2].define(version: 2025_04_22_164814) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -179,8 +179,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_17_084436) do
     t.datetime "validation_error_edited_at"
     t.text "file_text"
     t.text "file_markdown"
+    t.string "source_name", default: "mdso"
     t.index ["file_id"], name: "index_quote_checks_on_file_id"
     t.index ["parent_id"], name: "index_quote_checks_on_parent_id"
+    t.index ["source_name"], name: "index_quote_checks_on_source_name"
   end
 
   create_table "quote_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -194,7 +196,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_17_084436) do
     t.text "imagified_pages", array: true
     t.string "ocr"
     t.boolean "security_scan_good"
-    t.boolean "force_ocr", default: false
+    t.boolean "force_ocr", default: false, null: false
     t.index ["hexdigest", "filename"], name: "index_quote_files_on_hexdigest_and_filename", unique: true
   end
 

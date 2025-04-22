@@ -113,6 +113,32 @@ paths:
               required:
               - file
               - profile
+  "/quote_checks/{id}":
+    get:
+      summary: Récupérer un Devis
+      tags:
+      - Devis
+      security:
+      - basic_auth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Devis trouvé
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/quote_check"
+        '404':
+          description: Devis non trouvé
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/api_error"
   "/stats":
     get:
       summary: Récupérer les stats

@@ -38,7 +38,7 @@ describe "Devis API", swagger_doc: "v1/#{Rails.application.config.openapi_file.c
         schema "$ref" => "#/components/schemas/quote_check_feedback"
 
         # See https://github.com/rswag/rswag/issues/316
-        let(:Authorization) { api_key_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
+        let(:Authorization) { api_key_mdso_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
 
         run_test!
       end
@@ -52,7 +52,7 @@ describe "Devis API", swagger_doc: "v1/#{Rails.application.config.openapi_file.c
                                       .merge("comment" => nil)
         end
 
-        let(:Authorization) { api_key_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
+        let(:Authorization) { api_key_mdso_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
 
         run_test!
       end

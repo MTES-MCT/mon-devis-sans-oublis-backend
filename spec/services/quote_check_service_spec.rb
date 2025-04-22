@@ -6,9 +6,10 @@ RSpec.describe QuoteCheckService, type: :service do
   let(:tempfile) { fixture_file_upload("quote_files/Devis_test.pdf", "application/pdf") }
   let(:filename) { File.basename(tempfile.path) }
   let(:profile) { "artisan" }
+  let(:source_name) { "test" }
 
   describe "#initialize" do
-    subject(:init) { described_class.new(tempfile, filename, profile) }
+    subject(:init) { described_class.new(tempfile, filename, profile, source_name:) }
 
     it "creates a new quote check" do
       expect { init }.to change(QuoteCheck, :count).by(1)
@@ -24,7 +25,7 @@ RSpec.describe QuoteCheckService, type: :service do
   end
 
   describe "#check" do
-    subject(:quote_check) { described_class.new(tempfile, filename, profile).check }
+    subject(:quote_check) { described_class.new(tempfile, filename, profile, source_name:).check }
 
     before do
       stub_request(:post, /albert\.api\.etalab\.gouv\.fr/)
