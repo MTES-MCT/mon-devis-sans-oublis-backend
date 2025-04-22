@@ -9,9 +9,8 @@ Rswag::Ui.configure do |config|
   # (under openapi_root) as JSON or YAML endpoints, then the list below should
   # correspond to the relative paths for those endpoints.
 
-  config.openapi_endpoint "/api-docs/v1/#{Rails.application.config.openapi_file.call('v1')}",
-                          "#{Rails.application.config.application_name} API V1 Documentation"
-
-  config.basic_auth_enabled = true
-  config.basic_auth_credentials "mdso", ENV.fetch("MDSO_SITE_PASSWORD")
+  config.openapi_endpoint "/api-docs/v1/#{Rails.application.config.openapi_file.call('v1', 'partner')}",
+                          "#{Rails.application.config.application_name} Partner API V1 Documentation"
+  config.openapi_endpoint "/api-docs/v1/#{Rails.application.config.openapi_file.call('v1', 'internal')}",
+                          "#{Rails.application.config.application_name} Internal API V1 Documentation"
 end

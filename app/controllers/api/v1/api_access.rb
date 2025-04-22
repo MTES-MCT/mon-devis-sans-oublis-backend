@@ -21,6 +21,8 @@ module Api
         ENV.keys.select { it.start_with?(ENV_API_KET_PREFIX) }
       end
 
+      protected
+
       def api_key
         auth = request.headers["Authorization"].to_s
         auth.remove("Bearer ").strip
@@ -28,6 +30,10 @@ module Api
 
       def api_user
         Api::V1::ApiAccess.env_keys.detect { api_key == ENV.fetch(it) }&.remove(ENV_API_KET_PREFIX) if api_key
+      end
+
+      def api_user_mdso?
+        api_user.present? && api_user.downcase == "mdso"
       end
     end
   end

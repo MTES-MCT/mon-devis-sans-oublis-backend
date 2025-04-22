@@ -1,0 +1,382 @@
+---
+openapi: 3.0.1
+info:
+  title: Mon Devis Sans Oublis Partner API V1
+  version: v1
+  description: |
+    **Général champs:**
+    - les champs optionnels sont nullables voir peuvent ne pas être présents dans le payload (corps de la requête)
+    - `id` : considérer comme un string (chaîne de caractères) unique
+    - type enum (liste) : comme des strings (chaînes de caractères)
+paths:
+  "/profiles":
+    get:
+      summary: Récupérer les profils disponibles
+      tags:
+      - Profils
+      responses:
+        '200':
+          description: liste des profiles
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    data:
+                      type: "#/components/schemas/profile"
+                required:
+                - data
+  "/quote_checks/metadata":
+    get:
+      summary: Récupérer les metadata possibles
+      tags:
+      - Devis
+      responses:
+        '200':
+          description: liste des metadata possibles
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  aides:
+                    type: array
+                    data:
+                      type: string
+                  gestes:
+                    type: array
+                    data:
+                      type: object
+                      properties:
+                        group:
+                          type: string
+                        values:
+                          type: array
+                          data:
+                            type: string
+                required:
+                - aides
+                - gestes
+  "/quote_checks":
+    post:
+      summary: Téléverser un devis
+      tags:
+      - Devis
+      security:
+      - bearer_api_key: []
+      parameters: []
+      description: Au retour le devis a été téléversé avec succès.<br>Mais vérifiez
+        selon le statut si le devis a été déjà analysé ou non.<br>Il peut contenir
+        des erreurs dès le téléversement.<br>Si le statut est 'pending', cela signifie
+        que l'analyse est encore en cours.<br>Et qu'il faut boucler sur l'appel /quote_check/:id
+        pour récupérer le devis à jour.
+      responses:
+        '201':
+          description: Devis téléversé
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/quote_check"
+        '422':
+          description: invalid request for metadata
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/api_error"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                file_text:
+                  type: string
+                  description: Texte brut du contenu du fichier
+                  nullable: true
+                file_markdown:
+                  type: string
+                  description: Représentation Markdown du contenu du fichier
+                  nullable: true
+                metadata:
+                  "$ref": "#/components/schemas/quote_check_metadata"
+                  nullable: true
+                profile:
+                  "$ref": "#/components/schemas/profile"
+                parent_id:
+                  type: string
+                  nullable: true
+              required:
+              - file
+              - profile
+  "/stats":
+    get:
+      summary: Récupérer les stats
+      tags:
+      - Stats
+      responses:
+        '200':
+          description: liste des stats
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/stats"
+produces:
+- application/json
+consumes:
+- application/json
+components:
+  securitySchemes:
+    bearer_api_key:
+      type: http
+      scheme: bearer
+      bearerFormat: API Key
+      description: 'Renseignez votre clé API suivant: Bearer YOUR_API_KEY'
+  schemas:
+    api_error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: array
+          items:
+            type: string
+    profile:
+      type: string
+      enum:
+      - artisan
+      - particulier
+      - conseiller
+    quote_check_metadata:
+      type: object
+      properties:
+        aides:
+          type: array
+          items:
+            type: string
+            enum:
+            - MaPrimeRénov' par geste
+            - MaPrimeRénov' parcours accompagné
+            - CEE
+            - Eco prêt à taux 0
+            - Aide locale
+        gestes:
+          type: array
+          items:
+            type: string
+            enum:
+            - Chaudière biomasse
+            - Chauffage solaire combiné
+            - Poêle/insert à bois/granulés
+            - Pompe à chaleur air / air
+            - Pompe à chaleur air / eau
+            - Pompe à chaleur géothermique
+            - Chauffe-eau solaire individuel
+            - Chauffe-eau thermodynamique (CET)
+            - Isolation des murs par l'extérieur (ITE)
+            - Isolation des murs par l'intérieur (ITI)
+            - Isolation des planchers de combles perdus
+            - Isolation de la toiture en pente - plafond de combles
+            - Isolation de la toiture-terrasse
+            - Isolation des planchers bas
+            - Remplacement des fenêtres ou porte-fenêtres
+            - Volet isolant
+            - Ventilation Mécanique Double-Flux
+            - Ventilation Mécanique Simple-Flux
+    quote_check_status:
+      type: string
+      enum:
+      - pending
+      - valid
+      - invalid
+      description: 'pending: analyse en cours | valid: valide | invalid: invalide'
+    quote_check_error_category:
+      type: string
+      enum:
+      - admin
+      - file
+      - gestes
+      description: 'admin: Mentions administratives | file: Fichier | gestes: Descriptif
+        technique des gestes'
+    quote_check_error_code:
+      type: string
+      description: code d'erreur de validation
+    quote_check_error_deletion_reason_code:
+      type: string
+      description: code de raison de suppression d'erreur, remplaçant le message d'erreur
+    quote_check_error_type:
+      type: string
+      enum:
+      - missing
+      - wrong
+      description: 'missing: Information manquante | wrong: Information erronée'
+    quote_check_error_details:
+      type: object
+      properties:
+        id:
+          type: string
+          description: UUID unique
+        geste_id:
+          type: string
+          nullable: true
+        category:
+          "$ref": "#/components/schemas/quote_check_error_category"
+        type:
+          "$ref": "#/components/schemas/quote_check_error_type"
+        code:
+          "$ref": "#/components/schemas/quote_check_error_code"
+        title:
+          type: string
+        problem:
+          type: string
+          description: Réutilisez le title si vide
+        solution:
+          type: string
+          description: peut-être vide
+        provided_value:
+          type: string
+          description: peut-être vide, ou ligne du geste correspondant
+        value:
+          type: string
+          description: DEPRECATED
+        comment:
+          type: string
+          nullable: true
+          description: commentaire manuel (humain), vide ou null pour retirer
+          maxLength: 1000
+        deleted:
+          type: boolean
+          nullable: true
+      required:
+      - id
+      - code
+    quote_check:
+      type: object
+      properties:
+        id:
+          type: string
+          description: UUID unique
+        parent_id:
+          type: string
+          nullable: true
+        status:
+          "$ref": "#/components/schemas/quote_check_status"
+        filename:
+          type: string
+          nullable: true
+        metadata:
+          "$ref": "#/components/schemas/quote_check_metadata"
+          nullable: true
+        profile:
+          "$ref": "#/components/schemas/profile"
+        gestes:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              intitule:
+                type: string
+              valid:
+                type: boolean
+                nullable: true
+          nullable: true
+        errors:
+          type: array
+          items:
+            "$ref": "#/components/schemas/quote_check_error_code"
+          description: liste des erreurs dans ordre à afficher
+          nullable: true
+        error_details:
+          type: array
+          items:
+            "$ref": "#/components/schemas/quote_check_error_details"
+          description: liste des erreurs avec détails dans ordre à afficher
+          nullable: true
+        error_messages:
+          type: object
+          additionalProperties:
+            type: string
+            description: code d'erreur => message
+          nullable: true
+        finished_at:
+          type: datetime
+          nullable: true
+        comment:
+          type: string
+          nullable: true
+          description: commentaire manuel (humain), vide ou null pour retirer
+          maxLength: 1000
+      required:
+      - id
+      - status
+      - profile
+    quote_check_feedback:
+      type: object
+      properties:
+        id:
+          type: string
+          description: UUID unique
+        quote_check_id:
+          type: string
+          nullable: false
+        validation_error_details_id:
+          type: string
+          nullable: true
+          description: requis pour feedback error detail
+        rating:
+          type: integer
+          nullable: true
+          description: requis pour feedback global hors error detail
+        comment:
+          type: string
+          nullable: true
+          description: requis pour feedback error detail
+          maxLength: 1000
+      required:
+      - quote_check_id
+    stats:
+      type: object
+      properties:
+        quote_checks_count:
+          type: integer
+        average_quote_check_errors_count:
+          type: number
+          description: nombre moyen d'erreurs par analyse, arrondi au décimal supérieur
+          nullable: true
+        average_quote_check_cost:
+          type: number
+          description: coût moyen d'une analyse en Euro (€), arrondi au centime supérieur
+          nullable: true
+        average_quote_check_processing_time:
+          type: number
+          description: temps moyen de traitement d'une analyse en secondes, arrondi
+            supérieur
+          nullable: true
+        median_quote_check_processing_time:
+          type: number
+          description: temps médian de traitement d'une analyse en secondes, arrondi
+            supérieur
+          nullable: true
+        unique_visitors_count:
+          type: integer
+          description: nombre de visiteurs uniques dans le temps
+          nullable: true
+      required:
+      - quote_checks_count
+      - average_quote_check_errors_count
+      - average_quote_check_cost
+      - unique_visitors_count
+servers:
+- url: https://api.staging.mon-devis-sans-oublis.beta.gouv.fr/api/v1
+  description: Staging server
+- url: https://api.mon-devis-sans-oublis.beta.gouv.fr/api/v1
+  description: Production server
+- url: http://localhost:3000/api/v1
+  description: Development server

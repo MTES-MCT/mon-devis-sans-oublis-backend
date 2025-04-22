@@ -4,7 +4,7 @@ module Api
   module V1
     # Controller for QuoteCheckFeedbacks API
     class QuoteCheckFeedbacksController < BaseController
-      before_action :authorize_request
+      before_action :authorize_internal_mdso_only
       before_action :quote_check
       before_action :validation_error_details, if: -> { params[:validation_error_detail_id].present? }
 

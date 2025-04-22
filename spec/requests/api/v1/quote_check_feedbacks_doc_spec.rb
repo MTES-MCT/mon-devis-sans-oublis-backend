@@ -2,12 +2,12 @@
 
 require "swagger_helper"
 
-describe "Devis API" do
+describe "Devis API", swagger_doc: "v1/#{Rails.application.config.openapi_file.call('v1', 'internal')}" do
   path "/quote_checks/{quote_check_id}/feedbacks" do
     # TODO: i18n?
     post "Déposer un retour global ou sur error detail" do
       tags "Devis"
-      security [basic_auth: []]
+      security [bearer_api_key: []]
       consumes "application/json"
       produces "application/json"
 

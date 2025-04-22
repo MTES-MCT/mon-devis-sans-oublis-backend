@@ -12,7 +12,11 @@ module Api
       protected
 
       def authorize_request
-        return true if api_user
+        api_user.present? || authorize_internal_mdso_only
+      end
+
+      def authorize_internal_mdso_only
+        return api_user_mdso? if api_user
 
         # Old DEPRECATED way
         authenticate_with_http_basic do |username, password|

@@ -1,40 +1,21 @@
 ---
 openapi: 3.0.1
 info:
-  title: Mon Devis Sans Oublis API V1
+  title: Mon Devis Sans Oublis Internal API V1
   version: v1
   description: |
     **Général champs:**
-    - les champs optionnels sont nullables voir peuvent ne pas être présents dans le payload
-    - `id` : considérer comme un string unique
-    - type enum : comme des strings
+    - les champs optionnels sont nullables voir peuvent ne pas être présents dans le payload (corps de la requête)
+    - `id` : considérer comme un string (chaîne de caractères) unique
+    - type enum (liste) : comme des strings (chaînes de caractères)
 paths:
-  "/profiles":
-    get:
-      summary: Récupérer les profils disponibles
-      tags:
-      - Profils
-      responses:
-        '200':
-          description: liste des profiles
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    data:
-                      type: "#/components/schemas/profile"
-                required:
-                - data
   "/quote_checks/{quote_check_id}/feedbacks":
     post:
       summary: Déposer un retour global ou sur error detail
       tags:
       - Devis
       security:
-      - basic_auth: []
+      - bearer_api_key: []
       parameters:
       - name: quote_check_id
         in: path
@@ -114,7 +95,7 @@ paths:
       tags:
       - Erreurs Devis
       security:
-      - basic_auth: []
+      - bearer_api_key: []
       parameters:
       - name: quote_check_id
         in: path
@@ -134,7 +115,7 @@ paths:
       tags:
       - Erreurs Devis
       security:
-      - basic_auth: []
+      - bearer_api_key: []
       parameters:
       - name: quote_check_id
         in: path
@@ -164,7 +145,7 @@ paths:
       tags:
       - Erreurs Devis
       security:
-      - basic_auth: []
+      - bearer_api_key: []
       parameters:
       - name: quote_check_id
         in: path
@@ -193,7 +174,7 @@ paths:
       tags:
       - Erreurs Devis
       security:
-      - basic_auth: []
+      - bearer_api_key: []
       parameters:
       - name: quote_check_id
         in: path
@@ -230,123 +211,13 @@ paths:
                   maxLength: 1000
               required:
               - comment
-  "/quote_checks/metadata":
-    get:
-      summary: Récupérer les metadata possibles
-      tags:
-      - Devis
-      responses:
-        '200':
-          description: liste des metadata possibles
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  aides:
-                    type: array
-                    data:
-                      type: string
-                  gestes:
-                    type: array
-                    data:
-                      type: object
-                      properties:
-                        group:
-                          type: string
-                        values:
-                          type: array
-                          data:
-                            type: string
-                required:
-                - aides
-                - gestes
-  "/quote_checks":
-    post:
-      summary: Téléverser un devis
-      tags:
-      - Devis
-      security:
-      - basic_auth: []
-      parameters: []
-      description: Au retour le devis a été téléversé avec succès.<br>Mais vérifiez
-        selon le statut si le devis a été déjà analysé ou non.<br>Il peut contenir
-        des erreurs dès le téléversement.<br>Si le statut est 'pending', cela signifie
-        que l'analyse est encore en cours.<br>Et qu'il faut boucler sur l'appel /quote_check/:id
-        pour récupérer le devis à jour.
-      responses:
-        '201':
-          description: Devis téléversé
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/quote_check"
-        '422':
-          description: invalid request for metadata
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/api_error"
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-                file_text:
-                  type: string
-                  description: Texte brut du contenu du fichier
-                  nullable: true
-                file_markdown:
-                  type: string
-                  description: Représentation Markdown du contenu du fichier
-                  nullable: true
-                metadata:
-                  "$ref": "#/components/schemas/quote_check_metadata"
-                  nullable: true
-                profile:
-                  "$ref": "#/components/schemas/profile"
-                parent_id:
-                  type: string
-                  nullable: true
-              required:
-              - file
-              - profile
   "/quote_checks/{id}":
-    get:
-      summary: Récupérer un Devis
-      tags:
-      - Devis
-      security:
-      - basic_auth: []
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Devis trouvé
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/quote_check"
-        '404':
-          description: Devis non trouvé
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/api_error"
     patch:
       summary: Mettre à jour un Devis
       tags:
       - Devis
       security:
-      - basic_auth: []
+      - bearer_api_key: []
       parameters:
       - name: id
         in: path
@@ -368,27 +239,17 @@ paths:
               properties:
                 comment:
                   type: string
-  "/stats":
-    get:
-      summary: Récupérer les stats
-      tags:
-      - Stats
-      responses:
-        '200':
-          description: liste des stats
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/stats"
 produces:
 - application/json
 consumes:
 - application/json
 components:
   securitySchemes:
-    basic_auth:
+    bearer_api_key:
       type: http
-      scheme: basic
+      scheme: bearer
+      bearerFormat: API Key
+      description: 'Renseignez votre clé API suivant: Bearer YOUR_API_KEY'
   schemas:
     api_error:
       type: object
@@ -627,9 +488,9 @@ components:
       - average_quote_check_cost
       - unique_visitors_count
 servers:
-- url: http://localhost:3000/api/v1
-  description: Development server
 - url: https://api.staging.mon-devis-sans-oublis.beta.gouv.fr/api/v1
   description: Staging server
 - url: https://api.mon-devis-sans-oublis.beta.gouv.fr/api/v1
   description: Production server
+- url: http://localhost:3000/api/v1
+  description: Development server
