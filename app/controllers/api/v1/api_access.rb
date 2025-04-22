@@ -27,7 +27,7 @@ module Api
       end
 
       def api_user
-        Api::V1::ApiAccess.env_keys.detect { api_key == ENV.fetch(it) }.remove(ENV_API_KET_PREFIX) if api_key
+        Api::V1::ApiAccess.env_keys.detect { api_key == ENV.fetch(it) }&.remove(ENV_API_KET_PREFIX) if api_key
       end
     end
   end
