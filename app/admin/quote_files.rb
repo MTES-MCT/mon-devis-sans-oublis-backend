@@ -15,7 +15,7 @@ ActiveAdmin.register QuoteFile do # rubocop:disable Metrics/BlockLength
   end
 
   member_action :view_file, method: :get do
-    quote_file = QuoteFile.select(:filename, :content, :content_type).find(params[:id])
+    quote_file = QuoteFile.select(:filename, :content_typ, :data).find(params[:id])
 
     send_data quote_file.content,
               filename: quote_file.filename,
