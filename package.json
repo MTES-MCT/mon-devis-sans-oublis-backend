@@ -1,7 +1,7 @@
 {
   "name": "mesdevissansoublis",
   "dependencies": {
-    "@gouvfr/dsfr": "^1.12"
+    "@gouvfr/dsfr": "^1.13"
   },
   "engines": {
     "node": ">= 18.0.0"
