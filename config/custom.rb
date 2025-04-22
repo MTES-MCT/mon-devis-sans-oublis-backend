@@ -22,9 +22,11 @@ Rails.application.configure do
   config.application_host = UriExtended.host_with_port(ENV.fetch("APPLICATION_HOST", "http://localhost:3000"))
   config.application_version = ENV.fetch("CONTAINER_VERSION", (`git rev-parse HEAD`.chomp rescue "unknown")) # rubocop:disable Style/RescueModifier
 
-  config.openapi_file = lambda { |version|
-    "#{config.application_name.parameterize}_api_#{version.downcase}_swagger.yaml"
-  }
+  config.openapi_file = lambda do |version, section|
+    raise ArgumentError, "Invalid section: #{section}" unless %w[internal partner].include?(section)
+
+    "#{config.application_name.parameterize}_api_#{version.downcase}_#{section}_swagger.yaml"
+  end
 
   config.llms_configured = [
     Llms::Mistral,

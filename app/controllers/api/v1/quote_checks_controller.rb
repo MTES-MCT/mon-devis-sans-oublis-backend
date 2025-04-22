@@ -4,7 +4,9 @@ module Api
   module V1
     # Controller for QuoteChecks API
     class QuoteChecksController < BaseController
-      before_action :authorize_request, except: :metadata
+      before_action :authorize_request, except: %i[metadata update]
+      before_action :authorize_internal_mdso_only, only: :update
+
       before_action :quote_check, except: %i[create metadata]
 
       def show

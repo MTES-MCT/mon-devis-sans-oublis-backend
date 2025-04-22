@@ -4,7 +4,7 @@ module Api
   module V1
     # Controller for QuoteChecks ValidationErrorDetails API
     class QuoteChecksValidationErrorDetailsController < BaseController
-      before_action :authorize_request, except: :validation_error_detail_deletion_reasons
+      before_action :authorize_internal_mdso_only, except: :validation_error_detail_deletion_reasons
       before_action :validation_error_details, except: :validation_error_detail_deletion_reasons
 
       def create
