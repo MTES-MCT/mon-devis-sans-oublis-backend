@@ -4,6 +4,9 @@ require "net/http"
 
 # See https://developer.matomo.org/api-reference/reporting-api#standard-api-parameters
 class MatomoApi
+  class ResultError < StandardError; end
+  class TimeoutError < ResultError; end
+
   def initialize(domain: nil, id_site: nil, token_auth: nil)
     @domain = domain || ENV.fetch("MATOMO_DOMAIN", "stats.beta.gouv.fr")
     @token_auth = token_auth || ENV.fetch("MATOMO_TOKEN_AUTH")
@@ -30,6 +33,8 @@ class MatomoApi
 
     json = JSON.parse(response.body)
     json.fetch("value")
+  rescue Net::ReadTimeout => e
+    raise TimeoutError, e
   end
   # rubocop:enable Metrics/MethodLength
 end
