@@ -2,7 +2,7 @@
 
 # Job to extract images of pages of an existing PDF QuoteFile
 class QuoteFileImagifyPdfJob < ApplicationJob
-  queue_as :default
+  queue_as :low
 
   def perform(quote_file_id)
     quote_file = QuoteFile.find(quote_file_id)
