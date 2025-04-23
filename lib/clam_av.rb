@@ -5,6 +5,8 @@ require "open3"
 
 # Class to handle ClamAV scanning
 class ClamAv
+  class MissingDatabaseImplemented < StandardError; end
+
   DATABASE_PATH = Rails.root.join("tmp/clamav-db")
 
   def self.database_exists?(database_path = DATABASE_PATH)
@@ -22,6 +24,9 @@ class ClamAv
     tmp_conf_file.write <<-CONFIG
       DatabaseDirectory #{database_path}
       DatabaseMirror database.clamav.net
+      Foreground yes
+      UpdateLogFile /dev/null
+      TestDatabases no
     CONFIG
     tmp_conf_file.close
 
@@ -50,7 +55,7 @@ class ClamAv
         return scan(filepath, autodownload_database: false)
       end
 
-      raise NotImplemented, "ClamAV is missing its database."
+      raise MissingDatabaseImplemented, "ClamAV is missing its database."
     end
 
     scan_with_clamav(filepath)
@@ -63,6 +68,8 @@ class ClamAv
 
     case status.exitstatus
     when 2
+      raise MissingDatabaseImplemented, "ClamAV is missing its database." if stderr.include?("No supported database")
+
       raise "ClamAV error: #{stderr.strip}"
     when 1
       false # Virus found
