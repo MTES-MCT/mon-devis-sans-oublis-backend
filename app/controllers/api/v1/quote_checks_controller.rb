@@ -84,6 +84,10 @@ module Api
       def quote_check_edit_params
         params.permit(:comment)
       end
+
+      def api_user
+        super || "mdso" # TODO: Remove me after no basic auth anymore
+      end
     end
   end
 end
