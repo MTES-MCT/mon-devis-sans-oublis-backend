@@ -8,10 +8,15 @@ module QuoteCheckInputMetadata
   DEPRECATED_PROFILES = %w[mandataire].freeze
 
   included do
+    validates :source_name, presence: true
     validates :profile, presence: true, inclusion: { in: PROFILES + DEPRECATED_PROFILES }
 
     before_validation :format_metadata
     validate :metadata_data
+
+    scope :accessible_for_source, lambda { |source_name|
+      where(source_name: source_name&.downcase) unless source_name&.downcase == "mdso"
+    }
   end
 
   class_methods do

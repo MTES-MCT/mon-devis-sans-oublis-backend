@@ -58,6 +58,12 @@ Différentes briques sont mises à contribution et encore en évaluation:
 - voir fichier de documentation de l'API  au format OpenAPI Swagger et interface bac à sable interractif sur `/api-docs`
 - regénération et mise à jour de la documentation à partir des spécifications tests via `make doc`
 
+### API Accès
+
+- ajouter ou modifier la clé d'environnement type `MDSO_API_KEY_FOR_PARTNERA`
+- redémarrer l'application si nécessaire
+- vérifier dans l'onglet "API Keys" du back office la présence de l'accès
+
 ## Démarrage
 
 ```shell

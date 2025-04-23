@@ -30,7 +30,8 @@ module Api
           file_text: quote_check_params[:file_text],
           file_markdown: quote_check_params[:file_markdown],
           metadata: quote_check_params[:metadata],
-          parent_id: quote_check_params[:parent_id]
+          parent_id: quote_check_params[:parent_id],
+          source_name: api_user.downcase
         )
         @quote_check = quote_check_service.quote_check
 
@@ -64,6 +65,7 @@ module Api
                          ]))
                          .eager_load(:file)
                          .select("#{QuoteFile.table_name}.filename")
+                         .accessible_for_source(api_user)
                          .find(params[:id])
       end
 

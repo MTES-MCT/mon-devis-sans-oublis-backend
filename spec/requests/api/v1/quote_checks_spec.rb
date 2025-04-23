@@ -130,6 +130,22 @@ RSpec.describe "/api/v1/quote_checks" do
       end
       # rubocop:enable RSpec/MultipleExpectations
     end
+
+    context "with another source" do
+      let(:quote_check) { create(:quote_check, file: quote_file, source_name: "another") }
+
+      it "renders a not found" do
+        get api_v1_quote_check_url(quote_check), as: :json, headers: api_key_header
+        expect(response).to have_http_status(:not_found)
+      end
+
+      context "with mdso user" do # rubocop:disable RSpec/NestedGroups
+        it "renders a successful response" do
+          get api_v1_quote_check_url(quote_check), as: :json, headers: api_key_mdso_header
+          expect(response).to be_successful
+        end
+      end
+    end
   end
 
   describe "PATCH /api/v1/quote_checks/:id" do
@@ -142,7 +158,7 @@ RSpec.describe "/api/v1/quote_checks" do
     end
 
     before do
-      patch api_v1_quote_check_url(quote_check), params: quote_check_params, as: :json, headers: api_key_header
+      patch api_v1_quote_check_url(quote_check), params: quote_check_params, as: :json, headers: api_key_mdso_header
     end
 
     it "returns a successful response" do

@@ -5,11 +5,12 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
   attr_reader :quote_check, :save
 
   # rubocop:disable Metrics/ParameterLists
-  def initialize(
+  def initialize( # rubocop:disable Metrics/MethodLength
     tempfile_or_quote_check, filename = nil,
     profile = nil,
     content_type: nil, metadata: nil, parent_id: nil,
     file_text: nil, file_markdown: nil,
+    source_name: nil,
     save: true
   )
     @quote_check = if tempfile_or_quote_check.is_a?(QuoteCheck)
@@ -18,7 +19,8 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
                      QuoteCheckUploadService.new(
                        tempfile_or_quote_check, filename, profile,
                        file_text:, file_markdown:,
-                       content_type:, metadata:, parent_id:
+                       content_type:, metadata:, parent_id:,
+                       source_name:
                      ).upload
                    end
     @save = save

@@ -98,7 +98,7 @@ Et qu'il faut boucler sur l'appel /quote_check/:id pour récupérer le devis à 
 
         let(:file) { fixture_file_upload("quote_files/Devis_test.pdf") }
         # See https://github.com/rswag/rswag/issues/316
-        let(:Authorization) { api_key_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
+        let(:Authorization) { api_key_mdso_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
         let(:profile) { "artisan" }
         let(:metadata) { nil }
 
@@ -113,7 +113,7 @@ Et qu'il faut boucler sur l'appel /quote_check/:id pour récupérer le devis à 
         let(:profile) { nil }
         let(:metadata) { nil }
 
-        let(:Authorization) { api_key_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
+        let(:Authorization) { api_key_mdso_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
 
         run_test!
       end
@@ -125,7 +125,7 @@ Et qu'il faut boucler sur l'appel /quote_check/:id pour récupérer le devis à 
         let(:profile) { "blabla" }
         let(:metadata) { nil }
 
-        let(:Authorization) { api_key_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
+        let(:Authorization) { api_key_mdso_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
 
         run_test!
       end
@@ -136,6 +136,36 @@ Et qu'il faut boucler sur l'appel /quote_check/:id pour récupérer le devis à 
         let(:file) { fixture_file_upload("quote_files/Devis_test.pdf") }
         let(:profile) { "artisan" }
         let(:metadata) { { toto: "tata " } }
+
+        let(:Authorization) { api_key_mdso_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
+
+        run_test!
+      end
+    end
+  end
+
+  path "/quote_checks/{id}" do
+    get "Récupérer un Devis" do
+      tags "Devis"
+      security [bearer_api_key: []]
+      consumes "application/json"
+      produces "application/json"
+      parameter name: :id, in: :path, type: :string, required: true
+
+      response "200", "Devis trouvé" do
+        schema "$ref" => "#/components/schemas/quote_check"
+
+        let(:id) { create(:quote_check).id }
+
+        let(:Authorization) { api_key_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
+
+        run_test!
+      end
+
+      response "404", "Devis non trouvé" do
+        schema "$ref" => "#/components/schemas/api_error"
+
+        let(:id) { SecureRandom.uuid }
 
         let(:Authorization) { api_key_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
 

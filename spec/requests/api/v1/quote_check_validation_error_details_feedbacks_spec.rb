@@ -23,7 +23,7 @@ RSpec.describe "/api/v1/quote_checks/:quote_check_id/error_details/:validation_e
         quote_check_id: quote_check_id,
         validation_error_detail_id: validation_error_details_id
       ), params: quote_check_feedback_params,
-         headers: api_key_header
+         headers: api_key_mdso_header
       expect(response).to be_successful
     end
 
@@ -32,7 +32,7 @@ RSpec.describe "/api/v1/quote_checks/:quote_check_id/error_details/:validation_e
         quote_check_id: quote_check_id,
         validation_error_detail_id: validation_error_details_id
       ), params: quote_check_feedback_params,
-         headers: api_key_header
+         headers: api_key_mdso_header
       expect(response).to have_http_status(:created)
     end
 
@@ -41,7 +41,7 @@ RSpec.describe "/api/v1/quote_checks/:quote_check_id/error_details/:validation_e
         quote_check_id: quote_check_id,
         validation_error_detail_id: validation_error_details_id
       ), params: quote_check_feedback_params,
-         headers: api_key_header
+         headers: api_key_mdso_header
       expect(json.fetch("quote_check_id")).to eq(quote_check_id)
     end
 
@@ -51,7 +51,7 @@ RSpec.describe "/api/v1/quote_checks/:quote_check_id/error_details/:validation_e
           quote_check_id: quote_check_id,
           validation_error_detail_id: validation_error_details_id
         ), params: quote_check_feedback_params,
-           headers: api_key_header
+           headers: api_key_mdso_header
       end.to change(QuoteCheckFeedback, :count).by(1)
     end
 
@@ -62,7 +62,7 @@ RSpec.describe "/api/v1/quote_checks/:quote_check_id/error_details/:validation_e
           validation_error_detail_id: "wrong"
         ),
              params: quote_check_feedback_params,
-             headers: api_key_header
+             headers: api_key_mdso_header
         expect(response).to have_http_status(:not_found)
       end
     end
