@@ -27,6 +27,52 @@ composants DSFR](https://github.com/betagouv/dsfr-view-components)
 
 ## Moteur et fonctionnement interne / Architecture
 
+```mermaid
+sequenceDiagram
+    actor User as Usager
+    participant Frontend as Interface MDSO Frontend
+    participant Backend as Interface MDSO Backend
+
+    participant QuoteCheckCheckJob as Process traitement
+    participant Albert LLM as API Albert AI LLM
+    participant Albert OCR as API Albert AI OCR LLM
+    participant Mistral LLM as API Mistral AI LLM
+    participant Tesseract as Tesseract OCR
+
+    participant BO as Back Office MDSO
+
+    User->>Frontend: Dépose un document type PDF
+    Frontend->>Backend: Transmet le fichier
+    Backend->>Backend: Sauvegarde le fichier QuoteFile et génère un QuoteCheck
+    Backend->>Frontend: Identifiant pour suivre le statut du QuoteCheck
+
+    activate QuoteCheckCheckJob
+    Backend->>QuoteCheckCheckJob: process asynchrone démarrage
+    Backend-->>Backend: Transformation du PDF en images par page (QuoteFileImagifyPdfJob)
+    Backend-->>Backend: Vérification de la non présence de virus (QuoteFileSecurityScanJob)
+
+    QuoteCheckCheckJob->>QuoteCheckCheckJob: Extraction automatique du texte du PDF si bien formatté
+    QuoteCheckCheckJob->>QuoteCheckCheckJob: Sinon extraction du texte via OCR (Albert / Mistral / Tesseract) UNIQUEMENT VIA BO
+
+    QuoteCheckCheckJob->>QuoteCheckCheckJob: Extraction des données du texte via méthode naïve
+    QuoteCheckCheckJob->>QuoteCheckCheckJob: Réduction du texte si conditions générales
+
+    QuoteCheckCheckJob<<->>Albert LLM: Extraction des données personnelles et administratives
+
+    QuoteCheckCheckJob->>QuoteCheckCheckJob: Anonymisation du texte
+    
+    QuoteCheckCheckJob->>Frontend: Si erreur lecture ou texte vide renvoit d'une erreur
+
+    QuoteCheckCheckJob<<->>Mistral LLM: Extraction des données gestes et caractéristiques du texte anonymisé
+
+    QuoteCheckCheckJob->>QuoteCheckCheckJob: Validation des données selon algorithme Ruby maison et ajout d'erreurs
+
+    QuoteCheckCheckJob->>Backend: retours avec données et erreurs
+    deactivate QuoteCheckCheckJob
+
+    Backend->>Frontend: Retour API et affichage du résultat
+```
+
 Nous suivons les recommendations et les conventions du framework Ruby on Rails et de la communauté.
 
 - dossier `lib` : pour les parties isolées qui pourraient être externalisées, comme la communication avec des services externes
