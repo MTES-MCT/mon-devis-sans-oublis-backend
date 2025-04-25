@@ -45,7 +45,7 @@ module QuoteReader
         values.each do |value|
           tmp_anonymised_text = tmp_anonymised_text&.gsub(
             /#{Regexp.escape(value.to_s)}/i,
-            (fields_or_field.to_s.singularize.upcase * 10)[0...[value.size, max_size].compact.min]
+            fields_or_field.to_s.singularize.upcase
           )
         rescue TypeError => e
           extended_exception = TypeError.new(
