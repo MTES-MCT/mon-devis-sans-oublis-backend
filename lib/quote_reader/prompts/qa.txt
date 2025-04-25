@@ -293,7 +293,7 @@ Instructions :
 7. **Récupération des attributs** : Assurez-vous de toujours récupérer les attributs de l'équipement lorsqu'ils sont mentionnés dans le texte.
 8. **Laisser les attributs vides** = Laissez les attributs vides s'ils ne sont pas clairement indiqués dans le texte. Ne les calculez ou déduisez pas.
 9. **Utilisation des enums** : Lorsqu'un champ du JSON est un enum, utilisez uniquement l'une des options possibles.
-10. **Utilisation des titres pour l'intitulé** : Utilisez le titre ou sous-titre de la section pour compléter l'intitulé du geste afin de permettre à l'utilisateur de savoir de quelle ligne du devis surtout lorsque plusieurs travaux similaires sont prévus (exemple des fenêtres).
+10. Vous pouvez utiliser les titres ou sous-titre de section pour compléter l'intitulé du geste afin de donner des éléments de contexte et d'aider à comprendre de quelle ligne du devis le geste est rattaché. (surtout lorsque plusieurs travaux similaires sont prévus comme par exemple des fenêtres dans différentes pièces).
 11. **Structure des tableaux** : La majorité du temps, les gestes sont inscrits dans un tableau à plusieurs colonnes comme par exemple, identifiant / informations techniques / Quantités / unitités / prix HT / Taux TVA / Montant TTC
 12. **Absence d'informations exploitables** :Si le texte fourni ne contient pas d'informations exploitables ou de gestes de travaux de rénovation énergétique, renvoyez immédiatement le JSON : {"bad_file": true}.
 
