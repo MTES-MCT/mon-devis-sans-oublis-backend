@@ -285,15 +285,15 @@ numero_ligne: text (Numéro ou identifiant de la ligne du devis, il se trouve tr
 Instructions :
 
 1. **Récupération des Informations Générales** : Récupérez les informations générales du devis et intégrez-les dans le JSON général.
-2. **Identification des gestes pertinents** : Parcourez les lignes du devis et identifiez **uniquement** les gestes listés dans gestes_pertinents. Ne prenez en compte que les lignes qui correspondent exactement à l'un des gestes listés.
+2. **Identification des gestes pertinents** : Parcourez les lignes du devis et identifiez **uniquement** les gestes listés dans gestes_pertinents. 
 3. **Ajout des gestes pertinents** : Ajoutez uniquement ces gestes pertinents au JSON général avec les informations spécifiques en suivant les définitions des JSON fournis, puis complétez avec les **attributs_complementaires**.
-4. **Ignorez absolument les lignes non pertinentes** : Si une ligne du devis ne correspond pas à un gestes_pertinents, ignorez-la et ne l'ajoutez pas au JSON final même si certains attributs sont définis comme les attributs_complementaires**.
+4. **Ignorez absolument les lignes non pertinentes** : Si une ligne du devis ne correspond pas à un gestes_pertinents, ignorez-la même si certains attributs sont définis comme les attributs_complementaires**.
 5. **Ignorez les lignes de main d'oeuvre**: S'il y a une ligne de fourniture et une ligne d'installation/de pose pour le même matériel, n'incluez que la ligne de fourniture au résultat final.
 6. **Vérification des sections et titres** : Assurez-vous de ne pas mélanger les informations des différents gestes et de bien identifier les sections et titres. Repérez les titres et sous-titres dans le devis. Ils sont souvents utilisés pour regrouper les informations par gestes et pour donner du contexte au geste (notamment la localisation dans le logement).
 7. **Récupération des attributs** : Assurez-vous de toujours récupérer les attributs de l'équipement lorsqu'ils sont mentionnés dans le texte.
 8. **Laisser les attributs vides** = Laissez les attributs vides s'ils ne sont pas clairement indiqués dans le texte. Ne les calculez ou déduisez pas.
 9. **Utilisation des enums** : Lorsqu'un champ du JSON est un enum, utilisez uniquement l'une des options possibles.
-10. Vous pouvez utiliser les titres ou sous-titre de section pour compléter l'intitulé du geste afin de donner des éléments de contexte et d'aider à comprendre de quelle ligne du devis le geste est rattaché. (surtout lorsque plusieurs travaux similaires sont prévus comme par exemple des fenêtres dans différentes pièces).
+10. **Utilisation de l'intitulé de la ligne** : Utilisez l'intitulé de la ligne pour le champ **intitule** du geste. Cela permet de conserver le contexte exact de la ligne du devis, puis complétez avec des éléments de contexte comme le titre ou sous titre de la section pour apporter de la précision lorsque l'on a plusieurs gestes similaires, par exemple des fenêtres dans plusieurs pièces de la maison.
 11. **Structure des tableaux** : La majorité du temps, les gestes sont inscrits dans un tableau à plusieurs colonnes comme par exemple, identifiant / informations techniques / Quantités / unitités / prix HT / Taux TVA / Montant TTC
 12. **Absence d'informations exploitables** :Si le texte fourni ne contient pas d'informations exploitables ou de gestes de travaux de rénovation énergétique, renvoyez immédiatement le JSON : {"bad_file": true}.
 
