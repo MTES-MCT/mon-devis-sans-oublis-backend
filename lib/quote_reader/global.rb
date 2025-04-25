@@ -73,13 +73,8 @@ module QuoteReader
       @text = file_markdown || file_text ||
               get_text(force_ocr:, ocr:)
 
-      naive_reader = NaiveText.new(text)
-      @naive_attributes = naive_reader.read
-      @naive_version = naive_reader.version
 
-      @shrinked_text = Shrinker.new(text).shrinked_text(naive_attributes)
-
-      private_data_qa_reader = PrivateDataQa.new(shrinked_text)
+      private_data_qa_reader = PrivateDataQa.new(text)
       begin
         @private_data_qa_attributes = private_data_qa_reader.read || {}
       ensure
@@ -87,16 +82,12 @@ module QuoteReader
         @private_data_qa_version = private_data_qa_reader.version
       end
 
-      private_attributes = deep_merge_if_absent(
-        @naive_attributes,
-        @private_data_qa_attributes
-      )
 
       private_extended_attributes = deep_merge_if_absent(
-        private_attributes,
-        ExtendedData.new(private_attributes).extended_attributes
+        private_data_qa_attributes,
+        ExtendedData.new(private_data_qa_attributes).extended_attributes
       )
-      @anonymised_text = Anonymiser.new(shrinked_text).anonymised_text(private_extended_attributes)
+      @anonymised_text = Anonymiser.new(text).anonymised_text(private_extended_attributes)
 
       qa_reader = Qa.new(anonymised_text)
       begin

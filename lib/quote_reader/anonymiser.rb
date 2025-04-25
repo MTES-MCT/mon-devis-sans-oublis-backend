@@ -23,8 +23,8 @@ module QuoteReader
 
     def anonymised_text(attributes = nil)
       return nil if @raw_text.nil?
+      return nil if attributes.nil? 
 
-      attributes ||= QuoteReader::NaiveText.new(@raw_text).read
       self.class.replace_text_from_attributes(attributes, FIELDS_TO_ANONYMISE, @raw_text)
     end
 
