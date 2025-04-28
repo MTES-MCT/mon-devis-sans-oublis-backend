@@ -23,7 +23,7 @@ module QuoteReader
 
     def anonymised_text(attributes = nil)
       return nil if @raw_text.nil?
-      return nil if attributes.nil? 
+      return @raw_text if attributes.nil?
 
       self.class.replace_text_from_attributes(attributes, FIELDS_TO_ANONYMISE, @raw_text)
     end
@@ -33,7 +33,7 @@ module QuoteReader
     # rubocop:disable Metrics/MethodLength
     # rubocop:disable Metrics/PerceivedComplexity
     # Recursive method to replace text from attributes, like Rails parameters
-    def self.replace_text_from_attributes(attributes, fields_or_field, text, max_size: nil)
+    def self.replace_text_from_attributes(attributes, fields_or_field, text)
       attributes = ActiveSupport::HashWithIndifferentAccess.new(attributes)
 
       if fields_or_field.is_a?(Symbol)

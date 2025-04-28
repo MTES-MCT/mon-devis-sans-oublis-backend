@@ -73,8 +73,14 @@ module QuoteReader
       @text = file_markdown || file_text ||
               get_text(force_ocr:, ocr:)
 
+      # TODO: DEPRECATED Remove if not needed anymore
+      # naive_reader = NaiveText.new(text)
+      @naive_attributes = nil # naive_reader.read
+      @naive_version = nil # naive_reader.version
 
-      private_data_qa_reader = PrivateDataQa.new(text)
+      @shrinked_text = Shrinker.new(text).shrinked_text
+
+      private_data_qa_reader = PrivateDataQa.new(shrinked_text)
       begin
         @private_data_qa_attributes = private_data_qa_reader.read || {}
       ensure
@@ -82,12 +88,16 @@ module QuoteReader
         @private_data_qa_version = private_data_qa_reader.version
       end
 
+      private_attributes = deep_merge_if_absent(
+        @naive_attributes,
+        @private_data_qa_attributes
+      )
 
       private_extended_attributes = deep_merge_if_absent(
-        private_data_qa_attributes,
-        ExtendedData.new(private_data_qa_attributes).extended_attributes
+        private_attributes,
+        ExtendedData.new(private_attributes).extended_attributes
       )
-      @anonymised_text = Anonymiser.new(text).anonymised_text(private_extended_attributes)
+      @anonymised_text = Anonymiser.new(shrinked_text).anonymised_text(private_extended_attributes)
 
       qa_reader = Qa.new(anonymised_text)
       begin
@@ -110,8 +120,10 @@ module QuoteReader
 
     private
 
+    # rubocop:disable Metrics/CyclomaticComplexity
+    # rubocop:disable Metrics/PerceivedComplexity
     def deep_merge_if_absent(hash1, hash2)
-      hash1.merge(hash2) do |_key, old_val, new_val|
+      (hash1 || {}).merge(hash2 || {}) do |_key, old_val, new_val|
         if old_val.is_a?(Hash) && new_val.is_a?(Hash)
           deep_merge_if_absent(old_val, new_val)
         elsif old_val.is_a?(Array) && new_val.is_a?(Array)
@@ -121,5 +133,7 @@ module QuoteReader
         end
       end
     end
+    # rubocop:enable Metrics/PerceivedComplexity
+    # rubocop:enable Metrics/CyclomaticComplexity
   end
 end

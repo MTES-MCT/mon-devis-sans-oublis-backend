@@ -28,6 +28,7 @@ FactoryBot.define do
       end
 
       naive_attributes { {} }
+      naive_version { QuoteReader::NaiveText::VERSION }
       private_data_qa_attributes { {} }
       private_data_qa_result { {} }
       private_data_qa_version { QuoteReader::PrivateDataQa::VERSION }
