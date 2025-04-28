@@ -148,6 +148,12 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
 
       read_attributes: quote_reader.read_attributes
     )
+
+    MdsoApi.new.validate_quote_check!(
+      QuoteCheckSerializer.new(quote_check).as_json.transform_keys(&:to_s)
+    )
+
+    quote_check
   end
   # rubocop:enable Metrics/MethodLength
   # rubocop:enable Metrics/AbcSize

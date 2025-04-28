@@ -103,7 +103,7 @@ RSpec.configure do |config|
           end.join(" | ")
         },
         quote_check_error_details: {
-          type: "object",
+          type: :object,
           properties: {
             id: {
               type: :string,
@@ -129,7 +129,7 @@ RSpec.configure do |config|
           required: %w[id code]
         },
         quote_check: {
-          type: "object",
+          type: :object,
           properties: {
             id: {
               type: :string,
@@ -181,12 +181,209 @@ RSpec.configure do |config|
               nullable: true,
               description: "commentaire manuel (humain), vide ou null pour retirer",
               maxLength: QuoteCheck::MAX_COMMENT_LENGTH
+            },
+            private_data_qa_attributes: {
+              type: :object,
+              nullable: true,
+              properties: {
+                pro: {
+                  type: :object,
+                  properties: {
+                    siret: {
+                      type: :string,
+                      nullable: true
+                    },
+                    adresse: {
+                      type: :string,
+                      nullable: true
+                    },
+                    capital: {
+                      type: :string,
+                      nullable: true
+                    },
+                    assurance: {
+                      type: :string,
+                      nullable: true
+                    },
+                    numero_tva: {
+                      type: :string,
+                      nullable: true
+                    },
+                    rge_labels: {
+                      type: :array,
+                      items: {
+                        type: :string
+                      }
+                    },
+                    raison_sociale: {
+                      type: :string,
+                      nullable: true
+                    },
+                    forme_juridique: {
+                      type: :string,
+                      nullable: true
+                    }
+                  }
+                },
+
+                noms: {
+                  type: :array,
+                  nullable: true,
+                  items: {
+                    type: :string
+                  }
+                },
+                rnes: {
+                  type: :array,
+                  nullable: true,
+                  items: {
+                    type: :string
+                  }
+                },
+                uris: {
+                  type: :array,
+                  nullable: true,
+                  items: {
+                    type: :string
+                  }
+                },
+                ibans: {
+                  type: :array,
+                  nullable: true,
+                  items: {
+                    type: :string
+                  }
+                },
+                emails: {
+                  type: :array,
+                  nullable: true,
+                  items: {
+                    type: :string
+                  }
+                },
+                sirets: {
+                  type: :array,
+                  nullable: true,
+                  items: {
+                    type: :string
+                  }
+                },
+                version: {
+                  type: :string
+                },
+                adresses: {
+                  type: :array,
+                  nullable: true,
+                  items: {
+                    type: :string
+                  }
+                },
+                assurances: {
+                  type: :array,
+                  nullable: true,
+                  items: {
+                    type: :string
+                  }
+                },
+                numero_rge: {
+                  type: :array,
+                  nullable: true,
+                  items: {
+                    type: :string
+                  }
+                },
+                telephones: {
+                  type: :array,
+                  nullable: true,
+                  items: {
+                    type: :string
+                  }
+                },
+                numero_rcss: {
+                  type: :array,
+                  nullable: true,
+                  items: {
+                    type: :string
+                  }
+                },
+                numeros_tva: {
+                  type: :array,
+                  nullable: true,
+                  items: {
+                    type: :string
+                  }
+                },
+                pro_adresses: {
+                  type: :array,
+                  nullable: true,
+                  items: {
+                    type: :string
+                  }
+                },
+                capital_social: {
+                  type: :array,
+                  nullable: true,
+                  items: {
+                    type: :string
+                  }
+                },
+                client_prenoms: {
+                  type: :array,
+                  nullable: true,
+                  items: {
+                    type: :string
+                  }
+                },
+                client_adresses: {
+                  type: :array,
+                  nullable: true,
+                  items: {
+                    type: :string
+                  }
+                },
+                client_civilite: {
+                  type: :array,
+                  nullable: true,
+                  items: {
+                    type: :string
+                  }
+                },
+                raison_sociales: {
+                  type: :array,
+                  nullable: true,
+                  items: {
+                    type: :string
+                  }
+                },
+                forme_juridiques: {
+                  type: :array,
+                  nullable: true,
+                  items: {
+                    type: :string
+                  }
+                },
+                client_noms_de_famille: {
+                  type: :array,
+                  nullable: true,
+                  items: {
+                    type: :string
+                  }
+                },
+                ville_immatriculation_rcss: {
+                  type: :array,
+                  nullable: true,
+                  items: {
+                    type: :string
+                  }
+                }
+
+              }
             }
           },
           required: %w[id status profile]
         },
         quote_check_feedback: {
-          type: "object",
+          type: :object,
           properties: {
             id: {
               type: :string,
@@ -212,7 +409,7 @@ RSpec.configure do |config|
         },
 
         stats: {
-          type: "object",
+          type: :object,
           properties: {
             quote_checks_count: { type: :integer },
             average_quote_check_errors_count: {

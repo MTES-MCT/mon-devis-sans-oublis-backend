@@ -63,6 +63,7 @@ fr:
       file: "Fichier"
       gestes: "Descriptif technique des gestes"
     error_types:
+      error: "Erreur"
       missing: "Information manquante"
       wrong: "Information erronée"
     errors:

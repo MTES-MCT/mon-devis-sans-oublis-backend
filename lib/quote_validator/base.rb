@@ -22,11 +22,11 @@ module QuoteValidator
     end
 
     def self.error_categories
-      I18n.t("quote_validator.error_categories")
+      I18n.t("quote_validator.error_categories").transform_keys(&:to_s)
     end
 
     def self.error_types
-      I18n.t("quote_validator.error_types")
+      I18n.t("quote_validator.error_types").transform_keys(&:to_s)
     end
 
     # rubocop:disable Metrics/AbcSize
@@ -43,11 +43,11 @@ module QuoteValidator
                   value: nil) # value is DEPRECATED
       provided_value ||= value
 
-      if category && self.class.error_categories.keys.include?(category)
+      if category && self.class.error_categories.keys.include?(category.to_s)
         e = NotImplementedError.new("Category '#{category}' is not listed")
         ErrorNotifier.notify(e)
       end
-      if type && self.class.error_types.keys.include?(type)
+      if type && self.class.error_types.keys.include?(type.to_s)
         e = NotImplementedError.new("Type '#{type}' is not listed")
         ErrorNotifier.notify(e)
       end
