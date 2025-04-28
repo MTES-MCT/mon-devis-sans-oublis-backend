@@ -18,7 +18,7 @@ module QuoteReader
       return nil if @raw_text.nil?
 
       attributes ||= QuoteReader::NaiveText.new(@raw_text).read
-      Anonymiser.replace_text_from_attributes(attributes, FIELDS_TO_SHRINKED, @raw_text, max_size: 10)
+      Anonymiser.replace_text_from_attributes(attributes, FIELDS_TO_SHRINKED, @raw_text)
     end
   end
 end

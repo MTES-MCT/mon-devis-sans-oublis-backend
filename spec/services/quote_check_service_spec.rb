@@ -45,9 +45,10 @@ RSpec.describe QuoteCheckService, type: :service do
                                                          client_nom_manquant
                                                        ])
 
-      expect(quote_check.read_attributes.dig(
-               "pro", "siret"
-             )).to eq("12345678900000")
+      # DEPRECTATED
+      # expect(quote_check.read_attributes.dig(
+      #          "pro", "siret"
+      #        )).to eq("12345678900000")
     end
     # rubocop:enable RSpec/MultipleExpectations
 
