@@ -3,7 +3,7 @@
 class QuoteCheckSerializer < ActiveModel::Serializer
   include ActionView::Helpers::SanitizeHelper
 
-  TIMEOUT_FOR_PROCESSING = 15.minutes
+  TIMEOUT_FOR_PROCESSING = Integer(ENV.fetch("MDSO_TIMEOUT_FOR_PROCESSING", 15)).minutes
 
   attributes :id, :status, :profile, :metadata,
              :errors, :error_details, :error_messages,
