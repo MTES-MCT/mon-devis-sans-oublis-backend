@@ -16,6 +16,14 @@ class QuoteCheckSerializer < ActiveModel::Serializer
              :errors, :error_details, :error_messages,
              :gestes
 
+  attribute :private_data_qa_attributes, if: :full?
+  attribute :qa_attributes, if: :full?
+  attribute :read_attributes, if: :full?
+
+  def full?
+    instance_options[:full] == true
+  end
+
   def attributes(*args)
     super.compact # Removes keys with nil values
   end

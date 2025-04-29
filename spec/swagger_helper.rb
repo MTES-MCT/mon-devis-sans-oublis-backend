@@ -378,6 +378,79 @@ RSpec.configure do |config|
                 }
 
               }
+            },
+            qa_attributes: {
+              type: :object,
+              nullable: true,
+              properties: {
+                version: {
+                  type: :string
+                },
+                mention_devis: {
+                  type: :boolean
+                },
+                numero_devis: {
+                  type: :string,
+                  nullable: true
+                },
+                pro_forme_juridique: {
+                  type: :string,
+                  nullable: true
+                },
+                date_devis: {
+                  type: :string,
+                  nullable: true
+                },
+                validite: {
+                  type: :boolean,
+                  nullable: true
+                },
+                date_debut_chantier: {
+                  type: :string,
+                  nullable: true
+                },
+                delai_debut_chantier: {
+                  type: :string,
+                  nullable: true
+                },
+                date_pre_visite: {
+                  type: :string,
+                  nullable: true
+                },
+                separation_prix_fourniture_pose: {
+                  type: :boolean,
+                  nullable: true,
+                  description: "Vérifiez qu'il y a une ligne distincte pour la pose, l'installation ou la main d'œuvre"
+                },
+                prix_total_ht: {
+                  type: :number,
+                  nullable: true
+                },
+                prix_total_ttc: {
+                  type: :number,
+                  nullable: true
+                },
+                tva: {
+                  type: :array,
+                  items: {
+                    type: :object,
+                    properties: {
+                      taux_tva: {
+                        type: :number,
+                        nullable: true
+                      },
+                      prix_ht_total: {
+                        type: :number,
+                        nullable: true
+                      },
+                      montant_tva_total: {
+                        type: :number,
+                        nullable: true
+                      }
+                    }
+                  }
+                }
+              }
             }
           },
           required: %w[id status profile]
