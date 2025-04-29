@@ -24,3 +24,10 @@ test_source:
 production:
   <<: *default
   url: <%= ENV["DATABASE_URL"] %>
+  encoding: unicode
+  checkout_timeout: 5 # Max attente pool (5 sec)
+  reaping_frequency: 900 # Nettoyage connexions toutes 15 min
+  reconnect: true
+  variables:
+    statement_timeout: 25000 # Requête max 25 sec
+    idle_in_transaction_session_timeout: 1500000 # Session transaction inactive max 25 min
