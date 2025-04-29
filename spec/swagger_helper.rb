@@ -128,6 +128,285 @@ RSpec.configure do |config|
           },
           required: %w[id code]
         },
+        quote_check_geste: {
+          type: :object,
+          properties: {
+            id: { type: :string },
+            intitule: { type: :string },
+            valid: { type: :boolean, nullable: true }
+          },
+          required: %w[id intitule]
+        },
+        quote_check_private_data_qa_attributes: {
+          type: :object,
+          nullable: true,
+          properties: {
+            pro: {
+              type: :object,
+              properties: {
+                siret: {
+                  type: :string,
+                  nullable: true
+                },
+                adresse: {
+                  type: :string,
+                  nullable: true
+                },
+                capital: {
+                  type: :string,
+                  nullable: true
+                },
+                assurance: {
+                  type: :string,
+                  nullable: true
+                },
+                numero_tva: {
+                  type: :string,
+                  nullable: true
+                },
+                rge_labels: {
+                  type: :array,
+                  items: {
+                    type: :string
+                  }
+                },
+                raison_sociale: {
+                  type: :string,
+                  nullable: true
+                },
+                forme_juridique: {
+                  type: :string,
+                  nullable: true
+                }
+              }
+            },
+
+            noms: {
+              type: :array,
+              nullable: true,
+              items: {
+                type: :string
+              }
+            },
+            rnes: {
+              type: :array,
+              nullable: true,
+              items: {
+                type: :string
+              }
+            },
+            uris: {
+              type: :array,
+              nullable: true,
+              items: {
+                type: :string
+              }
+            },
+            ibans: {
+              type: :array,
+              nullable: true,
+              items: {
+                type: :string
+              }
+            },
+            emails: {
+              type: :array,
+              nullable: true,
+              items: {
+                type: :string
+              }
+            },
+            sirets: {
+              type: :array,
+              nullable: true,
+              items: {
+                type: :string
+              }
+            },
+            version: {
+              type: :string
+            },
+            adresses: {
+              type: :array,
+              nullable: true,
+              items: {
+                type: :string
+              }
+            },
+            assurances: {
+              type: :array,
+              nullable: true,
+              items: {
+                type: :string
+              }
+            },
+            numero_rge: {
+              type: :array,
+              nullable: true,
+              items: {
+                type: :string
+              }
+            },
+            telephones: {
+              type: :array,
+              nullable: true,
+              items: {
+                type: :string
+              }
+            },
+            numero_rcss: {
+              type: :array,
+              nullable: true,
+              items: {
+                type: :string
+              }
+            },
+            numeros_tva: {
+              type: :array,
+              nullable: true,
+              items: {
+                type: :string
+              }
+            },
+            pro_adresses: {
+              type: :array,
+              nullable: true,
+              items: {
+                type: :string
+              }
+            },
+            capital_social: {
+              type: :array,
+              nullable: true,
+              items: {
+                type: :string
+              }
+            },
+            client_prenoms: {
+              type: :array,
+              nullable: true,
+              items: {
+                type: :string
+              }
+            },
+            client_adresses: {
+              type: :array,
+              nullable: true,
+              items: {
+                type: :string
+              }
+            },
+            client_civilite: {
+              type: :array,
+              nullable: true,
+              items: {
+                type: :string
+              }
+            },
+            raison_sociales: {
+              type: :array,
+              nullable: true,
+              items: {
+                type: :string
+              }
+            },
+            forme_juridiques: {
+              type: :array,
+              nullable: true,
+              items: {
+                type: :string
+              }
+            },
+            client_noms_de_famille: {
+              type: :array,
+              nullable: true,
+              items: {
+                type: :string
+              }
+            },
+            ville_immatriculation_rcss: {
+              type: :array,
+              nullable: true,
+              items: {
+                type: :string
+              }
+            }
+
+          }
+        },
+        quote_check_qa_attributes: {
+          type: :object,
+          nullable: true,
+          properties: {
+            version: {
+              type: :string
+            },
+            mention_devis: {
+              type: :boolean
+            },
+            numero_devis: {
+              type: :string,
+              nullable: true
+            },
+            pro_forme_juridique: {
+              type: :string,
+              nullable: true
+            },
+            date_devis: {
+              type: :string,
+              nullable: true
+            },
+            validite: {
+              type: :boolean,
+              nullable: true
+            },
+            date_debut_chantier: {
+              type: :string,
+              nullable: true
+            },
+            delai_debut_chantier: {
+              type: :string,
+              nullable: true
+            },
+            date_pre_visite: {
+              type: :string,
+              nullable: true
+            },
+            separation_prix_fourniture_pose: {
+              type: :boolean,
+              nullable: true,
+              description: "Vérifiez qu'il y a une ligne distincte pour la pose, l'installation ou la main d'œuvre"
+            },
+            prix_total_ht: {
+              type: :number,
+              nullable: true
+            },
+            prix_total_ttc: {
+              type: :number,
+              nullable: true
+            },
+            tva: {
+              type: :array,
+              items: {
+                type: :object,
+                properties: {
+                  taux_tva: {
+                    type: :number,
+                    nullable: true
+                  },
+                  prix_ht_total: {
+                    type: :number,
+                    nullable: true
+                  },
+                  montant_tva_total: {
+                    type: :number,
+                    nullable: true
+                  }
+                }
+              }
+            }
+          }
+        },
         quote_check: {
           type: :object,
           properties: {
@@ -142,14 +421,7 @@ RSpec.configure do |config|
             profile: { "$ref" => "#/components/schemas/profile" },
             gestes: {
               type: :array,
-              items: {
-                type: :object,
-                properties: {
-                  id: { type: :string },
-                  intitule: { type: :string },
-                  valid: { type: :boolean, nullable: true }
-                }
-              },
+              items: { "$ref" => "#/components/schemas/quote_check_geste" },
               nullable: true
             },
             errors: {
@@ -182,276 +454,14 @@ RSpec.configure do |config|
               description: "commentaire manuel (humain), vide ou null pour retirer",
               maxLength: QuoteCheck::MAX_COMMENT_LENGTH
             },
-            private_data_qa_attributes: {
-              type: :object,
-              nullable: true,
-              properties: {
-                pro: {
-                  type: :object,
-                  properties: {
-                    siret: {
-                      type: :string,
-                      nullable: true
-                    },
-                    adresse: {
-                      type: :string,
-                      nullable: true
-                    },
-                    capital: {
-                      type: :string,
-                      nullable: true
-                    },
-                    assurance: {
-                      type: :string,
-                      nullable: true
-                    },
-                    numero_tva: {
-                      type: :string,
-                      nullable: true
-                    },
-                    rge_labels: {
-                      type: :array,
-                      items: {
-                        type: :string
-                      }
-                    },
-                    raison_sociale: {
-                      type: :string,
-                      nullable: true
-                    },
-                    forme_juridique: {
-                      type: :string,
-                      nullable: true
-                    }
-                  }
-                },
-
-                noms: {
-                  type: :array,
-                  nullable: true,
-                  items: {
-                    type: :string
-                  }
-                },
-                rnes: {
-                  type: :array,
-                  nullable: true,
-                  items: {
-                    type: :string
-                  }
-                },
-                uris: {
-                  type: :array,
-                  nullable: true,
-                  items: {
-                    type: :string
-                  }
-                },
-                ibans: {
-                  type: :array,
-                  nullable: true,
-                  items: {
-                    type: :string
-                  }
-                },
-                emails: {
-                  type: :array,
-                  nullable: true,
-                  items: {
-                    type: :string
-                  }
-                },
-                sirets: {
-                  type: :array,
-                  nullable: true,
-                  items: {
-                    type: :string
-                  }
-                },
-                version: {
-                  type: :string
-                },
-                adresses: {
-                  type: :array,
-                  nullable: true,
-                  items: {
-                    type: :string
-                  }
-                },
-                assurances: {
-                  type: :array,
-                  nullable: true,
-                  items: {
-                    type: :string
-                  }
-                },
-                numero_rge: {
-                  type: :array,
-                  nullable: true,
-                  items: {
-                    type: :string
-                  }
-                },
-                telephones: {
-                  type: :array,
-                  nullable: true,
-                  items: {
-                    type: :string
-                  }
-                },
-                numero_rcss: {
-                  type: :array,
-                  nullable: true,
-                  items: {
-                    type: :string
-                  }
-                },
-                numeros_tva: {
-                  type: :array,
-                  nullable: true,
-                  items: {
-                    type: :string
-                  }
-                },
-                pro_adresses: {
-                  type: :array,
-                  nullable: true,
-                  items: {
-                    type: :string
-                  }
-                },
-                capital_social: {
-                  type: :array,
-                  nullable: true,
-                  items: {
-                    type: :string
-                  }
-                },
-                client_prenoms: {
-                  type: :array,
-                  nullable: true,
-                  items: {
-                    type: :string
-                  }
-                },
-                client_adresses: {
-                  type: :array,
-                  nullable: true,
-                  items: {
-                    type: :string
-                  }
-                },
-                client_civilite: {
-                  type: :array,
-                  nullable: true,
-                  items: {
-                    type: :string
-                  }
-                },
-                raison_sociales: {
-                  type: :array,
-                  nullable: true,
-                  items: {
-                    type: :string
-                  }
-                },
-                forme_juridiques: {
-                  type: :array,
-                  nullable: true,
-                  items: {
-                    type: :string
-                  }
-                },
-                client_noms_de_famille: {
-                  type: :array,
-                  nullable: true,
-                  items: {
-                    type: :string
-                  }
-                },
-                ville_immatriculation_rcss: {
-                  type: :array,
-                  nullable: true,
-                  items: {
-                    type: :string
-                  }
-                }
-
-              }
+            private_data_qa_attributes: { "$ref" => "#/components/schemas/quote_check_private_data_qa_attributes" },
+            read_attributes: {
+              allOf: [
+                { "$ref" => "#/components/schemas/quote_check_private_data_qa_attributes" },
+                { "$ref" => "#/components/schemas/quote_check_qa_attributes" }
+              ]
             },
-            qa_attributes: {
-              type: :object,
-              nullable: true,
-              properties: {
-                version: {
-                  type: :string
-                },
-                mention_devis: {
-                  type: :boolean
-                },
-                numero_devis: {
-                  type: :string,
-                  nullable: true
-                },
-                pro_forme_juridique: {
-                  type: :string,
-                  nullable: true
-                },
-                date_devis: {
-                  type: :string,
-                  nullable: true
-                },
-                validite: {
-                  type: :boolean,
-                  nullable: true
-                },
-                date_debut_chantier: {
-                  type: :string,
-                  nullable: true
-                },
-                delai_debut_chantier: {
-                  type: :string,
-                  nullable: true
-                },
-                date_pre_visite: {
-                  type: :string,
-                  nullable: true
-                },
-                separation_prix_fourniture_pose: {
-                  type: :boolean,
-                  nullable: true,
-                  description: "Vérifiez qu'il y a une ligne distincte pour la pose, l'installation ou la main d'œuvre"
-                },
-                prix_total_ht: {
-                  type: :number,
-                  nullable: true
-                },
-                prix_total_ttc: {
-                  type: :number,
-                  nullable: true
-                },
-                tva: {
-                  type: :array,
-                  items: {
-                    type: :object,
-                    properties: {
-                      taux_tva: {
-                        type: :number,
-                        nullable: true
-                      },
-                      prix_ht_total: {
-                        type: :number,
-                        nullable: true
-                      },
-                      montant_tva_total: {
-                        type: :number,
-                        nullable: true
-                      }
-                    }
-                  }
-                }
-              }
-            }
+            qa_attributes: { "$ref" => "#/components/schemas/quote_check_qa_attributes" }
           },
           required: %w[id status profile]
         },
