@@ -87,17 +87,13 @@ module QuoteValidator
       quote&.keys_accessed || []
     end
 
+    # TODO: doit valider les critères techniques associés aux gestes présents dans le devis
     def validate!
       @error_details = []
 
       yield
 
       valid?
-    end
-
-    # doit valider les critères techniques associés aux gestes présents dans le devis
-    def validate
-      raise NotImplementedError
     end
 
     def valid?
