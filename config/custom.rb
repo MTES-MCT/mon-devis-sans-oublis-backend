@@ -20,7 +20,9 @@ Rails.application.configure do
 
   config.application_name = "Mon Devis Sans Oublis"
   config.application_host = UriExtended.host_with_port(ENV.fetch("APPLICATION_HOST", "http://localhost:3000"))
+  # rubocop:disable Style/RedundantParentheses
   config.application_version = ENV.fetch("CONTAINER_VERSION", (`git rev-parse HEAD`.chomp rescue "unknown")) # rubocop:disable Style/RescueModifier
+  # rubocop:enable Style/RedundantParentheses
 
   config.openapi_file = lambda do |version, section|
     raise ArgumentError, "Invalid section: #{section}" unless %w[internal partner].include?(section)
