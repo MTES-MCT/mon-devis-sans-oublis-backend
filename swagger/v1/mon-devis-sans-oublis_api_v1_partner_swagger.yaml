@@ -109,6 +109,11 @@ paths:
                   "$ref": "#/components/schemas/profile"
                 parent_id:
                   type: string
+                  description: Ancienne soumission du fichier
+                  nullable: true
+                case_id:
+                  type: string
+                  description: Dossier de devis pour rénovation d’ampleur
                   nullable: true
               required:
               - file
@@ -139,6 +144,30 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/api_error"
+  "/quotes_cases":
+    post:
+      summary: Créer un dossier de devis
+      tags:
+      - Dossier
+      security:
+      - bearer_api_key: []
+      parameters: []
+      responses:
+        '201':
+          description: Devis téléversé
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/quotes_case"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reference:
+                  type: string
+                  nullable: true
   "/stats":
     get:
       summary: Récupérer les stats
@@ -498,6 +527,9 @@ components:
         parent_id:
           type: string
           nullable: true
+        case_id:
+          type: string
+          nullable: true
         status:
           "$ref": "#/components/schemas/quote_check_status"
         filename:
@@ -579,6 +611,17 @@ components:
           maxLength: 1000
       required:
       - quote_check_id
+    quotes_case:
+      type: object
+      properties:
+        id:
+          type: string
+          description: UUID unique
+        reference:
+          type: string
+          nullable: true
+      required:
+      - id
     stats:
       type: object
       properties:
