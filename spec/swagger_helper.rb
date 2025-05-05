@@ -41,7 +41,7 @@ RSpec.configure do |config|
           type: :http,
           scheme: :bearer,
           bearerFormat: "API Key",
-          description: "Renseignez votre clé API suivant: Bearer YOUR_API_KEY"
+          description: "Renseignez votre clé API :"
         }
       },
       schemas: {
