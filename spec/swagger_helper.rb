@@ -415,6 +415,7 @@ RSpec.configure do |config|
               description: "UUID unique"
             },
             parent_id: { type: :string, nullable: true },
+            case_id: { type: :string, nullable: true },
             status: { "$ref" => "#/components/schemas/quote_check_status" },
             filename: { type: :string, nullable: true },
             metadata: { "$ref" => "#/components/schemas/quote_check_metadata", nullable: true },
@@ -495,7 +496,17 @@ RSpec.configure do |config|
           },
           required: %w[quote_check_id]
         },
-
+        quotes_case: {
+          type: :object,
+          properties: {
+            id: {
+              type: :string,
+              description: "UUID unique"
+            },
+            reference: { type: :string, nullable: true }
+          },
+          required: %w[id]
+        },
         stats: {
           type: :object,
           properties: {

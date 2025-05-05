@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-Rails.application.routes.draw do
+Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   # mount ActiveStorage::Engine => "/rails/active_storage" # For temporary URL generation to share files
   # rails_postgresql_blob GET      /rails/active_storage/postgresql/:signed_id/*filename(.:format)
   # rails_postgresql_service GET      /rails/active_storage/postgresql/:encoded_key/*filename(.:format)
@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :profiles, only: %i[index]
+      resources :quotes_cases, only: %i[create]
       resources :quote_checks, only: %i[create show update] do
         collection do
           get :metadata

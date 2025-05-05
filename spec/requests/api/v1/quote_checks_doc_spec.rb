@@ -59,7 +59,16 @@ describe "Devis API" do
           },
           metadata: { "$ref" => "#/components/schemas/quote_check_metadata", nullable: true },
           profile: { "$ref" => "#/components/schemas/profile" },
-          parent_id: { type: :string, nullable: true }
+          parent_id: {
+            type: :string,
+            description: "Ancienne soumission du fichier",
+            nullable: true
+          },
+          case_id: {
+            type: :string,
+            description: "Dossier de devis pour rénovation d’ampleur",
+            nullable: true
+          }
         },
         required: %w[file profile]
       }

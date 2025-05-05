@@ -30,6 +30,7 @@ module Api
           file_text: quote_check_params[:file_text],
           file_markdown: quote_check_params[:file_markdown],
           metadata: quote_check_params[:metadata],
+          case_id: quotes_case&.id,
           parent_id: quote_check_params[:parent_id],
           source_name: api_user.downcase
         )
@@ -69,6 +70,15 @@ module Api
                          .find(params[:id])
       end
 
+      def quotes_case
+        return unless params[:case_id]
+
+        @quotes_case ||= QuotesCase
+                         .select(:id)
+                         .accessible_for_source(api_user)
+                         .find(params[:case_id])
+      end
+
       def quote_check_json(quote_check_provided = nil)
         QuoteCheckSerializer.new(quote_check_provided || quote_check).as_json
       end
@@ -76,7 +86,7 @@ module Api
       def quote_check_params
         params.permit(
           :file, :profile,
-          :metadata, :parent_id,
+          :metadata, :parent_id, :case_id,
           :file_text, :file_markdown
         )
       end

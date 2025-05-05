@@ -539,7 +539,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
   end
 
   form do |f| # rubocop:disable Metrics/BlockLength
-    f.inputs "Quote Check Details" do # rubocop:disable Metrics/BlockLength
+    f.inputs "QuoteCheck Details" do # rubocop:disable Metrics/BlockLength
       if f.object.new_record?
         f.input :profile,
                 as: :select,
