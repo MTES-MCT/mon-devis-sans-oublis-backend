@@ -44,6 +44,7 @@ gestes : [{geste1},{geste2}...]
 ```jsx
 {type: 'chauffe_eau_thermo'; 
 intitule: text;
+intitule_precis: Boolean; vérifiez la présence d'un de ces intitulé précisément (en ne prenant pas en compte les majuscules) enum(chauffe-eau thermodynamique, chauffe eau thermodynamique, ballon solaire thermodynamique, chauffe-eau solaire thermodynamique) 
 marque: text; 
 reference: text; (Le modèle du chauffe-eau thermodynamique)
 volume: integer (en Litre); 
@@ -185,6 +186,12 @@ puissance_nominale: decimal; **(kW) (puissance standardisée utilisée pour le d
 
 }
 ```
+
+Pour pac_air_eau 
+```jsx
+{
+    intitule_precis: Boolean; vérifiez la présence d'un de ces intitulé précisément (en ne prenant pas en compte les majuscules) enum(pompe à chaleur air / eau, pompe à chaleur hybride gaz, pompe à chaleur avec appoint intégré, PAC air / eau, PAC aerothermique)
+}
 
 ### Chaudière biomasse
 
