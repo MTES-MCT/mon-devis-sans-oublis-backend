@@ -108,6 +108,7 @@ Différentes briques sont mises à contribution et encore en évaluation:
 
 - ajouter ou modifier la variable d'environnement type `MDSO_API_KEY_FOR_[PARTNER]` exemple `MDSO_API_KEY_FOR_AMI`
   via le dashboard Scalingo onglet Environnement dans le contexte souhaité `staging` / `production`
+  avec une valeur générée via `rails secret` par exemple
 - redémarrer l'application via le dashboard Scalingo onglet Ressources
 - vérifier sur le back office MDSO onglet "API Keys" la présence de l'accès
 - tester si besoin via le playground API doc du contexte correspondant
