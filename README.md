@@ -106,9 +106,11 @@ Différentes briques sont mises à contribution et encore en évaluation:
 
 ### API Accès
 
-- ajouter ou modifier la clé d'environnement type `MDSO_API_KEY_FOR_PARTNERA`
-- redémarrer l'application si nécessaire
-- vérifier dans l'onglet "API Keys" du back office la présence de l'accès
+- ajouter ou modifier la variable d'environnement type `MDSO_API_KEY_FOR_[PARTNER]` exemple `MDSO_API_KEY_FOR_AMI`
+  via le dashboard Scalingo onglet Environnement dans le contexte souhaité `staging` / `production`
+- redémarrer l'application via le dashboard Scalingo onglet Ressources
+- vérifier sur le back office MDSO onglet "API Keys" la présence de l'accès
+- tester si besoin via le playground API doc du contexte correspondant
 
 ## Démarrage
 
