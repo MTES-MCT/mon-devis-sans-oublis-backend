@@ -41,6 +41,14 @@ RSpec.describe QuoteValidator::Global, type: :service do
     end
   end
 
+  describe "#controls_count" do
+    before { quote_validator.validate! }
+
+    it "returns controls_count" do
+      expect(quote_validator.controls_count).to eq(24)
+    end
+  end
+
   describe "#errors" do
     before { quote_validator.validate! }
 

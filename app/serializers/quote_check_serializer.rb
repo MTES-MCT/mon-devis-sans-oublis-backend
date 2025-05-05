@@ -6,14 +6,13 @@ class QuoteCheckSerializer < ActiveModel::Serializer
   TIMEOUT_FOR_PROCESSING = Integer(ENV.fetch("MDSO_TIMEOUT_FOR_PROCESSING", 15)).minutes
 
   attributes :id, :status, :profile, :metadata,
-             :errors, :error_details, :error_messages,
              :parent_id,
              :filename,
              :gestes,
              :finished_at,
              :comment,
              # Virtual attributes
-             :errors, :error_details, :error_messages,
+             :errors, :error_details, :error_messages, :controls_count,
              :gestes
 
   attribute :private_data_qa_attributes, if: :full?
@@ -34,6 +33,10 @@ class QuoteCheckSerializer < ActiveModel::Serializer
 
   def errors
     validation_errors
+  end
+
+  def controls_count
+    object.validation_controls_count
   end
 
   def error_details

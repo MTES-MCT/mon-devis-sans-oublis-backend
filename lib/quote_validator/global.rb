@@ -28,13 +28,15 @@ module QuoteValidator
     end
 
     # doit valider les mentions administratives du devis
-    def validate_admin
+    def validate_admin # rubocop:disable Metrics/MethodLength
       # mention devis présente ou non, quote[:mention_devis] est un boolean
-      unless quote[:mention_devis] || quote[:devis].present?
-        add_error("devis_manquant", category: "admin",
-                                    type: "missing")
-      end
-      add_error("numero_devis_manquant", category: "admin", type: "warning") if quote[:numero_devis].blank?
+      add_error_if(
+        "devis_manquant",
+        !(quote[:mention_devis] || quote[:devis].present?),
+        category: "admin",
+        type: "missing"
+      )
+      add_error_if("numero_devis_manquant", quote[:numero_devis].blank?, category: "admin", type: "warning")
 
       validate_dates
       validate_pro
@@ -49,20 +51,19 @@ module QuoteValidator
     # rubocop:disable Metrics/AbcSize
     def validate_dates
       # date_devis
-      add_error("date_devis_manquant", category: "admin", type: "missing") if quote[:date_devis].blank?
+      add_error_if("date_devis_manquant", quote[:date_devis].blank?, category: "admin", type: "missing")
 
       # date_debut_chantier
       date_chantier = quote[:date_debut_chantier]
       delai_debut_chantier = quote[:delai_debut_chantier]
-      if date_chantier.blank? && delai_debut_chantier.blank?
-        add_error("date_chantier_manquant", category: "admin", type: "warning")
-      end
+      add_error_if("date_chantier_manquant", date_chantier.blank? && delai_debut_chantier.blank?, category: "admin",
+                                                                                                  type: "warning")
 
       # date_pre_visite
-      add_error("date_pre_visite_manquant", category: "admin", type: "warning") if quote[:date_pre_visite].blank?
+      add_error_if("date_pre_visite_manquant", quote[:date_pre_visite].blank?, category: "admin", type: "warning")
 
       # validite
-      add_error("date_validite_manquant", category: "admin", type: "warning") unless quote[:validite]
+      add_error_if("date_validite_manquant", !quote[:validite], category: "admin", type: "warning")
     end
     # rubocop:enable Metrics/AbcSize
 
@@ -72,7 +73,7 @@ module QuoteValidator
     def validate_rge
       @pro = quote[:pro] ||= TrackingHash.new
       rge_labels = @pro[:rge_labels]
-      add_error("rge_manquant", category: "admin", type: "missing") if rge_labels.blank?
+      add_error_if("rge_manquant", rge_labels.blank?, category: "admin", type: "missing")
     end
 
     # doit valider les mentions administratives associées à l'artisan
@@ -83,31 +84,31 @@ module QuoteValidator
     def validate_pro
       @pro = quote[:pro] ||= TrackingHash.new
 
-      add_error("pro_raison_sociale_manquant", category: "admin", type: "missing") if @pro[:raison_sociale].blank?
+      add_error_if("pro_raison_sociale_manquant", @pro[:raison_sociale].blank?, category: "admin", type: "missing")
       # on essaie de récupérer la forme juridique pendant l'anonymisation mais aussi avec le LLM.
-      if @pro[:forme_juridique].blank? && quote[:pro_forme_juridique].blank?
-        add_error("pro_forme_juridique_manquant", category: "admin", type: "missing")
-      end
-      add_error("tva_manquant", category: "admin", type: "missing") if @pro[:numero_tva].blank?
+      add_error_if("pro_forme_juridique_manquant",
+                   @pro[:forme_juridique].blank? && quote[:pro_forme_juridique].blank?,
+                   category: "admin", type: "missing")
+      add_error_if("tva_manquant", @pro[:numero_tva].blank?, category: "admin", type: "missing")
       # TODO: check format tva : FR et de 11 chiffres
       # (une clé informatique de 2 chiffres et le numéro SIREN à 9 chiffres de l'entreprise)
 
       # TODO: rajouter une condition si personne physique professionnelle et dans ce cas pas de SIRET nécessaire
-      add_error("capital_manquant", category: "admin", type: "missing") if @pro[:capital].blank?
-      add_error("siret_manquant", category: "admin", type: "missing") if @pro[:siret].blank?
+      add_error_if("capital_manquant", @pro[:capital].blank?, category: "admin", type: "missing")
+      add_error_if("siret_manquant", @pro[:siret].blank?, category: "admin", type: "missing")
       # beaucoup de confusion entre SIRET (14 chiffres pour identifier un etablissement)
       # et SIREN (9 chiffres pour identifier une entreprise)
-      if @pro[:siret]&.gsub(/\s+/, "")&.length != 14 && @pro[:siret]&.length&.positive?
-        add_error("siret_format_erreur", category: "admin",
-                                         type: "wrong")
-      end
+      add_error_if("siret_format_erreur",
+                   @pro[:siret]&.gsub(/\s+/, "")&.length != 14 && @pro[:siret]&.length&.positive?,
+                   category: "admin",
+                   type: "wrong")
 
       rcs_present = @pro[:rcs].present? || @pro[:rne].present? || (@pro[:rcs_ville].present? && @pro[:siret].present?)
 
-      add_error("rcs_manquant", category: "admin", type: "missing") unless rcs_present
-      add_error("rcs_ville_manquant", category: "admin", type: "missing") if rcs_present && @pro[:rcs_ville].blank?
+      add_error_if("rcs_manquant", !rcs_present, category: "admin", type: "missing")
+      add_error_if("rcs_ville_manquant", rcs_present && @pro[:rcs_ville].blank?, category: "admin", type: "missing")
 
-      add_error("pro_assurance_manquant", category: "admin", type: "missing") if @pro[:assurance].blank?
+      add_error_if("pro_assurance_manquant", @pro[:assurance].blank?, category: "admin", type: "missing")
 
       validate_pro_address
     end
@@ -120,9 +121,9 @@ module QuoteValidator
     def validate_client
       @client = quote[:client] ||= TrackingHash.new
 
-      add_error("client_prenom_manquant", category: "admin", type: "missing") if @client[:prenom].blank?
-      add_error("client_nom_manquant", category: "admin", type: "missing") if @client[:nom].blank?
-      add_error("client_civilite_manquant", category: "admin", type: "missing") if @client[:civilite].blank?
+      add_error_if("client_prenom_manquant", @client[:prenom].blank?, category: "admin", type: "missing")
+      add_error_if("client_nom_manquant", @client[:nom].blank?, category: "admin", type: "missing")
+      add_error_if("client_civilite_manquant", @client[:civilite].blank?, category: "admin", type: "missing")
 
       validate_client_address
     end
@@ -148,28 +149,25 @@ module QuoteValidator
 
     # numéro, rue, cp, ville - si pas suffisant numéro de parcelle cadastrale. V0, on check juste la présence ?
     def validate_address(address, type)
-      return if address.present?
-
       case type
       when "client"
-        add_error("client_adresse_manquant", category: "admin", type: "missing")
+        add_error_if("client_adresse_manquant", address.blank?, category: "admin", type: "missing")
       when "chantier" # ne devrait pas arriver, mais par la suite, faudrait vérifier la justesse de l'adresse
-        add_error("chantier_adresse_manquant", category: "admin", type: "missing")
+        add_error_if("chantier_adresse_manquant", address.blank?, category: "admin", type: "missing")
       when "pro"
-        add_error("pro_adresse_manquant", category: "admin", type: "missing")
+        add_error_if("pro_adresse_manquant", address.blank?, category: "admin", type: "missing")
       end
     end
 
     def validate_prix
       # Valider qu'on a une séparation matériaux et main d'oeuvre
       # TODO V2, il faudra sûrement vérifier la séparation pose / fourniture par geste et non juste un boolean.
-      unless quote[:separation_prix_fourniture_pose]
-        add_error("separation_fourniture_pose_manquant", category: "admin", type: "missing")
-      end
+      add_error_if("separation_fourniture_pose_manquant", !quote[:separation_prix_fourniture_pose],
+                   category: "admin", type: "missing")
 
       # Valider qu'on a le prix total HT / TTC
-      add_error("prix_total_ttc_manquant", category: "admin", type: "missing") if quote[:prix_total_ttc].blank?
-      add_error("prix_total_ht_manquant", category: "admin", type: "missing") if quote[:prix_total_ht].blank?
+      add_error_if("prix_total_ttc_manquant", quote[:prix_total_ttc].blank?, category: "admin", type: "missing")
+      add_error_if("prix_total_ht_manquant", quote[:prix_total_ht].blank?, category: "admin", type: "missing")
       # Valider qu'on a le montant de TVA pour chacun des taux
       # {taux_tva: decimal;
       # prix_ht_total: decimal;
@@ -191,28 +189,26 @@ module QuoteValidator
       #   quantite: decimal
       #   unite: texte
       # }
-      if geste[:prix_ht].blank?
-        add_error(
-          "geste_prix_ht_manquant",
-          category: "gestes",
-          type: "missing",
-          provided_value: geste[:intitule],
-          geste: geste
-        )
-      end
-      if geste[:prix_unitaire_ht].blank?
-        add_error(
-          "geste_prix_unitaire_ht_manquant",
-          category: "gestes",
-          type: "missing",
-          provided_value: geste[:intitule],
-          geste: geste
-        )
-      end
-      return if geste[:taux_tva].present?
+      add_error_if(
+        "geste_prix_ht_manquant",
+        geste[:prix_ht].blank?,
+        category: "gestes",
+        type: "missing",
+        provided_value: geste[:intitule],
+        geste: geste
+      )
+      add_error_if(
+        "geste_prix_unitaire_ht_manquant",
+        geste[:prix_unitaire_ht].blank?,
+        category: "gestes",
+        type: "missing",
+        provided_value: geste[:intitule],
+        geste: geste
+      )
 
-      add_error(
+      add_error_if(
         "geste_taux_tva_manquant",
+        geste[:taux_tva].blank?,
         category: "gestes",
         type: "missing",
         provided_value: geste[:intitule],
