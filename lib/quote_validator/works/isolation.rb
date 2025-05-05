@@ -10,11 +10,11 @@ module QuoteValidator
     class Isolation < Base
       # Validation des critères communs aux différentes isolations
       def validate_isolation(geste)
-        add_error("isolation_marque_manquant", geste) if geste[:marque_isolant].blank?
-        add_error("isolation_reference_manquant", geste) if geste[:reference_isolant].blank?
-        add_error("isolation_surface_manquant", geste) if geste[:surface_isolant].blank? # TODO : check unité ?
-        add_error("isolation_epaisseur_manquant", geste) if geste[:epaisseur_isolant].blank? # TODO : check unité ?
-        add_error("isolation_r_manquant", geste) if geste[:resistance_thermique].blank?
+        add_error_if("isolation_marque_manquant", geste[:marque_isolant].blank?, geste)
+        add_error_if("isolation_reference_manquant", geste[:reference_isolant].blank?, geste)
+        add_error_if("isolation_surface_manquant", geste[:surface_isolant].blank?, geste) # TODO : check unité ?
+        add_error_if("isolation_epaisseur_manquant", geste[:epaisseur_isolant].blank?, geste) # TODO : check unité ?
+        add_error_if("isolation_r_manquant", geste[:resistance_thermique].blank?, geste)
 
         # TODO : V1 - vérifier les normes
         validate_norme(geste)
@@ -23,15 +23,16 @@ module QuoteValidator
       def validate_norme(geste)
         acermi = geste[:numero_acermi]
         norme = geste[:norme_calcul_resistance]
-        return unless norme.blank? && acermi.blank?
 
-        add_error("isolation_norme_acermi_manquant", geste)
+        add_error_if("isolation_norme_acermi_manquant", norme.blank? && acermi.blank?, geste)
       end
 
       def validate_protection(geste)
-        return unless !geste[:presence_parement] && !geste[:presence_protection] && !geste[:presence_fixation]
-
-        add_error("isolation_parement_fixation_protection_manquant", geste)
+        add_error_if(
+          "isolation_parement_fixation_protection_manquant",
+          !geste[:presence_parement] && !geste[:presence_protection] && !geste[:presence_fixation],
+          geste
+        )
       end
 
       def validate_isolation_ite(geste)
@@ -56,9 +57,11 @@ module QuoteValidator
         validate_isolation(geste)
 
         # TODO : check valeur R en V1 - R ≥ 4,5 m².K/W ou R ≥ 6,5 m².K/W si MAR
-        return if geste[:type_isolation_toiture_terrasse].present?
-
-        add_error("isolation_type_isolation_toiture_terrasse_manquant", geste)
+        add_error_if(
+          "isolation_type_isolation_toiture_terrasse_manquant",
+          geste[:type_isolation_toiture_terrasse].blank?,
+          geste
+        )
       end
 
       def validate_isolation_iti(geste)
@@ -76,13 +79,13 @@ module QuoteValidator
         # TODO : check valeur R en V1 - R ≥ 3 m².K/W pour les planchers bas sur sous-sol,
         # sur vide sanitaire ou sur passage ouvert
 
-        add_error("isolation_localisation_plancher_bas_manquant", geste) if geste[:localisation].blank?
+        add_error_if("isolation_localisation_plancher_bas_manquant", geste[:localisation].blank?, geste)
       end
 
       protected
 
-      def add_error(code, geste, type: "missing")
-        super(code,
+      def add_error_if(code, condition, geste, type: "missing")
+        super(code, condition,
                   type:,
                   category: "gestes",
                   geste:,

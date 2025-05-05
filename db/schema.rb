@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_22_164814) do
+ActiveRecord::Schema[7.2].define(version: 2025_05_05_102248) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -180,6 +180,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_22_164814) do
     t.text "file_text"
     t.text "file_markdown"
     t.string "source_name", default: "mdso"
+    t.integer "validation_controls_count"
     t.index ["file_id"], name: "index_quote_checks_on_file_id"
     t.index ["parent_id"], name: "index_quote_checks_on_parent_id"
     t.index ["source_name"], name: "index_quote_checks_on_source_name"

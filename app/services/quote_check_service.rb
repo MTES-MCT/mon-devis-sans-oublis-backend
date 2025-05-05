@@ -169,7 +169,7 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
     )
   end
 
-  def validate_quote
+  def validate_quote # rubocop:disable Metrics/MethodLength
     quote_validator = QuoteValidator::Global.new(
       quote_check.read_attributes,
       quote_id: quote_check.id
@@ -177,6 +177,7 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
     quote_validator.validate!
 
     quote_check.assign_attributes(
+      validation_controls_count: quote_validator.controls_count,
       validation_errors: quote_validator.errors,
       validation_error_details: quote_validator.error_details,
       validation_version: quote_validator.version

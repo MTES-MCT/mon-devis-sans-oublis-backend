@@ -5,7 +5,7 @@ module QuoteValidator
   class Base
     class NotImplementedError < ::NotImplementedError; end
 
-    attr_accessor :error_details, :quote, :quote_id, :warnings
+    attr_accessor :controls_count, :error_details, :quote, :quote_id, :warnings
 
     def self.geste_index(quote_id, geste_index)
       [quote_id, "geste", geste_index + 1].compact.join("-")
@@ -19,6 +19,8 @@ module QuoteValidator
 
       @quote_id = quote_id
       @error_details = error_details
+
+      @controls_count = 0
     end
 
     def self.error_categories
@@ -27,6 +29,13 @@ module QuoteValidator
 
     def self.error_types
       I18n.t("quote_validator.error_types").transform_keys(&:to_s)
+    end
+
+    def add_error_if(code, condition, **)
+      increment_controls_count
+      return unless condition
+
+      add_error(code, **)
     end
 
     # rubocop:disable Metrics/AbcSize
@@ -85,6 +94,10 @@ module QuoteValidator
 
     def fields
       quote&.keys_accessed || []
+    end
+
+    def increment_controls_count
+      @controls_count += 1
     end
 
     # TODO: doit valider les critères techniques associés aux gestes présents dans le devis

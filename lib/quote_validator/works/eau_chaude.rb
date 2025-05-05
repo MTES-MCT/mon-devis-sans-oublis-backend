@@ -18,7 +18,7 @@ module QuoteValidator
         }
 
         fields.each do |error_message, field|
-          add_error(error_message, geste) if geste[field].blank?
+          add_error_if(error_message, geste[field].blank?, geste)
         end
       end
 
@@ -39,7 +39,7 @@ module QuoteValidator
         # TODO V1 : Véfifier valeur ETAS fonction de l'appoint et du profil de soutirage
 
         fields.each do |error_message, field|
-          add_error(error_message, geste) if geste[field].blank?
+          add_error_if(error_message, geste[field].blank?, geste)
         end
       end
 
@@ -59,12 +59,12 @@ module QuoteValidator
         # TODO: V1 : Véfifier valeur ETAS fonction du profil de soutirage
 
         fields.each do |error_message, field|
-          add_error(error_message, geste) if geste[field].blank?
+          add_error_if(error_message, geste[field].blank?, geste)
         end
       end
 
-      def add_error(code, geste, type: "missing")
-        super(code,
+      def add_error_if(code, condition, geste, type: "missing")
+        super(code, condition,
                   type:,
                   category: "gestes",
                   geste:,

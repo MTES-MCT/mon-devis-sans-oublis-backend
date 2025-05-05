@@ -27,7 +27,7 @@ module QuoteValidator
         }
 
         fields.each do |error_message, field|
-          add_error(error_message, geste) if geste[field].blank?
+          add_error_if(error_message, geste[field].blank?, geste)
         end
       end
       # rubocop:enable Metrics/MethodLength
@@ -51,7 +51,7 @@ module QuoteValidator
         # (configuration T4 avec 1 salle de bain et 1WC)
 
         fields.each do |error_message, field|
-          add_error(error_message, geste) if geste[field].blank?
+          add_error_if(error_message, geste[field].blank?, geste)
         end
       end
 
@@ -71,14 +71,14 @@ module QuoteValidator
         # Efficacité thermique de l’échangeur > 85% (Equivalent à un caisson certifié NF 205 ou equivalent)
 
         fields.each do |error_message, field|
-          add_error(error_message, geste) if geste[field].blank?
+          add_error_if(error_message, geste[field].blank?, geste)
         end
       end
 
       protected
 
-      def add_error(code, geste, type: "missing")
-        super(code,
+      def add_error_if(code, condition, geste, type: "missing")
+        super(code, condition,
                   type:,
                   category: "gestes",
                   geste:,
