@@ -32,6 +32,7 @@ module Api
           metadata: quote_check_params[:metadata],
           case_id: quotes_case&.id,
           parent_id: quote_check_params[:parent_id],
+          reference: quote_check_params[:reference],
           source_name: api_user.downcase
         )
         @quote_check = quote_check_service.quote_check
@@ -87,7 +88,8 @@ module Api
         params.permit(
           :file, :profile,
           :metadata, :parent_id, :reference, :case_id,
-          :file_text, :file_markdown
+          :file_text, :file_markdown,
+          :reference
         )
       end
 

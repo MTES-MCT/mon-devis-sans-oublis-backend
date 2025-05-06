@@ -16,12 +16,17 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
   permit_params :expected_validation_errors,
                 :file,
                 :parent_id,
+                :reference,
                 :profile,
                 :aides, :gestes, # Virtual attributes
                 :ocr, :qa_llm # Check params
 
+  filter :reference, as: :string
   filter :file_filename, as: :string
   filter :created_at, as: :date_range
+  filter :source_name, as: :select, collection:
+    QuoteCheck.connection.data_source_exists?(QuoteCheck.table_name) ? QuoteCheck.distinct.pluck(:source_name).sort : []
+
   filter :status, as: :select, collection: QuoteCheck::STATUSES
   filter :profile, as: :select, collection: QuoteCheck::PROFILES
 
@@ -72,6 +77,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
           gestes: new_quote_check_params[:gestes]
         ).metadata,
         parent_id: new_quote_check_params[:parent_id],
+        reference: new_quote_check_params[:reference],
         source_name: "mdso_bo"
       )
 
@@ -118,6 +124,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
       params.require(:quote_check).permit(
         :file, :parent_id, :profile,
         :file_text, :file_markdown,
+        :reference,
         :force_ocr, :ocr, :qa_llm, # Check params
         aides: [], gestes: [] # Virtual attributes
       )
@@ -211,7 +218,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
     end
   end
 
-  show do
+  show do # rubocop:disable Metrics/BlockLength
     columns do # rubocop:disable Metrics/BlockLength
       column do # rubocop:disable Metrics/BlockLength
         attributes_table do # rubocop:disable Metrics/BlockLength
@@ -566,6 +573,8 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
         end
 
         hr
+
+        f.input :reference
 
         f.input :force_ocr,
                 as: :boolean,
