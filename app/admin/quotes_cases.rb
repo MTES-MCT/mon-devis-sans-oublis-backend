@@ -1,13 +1,16 @@
 # frozen_string_literal: true
 
-ActiveAdmin.register QuotesCase do
+ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
   config.per_page = 10
 
   actions :index, :show, :new, :create
 
   permit_params :reference
 
-  config.filters = false
+  filter :reference, as: :string
+  filter :source_name, as: :select, collection:
+    QuoteCheck.connection.data_source_exists?(QuoteCheck.table_name) ? QuoteCheck.distinct.pluck(:source_name).sort : []
+
   config.sort_order = "created_at_desc"
 
   index do

@@ -13,6 +13,7 @@ module QuotesCaseBackoffice
       %w[
         created_at
         reference
+        source_name
       ]
     end
   end

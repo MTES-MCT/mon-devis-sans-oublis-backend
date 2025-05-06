@@ -10,7 +10,7 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
     profile = nil,
     content_type: nil, metadata: nil, case_id: nil, parent_id: nil,
     file_text: nil, file_markdown: nil,
-    source_name: nil,
+    reference: nil, source_name: nil,
     save: true
   )
     @quote_check = if tempfile_or_quote_check.is_a?(QuoteCheck)
@@ -20,7 +20,7 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
                        tempfile_or_quote_check, filename, profile,
                        file_text:, file_markdown:,
                        content_type:, metadata:, case_id:, parent_id:,
-                       source_name:
+                       reference:, source_name:
                      ).upload
                    end
     @save = save
