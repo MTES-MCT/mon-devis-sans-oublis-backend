@@ -211,9 +211,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
     end
   end
 
-  show title: proc { # rubocop:disable Metrics/BlockLength
-    link_to("Devis ##{resource.id}", resource.frontend_webapp_url, target: "_blank", rel: "noopener")
-  } do
+  show do
     columns do # rubocop:disable Metrics/BlockLength
       column do # rubocop:disable Metrics/BlockLength
         attributes_table do # rubocop:disable Metrics/BlockLength
