@@ -5,7 +5,8 @@ class QuoteCheckSerializer < ActiveModel::Serializer
 
   TIMEOUT_FOR_PROCESSING = Integer(ENV.fetch("MDSO_TIMEOUT_FOR_PROCESSING", 15)).minutes
 
-  attributes :id, :status, :profile, :metadata,
+  attributes :id, :status, :profile,
+             :reference, :metadata,
              :case_id, :parent_id,
              :filename,
              :gestes,

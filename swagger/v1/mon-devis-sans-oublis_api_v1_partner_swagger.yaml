@@ -524,6 +524,9 @@ components:
         id:
           type: string
           description: UUID unique
+        reference:
+          type: string
+          nullable: true
         parent_id:
           type: string
           nullable: true
