@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_05_05_141913) do
+ActiveRecord::Schema[7.2].define(version: 2025_05_06_071808) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -182,9 +182,11 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_05_141913) do
     t.string "source_name", default: "mdso"
     t.integer "validation_controls_count"
     t.uuid "case_id"
+    t.string "reference"
     t.index ["case_id"], name: "index_quote_checks_on_case_id"
     t.index ["file_id"], name: "index_quote_checks_on_file_id"
     t.index ["parent_id"], name: "index_quote_checks_on_parent_id"
+    t.index ["reference"], name: "index_quote_checks_on_reference"
     t.index ["source_name"], name: "index_quote_checks_on_source_name"
   end
 
@@ -210,6 +212,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_05_141913) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["quote_checks"], name: "index_quotes_cases_on_quote_checks"
+    t.index ["reference"], name: "index_quotes_cases_on_reference"
     t.index ["source_name"], name: "index_quotes_cases_on_source_name"
   end
 

@@ -414,6 +414,7 @@ RSpec.configure do |config|
               type: :string,
               description: "UUID unique"
             },
+            reference: { type: :string, nullable: true },
             parent_id: { type: :string, nullable: true },
             case_id: { type: :string, nullable: true },
             status: { "$ref" => "#/components/schemas/quote_check_status" },

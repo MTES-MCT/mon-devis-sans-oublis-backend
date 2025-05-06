@@ -86,7 +86,7 @@ module Api
       def quote_check_params
         params.permit(
           :file, :profile,
-          :metadata, :parent_id, :case_id,
+          :metadata, :parent_id, :reference, :case_id,
           :file_text, :file_markdown
         )
       end

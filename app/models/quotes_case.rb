@@ -13,6 +13,6 @@ class QuotesCase < ApplicationRecord
   }
 
   before_validation do
-    self.reference = reference.presence if reference
+    self.reference = reference&.presence
   end
 end
