@@ -25,7 +25,8 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
   filter :file_filename, as: :string
   filter :created_at, as: :date_range
   filter :source_name, as: :select, collection:
-    QuoteCheck.connection.data_source_exists?(QuoteCheck.table_name) ? QuoteCheck.distinct.pluck(:source_name).sort : []
+    ActiveRecord::Base.connected? && QuoteCheck.connection.data_source_exists?(QuoteCheck.table_name) ? # rubocop:disable Style/MultilineTernaryOperator
+      QuoteCheck.distinct.pluck(:source_name).sort : []
 
   filter :status, as: :select, collection: QuoteCheck::STATUSES
   filter :profile, as: :select, collection: QuoteCheck::PROFILES

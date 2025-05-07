@@ -9,7 +9,8 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
 
   filter :reference, as: :string
   filter :source_name, as: :select, collection:
-    QuoteCheck.connection.data_source_exists?(QuoteCheck.table_name) ? QuoteCheck.distinct.pluck(:source_name).sort : []
+    ActiveRecord::Base.connected? && QuoteCheck.connection.data_source_exists?(QuoteCheck.table_name) ? # rubocop:disable Style/MultilineTernaryOperator
+      QuoteCheck.distinct.pluck(:source_name).sort : []
 
   config.sort_order = "created_at_desc"
 
