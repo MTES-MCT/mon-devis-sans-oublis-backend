@@ -3,6 +3,12 @@
 require "rails_helper"
 require "uri"
 
+ADEME_SWAGGER_URI = "https://data.ademe.fr/data-fair/api/v1/datasets/liste-des-entreprises-rge-2/api-docs.json"
+ademe_yaml = URI.open(ADEME_SWAGGER_URI).read # rubocop:disable Security/Open
+ademe_swagger = YAML.safe_load(ademe_yaml, aliases: true)
+ademe_result_schema = ademe_swagger.dig("paths", "/lines", "get", "responses", "200", "content", "application/json",
+                                        "schema", "properties", "results", "items", "properties")
+
 # Via Rswag gems
 RSpec.configure do |config|
   # Specify a root folder where Swagger JSON files are generated
@@ -45,6 +51,10 @@ RSpec.configure do |config|
         }
       },
       schemas: {
+        ademe_result_schema: {
+          type: :object,
+          properties: ademe_result_schema
+        },
         api_error: {
           type: :object,
           properties: {
@@ -334,6 +344,17 @@ RSpec.configure do |config|
 
           }
         },
+        quote_check_read_attributes_extended_data: {
+          type: :object,
+          nullable: true,
+          properties: {
+            from_sirets: {
+              type: :array,
+              items: { "$ref" => "#/components/schemas/ademe_result_schema" },
+              nullable: true
+            }
+          }
+        },
         quote_check_qa_attributes: {
           type: :object,
           nullable: true,
@@ -465,7 +486,14 @@ RSpec.configure do |config|
             read_attributes: {
               allOf: [
                 { "$ref" => "#/components/schemas/quote_check_private_data_qa_attributes" },
-                { "$ref" => "#/components/schemas/quote_check_qa_attributes" }
+                { "$ref" => "#/components/schemas/quote_check_qa_attributes" },
+                {
+                  type: :object,
+                  nullable: true,
+                  properties: {
+                    extended_data: { "$ref" => "#/components/schemas/quote_check_read_attributes_extended_data" }
+                  }
+                }
               ]
             },
             qa_attributes: { "$ref" => "#/components/schemas/quote_check_qa_attributes" }

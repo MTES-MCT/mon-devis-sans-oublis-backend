@@ -70,11 +70,24 @@ module QuoteValidator
     # V0 on check la présence - attention devrait dépendre du geste, à terme,
     # on pourra utiliser une API pour vérifier la validité
     # Attention, souvent on a le logo mais rarement le numéro RGE.
+    # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/CyclomaticComplexity
     def validate_rge
       @pro = quote[:pro] ||= TrackingHash.new
       rge_labels = @pro[:rge_labels]
       add_error_if("rge_manquant", rge_labels.blank?, category: "admin", type: "missing")
+
+      return unless rge_labels&.any?
+
+      has_one_siret_matching_rge = @pro.dig(:extended_data, :from_sirets).any? do |qualification|
+        qualification.fetch("siret") == @pro[:siret] &&
+          qualification.fetch("nom_certificat").match?(/RGE/i) &&
+          rge_labels.any? { |label| qualification.fetch("url_qualification").include?(label[/\d+$/]) }
+      end
+      add_error_if("rge_non_correspondant", !has_one_siret_matching_rge, category: "admin", type: "warning")
     end
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/AbcSize
 
     # doit valider les mentions administratives associées à l'artisan
     # rubocop:disable Metrics/AbcSize
