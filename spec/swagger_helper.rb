@@ -399,11 +399,11 @@ RSpec.configure do |config|
               description: "Vérifiez qu'il y a une ligne distincte pour la pose, l'installation ou la main d'œuvre"
             },
             prix_total_ht: {
-              type: :number,
+              type: :float,
               nullable: true
             },
             prix_total_ttc: {
-              type: :number,
+              type: :float,
               nullable: true
             },
             tva: {
@@ -412,15 +412,15 @@ RSpec.configure do |config|
                 type: :object,
                 properties: {
                   taux_tva: {
-                    type: :number,
+                    type: :float,
                     nullable: true
                   },
                   prix_ht_total: {
-                    type: :number,
+                    type: :float,
                     nullable: true
                   },
                   montant_tva_total: {
-                    type: :number,
+                    type: :float,
                     nullable: true
                   }
                 }
@@ -541,22 +541,22 @@ RSpec.configure do |config|
           properties: {
             quote_checks_count: { type: :integer },
             average_quote_check_errors_count: {
-              type: :number,
+              type: :float,
               description: "nombre moyen d'erreurs par analyse, arrondi au décimal supérieur",
               nullable: true
             },
             average_quote_check_cost: {
-              type: :number,
+              type: :float,
               description: "coût moyen d'une analyse en Euro (€), arrondi au centime supérieur",
               nullable: true
             },
             average_quote_check_processing_time: {
-              type: :number,
+              type: :integer,
               description: "temps moyen de traitement d'une analyse en secondes, arrondi supérieur",
               nullable: true
             },
             median_quote_check_processing_time: {
-              type: :number,
+              type: :integer,
               description: "temps médian de traitement d'une analyse en secondes, arrondi supérieur",
               nullable: true
             },
