@@ -510,6 +510,23 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
             end
           end
         end
+
+        panel "Administratifs (données ADEME uniquement)" do
+          if (attributes = resource.read_attributes&.dig("extended_data"))
+            attributes_table_for attributes do
+              attributes.each do |key, value|
+                row key.to_s.humanize do
+                  simplest_value = value.is_a?(Array) && value.size == 1 ? value.first : value
+                  if simplest_value.is_a?(Hash) || simplest_value.is_a?(Array)
+                    pre JSON.pretty_generate(simplest_value)
+                  else
+                    simplest_value
+                  end
+                end
+              end
+            end
+          end
+        end
       end
 
       tab "1. Texte brut#{resource.ocrable? ? " (via #{resource.ocr})" : ''}" do

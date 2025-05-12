@@ -99,6 +99,7 @@ fr:
       pro_adresse_manquant: "L'adresse du siège social est manquante"
       rge_manquant: "Le numéro de certification RGE du professionnel est manquant"
       rge_manquant_infos: "Pour obtenir des aides, le professionel doit avoir le label RGE du geste en question. Merci de préciser le numéro de certification."
+      rge_non_correspondant: "Le numéro de certification RGE du professionnel ne correspond pas au SIRET de l'établissement"
       pro_assurance_manquant: "Assurance professionnelle souscrite manquante"
       pro_assurance_manquant_infos: "Assurance professionnelle souscrite avec le N° de la police d'assurance, le type (décennale, biennale ...), les coordonnées de l'assureur ou du garant et la couverture géographique du contrat ou de la garantie."
 

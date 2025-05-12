@@ -58,6 +58,7 @@ sequenceDiagram
     QuoteCheckCheckJob->>QuoteCheckCheckJob: Réduction du texte si conditions générales
 
     QuoteCheckCheckJob<<->>Albert LLM: Extraction des données personnelles et administratives
+    QuoteCheckCheckJob<<->>ADEME API: Extension des données commerciales et certifications via recherche SIRET
 
     QuoteCheckCheckJob->>QuoteCheckCheckJob: Anonymisation du texte
     

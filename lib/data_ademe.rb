@@ -2,6 +2,7 @@
 
 require "net/http"
 
+# API Documentation: https://data.ademe.fr/data-fair/api/v1/datasets/liste-des-entreprises-rge-2/api-docs.json
 # Previously called "recensement des professionnels RGE (Reconnu Garant de l'Environnement)"
 # Now on Data.gouv https://www.data.gouv.fr/fr/dataservices/api-professionnels-rge/
 class DataAdeme
