@@ -67,7 +67,13 @@ RSpec.configure do |config|
         },
         profile: {
           type: :string,
-          enum: QuoteCheck::PROFILES
+          enum: QuoteCheck::PROFILES,
+          description: "hérité du QuoteCase à la création si vide"
+        },
+        renovation_type: {
+          type: :string,
+          enum: QuoteCheck::RENOVATION_TYPES,
+          description: "hérité du QuoteCase à la création si vide"
         },
         quote_check_metadata: {
           type: :object,
@@ -78,7 +84,8 @@ RSpec.configure do |config|
               type: :array,
               items: { type: :string, enum: }
             }]
-          end
+          end,
+          description: "hérité du QuoteCase à la création si vide"
         },
         quote_check_status: {
           type: :string,
@@ -435,13 +442,40 @@ RSpec.configure do |config|
               type: :string,
               description: "UUID unique"
             },
-            reference: { type: :string, nullable: true },
             parent_id: { type: :string, nullable: true },
-            case_id: { type: :string, nullable: true },
+            case_id: {
+              type: :string,
+              nullable: true,
+              description: "disponible si appelé depuis QuoteCase et non directement"
+            },
             status: { "$ref" => "#/components/schemas/quote_check_status" },
             filename: { type: :string, nullable: true },
-            metadata: { "$ref" => "#/components/schemas/quote_check_metadata", nullable: true },
-            profile: { "$ref" => "#/components/schemas/profile" },
+            reference: {
+              type: :string,
+              nullable: true,
+              description: "référence optionnelle, NON unique"
+            },
+            profile: {
+              allOf: [
+                { "$ref" => "#/components/schemas/profile" }
+              ],
+              description: "hérité du QuoteCase à la création si vide",
+              nullable: true
+            },
+            renovation_type: {
+              allOf: [
+                { "$ref" => "#/components/schemas/renovation_type" }
+              ],
+              description: "hérité du QuoteCase à la création si vide",
+              nullable: true
+            },
+            metadata: {
+              allOf: [
+                { "$ref" => "#/components/schemas/quote_check_metadata" }
+              ],
+              description: "hérité du QuoteCase à la création si vide",
+              nullable: true
+            },
             gestes: {
               type: :array,
               items: { "$ref" => "#/components/schemas/quote_check_geste" },
@@ -532,7 +566,14 @@ RSpec.configure do |config|
               type: :string,
               description: "UUID unique"
             },
-            reference: { type: :string, nullable: true }
+            reference: {
+              type: :string,
+              nullable: true,
+              description: "référence optionnelle, NON unique"
+            },
+            profile: { "$ref" => "#/components/schemas/profile" },
+            renovation_type: { "$ref" => "#/components/schemas/renovation_type" },
+            metadata: { "$ref" => "#/components/schemas/quote_check_metadata", nullable: true }
           },
           required: %w[id]
         },

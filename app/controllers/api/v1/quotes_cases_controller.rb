@@ -26,7 +26,7 @@ module Api
 
       def quotes_case_params
         params.permit(
-          :reference
+          :reference, :profile, :renovation_type, :metadata
         )
       end
     end

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# spec/controllers/posts_controller_spec.rb
 require "rails_helper"
 
 RSpec.describe "/api/v1/quote_checks/:quote_check_id/error_details/:validation_error_detail_id/feedbacks" do

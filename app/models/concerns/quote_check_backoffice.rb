@@ -11,11 +11,13 @@ module QuoteCheckBackoffice
 
     def ransackable_attributes(_auth_object = nil) # rubocop:disable Metrics/MethodLength
       %w[
-        created_at
-        profile
-        reference
-        source_name
         status
+        created_at
+
+        source_name
+        reference
+        profile
+        renovation_type
 
         quote_file_filename
 

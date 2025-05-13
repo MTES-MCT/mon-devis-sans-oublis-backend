@@ -259,7 +259,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.datatourisme.fr/ontology/core/1.0/#siret
-          x-cardinality: 63441
+          x-cardinality: 63297
           x-capabilities: {}
           x-concept:
             id: siret
@@ -270,7 +270,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.w3.org/2000/01/rdf-schema#label
-          x-cardinality: 62935
+          x-cardinality: 62941
           x-capabilities: {}
           x-concept:
             id: label
@@ -281,7 +281,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/address
-          x-cardinality: 63825
+          x-cardinality: 63812
           x-capabilities: {}
           x-concept:
             id: address
@@ -292,7 +292,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/postalCode
-          x-cardinality: 5988
+          x-cardinality: 5984
           x-capabilities: {}
           x-concept:
             id: postalCode
@@ -303,7 +303,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/City
-          x-cardinality: 19458
+          x-cardinality: 19467
           x-capabilities: {}
           x-concept:
             id: city
@@ -334,7 +334,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#tel
-          x-cardinality: 59757
+          x-cardinality: 59728
           x-capabilities: {}
           x-concept:
             id: tel
@@ -345,7 +345,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#email
-          x-cardinality: 61651
+          x-cardinality: 61601
           x-capabilities: {}
           x-concept:
             id: email
@@ -356,7 +356,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://schema.org/WebPage
-          x-cardinality: 37610
+          x-cardinality: 37619
           x-capabilities: {}
           x-concept:
             id: webPage
@@ -379,7 +379,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/DigitalDocument
-          x-cardinality: 75941
+          x-cardinality: 75918
           x-capabilities: {}
           x-concept:
             id: attachment
@@ -405,8 +405,8 @@ components:
           - Chauffage +
           - QualiPV 500
           - Qualisol Combi
-          - QualiPAC module CET
           - CertiRénov RGE par CERQUAL Qualitel Certification
+          - QualiPAC module CET
           - CERTIBAT-RGE
           - AUDIT ENERGETIQUE BATIMENT
           - Qualiforage Sonde
@@ -521,7 +521,7 @@ components:
           description: Cette date correspond à la date de début de qualification transmise
             par l'organisme de qualification
           x-capabilities: {}
-          x-cardinality: 1843
+          x-cardinality: 1845
         lien_date_fin:
           title: Date de fin de qualification
           type: string
@@ -529,7 +529,7 @@ components:
           description: Cette date correspond à la date de fin de qualification transmise
             par l'organisme de qualification
           x-capabilities: {}
-          x-cardinality: 1543
+          x-cardinality: 1544
         _file.content:
           x-calculated: true
           type: string
@@ -599,6 +599,13 @@ components:
       - artisan
       - particulier
       - conseiller
+      description: hérité du QuoteCase à la création si vide
+    renovation_type:
+      type: string
+      enum:
+      - geste
+      - ampleur
+      description: hérité du QuoteCase à la création si vide
     quote_check_metadata:
       type: object
       properties:
@@ -635,6 +642,7 @@ components:
             - Volet isolant
             - Ventilation Mécanique Double-Flux
             - Ventilation Mécanique Simple-Flux
+      description: hérité du QuoteCase à la création si vide
     quote_check_status:
       type: string
       enum:
@@ -925,25 +933,37 @@ components:
         id:
           type: string
           description: UUID unique
-        reference:
-          type: string
-          nullable: true
         parent_id:
           type: string
           nullable: true
         case_id:
           type: string
           nullable: true
+          description: disponible si appelé depuis QuoteCase et non directement
         status:
           "$ref": "#/components/schemas/quote_check_status"
         filename:
           type: string
           nullable: true
-        metadata:
-          "$ref": "#/components/schemas/quote_check_metadata"
+        reference:
+          type: string
           nullable: true
+          description: référence optionnelle, NON unique
         profile:
-          "$ref": "#/components/schemas/profile"
+          allOf:
+          - "$ref": "#/components/schemas/profile"
+          description: hérité du QuoteCase à la création si vide
+          nullable: true
+        renovation_type:
+          allOf:
+          - "$ref": "#/components/schemas/renovation_type"
+          description: hérité du QuoteCase à la création si vide
+          nullable: true
+        metadata:
+          allOf:
+          - "$ref": "#/components/schemas/quote_check_metadata"
+          description: hérité du QuoteCase à la création si vide
+          nullable: true
         gestes:
           type: array
           items:
@@ -1028,6 +1048,14 @@ components:
           description: UUID unique
         reference:
           type: string
+          nullable: true
+          description: référence optionnelle, NON unique
+        profile:
+          "$ref": "#/components/schemas/profile"
+        renovation_type:
+          "$ref": "#/components/schemas/renovation_type"
+        metadata:
+          "$ref": "#/components/schemas/quote_check_metadata"
           nullable: true
       required:
       - id

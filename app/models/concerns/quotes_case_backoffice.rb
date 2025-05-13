@@ -12,8 +12,11 @@ module QuotesCaseBackoffice
     def ransackable_attributes(_auth_object = nil)
       %w[
         created_at
-        reference
+
         source_name
+        reference
+        profile
+        renovation_type
       ]
     end
   end

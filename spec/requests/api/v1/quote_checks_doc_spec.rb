@@ -57,8 +57,28 @@ describe "Devis API" do
             description: "Représentation Markdown du contenu du fichier",
             nullable: true
           },
-          metadata: { "$ref" => "#/components/schemas/quote_check_metadata", nullable: true },
-          profile: { "$ref" => "#/components/schemas/profile" },
+          reference: { type: :string, nullable: true },
+          profile: {
+            allOf: [
+              { "$ref" => "#/components/schemas/profile" }
+            ],
+            description: "hérité du QuoteCase à la création si vide",
+            nullable: true
+          },
+          renovation_type: {
+            allOf: [
+              { "$ref" => "#/components/schemas/renovation_type" }
+            ],
+            description: "hérité du QuoteCase à la création si vide",
+            nullable: true
+          },
+          metadata: {
+            allOf: [
+              { "$ref" => "#/components/schemas/quote_check_metadata" }
+            ],
+            description: "hérité du QuoteCase à la création si vide",
+            nullable: true
+          },
           parent_id: {
             type: :string,
             description: "Ancienne soumission du fichier",
@@ -95,9 +115,17 @@ describe "Devis API" do
       #   "$ref" => "#/components/schemas/profile"
       # }, required: true
 
-      let(:quote_check) { { file: file, profile: profile, metadata: metadata } }
+      let(:quote_check) do
+        {
+          file: file,
+          reference: reference,
+          profile: profile,
+          renovation_type: renovation_type,
+          metadata: metadata
+        }
+      end
 
-      response "201", "Devis téléversé" do
+      response "201", "Devis téléversé" do # rubocop:disable RSpec/MultipleMemoizedHelpers
         schema "$ref" => "#/components/schemas/quote_check"
         description "Au retour le devis a été téléversé avec succès.
 Mais vérifiez selon le statut si le devis a été déjà analysé ou non.
@@ -105,21 +133,27 @@ Il peut contenir des erreurs dès le téléversement.
 Si le statut est 'pending', cela signifie que l'analyse est encore en cours.
 Et qu'il faut boucler sur l'appel /quote_check/:id pour récupérer le devis à jour.".gsub("\n", "<br>")
 
-        let(:file) { fixture_file_upload("quote_files/Devis_test.pdf") }
         # See https://github.com/rswag/rswag/issues/316
         let(:Authorization) { api_key_mdso_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
+
+        let(:file) { fixture_file_upload("quote_files/Devis_test.pdf") }
+
+        let(:reference) { "test-ref" }
         let(:profile) { "artisan" }
+        let(:renovation_type) { "geste" }
         let(:metadata) { nil }
 
         pending "fix why quote_check params are not sent"
         # run_test!
       end
 
-      response "422", "missing params" do
+      response "422", "missing params" do # rubocop:disable RSpec/MultipleMemoizedHelpers
         schema "$ref" => "#/components/schemas/api_error"
 
         let(:file) { fixture_file_upload("quote_files/Devis_test.pdf") }
+        let(:reference) { nil }
         let(:profile) { nil }
+        let(:renovation_type) { nil }
         let(:metadata) { nil }
 
         let(:Authorization) { api_key_mdso_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
@@ -127,11 +161,13 @@ Et qu'il faut boucler sur l'appel /quote_check/:id pour récupérer le devis à 
         run_test!
       end
 
-      response "422", "invalid request" do
+      response "422", "invalid request" do # rubocop:disable RSpec/MultipleMemoizedHelpers
         schema "$ref" => "#/components/schemas/api_error"
 
         let(:file) { fixture_file_upload("quote_files/Devis_test.pdf") }
+        let(:reference) { nil }
         let(:profile) { "blabla" }
+        let(:renovation_type) { "geste" }
         let(:metadata) { nil }
 
         let(:Authorization) { api_key_mdso_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName
@@ -139,11 +175,13 @@ Et qu'il faut boucler sur l'appel /quote_check/:id pour récupérer le devis à 
         run_test!
       end
 
-      response "422", "invalid request for metadata" do
+      response "422", "invalid request for metadata" do # rubocop:disable RSpec/MultipleMemoizedHelpers
         schema "$ref" => "#/components/schemas/api_error"
 
         let(:file) { fixture_file_upload("quote_files/Devis_test.pdf") }
+        let(:reference) { nil }
         let(:profile) { "artisan" }
+        let(:renovation_type) { "geste" }
         let(:metadata) { { toto: "tata " } }
 
         let(:Authorization) { api_key_mdso_header.fetch("Authorization") } # rubocop:disable RSpec/VariableName

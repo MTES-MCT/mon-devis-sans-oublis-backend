@@ -16,20 +16,23 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
   permit_params :expected_validation_errors,
                 :file,
                 :parent_id,
-                :reference,
-                :profile,
+                :reference, :profile, :renovation_type,
                 :aides, :gestes, # Virtual attributes
                 :ocr, :qa_llm # Check params
 
-  filter :reference, as: :string
-  filter :file_filename, as: :string
+  filter :status, as: :select, collection: QuoteCheck::STATUSES
+
   filter :created_at, as: :date_range
+
   filter :source_name, as: :select, collection:
     ActiveRecord::Base.connected? && QuoteCheck.connection.data_source_exists?(QuoteCheck.table_name) ? # rubocop:disable Style/MultilineTernaryOperator
       QuoteCheck.distinct.pluck(:source_name).sort : []
 
-  filter :status, as: :select, collection: QuoteCheck::STATUSES
+  filter :reference, as: :string
   filter :profile, as: :select, collection: QuoteCheck::PROFILES
+  filter :renovation_type, as: :select, collection: QuoteCheck::RENOVATION_TYPES
+
+  filter :file_filename, as: :string
 
   config.sort_order = "created_at_desc"
 
@@ -71,6 +74,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
       quote_check_service = QuoteCheckService.new(
         upload_file.tempfile, upload_file.original_filename,
         new_quote_check_params[:profile],
+        new_quote_check_params[:renovation_type],
         file_text: new_quote_check_params[:file_text],
         file_markdown: new_quote_check_params[:file_markdown],
         metadata: QuoteCheck.new(
@@ -123,9 +127,9 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
 
     def new_quote_check_params
       params.require(:quote_check).permit(
-        :file, :parent_id, :profile,
+        :file, :parent_id,
+        :reference, :profile, :renovation_type,
         :file_text, :file_markdown,
-        :reference,
         :force_ocr, :ocr, :qa_llm, # Check params
         aides: [], gestes: [] # Virtual attributes
       )
@@ -204,6 +208,8 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
     column "Date édition", &:edited_at
 
     column "Persona", :profile
+    column "Type de rénovation", :renovation_type
+
     column :force_ocr
     column :ocr
     column :qa_llm
@@ -241,6 +247,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
           row :reference, label: "Référence"
           row :status, lael: "Statut"
           row :profile, label: "Persona"
+          row :renovation_type, label: "Type de rénovation"
           row :force_ocr
           row :ocr
           row :qa_llm
@@ -571,6 +578,13 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
                 collection: QuoteCheck::PROFILES,
                 include_blank: false,
                 selected: (QuoteCheck::PROFILES & ["conseiller"]).first || QuoteCheck::PROFILES.first
+        f.input :renovation_type,
+                as: :select,
+                collection: QuoteCheck::RENOVATION_TYPES,
+                include_blank: false,
+                selected: (QuoteCheck::RENOVATION_TYPES & ["geste"]).first ||
+                          QuoteCheck::RENOVATION_TYPES.first
+
         f.input :file, as: :file
 
         f.input :gestes,
