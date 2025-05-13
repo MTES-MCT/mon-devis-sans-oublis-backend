@@ -7,7 +7,7 @@ class QuoteCheckSerializer < ActiveModel::Serializer
 
   attributes :id, :status, :profile,
              :reference, :metadata,
-             :case_id, :parent_id,
+             :parent_id,
              :filename,
              :gestes,
              :finished_at,
@@ -16,6 +16,7 @@ class QuoteCheckSerializer < ActiveModel::Serializer
              :errors, :error_details, :error_messages, :controls_count,
              :gestes
 
+  attribute :case_id, if: :full?
   attribute :private_data_qa_attributes, if: :full?
   attribute :qa_attributes, if: :full?
   attribute :read_attributes, if: :full?
