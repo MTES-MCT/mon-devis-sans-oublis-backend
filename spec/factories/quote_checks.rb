@@ -2,8 +2,11 @@
 
 FactoryBot.define do
   factory :quote_check do
-    profile { "artisan" }
     source_name { "test" }
+
+    profile { "artisan" }
+    renovation_type { "geste" }
+
     file factory: %i[quote_file]
 
     started_at { Time.zone.now }

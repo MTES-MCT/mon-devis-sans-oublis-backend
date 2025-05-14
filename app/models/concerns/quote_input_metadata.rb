@@ -1,15 +1,19 @@
 # frozen_string_literal: true
 
 # Add profile and metadata from user inputs
-module QuoteCheckInputMetadata
+module QuoteInputMetadata
   extend ActiveSupport::Concern
 
   PROFILES = %w[artisan particulier conseiller].freeze # Also called Persona
   DEPRECATED_PROFILES = %w[mandataire].freeze
 
+  RENOVATION_TYPES = %w[geste ampleur].freeze
+
   included do
     validates :source_name, presence: true
     validates :profile, presence: true, inclusion: { in: PROFILES + DEPRECATED_PROFILES }
+
+    validates :renovation_type, presence: true, inclusion: { in: RENOVATION_TYPES }
 
     before_validation :format_metadata
     validate :metadata_data
@@ -50,10 +54,15 @@ module QuoteCheckInputMetadata
 
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/PerceivedComplexity
   def format_metadata # rubocop:disable Metrics/MethodLength
+    self.renovation_type = renovation_type&.presence
+    self.renovation_type ||= self.case&.renovation_type if has_attribute?(:case_id)
+
     self.reference = reference&.presence
 
     self.metadata = metadata&.presence
+    self.metadata ||= self.case&.metadata if has_attribute?(:case_id)
     return unless metadata
 
     self.metadata = JSON.parse(metadata) if metadata.is_a?(String)
@@ -68,6 +77,7 @@ module QuoteCheckInputMetadata
 
     metadata
   end
+  # rubocop:enable Metrics/PerceivedComplexity
   # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/AbcSize
 

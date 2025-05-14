@@ -35,7 +35,8 @@ RSpec.describe "/api/v1/quote_checks" do
     let(:quote_check_params) do
       {
         file: file,
-        profile: "artisan"
+        profile: "artisan",
+        renovation_type: "geste"
       }
     end
 
@@ -60,12 +61,29 @@ RSpec.describe "/api/v1/quote_checks" do
       end.to change(QuoteCheck, :count).by(1)
     end
 
+    context "with case_id" do
+      let(:quote_case) { create(:quotes_case) }
+      let(:quote_check_params) do
+        {
+          file: file,
+          profile: "artisan",
+          case_id: quote_case.id
+        }
+      end
+
+      it "reuses the renovation_type from case" do
+        post api_v1_quote_checks_url, params: quote_check_params, headers: api_key_header
+        expect(QuoteCheck.find(json.fetch("id")).renovation_type).to eq(quote_case.renovation_type)
+      end
+    end
+
     context "with parent_id" do
       let(:quote_check) { create(:quote_check) }
       let(:quote_check_params) do
         {
           file: file,
           profile: "artisan",
+          renovation_type: "geste",
           parent_id: quote_check.id
         }
       end
@@ -82,6 +100,7 @@ RSpec.describe "/api/v1/quote_checks" do
         {
           file: file,
           profile: "artisan",
+          renovation_type: "geste",
           file_text: "Devis 12"
         }
       end

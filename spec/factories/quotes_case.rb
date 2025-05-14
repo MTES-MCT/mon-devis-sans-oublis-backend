@@ -2,7 +2,9 @@
 
 FactoryBot.define do
   factory :quotes_case do
-    profile { "test-ref" }
     source_name { "test" }
+
+    profile { "conseiller" }
+    renovation_type { "ampleur" }
   end
 end

@@ -6,8 +6,8 @@ class QuoteCheck < ApplicationRecord
   include QuoteCheckEdits
   include QuoteCheckExpectations
   include QuoteCheckFeedbacks
-  include QuoteCheckInputMetadata
   include QuoteCheckPostCheckMetadata
+  include QuoteInputMetadata
 
   belongs_to :file, class_name: "QuoteFile"
   belongs_to :case, class_name: "QuotesCase", optional: true

@@ -7,7 +7,7 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
   # rubocop:disable Metrics/ParameterLists
   def initialize( # rubocop:disable Metrics/MethodLength
     tempfile_or_quote_check, filename = nil,
-    profile = nil,
+    profile = nil, renovation_type = nil,
     content_type: nil, metadata: nil, case_id: nil, parent_id: nil,
     file_text: nil, file_markdown: nil,
     reference: nil, source_name: nil,
@@ -17,7 +17,7 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
                      tempfile_or_quote_check
                    else
                      QuoteCheckUploadService.new(
-                       tempfile_or_quote_check, filename, profile,
+                       tempfile_or_quote_check, filename, profile, renovation_type,
                        file_text:, file_markdown:,
                        content_type:, metadata:, case_id:, parent_id:,
                        reference:, source_name:

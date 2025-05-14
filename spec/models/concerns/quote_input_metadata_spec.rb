@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe QuoteCheckInputMetadata do
+RSpec.describe QuoteInputMetadata do
   let(:quote_check) { QuoteCheck.new }
 
   describe "#aides=" do

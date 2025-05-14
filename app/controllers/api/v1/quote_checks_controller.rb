@@ -27,6 +27,7 @@ module Api
         quote_check_service = QuoteCheckService.new(
           upload_file.tempfile, upload_file.original_filename,
           quote_check_params[:profile],
+          quote_check_params[:renovation_type],
           file_text: quote_check_params[:file_text],
           file_markdown: quote_check_params[:file_markdown],
           metadata: quote_check_params[:metadata],
@@ -86,8 +87,9 @@ module Api
 
       def quote_check_params
         params.permit(
-          :file, :profile,
-          :metadata, :parent_id, :reference, :case_id,
+          :file,
+          :reference, :profile, :renovation_type, :metadata,
+          :parent_id, :case_id,
           :file_text, :file_markdown,
           :reference
         )

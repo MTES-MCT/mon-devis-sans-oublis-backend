@@ -1,6 +1,7 @@
 fr:
   activerecord:
     models:
+      quotes_case: "Dossier"
       quote_check: "Devis"
       quote_file: "Fichier"
   global:
@@ -17,6 +18,10 @@ fr:
         particulier: Particulier
         mandataire: Mandataire
         conseiller: Conseiller
+    renovation_type:
+      title:
+        ampleur: Rénovation d'ampleur
+        geste: Rénovation par geste
   quote_checks:
     metadata: # Update API Doc if keys updated
       aides:

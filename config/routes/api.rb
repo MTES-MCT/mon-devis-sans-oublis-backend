@@ -14,6 +14,8 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   namespace :api do
     namespace :v1 do
       resources :profiles, only: %i[index]
+      resources :renovation_types, only: %i[index]
+
       resources :quotes_cases, only: %i[create]
       resources :quote_checks, only: %i[create show update] do
         collection do

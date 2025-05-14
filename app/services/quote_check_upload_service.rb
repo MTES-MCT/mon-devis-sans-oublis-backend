@@ -2,7 +2,8 @@
 
 # This class is responsible for creating the quote by the upload.
 class QuoteCheckUploadService
-  attr_reader :tempfile, :filename, :profile,
+  attr_reader :tempfile, :filename,
+              :profile, :renovation_type,
               :content_type, :metadata, :case_id, :parent_id,
               :file_text, :file_markdown,
               :reference, :source_name,
@@ -10,14 +11,17 @@ class QuoteCheckUploadService
 
   # rubocop:disable Metrics/ParameterLists
   def initialize( # rubocop:disable Metrics/MethodLength
-    tempfile, filename, profile,
+    tempfile, filename, profile, renovation_type,
     content_type: nil, metadata: nil, case_id: nil, parent_id: nil,
     file_text: nil, file_markdown: nil,
     reference: nil, source_name: nil
   )
     @tempfile = tempfile
     @filename = filename
+
     @profile = profile
+    @renovation_type = renovation_type
+
     @file_text = file_text
     @file_markdown = file_markdown
 
@@ -35,7 +39,10 @@ class QuoteCheckUploadService
 
     @quote_check = QuoteCheck.create!(
       file: quote_file,
+
       profile:,
+      renovation_type:,
+
       started_at: Time.current,
 
       metadata:,
