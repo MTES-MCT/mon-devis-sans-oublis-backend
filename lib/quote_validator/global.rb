@@ -72,6 +72,7 @@ module QuoteValidator
     # Attention, souvent on a le logo mais rarement le numéro RGE.
     # rubocop:disable Metrics/AbcSize
     # rubocop:disable Metrics/CyclomaticComplexity
+    # rubocop:disable Metrics/PerceivedComplexity
     def validate_rge
       @pro = quote[:pro] ||= TrackingHash.new
       rge_labels = @pro[:rge_labels]
@@ -79,13 +80,14 @@ module QuoteValidator
 
       return unless rge_labels&.any?
 
-      has_one_siret_matching_rge = @pro.dig(:extended_data, :from_sirets).any? do |qualification|
+      has_one_siret_matching_rge = @pro.dig(:extended_data, :from_sirets)&.any? do |qualification|
         qualification.fetch("siret") == @pro[:siret] &&
           qualification.fetch("nom_certificat").match?(/RGE/i) &&
           rge_labels.any? { |label| qualification.fetch("url_qualification").include?(label[/\d+$/]) }
-      end
+      end || false
       add_error_if("rge_non_correspondant", !has_one_siret_matching_rge, category: "admin", type: "warning")
     end
+    # rubocop:enable Metrics/PerceivedComplexity
     # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/AbcSize
 
