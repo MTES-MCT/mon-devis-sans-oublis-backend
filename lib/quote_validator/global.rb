@@ -85,7 +85,7 @@ module QuoteValidator
           qualification.fetch("nom_certificat").match?(/RGE/i) &&
           rge_labels.any? { |label| qualification.fetch("url_qualification").include?(label[/\d+$/]) }
       end || false
-      add_error_if("rge_non_correspondant", !has_one_siret_matching_rge, category: "admin", type: "warning")
+      # add_error_if("rge_non_correspondant", !has_one_siret_matching_rge, category: "admin", type: "warning")
     end
     # rubocop:enable Metrics/PerceivedComplexity
     # rubocop:enable Metrics/CyclomaticComplexity
