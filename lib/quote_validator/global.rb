@@ -70,26 +70,21 @@ module QuoteValidator
     # V0 on check la présence - attention devrait dépendre du geste, à terme,
     # on pourra utiliser une API pour vérifier la validité
     # Attention, souvent on a le logo mais rarement le numéro RGE.
-    # rubocop:disable Metrics/AbcSize
-    # rubocop:disable Metrics/CyclomaticComplexity
-    # rubocop:disable Metrics/PerceivedComplexity
     def validate_rge
       @pro = quote[:pro] ||= TrackingHash.new
       rge_labels = @pro[:rge_labels]
       add_error_if("rge_manquant", rge_labels.blank?, category: "admin", type: "missing")
 
-      return unless rge_labels&.any?
+      # TODO: re-enable
+      # return unless rge_labels&.any?
 
-      has_one_siret_matching_rge = @pro.dig(:extended_data, :from_sirets)&.any? do |qualification|
-        qualification.fetch("siret") == @pro[:siret] &&
-          qualification.fetch("nom_certificat").match?(/RGE/i) &&
-          rge_labels.any? { |label| qualification.fetch("url_qualification").include?(label[/\d+$/]) }
-      end || false
+      # has_one_siret_matching_rge = @pro.dig(:extended_data, :from_sirets)&.any? do |qualification|
+      #   qualification.fetch("siret") == @pro[:siret] &&
+      #     qualification.fetch("nom_certificat").match?(/RGE/i) &&
+      #     rge_labels.any? { |label| qualification.fetch("url_qualification").include?(label[/\d+$/]) }
+      # end || false
       # add_error_if("rge_non_correspondant", !has_one_siret_matching_rge, category: "admin", type: "warning")
     end
-    # rubocop:enable Metrics/PerceivedComplexity
-    # rubocop:enable Metrics/CyclomaticComplexity
-    # rubocop:enable Metrics/AbcSize
 
     # doit valider les mentions administratives associées à l'artisan
     # rubocop:disable Metrics/AbcSize
@@ -235,6 +230,7 @@ module QuoteValidator
     # rubocop:disable Metrics/AbcSize
     # rubocop:disable Metrics/CyclomaticComplexity
     # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/PerceivedComplexity
     def validate_works
       isolation = Works::Isolation.new(quote, quote_id:, error_details:)
       menuiserie = Works::Menuiserie.new(quote, quote_id:, error_details:)
@@ -324,6 +320,7 @@ module QuoteValidator
         validate_prix_geste(geste) if geste_reconnu
       end
     end
+    # rubocop:enable Metrics/PerceivedComplexity
     # rubocop:enable Metrics/MethodLength
     # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/AbcSize
