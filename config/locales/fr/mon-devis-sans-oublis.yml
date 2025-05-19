@@ -266,7 +266,7 @@ fr:
       menuiserie_type_pose_manquant: "Le type de pose de la menuiserie n'est pas indiqué"
       menuiserie_type_pose_manquant_infos: "La pose de la menuiserie peut être en rénovation ou en dépose totale." # renovation ou depose totale
       menuiserie_localisation_manquant: "La pièce dans laquelle est installée la menuiserie est manquante"
-      menuiserie_position_paroie_manquant: "La position par rapport à la paroie de la menuiserie n'est pas indiquée"
+      menuiserie_position_paroie_manquant: "La position par rapport à la paroi de la menuiserie n'est pas indiquée"
       menuiserie_position_paroie_manquant_infos: "La menuiserie est-elle posée en nu intérieur, nu extérieur ou tunnel par exemple." # nu intérieur, nu extérieur, tunnel ...
       # validate_menuiserie_fenetre
       menuiserie_uw_fenetre_manquant: "Le coefficient de transmission thermique (en W/m2⋅K) de la fenêtre n'est pas indiqué"
