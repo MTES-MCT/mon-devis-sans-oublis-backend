@@ -618,7 +618,7 @@ RSpec.configure do |config|
     servers: [ # Swagger reccomends to have path version listed inside server URLs
       {
         url: "https://api.staging.mon-devis-sans-oublis.beta.gouv.fr/api/v1",
-        description: "Staging server"
+        description: "Staging test server : accessible depuis CORS localhost"
       },
       {
         url: "https://api.mon-devis-sans-oublis.beta.gouv.fr/api/v1",

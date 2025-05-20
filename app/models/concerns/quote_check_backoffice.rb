@@ -23,6 +23,7 @@ module QuoteCheckBackoffice
 
         with_edits
         with_expected_value
+        with_feedback_email
         with_file_error
       ]
     end
