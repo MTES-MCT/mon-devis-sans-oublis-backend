@@ -26,6 +26,7 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
 
     column "Source", :source_name
     column "Référence", :reference
+    column :created_at
 
     column "Persona", :profile
     column "Type de rénovation", :renovation_type
@@ -37,9 +38,24 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
         attributes_table do
           row :source_name, label: "Source"
           row :reference, label: "Référence"
+          row :created_at
 
           row :profile, label: "Persona"
           row :renovation_type, label: "Type de rénovation"
+
+          row :quote_checks do |quote_case|
+            content_tag(:ul) do
+              quote_case.quote_checks.default_order.map do |quote_check|
+                content_tag(:li, link_to(
+                                   quote_check.file.filename,
+                                   admin_quote_check_path(quote_check),
+                                   target: "_blank", rel: "noopener"
+                                 ))
+              end.join.html_safe # rubocop:disable Rails/OutputSafety
+            end
+          end
+
+          row :updated_at
         end
       end
     end

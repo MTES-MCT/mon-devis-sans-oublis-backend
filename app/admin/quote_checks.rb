@@ -40,6 +40,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
   scope "avec valeurs test", :with_expected_value
   scope "fichier en erreur", :with_file_error
   scope "devis avec corrections", :with_edits
+  scope "devis avec contact email", :with_feedback_email
 
   controller do # rubocop:disable Metrics/BlockLength
     # Overwrite "includes :file, :feedbacks" to not load full File data
@@ -81,6 +82,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
           aides: new_quote_check_params[:aides],
           gestes: new_quote_check_params[:gestes]
         ).metadata,
+        case_id: new_quote_check_params[:case_id],
         parent_id: new_quote_check_params[:parent_id],
         reference: new_quote_check_params[:reference],
         source_name: "mdso_bo"
@@ -127,7 +129,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
 
     def new_quote_check_params
       params.require(:quote_check).permit(
-        :file, :parent_id,
+        :file, :case_id, :parent_id,
         :reference, :profile, :renovation_type,
         :file_text, :file_markdown,
         :force_ocr, :ocr, :qa_llm, # Check params
@@ -169,6 +171,9 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
       end
     end
 
+    column "Dossier", :case_id do |quote_check|
+      link_to quote_check.case.id, admin_quotes_case_path(quote_check.case) if quote_check.case
+    end
     column "Date soumission", &:started_at
 
     column "Source", :source_name
@@ -239,6 +244,9 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
             end
           end
 
+          row "Dossier" do
+            link_to quote_check.case.id, admin_quotes_case_path(quote_check.case) if quote_check.case
+          end
           row "Date de soumission" do
             resource.started_at
           end
@@ -584,7 +592,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
                 include_blank: false,
                 selected: (QuoteCheck::RENOVATION_TYPES & ["geste"]).first ||
                           QuoteCheck::RENOVATION_TYPES.first
-
+        f.input :case_id, as: :string, label: "ID du dossier"
         f.input :file, as: :file
 
         f.input :gestes,
