@@ -43,6 +43,8 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
           row :profile, label: "Persona"
           row :renovation_type, label: "Type de rénovation"
 
+          row :status
+
           row :quote_checks do |quote_case|
             content_tag(:ul) do
               quote_case.quote_checks.default_order.map do |quote_check|
