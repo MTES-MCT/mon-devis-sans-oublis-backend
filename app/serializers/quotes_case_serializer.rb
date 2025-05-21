@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-class QuotesCaseSerializer < ActiveModel::Serializer
+class QuotesCaseSerializer < BaseSerializer
   attributes :id, :reference, :status
 end
