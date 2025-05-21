@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class QuoteCheckSerializer < ActiveModel::Serializer
+class QuoteCheckSerializer < BaseSerializer
   include ActionView::Helpers::SanitizeHelper
 
   TIMEOUT_FOR_PROCESSING = Integer(ENV.fetch("MDSO_TIMEOUT_FOR_PROCESSING", 15)).minutes
