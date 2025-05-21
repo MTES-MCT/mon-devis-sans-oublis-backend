@@ -239,6 +239,10 @@ paths:
               properties:
                 comment:
                   type: string
+                  nullable: true
+                reference:
+                  type: string
+                  nullable: true
 produces:
 - application/json
 consumes:
@@ -259,8 +263,9 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.datatourisme.fr/ontology/core/1.0/#siret
-          x-cardinality: 63297
-          x-capabilities: {}
+          x-cardinality: 63333
+          x-capabilities:
+            textAgg: true
           x-concept:
             id: siret
             title: SIRET
@@ -270,8 +275,9 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.w3.org/2000/01/rdf-schema#label
-          x-cardinality: 62941
-          x-capabilities: {}
+          x-cardinality: 62992
+          x-capabilities:
+            textAgg: true
           x-concept:
             id: label
             title: Libellé
@@ -281,8 +287,9 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/address
-          x-cardinality: 63812
-          x-capabilities: {}
+          x-cardinality: 63646
+          x-capabilities:
+            textAgg: true
           x-concept:
             id: address
             title: Adresse
@@ -292,8 +299,9 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/postalCode
-          x-cardinality: 5984
-          x-capabilities: {}
+          x-cardinality: 5980
+          x-capabilities:
+            textAgg: true
           x-concept:
             id: postalCode
             title: Code postal
@@ -303,8 +311,9 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/City
-          x-cardinality: 19467
-          x-capabilities: {}
+          x-cardinality: 19464
+          x-capabilities:
+            textAgg: true
           x-concept:
             id: city
             title: Commune
@@ -334,8 +343,9 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#tel
-          x-cardinality: 59728
-          x-capabilities: {}
+          x-cardinality: 59758
+          x-capabilities:
+            textAgg: true
           x-concept:
             id: tel
             title: N° de téléphone
@@ -345,8 +355,9 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#email
-          x-cardinality: 61601
-          x-capabilities: {}
+          x-cardinality: 61589
+          x-capabilities:
+            textAgg: true
           x-concept:
             id: email
             title: Adresse e-mail
@@ -356,8 +367,9 @@ components:
           type: string
           description: ''
           x-refersTo: https://schema.org/WebPage
-          x-cardinality: 37619
-          x-capabilities: {}
+          x-cardinality: 37592
+          x-capabilities:
+            textAgg: true
           x-concept:
             id: webPage
             title: Page Web
@@ -367,19 +379,21 @@ components:
           type: string
           description: ''
           x-cardinality: 462
-          x-capabilities: {}
+          x-capabilities:
+            textAgg: true
         nom_qualification:
           title: Nom de la qualification
           type: string
           description: ''
           x-cardinality: 470
-          x-capabilities: {}
+          x-capabilities:
+            textAgg: true
         url_qualification:
           title: URL qualification
           type: string
           description: ''
           x-refersTo: http://schema.org/DigitalDocument
-          x-cardinality: 75918
+          x-cardinality: 75919
           x-capabilities: {}
           x-concept:
             id: attachment
@@ -390,7 +404,8 @@ components:
           type: string
           description: ''
           x-cardinality: 40
-          x-capabilities: {}
+          x-capabilities:
+            textAgg: true
           examples:
           - QUALIBAT-RGE
           - QualiPAC module Chauffage et ECS
@@ -437,7 +452,8 @@ components:
           type: string
           description: ''
           x-cardinality: 33
-          x-capabilities: {}
+          x-capabilities:
+            textAgg: true
           examples:
           - Isolation par l'intérieur des murs ou rampants de toitures  ou plafonds
           - Chauffe-Eau Thermodynamique
@@ -452,10 +468,10 @@ components:
           - Ventilation mécanique
           - Panneaux solaires photovoltaïques
           - Isolation des planchers bas
-          - Radiateurs électriques, dont régulation.
           - Audit énergétique Maison individuelle
-          - Chaudière bois
+          - Radiateurs électriques, dont régulation.
           - Architecte
+          - Chaudière bois
           - Chauffage et/ou eau chaude solaire
           - Audit énergétique Logement collectif
           - Etude thermique reglementaire
@@ -478,7 +494,8 @@ components:
           type: string
           description: ''
           x-cardinality: 6
-          x-capabilities: {}
+          x-capabilities:
+            textAgg: true
           examples:
           - Travaux d'efficacité énergétique
           - Installations d'énergies renouvelables
@@ -491,7 +508,8 @@ components:
           type: string
           description: ''
           x-cardinality: 12
-          x-capabilities: {}
+          x-capabilities:
+            textAgg: true
           examples:
           - qualibat
           - qualitenr
@@ -521,7 +539,7 @@ components:
           description: Cette date correspond à la date de début de qualification transmise
             par l'organisme de qualification
           x-capabilities: {}
-          x-cardinality: 1845
+          x-cardinality: 1850
         lien_date_fin:
           title: Date de fin de qualification
           type: string
@@ -529,7 +547,7 @@ components:
           description: Cette date correspond à la date de fin de qualification transmise
             par l'organisme de qualification
           x-capabilities: {}
-          x-cardinality: 1544
+          x-cardinality: 1550
         _file.content:
           x-calculated: true
           type: string
@@ -1093,7 +1111,7 @@ components:
       - unique_visitors_count
 servers:
 - url: https://api.staging.mon-devis-sans-oublis.beta.gouv.fr/api/v1
-  description: Staging server
+  description: 'Staging test server : accessible depuis CORS localhost'
 - url: https://api.mon-devis-sans-oublis.beta.gouv.fr/api/v1
   description: Production server
 - url: http://localhost:3000/api/v1

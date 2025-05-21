@@ -16,7 +16,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
       resources :profiles, only: %i[index]
       resources :renovation_types, only: %i[index]
 
-      resources :quotes_cases, only: %i[create]
+      resources :quotes_cases, only: %i[create show update]
       resources :quote_checks, only: %i[create show update] do
         collection do
           get :metadata

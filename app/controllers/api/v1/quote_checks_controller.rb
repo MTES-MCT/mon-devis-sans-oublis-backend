@@ -90,13 +90,12 @@ module Api
           :file,
           :reference, :profile, :renovation_type, :metadata,
           :parent_id, :case_id,
-          :file_text, :file_markdown,
-          :reference
+          :file_text, :file_markdown
         )
       end
 
       def quote_check_edit_params
-        params.permit(:comment)
+        params.permit(:comment, :reference)
       end
 
       def api_user
