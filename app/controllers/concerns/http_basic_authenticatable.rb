@@ -12,7 +12,7 @@ module HttpBasicAuthenticatable
 
   def authenticate
     authenticate_or_request_with_http_basic("Administration") do |username, password|
-      username == "mdso" && password == ENV.fetch("MDSO_SITE_PASSWORD")
+      username == ENV.fetch("MDSO_SITE_USER", "mdso") && password == ENV.fetch("MDSO_SITE_PASSWORD")
     end
   end
 
