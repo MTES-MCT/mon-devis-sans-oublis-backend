@@ -86,6 +86,7 @@ gem "rack-cors" # TODO: use built-in Rails 8+ https://www.bigbinary.com/blog/rai
 
 # Back Office
 gem "activeadmin"
+gem "omniauth-proconnect", "~> 0.2" # ProConnect SSO
 gem "sassc-rails"
 
 group :development, :test do
