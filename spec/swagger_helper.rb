@@ -91,9 +91,9 @@ RSpec.configure do |config|
           type: :string,
           enum: QuoteCheck::STATUSES,
           description: {
-            "pending" => "analyse en cours",
-            "valid" => "valide",
-            "invalid" => "invalide"
+            "pending" => "analyse encore en cours",
+            "valid" => "tout est valide",
+            "invalid" => "invalide : au moins une erreur"
           }.slice(*QuoteCheck::STATUSES).map { |status, description| "#{status}: #{description}" }.join(" | ")
         },
         quote_check_error_category: {
@@ -571,6 +571,7 @@ RSpec.configure do |config|
               nullable: true,
               description: "référence optionnelle, NON unique"
             },
+            status: { "$ref" => "#/components/schemas/quote_check_status" },
             profile: { "$ref" => "#/components/schemas/profile" },
             renovation_type: { "$ref" => "#/components/schemas/renovation_type" },
             metadata: { "$ref" => "#/components/schemas/quote_check_metadata", nullable: true }

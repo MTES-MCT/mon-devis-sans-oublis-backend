@@ -667,7 +667,8 @@ components:
       - pending
       - valid
       - invalid
-      description: 'pending: analyse en cours | valid: valide | invalid: invalide'
+      description: 'pending: analyse encore en cours | valid: tout est valide | invalid:
+        invalide : au moins une erreur'
     quote_check_error_category:
       type: string
       enum:
@@ -1068,6 +1069,8 @@ components:
           type: string
           nullable: true
           description: référence optionnelle, NON unique
+        status:
+          "$ref": "#/components/schemas/quote_check_status"
         profile:
           "$ref": "#/components/schemas/profile"
         renovation_type:
