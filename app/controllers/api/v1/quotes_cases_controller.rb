@@ -6,10 +6,22 @@ module Api
     class QuotesCasesController < BaseController
       before_action :authorize_request
 
+      before_action :quotes_case, except: %i[create]
+
+      def show
+        render json: quotes_case_json
+      end
+
       def create
         @quotes_case = QuotesCase.create!(quotes_case_params)
 
         render json: quotes_case_json, status: :created
+      end
+
+      def update
+        quotes_case.update!(quotes_case_edit_params)
+
+        render json: quotes_case_json
       end
 
       protected
@@ -18,6 +30,12 @@ module Api
         @quotes_case ||= QuotesCase
                          .accessible_for_source(api_user)
                          .find(params[:id])
+      end
+
+      def quotes_case_edit_params
+        params.permit(
+          :reference
+        )
       end
 
       def quotes_case_json(quotes_case_provided = nil)

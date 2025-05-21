@@ -14,7 +14,8 @@ describe "Devis API", swagger_doc: "v1/#{Rails.application.config.openapi_file.c
       parameter name: :quote_check, in: :body, schema: {
         type: :object,
         properties: {
-          comment: { type: :string }
+          comment: { type: :string, nullable: true },
+          reference: { type: :string, nullable: true }
         }
       }
 
