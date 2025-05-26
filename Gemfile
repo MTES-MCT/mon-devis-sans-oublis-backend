@@ -86,6 +86,8 @@ gem "rack-cors" # TODO: use built-in Rails 8+ https://www.bigbinary.com/blog/rai
 
 # Back Office
 gem "activeadmin"
+gem "omniauth-proconnect" # ProConnect SSO
+gem "omniauth-rails_csrf_protection" # CSRF protection for OmniAuth when used without Devise
 gem "sassc-rails"
 
 group :development, :test do
