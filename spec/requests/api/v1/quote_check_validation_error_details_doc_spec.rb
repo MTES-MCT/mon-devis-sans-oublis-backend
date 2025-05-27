@@ -5,7 +5,7 @@ require "swagger_helper"
 describe "Error Details edition API",
          swagger_doc: "v1/#{Rails.application.config.openapi_file.call('v1', 'internal')}" do
   path "/quote_checks/error_detail_deletion_reasons" do
-    get "Récupérer les profils disponibles" do
+    get "Récupérer les détails de suppression d'erreur disponibles" do
       tags "Erreurs Devis"
       produces "application/json"
 

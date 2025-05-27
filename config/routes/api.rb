@@ -13,6 +13,8 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
 
   namespace :api do
     namespace :v1 do
+      get "auth/check", to: "auth#check", as: :auth_check
+
       resources :profiles, only: %i[index]
       resources :renovation_types, only: %i[index]
 

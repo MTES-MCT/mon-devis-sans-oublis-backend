@@ -6,10 +6,14 @@ module Api
     module HandleErrors
       extend ActiveSupport::Concern
 
+      class UnauthorizedError < StandardError; end
+
       included do
         rescue_from ActionController::ParameterMissing, with: :handle_parameter_missing
         rescue_from ActiveRecord::RecordInvalid, with: :handle_record_invalid
         rescue_from ActiveRecord::RecordNotFound, with: :handle_record_not_found
+
+        rescue_from UnauthorizedError, with: :handle_unauthorized
       end
 
       private

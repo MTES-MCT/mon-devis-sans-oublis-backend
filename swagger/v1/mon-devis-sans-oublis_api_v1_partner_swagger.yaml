@@ -9,6 +9,31 @@ info:
     - `id` : considérer comme un string (chaîne de caractères) unique
     - type enum (liste) : comme des strings (chaînes de caractères)
 paths:
+  "/auth/check":
+    get:
+      summary: Récupérer l'utilisateur courant
+      tags:
+      - Authentification
+      security:
+      - bearer_api_key: []
+      responses:
+        '200':
+          description: utilisateur courant
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: string
+                required:
+                - user
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/api_error"
   "/profiles":
     get:
       summary: Récupérer les profils disponibles
@@ -244,7 +269,7 @@ paths:
                   nullable: true
   "/renovation_types":
     get:
-      summary: Récupérer les profils disponibles
+      summary: Récupérer les types de rénovations disponibles
       tags:
       - Profils
       responses:
@@ -293,7 +318,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.datatourisme.fr/ontology/core/1.0/#siret
-          x-cardinality: 63333
+          x-cardinality: 63348
           x-capabilities:
             textAgg: true
           x-concept:
@@ -305,7 +330,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.w3.org/2000/01/rdf-schema#label
-          x-cardinality: 62992
+          x-cardinality: 62967
           x-capabilities:
             textAgg: true
           x-concept:
@@ -317,7 +342,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/address
-          x-cardinality: 63646
+          x-cardinality: 63780
           x-capabilities:
             textAgg: true
           x-concept:
@@ -341,7 +366,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/City
-          x-cardinality: 19464
+          x-cardinality: 19474
           x-capabilities:
             textAgg: true
           x-concept:
@@ -373,7 +398,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#tel
-          x-cardinality: 59758
+          x-cardinality: 59750
           x-capabilities:
             textAgg: true
           x-concept:
@@ -385,7 +410,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#email
-          x-cardinality: 61589
+          x-cardinality: 61556
           x-capabilities:
             textAgg: true
           x-concept:
@@ -397,7 +422,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://schema.org/WebPage
-          x-cardinality: 37592
+          x-cardinality: 37524
           x-capabilities:
             textAgg: true
           x-concept:
@@ -423,7 +448,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/DigitalDocument
-          x-cardinality: 75919
+          x-cardinality: 75955
           x-capabilities: {}
           x-concept:
             id: attachment
@@ -509,8 +534,8 @@ components:
           - Etude bois énergie
           - Etude forage géothermique
           - Projet complet de rénovation
-          - Etude solaire thermique
           - Etude ACV
+          - Etude solaire thermique
           - Etude système technique bâtiment
           - Etude eclairage
           - Inconnu
@@ -569,7 +594,7 @@ components:
           description: Cette date correspond à la date de début de qualification transmise
             par l'organisme de qualification
           x-capabilities: {}
-          x-cardinality: 1850
+          x-cardinality: 1854
         lien_date_fin:
           title: Date de fin de qualification
           type: string
@@ -577,7 +602,7 @@ components:
           description: Cette date correspond à la date de fin de qualification transmise
             par l'organisme de qualification
           x-capabilities: {}
-          x-cardinality: 1550
+          x-cardinality: 1553
         _file.content:
           x-calculated: true
           type: string
