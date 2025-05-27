@@ -34,6 +34,37 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/api_error"
+  "/data_checks/siret":
+    get:
+      summary: Vérifier le SIRET
+      tags:
+      - Checks
+      parameters:
+      - name: siret
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: SIRET existant
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  siret:
+                    type: string
+                    example: '12345678901234'
+                  valid:
+                    type: boolean
+                    example: true
+        '404':
+          description: SIRET inexistant
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/api_error"
   "/profiles":
     get:
       summary: Récupérer les profils disponibles
