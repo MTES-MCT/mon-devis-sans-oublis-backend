@@ -4,7 +4,7 @@ require "swagger_helper"
 
 describe "RenovationTypes API" do
   path "/renovation_types" do
-    get "Récupérer les profils disponibles" do
+    get "Récupérer les types de rénovations disponibles" do
       tags "Profils"
       produces "application/json"
 
