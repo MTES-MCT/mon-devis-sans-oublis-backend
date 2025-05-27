@@ -6,6 +6,8 @@ module Api
     module HandleErrors
       extend ActiveSupport::Concern
 
+      class BadRequestError < StandardError; end
+      class NotFoundError < StandardError; end
       class UnauthorizedError < StandardError; end
 
       included do
@@ -13,6 +15,8 @@ module Api
         rescue_from ActiveRecord::RecordInvalid, with: :handle_record_invalid
         rescue_from ActiveRecord::RecordNotFound, with: :handle_record_not_found
 
+        rescue_from BadRequestError, with: :handle_bad_request
+        rescue_from NotFoundError, with: :handle_record_not_found
         rescue_from UnauthorizedError, with: :handle_unauthorized
       end
 
@@ -23,6 +27,10 @@ module Api
           error: error,
           message: Array.wrap(message).presence
         }.compact, status: status
+      end
+
+      def handle_bad_request(exception)
+        api_error("Bad request", exception.message, :bad_request)
       end
 
       def handle_parameter_missing(exception)

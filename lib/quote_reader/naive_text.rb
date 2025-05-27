@@ -79,6 +79,8 @@ module QuoteReader
     SPACE_WITHOUT_NEWLINE_REGEX = /[ \t\f\v\r]*/i
     URI_REGEX = %r{(?:https?|ftp)://(?:www\.)?[^\s/$.?#].[^\s]*|www\.[^\s/$.?#].[^\s]*}i
 
+    SIRET_REGEX = /\d{3}#{SPACE_WITHOUT_NEWLINE_REGEX}\d{3}#{SPACE_WITHOUT_NEWLINE_REGEX}\d{3}#{SPACE_WITHOUT_NEWLINE_REGEX}\d{5}/i # rubocop:disable Layout/LineLength
+
     def self.find_adresses(text)
       (text.scan(/Adresse#{BETWEEN_LABEL_VALUE_REGEX}(#{FRENCH_CHARACTER_REGEX}+)/i).flatten +
         text.scan(/(#{FRENCH_ADDRESS_REGEX})/i).flatten).filter_map { it&.strip }.uniq
@@ -158,7 +160,7 @@ module QuoteReader
     end
 
     def self.find_sirets(text)
-      text.scan(/\b(\d{3}#{SPACE_WITHOUT_NEWLINE_REGEX}\d{3}#{SPACE_WITHOUT_NEWLINE_REGEX}\d{3}#{SPACE_WITHOUT_NEWLINE_REGEX}\d{5})\b/i).flatten.filter_map do # rubocop:disable Layout/LineLength
+      text.scan(/\b(#{SIRET_REGEX})\b/i).flatten.filter_map do
         it&.strip
       end.uniq
     end
