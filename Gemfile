@@ -116,6 +116,16 @@ group :test do
 end
 
 group :development do
+  gem "bundler-stats"
+  gem "licensed" # Requires native cmake and pkg-config libraries for rugged gem dependency
+  gem "memory_profiler"
+  gem "next_rails"
+  gem "rails_best_practices"
+  gem "rails-erd"
+  gem "rails_stats"
+  gem "rubycritic"
+  gem "rugged" # For licensed on Github Actions CI
+
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
 

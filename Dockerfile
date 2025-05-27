@@ -1,12 +1,17 @@
 FROM ruby:3.4-slim
 
+ARG BUNDLE_WITHOUT
+ENV BUNDLE_WITHOUT=$BUNDLE_WITHOUT
+
 EXPOSE 3000
 
 COPY Aptfile /app/Aptfile
 
+# cmake pkg-config for rugged gem required by licensed gem
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install --no-install-recommends -y \
         build-essential git \
+        cmake pkg-config \
         libpq-dev libyaml-dev \
         nodejs npm && \
     xargs -a /app/Aptfile apt-get install --no-install-recommends -y && \
@@ -20,7 +25,7 @@ RUN sed -i 's#<policy domain="coder" rights="none" pattern="PDF" />#<policy doma
 # (namely the NPM steps)
 WORKDIR /bundle
 COPY Gemfile Gemfile.lock ./
-RUN bundle install
+RUN bundle config set without "$BUNDLE_WITHOUT" && bundle install
 
 # Move to the main folder
 WORKDIR /app

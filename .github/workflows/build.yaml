@@ -13,6 +13,8 @@ jobs:
       - uses: docker/build-push-action@v5
         with:
           context: .
+          build-args: |
+            BUNDLE_WITHOUT=development production
           tags: rails-template:latest
           outputs: type=docker,dest=/tmp/rails-template.tar
           cache-from: type=gha
