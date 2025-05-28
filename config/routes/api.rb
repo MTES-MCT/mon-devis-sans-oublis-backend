@@ -20,6 +20,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
 
       scope path: "data_checks", controller: :data_checks do
         get :siret
+        get :rge
       end
 
       resources :quotes_cases, only: %i[create show update]

@@ -65,6 +65,49 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/api_error"
+  "/data_checks/rge":
+    get:
+      summary: Trouver ou Valider un RGE, selon SIRET et/ou critères
+      tags:
+      - Checks
+      parameters:
+      - name: siret
+        in: query
+        description: SIRET
+        required: true
+        schema:
+          type: string
+      - name: rge
+        in: query
+        description: RGE à Valider, sinon Trouve un RGE selon les critères
+        schema:
+          type: string
+      responses:
+        '200':
+          description: RGE trouvé ou vérifié
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rge:
+                    type: string
+                    example: RGE123456
+                  valid:
+                    type: boolean
+                    example: true
+        '404':
+          description: RGE non trouvé
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/api_error"
+        '422':
+          description: RGE non valide
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/api_error"
   "/profiles":
     get:
       summary: Récupérer les profils disponibles
@@ -349,7 +392,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.datatourisme.fr/ontology/core/1.0/#siret
-          x-cardinality: 63348
+          x-cardinality: 63406
           x-capabilities:
             textAgg: true
           x-concept:
@@ -361,7 +404,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.w3.org/2000/01/rdf-schema#label
-          x-cardinality: 62967
+          x-cardinality: 62975
           x-capabilities:
             textAgg: true
           x-concept:
@@ -373,7 +416,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/address
-          x-cardinality: 63780
+          x-cardinality: 63864
           x-capabilities:
             textAgg: true
           x-concept:
@@ -397,7 +440,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/City
-          x-cardinality: 19474
+          x-cardinality: 19469
           x-capabilities:
             textAgg: true
           x-concept:
@@ -429,7 +472,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#tel
-          x-cardinality: 59750
+          x-cardinality: 59880
           x-capabilities:
             textAgg: true
           x-concept:
@@ -441,7 +484,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#email
-          x-cardinality: 61556
+          x-cardinality: 61695
           x-capabilities:
             textAgg: true
           x-concept:
@@ -453,7 +496,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://schema.org/WebPage
-          x-cardinality: 37524
+          x-cardinality: 37566
           x-capabilities:
             textAgg: true
           x-concept:
@@ -479,7 +522,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/DigitalDocument
-          x-cardinality: 75955
+          x-cardinality: 76010
           x-capabilities: {}
           x-concept:
             id: attachment
@@ -565,8 +608,8 @@ components:
           - Etude bois énergie
           - Etude forage géothermique
           - Projet complet de rénovation
-          - Etude ACV
           - Etude solaire thermique
+          - Etude ACV
           - Etude système technique bâtiment
           - Etude eclairage
           - Inconnu
@@ -625,7 +668,7 @@ components:
           description: Cette date correspond à la date de début de qualification transmise
             par l'organisme de qualification
           x-capabilities: {}
-          x-cardinality: 1854
+          x-cardinality: 1855
         lien_date_fin:
           title: Date de fin de qualification
           type: string
@@ -633,7 +676,7 @@ components:
           description: Cette date correspond à la date de fin de qualification transmise
             par l'organisme de qualification
           x-capabilities: {}
-          x-cardinality: 1553
+          x-cardinality: 1551
         _file.content:
           x-calculated: true
           type: string
