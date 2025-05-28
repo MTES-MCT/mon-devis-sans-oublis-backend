@@ -98,6 +98,13 @@ Différentes briques sont mises à contribution et encore en évaluation:
 
 `docker compose exec web rake 'quote_checks:create[tmp/devis_tests/DC004200PAC-Aireau+Chauffe eau thermo.pdf]' | less`
 
+#### Forcer un devis à valide
+
+```
+quote_check_id = "76c35e1c-4d8d-479d-a62a-4f36511a5041"
+QuoteCheck.find(quote_check_id).update!(validation_errors: nil, validation_error_edits: nil)
+```
+
 ## API
 
 - au format REST JSON
