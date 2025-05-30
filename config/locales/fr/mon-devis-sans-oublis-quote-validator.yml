@@ -1,0 +1,253 @@
+fr:
+  quote_validator:
+    error_categories:
+      admin: "Mentions administratives"
+      file: "Fichier"
+      gestes: "Descriptif technique des gestes"
+    error_types:
+      error: "Erreur"
+      missing: "Information manquante"
+      wrong: "Information erronée"
+    errors:
+      server_timeout_error: "Malheuresement, nous n'avons pas encore réussi à traiter le devis. Merci de réessayer plus tard."
+
+      empty_file_error: "Le fichier fourni semble vide, nous n'avons pas pu lire son contenu."
+      file_reading_error: "Malheureusement, nous n'avons pas réussi à lire le fichier... (nous ne supportons pas encore les scans ou images pour le moment)."
+      unsupported_file_format: "L'extension et le format du fichier ne sont pas supportés pour le moment."
+      file_type_error: "Le fichier ne semble pas être un devis, veuillez nous transférer uniquement des devis de rénovation énergétique."
+
+      devis_manquant: 'La mention explicite "devis" est manquante'
+      devis_manquant_infos: "Les bons de commande et propositions commerciales ne sont pas acceptés. Il faut explicitement indiquer qu'il s'agit d'un devis."
+      numero_devis_manquant: "Le numéro du devis est manquant"
+      numero_devis_manquant_infos: "Un devis doit avoir un numéro unique permettant un suivi plus précis."
+      date_validite_manquant: "Attention, si la date de validité n'est pas indiquée, elle est de 3 mois par défaut"
+      date_devis_manquant: "La date d'édition du devis est manquante"
+      date_chantier_manquant: "La date prévue de début de chantier n'est pas présente, elle est cependant recommandée" 
+      date_pre_visite_manquant: "La date de pré visite technique est fortement recommandée, notamment dans le cadre des CEE"
+
+      # Informations de l'artisan
+      pro_raison_sociale_manquant: "Le nom de la structure effectuant les travaux est manquante"
+      pro_forme_juridique_manquant: "La forme juridique de la structure effectuant les travaux est manquante"
+      pro_forme_juridique_manquant_infos: "La forme juridique est obligatoire sur un devis, voici quelques exemples possibles : EURL, SARL, SA, SNC, SAS."
+      tva_manquant: "Le numéro individuel d'identification à la TVA est manquant"
+      tva_manquant_infos : "En France, le numéro de TVA est constitué du code FR et de 11 chiffres (une clé informatique de 2 chiffres et le numéro SIREN à 9 chiffres de la structure)."
+      capital_manquant: "Le capital social de la structure effectuant les travaux est manquant"
+      siret_manquant: "Le SIRET de l'établissement est manquant"
+      siret_manquant_infos : "Le Numéro SIRET (système d’identification du répertoire des établissements) est une série de 14 chiffres. Il correspond au numéro SIREN (Système d’Identification du Répertoire des Entreprises, à 9 chiffres) délivré lors de la création de la structure, suivi du numéro NIC (numéro interne de classement)."
+      siret_format_erreur: "Le numéro de SIRET n'a pas le bon format"
+      siret_format_erreur_infos: "Attention, il semblerait que le SIREN ait été utilisé à la place du SIRET. Le SIRET est une série de 14 chiffres."
+      rcs_manquant: "Le N° RCS et ville d'immatriculation (pour les sociétés) ou le N° RNE est manquant"
+      rcs_ville_manquant: "La ville d'immatriculation de la structure effectuant les travaux est manquante."
+      pro_adresse_manquant: "L'adresse du siège social est manquante"
+      rge_manquant: "Le numéro de certification RGE du professionnel est manquant"
+      rge_manquant_infos: "Pour obtenir des aides, le professionel doit avoir le label RGE du geste en question. Merci de préciser le numéro de certification."
+      rge_format_erreur: "Le numéro de certification RGE n'a pas le bon format"
+      rge_non_correspondant: "Le numéro de certification RGE du professionnel ne correspond pas au SIRET de l'établissement"
+      pro_assurance_manquant: "Assurance professionnelle souscrite manquante"
+      pro_assurance_manquant_infos: "Assurance professionnelle souscrite avec le N° de la police d'assurance, le type (décennale, biennale ...), les coordonnées de l'assureur ou du garant et la couverture géographique du contrat ou de la garantie."
+
+      # Information du client : 
+      client_prenom_manquant: "Le prénom du client est manquant" 
+      client_prenom_manquant_infos: "Mise en garde : le devis doit être établi au nom et prénom de la personne ayant fait la demande d’aide."
+      client_nom_manquant: "Le nom du client est manquant"
+      client_nom_manquant_infos: "Mise en garde : le devis doit être établi au nom et prénom de la personne ayant fait la demande d’aide."
+      client_civilite_manquant: "La civilité du client est manquante"
+      client_adresse_manquant: "L'adresse du client est manquante" 
+      chantier_adresse_manquant: "Si l'adresse du chantier est différente de l'adresse de facturation, il faut l'indiquer clairement."
+      chantier_facturation_idem: "L'adresse de réalisation des travaux n'est pas indiquée. Est-ce bien la même que l'adresse de facturation ?"
+
+
+      # Prix / TVA : 
+      separation_fourniture_pose_manquant: "La séparation fourniture et pose est manquante"
+      separation_fourniture_pose_manquant_infos: "Il est obligatoire de bien séparer la fourniture et la pose du matériel en indiquant clairement les prix associés."
+      prix_total_ttc_manquant: "Le prix total TTC du devis est manquant"
+      prix_total_ht_manquant: "Le prix total HT du devis est manquant"
+      
+      # Sur chaque geste
+      geste_prix_ht_manquant: "Le prix HT est manquant"
+      geste_prix_unitaire_ht_manquant: "Le prix unitaire HT est manquant"
+      geste_prix_unitaire_ht_manquant_infos: "Il est essentiel d'indiquer le prix unitaire hors taxe ainsi que la quantité à installer."
+      geste_taux_tva_manquant: "Le taux de TVA appliqué est manquant"
+
+
+#################################################
+####              CHAUFFAGE                  ####
+#################################################
+
+      chauffage_puissance_manquant: "La puissance du matériel est manquante"
+      chauffage_puissance_manquant_infos: "La puissance doit être indiquée en KW."
+      chauffage_marque_manquant: "La marque du matériel installé est manquante"
+      chauffage_reference_manquant: "Le modèle installé est manquant"
+      chauffage_etas_manquant: "L'efficacité énergétique saisonnière (ETAS) du système de chauffage est manquante"
+      chauffage_etas_manquant_infos: "L'efficacité énergétique saisonière (ETAS) est un pourcentage."
+      chauffage_remplacement_chaudiere_condensation_manquant: "Lors d'un remplacement de chaudière, il faut préciser si le système existant est (ou n’est pas) une chaudière à condensation"
+      # validate_chaudiere_biomasse
+      chaudiere_type_combustible_manquant: "Le type de combustible de la chaudière est manquant"
+      chaudiere_type_combustible_manquant_infos: "Le type de combustible peut être par exemple : bûches, granulés ou copeaux." # buche, granulé, copeaux ...
+      chaudiere_type_chargement_manquant: "Le type de chargement de la chaudière est manquant"
+      chaudiere_type_chargement_manquant_infos: "Veuillez indiquer si le chargement est manuel ou automatique" # manuelle ou auto
+      chaudiere_type_silo_manquant: "Le type de Silo n'est pas indiqué"
+      chaudiere_type_silo_manquant_infos: "Il est important de décrire précisément le silo (externe ou interne, neuf ou existant, textile ou maçonné." # externe/interne, neuf/existant, Textile/maconner
+      chaudiere_contenance_silo_manquant: "La contenance du silo n'est pas indiquée"
+      chaudiere_contenance_silo_trop_petit: "Le volume du silo doit être supérieur ou égal à 225 litres"
+      chaudiere_emission_CO_manquant: "Il manque les émissions de monoxyde de carbone de la chaudière" # Emission monoxyde de carbone rapportée (CO) à 10% d’O2 (mg/Nm3)
+      chaudiere_emission_CO_manquant_infos: "Lorsque la chaudière n'a pas le label flamme verte, il faut indiquer les émissions de monoxyde de carbone (CO) rapportée à 10% d’O2 (en mg/Nm3)."
+      chaudiere_emission_COG_manquant: "Il manque les émissions de composés organiques volatiles (COG) de la chaudière"
+      chaudiere_emission_COG_manquant_infos: "Lorsque la chaudière n'a pas le label flamme verte, il faut indiquer les émissions de composés organiques volatiles (COG) rapportée à 10% d’O2 (en mg/Nm3)." # Emission de composés organiques volatiles (COG) (mg/Nm3) rapportée à 10% d’O2
+      chaudiere_emission_particule_manquant: "Il manque les émissions de particules de la chaudière"
+      chaudiere_emission_particule_manquant_infos: "Lorsque la chaudière n'a pas le label flamme verte, il faut indiquer les émissions de particules (en mg/Nm3)." # Emission de particules (mg/Nm3)
+      chaudiere_emission_nox_manquant: "Il manque les émissions d’oxydes d’azote (NOx) de la chaudière"
+      chaudiere_emission_nox_manquant_infos: "Lorsque la chaudière n'a pas le label flamme verte, il faut indiquer les émissions d’oxydes d’azote (NOx) rapporté à 10% d’O2 (en mg/Nm3)." # Emissions d’oxydes d’azote (NOx) rapporté à 10% d’O2 (mg/Nm3)
+      chaudiere_marque_regulateur_manquant: "La marque du régulateur utilisé n'est pas indiquée"
+      chaudiere_reference_regulateur_manquant: "Le modèle du régulateur installé n'est pas indiqué"
+      chaudiere_classe_regulateur_manquant: "Le régulateur doit être de classe IV et cela doit être indiqué"
+      # validate_poele_insert
+      poele_type_combustible_manquant: "Le combustible utilisé par le poêle ou l'insert n'est pas indiqué" 
+      poele_type_combustible_manquant_infos: "Le combustible peut être le bois, les bûches ou les granulés."
+      poele_rendement_energetique_manquant: "Le rendement énergétique du poêle ou de l'insert est manquant"
+      poele_rendement_energetique_manquant_infos: "Le rendement est une valeur en pourcentage."
+      poele_emission_CO_manquant: "Il manque les émissions de monoxyde de carbone (CO) du poêle ou de l'insert"
+      poele_emission_CO_manquant_infos: "Lorsque le poêle ou l'insert n'a pas le label flamme verte, il faut indiquer les émissions de monoxyde de carbone (CO) rapportée à 10% d’O2 (en mg/Nm3)." # Emission monoxyde de carbone rapportée (CO) à 10% d’O2 (mg/Nm3)
+      poele_emission_COG_manquant: "Il manque les émissions de composés organiques volatiles (COG) du poêle ou de l'insert"
+      poele_emission_COG_manquant_infos: "Lorsque le poêle ou l'insert n'a pas le label flamme verte, il faut indiquer les émissions de composés organiques volatiles (COG) rapportée à 10% d’O2 (en mg/Nm3)." # Emission de composés organiques volatiles (COG) (mg/Nm3) rapportée à 10% d’O2
+      poele_emission_particule_manquant: "Il manque les émissions de particules du poêle ou de l'insert"
+      poele_emission_particule_manquant_infos: "Lorsque le poêle ou l'insert n'a pas le label flamme verte, il faut indiquer les émissions de particules (en mg/Nm3)." # Emission de particules (mg/Nm3)
+      poele_emission_nox_manquant: "Il manque les émissions d’oxydes d’azote (NOx) du poêle ou de l'insert"
+      poele_emission_nox_manquant_infos: "Lorsque le poêle ou l'insert n'a pas le label flamme verte, il faut indiquer les émissions d’oxydes d’azote (NOx) rapporté à 10% d’O2 (en mg/Nm3)." # Emissions d’oxydes d’azote (NOx) rapporté à 10% d’O2 (mg/Nm3)
+      # validate_systeme_solaire_combine
+      ssc_marque_capteurs_manquant: "La marque exacte du système n'est pas indiée"
+      ssc_reference_capteurs_manquant: "Le modèle exact du système doit être mentionné"
+      ssc_type_capteurs_manquant: "Le type de capteurs utilisés doit être mentionné"
+      # TODO Pas toujours les mêmes en fonction des aides !!
+      ssc_type_capteurs_manquant_infos: "Capteurs thermique à circulation de liquide ou d'air, hybrides thermiques et électriques à circulation de liquide"
+      ssc_surface_captage_manquant: "La surface de captage en m2 doit être indiquée"
+      ssc_productivite_capteurs_manquant: "La productivité des capteurs doit être indiquée"
+      ssc_productivite_capteurs_manquant_infos: "La productivité est en W/m2" # W/m2
+      ssc_volume_ballon_manquant: "Le volume du ou des ballons associés n'est pas indiqué" #(peut être associé à plusieurs ballons)
+      ssc_energie_appoint_manquant: "L'énergie d'appoint utilisée n'est pas indiquée"
+      ssc_energie_appoint_manquant_infos: "Quelle énergie d'appoint est utilisée par le système ? (électricité, gaz,...)" # electricité, gaz...
+      # validate_pac
+      pac_type_manquant: "Le type de Pompe à chaleur installée n'est pas indiqué"
+      pac_type_manquant_infos: "Voici quelques exemples de pompes à chaleur possibles : (air-eau, eau-eau, hybride, géothermique...)" # air-eau, eau-eau, air-air, hybride 
+      pac_regime_temperature_manquant: "Le régime de température de la pompe à chaleur doit être indiqué"
+      pac_regime_temperature_manquant: "Le régime de la pompe à chaleur peut être Basse température, Moyenne température ou Haute température." # basse, moyenne, haute
+      pac_type_fluide_frigorigene_manquant: "Le liquide frigorigène utilisé dans la pompe à chaleur n'est pas indiqué" # R410A -  attention, celui ci va être restreint, R32 …
+      pac_cop_chauffage_manquant: "Le coefficient de performance de la Pompe à chaleur doit être indiqué"
+      pac_cop_chauffage_manquant_infos: "Le coefficient de performance, autrement dit COP n'a pas d'unité."
+      pac_air_air_puissance_nominale_manquant: "La puissance nominale (Pnom) de la pompe à chaleur doit être indiquée."
+      pac_air_air_scop_manquant: "Le coefficient de performance saisonnier (SCOP) de la Pompe à chaleur doit être indiqué"
+      pac_air_air_scop_manquant_infos: "Le SCOP n'a pas d'unité"
+
+
+#################################################
+####         EAU CHAUDE SANITAIRE            ####
+#################################################
+
+      eau_chaude_marque_manquant : "La marque du chauffe-eau est manquante"
+      eau_chaude_reference_manquant: "Le modèle du chauffe-eau n'est pas indiqué"
+      eau_chaude_volume_manquant: "Le volume du chauffe-eau est manquant"
+      eau_chaude_volume_manquant_infos: "Le volume du chauffe-eau doit être indiqué en Litre."
+      eau_chaude_etas_manquant: "L'efficacité énergétique saisonière (ETAS) du chauffe eau est manquante"
+      eau_chaude_etas_manquant_infos: "L'ETAS est un pourcentage."
+      eau_chaude_profil_soutirage_manquant: "Le profil de soutirage du chauffe-eau n'est pas indiqué"
+      eau_chaude_profil_soutirage_manquant: " Le profil de soutirage est une des options suivantes : M, L, XL ou XXL."
+      # validate_cesi
+      cesi_type_appoint_manquant: "L'énergie d'appoint du chauffe-eau n'est pas indiquée" # electrique ou autre
+      cesi_type_appoint_manquant_infos: "Quelle énergie d'appoint est utilisée par le chauffe-eau solaire individuel ?"
+      cesi_surface_capteur_manquant: "La surface des capteurs n'est pas indiquée"
+      cesi_surface_capteur_manquant_infos: "La surface des capteurs doit être précisée en m2." # TODO: V1 > 2m2 en metropole pour MPR
+      cesi_classe_energetique_ballon_manquant: "La classe énergétique du ballon d'eau chaude est manquante" # TODO: V1 minimum Classe C si volume ≤ 500L
+      cesi_fluide_manquant: "Le fluide utilisé pour le chauffe-eau solaire est manquant"
+      cesi_fluide_manquant_infos: "Voici les fluides possibles : eau, eau glucolée ou air." # eau, eau glucolée ou air
+      # validate_chauffe_eau_thermodynamique
+      chauffe_eau_thermodynamique_cop_manquant: "Le coefficient de performance de l'équipement n'est pas indiqué"
+      chauffe_eau_thermodynamique_cop_manquant_infos: "Le COP doit être mesuré conformément aux condition de la norme EN 16147."
+      chauffe_eau_thermodynamique_type_installation_manquant: "Le type d'installation du chauffe-eau thermodynamique n'est pas indiqué" 
+      chauffe_eau_thermodynamique_type_installation_manquant_infos: " Le chauffe-eau thermodynamique est-il sur air extérieur, sur air extrait ou sur air ambiant?" # air exterieur, sur air exrait ou sur air ambiant
+
+
+#################################################
+####              ISOLATION                  ####
+#################################################
+
+
+      isolation_marque_manquant: "La marque du materiel d'isolation est manquante"
+      isolation_reference_manquant: "Le modèle de l'isolant est manquant"
+      isolation_surface_manquant: "La surface isolée n'est pas indiquée"
+      isolation_epaisseur_manquant: "L'épaisseur de l'isolant est manquante"
+      isolation_epaisseur_manquant_infos: "L'épaisseur totale de l'isolant doit être précisée en cm."
+      isolation_r_manquant: "La résistance thermique de l'installation n'est pas indiquée" 
+      isolation_r_manquant_infos: "La résistance thermique (R) de l'installation doit être précisée et est définie en m2.K/W." # Decimal (m².K/W)
+      # validate_isolation_toiture_terrasse
+      isolation_type_isolation_toiture_terrasse_manquant: "Le type de l'isolation de la toiture-terrasse est manquant" 
+      isolation_type_isolation_toiture_terrasse_manquant_infos : "L'isolation est-elle faite par l'intérieur ou par l'extérieur ?"
+      # validate_isolation_plancher_bas
+      isolation_localisation_plancher_bas_manquant: "L'emplacement de l'isolation des planchers bas n'est pas indiqué"
+      isolation_localisation_plancher_bas_manquant_infos: "Pour l'isolation des planchers bas, il faut préciser sur quelle pièce cela donne."
+      isolation_norme_acermi_manquant: "La norme de calcul de la résistance ou son numéro ACERMI sont manquants"
+      isolation_norme_acermi_manquant_infos: "faisant référence au respect à l'une des normes NF éligibles selon le dispositif correspondant (ou bien son numéro ACERMI réputant satisfaire les conditions)."
+      isolation_parement_fixation_protection_manquant: "La présence d'un parement, d'éléments de protection et d'un système de fixation de l'isolant est manquante"
+      isolation_parement_fixation_protection_manquant_infos: "Pour être éligible aux aides financières, le complexe isolant, fixation d'isolant, protection de l'isolant (ex : plaque de plâtre) doit être réalisé par l'entreprise qualifiée RGE."
+
+
+#################################################
+####              MENUISERIE                 ####
+#################################################
+
+
+      menuiserie_marque_manquant: "La marque de la menuiserie installée est manquante"
+      menuiserie_reference_manquant: "Le modèle de la menuiserie n'est pas indiqué"
+      menuiserie_type_materiau_manquant: "Le matériau des montants n'est pas précisé"
+      menuiserie_type_materiau_manquant_infos: "Les montants peuvent être par exemple en bois, alu,pvc ..." # bois, alu, pvc ...
+      menuiserie_type_vitrage_manquant: "Le type de vitrage est manquant"
+      menuiserie_type_vitrage_manquant_infos: "Le vitrage est-il un simple ou un double vitrage ?" # simple - double vitrage
+      menuiserie_type_pose_manquant: "Le type de pose de la menuiserie n'est pas indiqué"
+      menuiserie_type_pose_manquant_infos: "La pose de la menuiserie peut être en rénovation ou en dépose totale." # renovation ou depose totale
+      menuiserie_localisation_manquant: "La pièce dans laquelle est installée la menuiserie est manquante"
+      menuiserie_position_paroie_manquant: "La position par rapport à la paroi de la menuiserie n'est pas indiquée"
+      menuiserie_position_paroie_manquant_infos: "La menuiserie est-elle posée en nu intérieur, nu extérieur ou tunnel par exemple." # nu intérieur, nu extérieur, tunnel ...
+      # validate_menuiserie_fenetre
+      menuiserie_uw_fenetre_manquant: "Le coefficient de transmission thermique (en W/m2⋅K) de la fenêtre n'est pas indiqué"
+      menuiserie_uw_fenetre_manquant_infos: "Le coefficient Uw mesure la performance thermique globale d'une fenêtre, incluant le vitrage et le cadre."
+      menuiserie_sw_fenetre_manquant: "Le facteur solaire de la fenêtre n'est pas indiqué."
+      menuiserie_sw_fenetre_manquant_infos: "Le Sw va de 0 (pas de chaleur transmise) à 1 (toute la chaleur est transmise). Il indique la capacité d'une fenêtre à laisser entrer la chaleur solaire. Il représente la proportion d’énergie solaire transmise à travers la fenêtre."
+      # validate_menuiserie_fenetre_toit
+      menuiserie_uw_fenetre_toit_manquant: "Le coefficient de transmission thermique (en W/m2⋅K) de la fenêtre de toit n'est pas indiqué"
+      menuiserie_uw_fenetre_toit_manquant_infos: "Le coefficient Uw mesure la performance thermique globale de la fenêtre de toit, incluant le vitrage et le cadre."
+      menuiserie_sw_fenetre_toit_manquant: "Le facteur solaire de la fenêtre n'est pas indiqué"
+      menuiserie_sw_fenetre_toit_manquant_infos: "Le Sw va de 0 (pas de chaleur transmise) à 1 (toute la chaleur est transmise). Il indique la capacité d'une fenêtre de toit à laisser entrer la chaleur solaire. Il représente la proportion d’énergie solaire transmise à travers la fenêtre de toit."
+      # validate_menuiserie_porte
+      menuiserie_ud_porte_manquant: "Le coefficient de transmission thermique (en W/m2⋅K) de la porte ou de la porte-fenêtre n'est pas indiqué"
+      # validate_menuiserie_volet_isolant
+      menuiserie_deltar_volet_manquant: "Le gain de résistance thermique (en W/m2⋅K) suite à l'installation du volet isolant est manquant"
+      menuiserie_deltar_volet_manquant_infos: "Le ΔR représente l’augmentation de la résistance thermique (R) d’un élément de construction après rénovation."
+
+
+#################################################
+####              VENTILATION                ####
+#################################################
+
+
+      vmc_type_manquant: "Le type de VMC installée est à préciser"
+      vmc_type_manquant_infos: "Voici des exemples : VMC simple flux hygroréable de type A (Hygro A) ou VMC double flux avec échangeur."
+        # VMC simple flux hygroréable de type A (Hygro A)
+        # VMC simple flux hygroréable de type B (Hygro B)
+        # VMC double flux avec échangeur
+      vmc_marque_caisson_manquant: "La marque du caisson n'est pas indiquée"
+      vmc_reference_caisson_manquant: "Le modèle du caisson est manquant"
+      vmc_marque_bouche_extraction_manquant: "La marque des bouches d'extraction est manquante"
+      vmc_reference_bouche_extraction_manquant: "Le modèle des bouches d'extration est manquant"
+      vmc_nombre_bouche_extraction_manquant: "Le nombre de bouche d'extraction n'est pas indiqué"
+      vmc_classe_caisson_manquant: "La classe d'efficacité énergétique du caisson est manquante"
+      vmc_puissance_manquant: "La puissance électrique du moteur est manquante"
+      vmc_puissance_manquant_infos: "La puissance électtrique du moteur est exprimée en W-Th-C. " # Puissance electrique du moteur en fonction de la config du logement - exprimé en (W-Th-C) (doit être basse conso)
+      vmc_simple_flux_nombre_bouches_entree_dair_manquant: "Le nombre de bouches d'entrée d'air n'est pas indiqué"
+      vmc_simple_flux_marque_bouches_entree_dair_manquant: "La marque des bouches d'entrée d'air est manquante"
+      vmc_simple_flux_reference_bouches_entree_dair_manquant: "Le modèle des bouches d'entrée d'air est manquant"
+      vmc_simple_flux_emplacement_bouches_entree_dair_manquant: "L'emplacement des bouches d'entrée d'air n'est pas indiqué"
+      vmc_simple_flux_emplacement_bouches_entree_dair_manquant_infos: "Attention de vérifier la présence d’entrées d’air sur les menuiseries des pièces sèches et leur absence sur les menuiseries des pièces humides."
+      vmc_double_flux_marque_bouches_soufflage_manquant: "La marque des bouches de soufflage est manquante"
+      vmc_double_flux_reference_bouches_soufflage_manquant: "Le modèle des bouches de soufflage est manquant"
+      vmc_double_flux_emplacement_bouches_soufflage_manquant: "L'emplacement des bouches de soufflages n'est pas précisé"
+      vmc_double_flux_emplacement_bouches_soufflage_manquant_infos: "Attention de vérifier l'absence d'entrées d'air sur toutes les menuiseries."
+      vmc_double_flux_nombre_bouches_soufflage_manquant: "Le nombre de bouches de soufflage n'est pas précisé"
