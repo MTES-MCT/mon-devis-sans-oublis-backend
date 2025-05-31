@@ -3,6 +3,19 @@
 module QuoteValidator
   # Validator for the Quote
   class Base
+    # Custom ArgumentError with error_code
+    class ArgumentError < ArgumentError
+      attr_reader :error_code
+
+      def initialize(message = nil, error_code = nil)
+        message ||= I18n.t("quote_validator.errors.#{error_code}", default: nil) if error_code
+
+        super(message)
+
+        @error_code = error_code
+      end
+    end
+
     class NotImplementedError < ::NotImplementedError; end
 
     attr_accessor :controls_count, :error_details, :quote, :quote_id, :warnings

@@ -18,7 +18,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
       resources :profiles, only: %i[index]
       resources :renovation_types, only: %i[index]
 
-      scope path: "data_checks", controller: :data_checks do
+      scope path: "data_checks", controller: :data_checks, as: :data_checks do
         get :siret
         get :rge
       end

@@ -6,9 +6,25 @@ module Api
     module HandleErrors
       extend ActiveSupport::Concern
 
-      class BadRequestError < StandardError; end
-      class NotFoundError < StandardError; end
-      class UnauthorizedError < StandardError; end
+      class ApiError < StandardError; end
+
+      # Custom error class for API errors with a message and optional validator error code
+      class ApiErrorWithCode < ApiError
+        attr_reader :error_code, :validator_error_code
+
+        def initialize(message = nil, validator_error_code: nil)
+          message ||= I18n.t("quote_validator.errors.#{validator_error_code}", default: nil) if validator_error_code
+
+          super(message)
+
+          @validator_error_code = validator_error_code
+          @error_code = validator_error_code
+        end
+      end
+
+      class BadRequestError < ApiErrorWithCode; end
+      class NotFoundError < ApiErrorWithCode; end
+      class UnauthorizedError < ApiError; end
 
       included do
         rescue_from ActionController::ParameterMissing, with: :handle_parameter_missing
@@ -22,31 +38,52 @@ module Api
 
       private
 
-      def api_error(error, message = nil, status = :bad_request)
-        render json: {
-          error: error,
-          message: Array.wrap(message).presence
-        }.compact, status: status
+      # @param error [Exception, String]
+      # @param message [String]
+      # @param status [Symbol, String, Number]
+      def api_error(error, message = nil, status = :bad_request) # rubocop:disable Metrics/MethodLength
+        # Format specific Validator error like data checks
+
+        error_json = if error.is_a?(ApiErrorWithCode) && error.validator_error_code
+                       {
+                         error_details: [{
+                           code: error.validator_error_code
+                         }],
+                         valid: false
+                       }
+                     else
+                       {
+                         error: error,
+                         message: Array.wrap(message).presence
+                       }
+                     end
+
+        render json: error_json.compact, status: status
       end
 
       def handle_bad_request(exception)
-        api_error("Bad request", exception.message, :bad_request)
+        error = exception.is_a?(ApiErrorWithCode) ? exception : "Bad request"
+        api_error(error, exception.message, :bad_request)
       end
 
       def handle_parameter_missing(exception)
-        api_error("Parameter missing", exception.message, :bad_request)
+        error = exception.is_a?(ApiErrorWithCode) ? exception : "Parameter missing"
+        api_error(error, exception.message, :bad_request)
       end
 
       def handle_record_invalid(exception)
-        api_error("Validation failed", exception.record.errors.full_messages, :unprocessable_entity)
+        error = exception.is_a?(ApiErrorWithCode) ? exception : "Validation failed"
+        api_error(error, exception.record.errors.full_messages, :unprocessable_entity)
       end
 
       def handle_record_not_found(exception)
-        api_error("Record not found", exception.message, :not_found)
+        error = exception.is_a?(ApiErrorWithCode) ? exception : "Record not found"
+        api_error(error, exception.message, :not_found)
       end
 
       def handle_unauthorized(exception = nil)
-        api_error("Unauthorized", exception&.message || "HTTP Basic: Access denied.", :unauthorized)
+        error = exception.is_a?(ApiErrorWithCode) ? exception : "Unauthorized"
+        api_error(error, exception&.message || "HTTP Basic: Access denied.", :unauthorized)
       end
     end
   end

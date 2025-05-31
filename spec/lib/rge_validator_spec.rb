@@ -21,7 +21,13 @@ RSpec.describe RgeValidator, type: :service do
     context "with SIRET and unrelated RGE" do
       let(:params) { { siret: "52503410400014", rge: "Q90514" } }
 
-      it { is_expected.to be false }
+      it "raises an ArgumentError" do # rubocop:disable RSpec/MultipleExpectations
+        expect do
+          valid
+        end.to raise_error(RgeValidator::ArgumentError) { |error|
+                 expect(error.error_code).to eq("rge_non_correspondant")
+               }
+      end
     end
 
     # TODO

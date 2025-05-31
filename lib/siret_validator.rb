@@ -2,13 +2,27 @@
 
 # Check SIRET
 module SiretValidator
-  class ArgumentError < ArgumentError; end
+  class ArgumentError < QuoteValidator::Base::ArgumentError; end
 
   # TODO: Add optional date parameter
+  # Boolean check if SIRET is valid, raise ArgumentError on wrong format
   def self.valid?(siret)
-    raise BadFormat, "SIRET is required" if siret.blank?
-    raise BadFormat, "SIRET must be 14 digits" unless siret.match?(QuoteReader::NaiveText::SIRET_REGEX)
+    SireneApi.new.recherche(
+      validate_format!(siret)
+    )
+  end
 
-    SireneApi.new.recherche(siret)
+  # Format and raise errors on wrong format
+  def self.validate_format!(siret)
+    formatted_siret = siret&.gsub(/\s+/, "")&.strip.presence
+
+    raise ArgumentError.new(nil, "siret_manquant") if formatted_siret.blank?
+
+    unless formatted_siret.match?(QuoteReader::NaiveText::SIRET_REGEX)
+      raise ArgumentError.new(nil,
+                              "siret_format_erreur")
+    end
+
+    formatted_siret
   end
 end
