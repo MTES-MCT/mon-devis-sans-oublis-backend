@@ -11,11 +11,7 @@ describe "Data Checks API" do
       response "200", "SIRET existant" do
         parameter name: :siret, in: :query, type: :string, required: true
 
-        schema type: :object,
-               properties: {
-                 siret: { type: :string, example: "12345678901234" },
-                 valid: { type: :boolean, example: true }
-               }
+        schema "$ref" => "#/components/schemas/data_check_result"
 
         let(:siret) { "13002526500013" } # valid SIRET
 
@@ -23,7 +19,7 @@ describe "Data Checks API" do
       end
 
       response "404", "SIRET inexistant" do
-        schema "$ref" => "#/components/schemas/api_error"
+        schema "$ref" => "#/components/schemas/data_check_result"
 
         let(:siret) { "12345678900000" } # wrong SIRET
 
@@ -43,11 +39,7 @@ describe "Data Checks API" do
         parameter name: :rge, in: :query, type: :string,
                   description: "RGE à Valider, sinon Trouve un RGE selon les critères"
 
-        schema type: :object,
-               properties: {
-                 rge: { type: :string, example: "RGE123456" },
-                 valid: { type: :boolean, example: true }
-               }
+        schema "$ref" => "#/components/schemas/data_check_result"
 
         let(:siret) { "52503410400014" } # valid SIRET
         let(:rge) { "Q90513" } # valid RGE
@@ -55,8 +47,8 @@ describe "Data Checks API" do
         run_test!
       end
 
-      response "404", "RGE non trouvé" do
-        schema "$ref" => "#/components/schemas/api_error"
+      response "400", "RGE non valide" do
+        schema "$ref" => "#/components/schemas/data_check_result"
 
         let(:siret) { "52503410400014" } # valid SIRET
         let(:rge) { "Q90514" } # invalid RGE
@@ -64,10 +56,11 @@ describe "Data Checks API" do
         run_test!
       end
 
-      response "422", "RGE non valide" do
+      response "400", "SIRET non valide" do
         schema "$ref" => "#/components/schemas/api_error"
 
         let(:siret) { "12345678900000" } # wrong SIRET
+        let(:rge) { "Q90513" } # valid RGE
 
         run_test!
       end

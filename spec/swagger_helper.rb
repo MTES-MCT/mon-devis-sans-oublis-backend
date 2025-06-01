@@ -119,6 +119,23 @@ RSpec.configure do |config|
             "#{type}: #{description}"
           end.join(" | ")
         },
+        data_check_result: {
+          type: :object,
+          properties: {
+            error_details: {
+              type: :array,
+              items: {
+                type: :object,
+                properties: {
+                  code: { "$ref" => "#/components/schemas/quote_check_error_code" }
+                }
+              },
+              description: "liste des erreurs avec détails dans ordre à afficher",
+              nullable: true
+            },
+            valid: { type: :boolean, nullable: true }
+          }
+        },
         quote_check_error_details: {
           type: :object,
           properties: {
