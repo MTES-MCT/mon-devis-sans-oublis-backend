@@ -12,6 +12,8 @@ env:
   FIABILITY_THRESHOLD: ${{ vars.FIABILITY_THRESHOLD || '0.6' }}
   MISTRAL_MODEL: ${{ vars.MISTRAL_MODEL || 'mistral-large-latest' }}
 
+permissions: {}
+
 jobs:
   build:
     uses: ./.github/workflows/build.yaml

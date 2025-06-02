@@ -8,6 +8,8 @@ on:
 env:
   DATABASE_URL: postgres://postgres:dummy@localhost:5432/test
 
+permissions: {}
+
 jobs:
   build:
     uses: ./.github/workflows/build.yaml
