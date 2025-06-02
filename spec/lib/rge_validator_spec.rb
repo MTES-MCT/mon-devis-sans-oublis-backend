@@ -18,6 +18,24 @@ RSpec.describe RgeValidator, type: :service do
       it { is_expected.to be true }
     end
 
+    context "with SIRET and related RGE in data" do
+      let(:params) { { siret: "52503410400014", rge: "Q90513", date: "2024-07-08" } }
+
+      it { is_expected.to be true }
+    end
+
+    context "with SIRET and related RGE but too early date" do
+      let(:params) { { siret: "52503410400014", rge: "Q90513", date: "1990-10-01" } }
+
+      it "raises an ArgumentError" do # rubocop:disable RSpec/MultipleExpectations
+        expect do
+          valid
+        end.to raise_error(RgeValidator::ArgumentError) { |error|
+                 expect(error.error_code).to eq("rge_hors_date")
+               }
+      end
+    end
+
     context "with SIRET and unrelated RGE" do
       let(:params) { { siret: "52503410400014", rge: "Q90514" } }
 

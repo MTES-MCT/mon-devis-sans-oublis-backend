@@ -33,12 +33,12 @@ class QuoteCheckSerializer < BaseSerializer
     sanitize(object.comment)
   end
 
-  def errors
-    validation_errors
-  end
-
   def controls_count
     object.validation_controls_count
+  end
+
+  def errors
+    validation_errors
   end
 
   def error_details
@@ -68,6 +68,10 @@ class QuoteCheckSerializer < BaseSerializer
           end
       }
     end
+  end
+
+  def finished_at
+    format_datetime(object.finished_at)
   end
 
   def status

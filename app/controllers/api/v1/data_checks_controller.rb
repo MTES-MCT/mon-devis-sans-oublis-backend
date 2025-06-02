@@ -19,13 +19,15 @@ module Api
       # rubocop:disable Metrics/AbcSize
       def rge # rubocop:disable Metrics/MethodLength
         begin
+          date = params[:date]
           siret = SiretValidator.validate_format!(params[:siret])
           rge = RgeValidator.validate_format!(params[:rge]) if params[:rge].present?
 
           if rge
-            raise NotFoundError.new(nil, validator_error_code: "rge_manquant") unless RgeValidator.valid?(siret:, rge:)
+            raise NotFoundError.new(nil, validator_error_code: "rge_manquant") unless RgeValidator.valid?(date:,
+                                                                                                          siret:, rge:)
           else
-            raise NotFoundError.new(nil, validator_error_code: "rge_manquant") unless RgeValidator.valid?(siret:)
+            raise NotFoundError.new(nil, validator_error_code: "rge_manquant") unless RgeValidator.valid?(date:, siret:)
           end
         rescue QuoteValidator::Base::ArgumentError => e
           raise BadRequestError.new(e.message, validator_error_code: e.error_code)

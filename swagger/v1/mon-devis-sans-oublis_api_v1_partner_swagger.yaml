@@ -7,6 +7,8 @@ info:
     **Général champs:**
     - les champs optionnels sont nullables voir peuvent ne pas être présents dans le payload (corps de la requête)
     - `id` : considérer comme un string (chaîne de caractères) unique
+    - type date string au format "YYYY-MM-DD" exemple "2025-05-27"
+    - type datetime string au format ISO 8601 exemple "2025-05-27T14:53:00+02:00"
     - type enum (liste) : comme des strings (chaînes de caractères)
 paths:
   "/auth/check":
@@ -75,6 +77,10 @@ paths:
         description: RGE à Valider, sinon Trouve un RGE selon les critères
         schema:
           type: string
+      - name: date
+        in: query
+        schema:
+          type: date
       responses:
         '200':
           description: RGE trouvé ou vérifié
@@ -83,7 +89,13 @@ paths:
               schema:
                 "$ref": "#/components/schemas/data_check_result"
         '400':
-          description: SIRET non valide
+          description: RGE non valide pour Date
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/api_error"
+        '404':
+          description: RGE non trouvé pour Date
           content:
             application/json:
               schema:
@@ -372,7 +384,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.datatourisme.fr/ontology/core/1.0/#siret
-          x-cardinality: 63363
+          x-cardinality: 63370
           x-capabilities:
             textAgg: true
           x-concept:
@@ -384,7 +396,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.w3.org/2000/01/rdf-schema#label
-          x-cardinality: 62924
+          x-cardinality: 62897
           x-capabilities:
             textAgg: true
           x-concept:
@@ -396,7 +408,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/address
-          x-cardinality: 63858
+          x-cardinality: 63800
           x-capabilities:
             textAgg: true
           x-concept:
@@ -420,7 +432,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/City
-          x-cardinality: 19475
+          x-cardinality: 19482
           x-capabilities:
             textAgg: true
           x-concept:
@@ -452,7 +464,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#tel
-          x-cardinality: 59838
+          x-cardinality: 59763
           x-capabilities:
             textAgg: true
           x-concept:
@@ -464,7 +476,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#email
-          x-cardinality: 61683
+          x-cardinality: 61639
           x-capabilities:
             textAgg: true
           x-concept:
@@ -476,7 +488,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://schema.org/WebPage
-          x-cardinality: 37629
+          x-cardinality: 37584
           x-capabilities:
             textAgg: true
           x-concept:
@@ -502,7 +514,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/DigitalDocument
-          x-cardinality: 76169
+          x-cardinality: 76002
           x-capabilities: {}
           x-concept:
             id: attachment
@@ -648,7 +660,7 @@ components:
           description: Cette date correspond à la date de début de qualification transmise
             par l'organisme de qualification
           x-capabilities: {}
-          x-cardinality: 1856
+          x-cardinality: 1857
         lien_date_fin:
           title: Date de fin de qualification
           type: string
@@ -1031,19 +1043,19 @@ components:
           type: string
           nullable: true
         date_devis:
-          type: string
+          type: date
           nullable: true
         validite:
           type: boolean
           nullable: true
         date_debut_chantier:
-          type: string
+          type: date
           nullable: true
         delai_debut_chantier:
-          type: string
+          type: date
           nullable: true
         date_pre_visite:
-          type: string
+          type: date
           nullable: true
         separation_prix_fourniture_pose:
           type: boolean
