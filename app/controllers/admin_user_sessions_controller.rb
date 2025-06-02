@@ -28,4 +28,8 @@ class AdminUserSessionsController < ApplicationController
     reset_session
     redirect_to login_path
   end
+
+  def failure
+    render plain: "Authentication failed", status: :unauthorized
+  end
 end

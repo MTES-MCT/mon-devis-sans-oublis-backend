@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   get "auth/proconnect", to: "admin_user_sessions#new", as: :new_admin_user_session
   post "auth/proconnect", as: :proconnect_omniauth_authorize
   get "auth/:provider/callback", to: "admin_user_sessions#create"
+  get "auth/failure", to: "admin_user_sessions#failure", as: :auth_failure
   delete "auth/proconnect", to: "admin_user_sessions#destroy", as: :destroy_admin_user_session
 
   mount GoodJob::Engine => "mdso_good_job"
