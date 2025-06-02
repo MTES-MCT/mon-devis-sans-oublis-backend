@@ -70,21 +70,32 @@ module QuoteValidator
     # V0 on check la présence - attention devrait dépendre du geste, à terme,
     # on pourra utiliser une API pour vérifier la validité
     # Attention, souvent on a le logo mais rarement le numéro RGE.
-    def validate_rge
+    # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/CyclomaticComplexity
+    def validate_rge # rubocop:disable Metrics/MethodLength
       @pro = quote[:pro] ||= TrackingHash.new
       rge_labels = @pro[:rge_labels]
       add_error_if("rge_manquant", rge_labels.blank?, category: "admin", type: "missing")
 
-      # TODO: re-enable
-      # return unless rge_labels&.any?
+      return unless @pro[:siret] && @pro[:rge_labels]
 
-      # has_one_siret_matching_rge = @pro.dig(:extended_data, :from_sirets)&.any? do |qualification|
-      #   qualification.fetch("siret") == @pro[:siret] &&
-      #     qualification.fetch("nom_certificat").match?(/RGE/i) &&
-      #     rge_labels.any? { |label| qualification.fetch("url_qualification").include?(label[/\d+$/]) }
-      # end || false
-      # add_error_if("rge_non_correspondant", !has_one_siret_matching_rge, category: "admin", type: "warning")
+      begin
+        RgeValidator.validate_rge!(
+          siret: @pro[:siret]&.presence,
+          rge_labels: @pro[:rge_labels]&.presence,
+          date: quote[:date_devis]&.presence
+        )
+      rescue QuoteValidator::Base::ArgumentError => e
+        add_error_if(
+          true,
+          e.error_code,
+          category: "admin",
+          type: "error"
+        )
+      end
     end
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/AbcSize
 
     # doit valider les mentions administratives associées à l'artisan
     # rubocop:disable Metrics/AbcSize

@@ -31,6 +31,8 @@ RSpec.configure do |config|
         **Général champs:**
         - les champs optionnels sont nullables voir peuvent ne pas être présents dans le payload (corps de la requête)
         - `id` : considérer comme un string (chaîne de caractères) unique
+        - type date string au format "YYYY-MM-DD" exemple "2025-05-27"
+        - type datetime string au format ISO 8601 exemple "2025-05-27T14:53:00+02:00"
         - type enum (liste) : comme des strings (chaînes de caractères)
       DESC
     },
@@ -398,7 +400,7 @@ RSpec.configure do |config|
               nullable: true
             },
             date_devis: {
-              type: :string,
+              type: :date,
               nullable: true
             },
             validite: {
@@ -406,15 +408,15 @@ RSpec.configure do |config|
               nullable: true
             },
             date_debut_chantier: {
-              type: :string,
+              type: :date,
               nullable: true
             },
             delai_debut_chantier: {
-              type: :string,
+              type: :date,
               nullable: true
             },
             date_pre_visite: {
-              type: :string,
+              type: :date,
               nullable: true
             },
             separation_prix_fourniture_pose: {

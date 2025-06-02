@@ -38,11 +38,13 @@ describe "Data Checks API" do
                   description: "SIRET", required: true
         parameter name: :rge, in: :query, type: :string,
                   description: "RGE à Valider, sinon Trouve un RGE selon les critères"
+        parameter name: :date, in: :query, type: :date
 
         schema "$ref" => "#/components/schemas/data_check_result"
 
         let(:siret) { "52503410400014" } # valid SIRET
         let(:rge) { "Q90513" } # valid RGE
+        let(:date) { "2024-07-08" } # optional date
 
         run_test!
       end
@@ -52,6 +54,7 @@ describe "Data Checks API" do
 
         let(:siret) { "52503410400014" } # valid SIRET
         let(:rge) { "Q90514" } # invalid RGE
+        let(:date) { "2023-10-01" } # optional date
 
         run_test!
       end
@@ -61,6 +64,27 @@ describe "Data Checks API" do
 
         let(:siret) { "12345678900000" } # wrong SIRET
         let(:rge) { "Q90513" } # valid RGE
+        let(:date) { "2023-10-01" } # optional date
+
+        run_test!
+      end
+
+      response "400", "RGE non valide pour Date" do
+        schema "$ref" => "#/components/schemas/api_error"
+
+        let(:siret) { "52503410400014" } # valid SIRET
+        let(:rge) { "Q90513" } # valid RGE
+        let(:date) { "1990-10-01" } # optional date
+
+        run_test!
+      end
+
+      response "404", "RGE non trouvé pour Date" do
+        schema "$ref" => "#/components/schemas/api_error"
+
+        let(:siret) { "52503410400014" } # valid SIRET
+        let(:rge) { nil }
+        let(:date) { "1990-10-01" } # optional date
 
         run_test!
       end

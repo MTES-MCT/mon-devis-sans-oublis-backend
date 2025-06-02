@@ -12,25 +12,45 @@ module RgeValidator
 
   # TODO: Add optional date parameter
   # rubocop:disable Metrics/AbcSize
-  def self.valid?(rge: nil, siret: nil) # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/CyclomaticComplexity
+  def self.valid?(rge: nil, siret: nil, date: nil) # rubocop:disable Metrics/MethodLength
+    date = validate_date!(date) if date.present?
     rge = validate_format!(rge) if rge.present?
 
-    if rge.present?
-      rge_qualifications = filter_rge_qualifications(
-        DataAdeme.new.historique_rge(qs: "siret:#{siret}").fetch("results")
-      )
-      unless rge_qualifications.any? { it.fetch("_id")[/(#{RGE_NUMBER_REGEX})-/, 1] == rge[/#{RGE_NUMBER_REGEX}\z/] }
-        raise ArgumentError.new(nil, "rge_non_correspondant")
-      end
+    rge_qualifications = filter_rge_qualifications(
+      DataAdeme.new.historique_rge(qs: "siret:#{siret}").fetch("results")
+    )
 
-      return true
+    if rge.present?
+      rge_qualifications = rge_qualifications.select do
+        it.fetch("_id")[/(#{RGE_NUMBER_REGEX})-/, 1] == rge[/#{RGE_NUMBER_REGEX}\z/]
+      end
+      raise ArgumentError.new(nil, "rge_non_correspondant") unless rge_qualifications.any?
     end
 
-    filter_rge_qualifications(
-      DataAdeme.new.historique_rge(qs: "siret:#{siret}").fetch("results")
-    ).any?
+    if date.present?
+      rge_qualifications = rge_qualifications.select do
+        date.between?(Date.parse(it.fetch("date_debut")), Date.parse(it.fetch("date_fin")))
+      end
+      raise ArgumentError.new(nil, "rge_hors_date") if rge_qualifications.empty? && rge.present?
+    end
+
+    rge_qualifications.any?
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/AbcSize
+
+  def self.validate_date!(date)
+    return if date.blank?
+
+    begin
+      Date.parse(date)
+    rescue ArgumentError
+      raise ArgumentError.new(nil, "date_format_erreur")
+    end
+  end
+
+  # Format and raise errors on wrong format
 
   def self.validate_format!(rge)
     formatted_rge = rge&.gsub(/\s+/, "")&.strip.presence

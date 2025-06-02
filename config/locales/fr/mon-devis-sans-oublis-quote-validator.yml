@@ -9,6 +9,8 @@ fr:
       missing: "Information manquante"
       wrong: "Information erronée"
     errors:
+      date_format_erreur: "Le format de la date n'est pas valide."
+
       server_timeout_error: "Malheuresement, nous n'avons pas encore réussi à traiter le devis. Merci de réessayer plus tard."
 
       empty_file_error: "Le fichier fourni semble vide, nous n'avons pas pu lire son contenu."
@@ -43,6 +45,7 @@ fr:
       rge_manquant_infos: "Pour obtenir des aides, le professionel doit avoir le label RGE du geste en question. Merci de préciser le numéro de certification."
       rge_format_erreur: "Le numéro de certification RGE n'a pas le bon format"
       rge_non_correspondant: "Le numéro de certification RGE du professionnel ne correspond pas au SIRET de l'établissement"
+      rge_hors_date: "Le numéro de certification RGE du professionnel est hors date"
       pro_assurance_manquant: "Assurance professionnelle souscrite manquante"
       pro_assurance_manquant_infos: "Assurance professionnelle souscrite avec le N° de la police d'assurance, le type (décennale, biennale ...), les coordonnées de l'assureur ou du garant et la couverture géographique du contrat ou de la garantie."
 
