@@ -80,7 +80,7 @@ module QuoteValidator
       return unless @pro[:siret] && @pro[:rge_labels]
 
       begin
-        RgeValidator.validate_rge!(
+        RgeValidator.valid?(
           siret: @pro[:siret]&.presence,
           rge_labels: @pro[:rge_labels]&.presence,
           date: quote[:date_devis]&.presence
