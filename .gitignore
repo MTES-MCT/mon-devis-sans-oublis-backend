@@ -39,4 +39,9 @@ node_modules
 # IDE
 .vscode
 
+# Environment Variables
+.env.development
+.env.*.development
 .env.local
+.env.*.local
+.env.docker

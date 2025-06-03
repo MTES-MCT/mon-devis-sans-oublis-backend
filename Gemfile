@@ -74,6 +74,7 @@ gem "ruby_llm", require: false
 
 # Efficiency
 gem "concurrent-ruby", require: false
+gem "dotenv_validator"
 gem "parallel", require: false
 
 # Required for langchainrb LLMs
