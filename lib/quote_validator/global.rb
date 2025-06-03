@@ -87,8 +87,8 @@ module QuoteValidator
         )
       rescue QuoteValidator::Base::ArgumentError => e
         add_error_if(
-          true,
           e.error_code,
+          true,
           category: "admin",
           type: "error"
         )

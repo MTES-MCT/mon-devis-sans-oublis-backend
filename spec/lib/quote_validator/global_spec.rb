@@ -9,6 +9,30 @@ RSpec.describe QuoteValidator::Global, type: :service do
     {}
   end
 
+  describe "#controls_count" do
+    before { quote_validator.validate! }
+
+    it "returns controls_count" do
+      expect(quote_validator.controls_count).to eq(24)
+    end
+  end
+
+  describe "#errors" do
+    before { quote_validator.validate! }
+
+    it "returns errors" do
+      expect(quote_validator.errors).to include("devis_manquant")
+    end
+  end
+
+  describe "#error_details" do
+    before { quote_validator.validate! }
+
+    it "returns error_details" do
+      expect(quote_validator.error_details.dig(0, :code)).to eq("devis_manquant")
+    end
+  end
+
   describe "#validate!" do
     it "returns validation" do
       expect(quote_validator.validate!).to be false
@@ -38,30 +62,6 @@ RSpec.describe QuoteValidator::Global, type: :service do
           "tva_manquant"
         )
       end
-    end
-  end
-
-  describe "#controls_count" do
-    before { quote_validator.validate! }
-
-    it "returns controls_count" do
-      expect(quote_validator.controls_count).to eq(24)
-    end
-  end
-
-  describe "#errors" do
-    before { quote_validator.validate! }
-
-    it "returns errors" do
-      expect(quote_validator.errors).to include("devis_manquant")
-    end
-  end
-
-  describe "#error_details" do
-    before { quote_validator.validate! }
-
-    it "returns error_details" do
-      expect(quote_validator.error_details.dig(0, :code)).to eq("devis_manquant")
     end
   end
 end
