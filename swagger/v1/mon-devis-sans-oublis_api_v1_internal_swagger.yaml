@@ -677,8 +677,9 @@ components:
       - admin
       - file
       - gestes
+      - server
       description: 'admin: Mentions administratives | file: Fichier | gestes: Descriptif
-        technique des gestes'
+        technique des gestes | server: Serveur'
     quote_check_error_code:
       type: string
       description: code d'erreur de validation
