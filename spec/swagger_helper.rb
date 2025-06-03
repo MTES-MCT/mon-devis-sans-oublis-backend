@@ -609,7 +609,13 @@ RSpec.configure do |config|
             status: { "$ref" => "#/components/schemas/quote_check_status" },
             profile: { "$ref" => "#/components/schemas/profile" },
             renovation_type: { "$ref" => "#/components/schemas/renovation_type" },
-            metadata: { "$ref" => "#/components/schemas/quote_check_metadata", nullable: true }
+            metadata: { "$ref" => "#/components/schemas/quote_check_metadata", nullable: true },
+            quote_checks: {
+              type: :array,
+              items: { "$ref" => "#/components/schemas/quote_check" },
+              description: "liste des analyses de devis (QuoteChecks) dans ce dossier",
+              nullable: true
+            }
           },
           required: %w[id]
         },

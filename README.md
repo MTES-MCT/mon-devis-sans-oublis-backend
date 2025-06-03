@@ -148,6 +148,12 @@ sequenceDiagram
 
     participant BO as Back Office MDSO
 
+    User->>Frontend: Choisi un dossier de rénovaiton d'ampleur donc multi-devis
+    Frontend->>Backend: Créer un QuoteCase pour rassembler le dossier et les documents
+    Frontend->>Backend: Transmet les fichiers un à un
+    Backend->>Backend: Sauvegarde les fichiers QuoteFiles et génère des QuoteChecks associé au QuoteCase commun
+    Backend->>Frontend: Identifiant pour suivre les statuts du QuoteCase global et des QuoteChecks
+
     User->>Frontend: Dépose un document type PDF
     Frontend->>Backend: Transmet le fichier
     Backend->>Backend: Sauvegarde le fichier QuoteFile et génère un QuoteCheck
