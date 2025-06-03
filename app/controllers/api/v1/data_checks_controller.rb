@@ -22,18 +22,19 @@ module Api
           date = params[:date]
           siret = SiretValidator.validate_format!(params[:siret])
           rge = RgeValidator.validate_format!(params[:rge]) if params[:rge].present?
+          results = nil
 
-          if rge
-            raise NotFoundError.new(nil, validator_error_code: "rge_manquant") unless RgeValidator.valid?(date:,
-                                                                                                          siret:, rge:)
-          else
-            raise NotFoundError.new(nil, validator_error_code: "rge_manquant") unless RgeValidator.valid?(date:, siret:)
-          end
+          results = if rge
+                      RgeValidator.valid?(date:, siret:, rge:)
+                    else
+                      RgeValidator.valid?(date:, siret:)
+                    end
+          raise NotFoundError.new(nil, validator_error_code: "rge_manquant") unless results
         rescue QuoteValidator::Base::ArgumentError => e
           raise BadRequestError.new(e.message, validator_error_code: e.error_code)
         end
 
-        render json: { valid: true }.compact
+        render json: { results:, valid: true }.compact
       end
       # rubocop:enable Metrics/AbcSize
     end

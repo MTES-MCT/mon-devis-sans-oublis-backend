@@ -10,9 +10,11 @@ module RgeValidator
     rge_qualifications.select { it.fetch("nom_certificat").match?(/RGE/i) }
   end
 
-  # TODO: Add optional date parameter
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/PerceivedComplexity
+  # @return [Array, false] Returns an array of RGE qualifications or false if none found.
+  # @raise [ArgumentError] Raises an error if the RGE format is invalid or if the date is not in the correct format.
   def self.valid?(rge: nil, siret: nil, date: nil) # rubocop:disable Metrics/MethodLength
     date = validate_date!(date) if date.present?
     rge = validate_format!(rge) if rge.present?
@@ -35,8 +37,9 @@ module RgeValidator
       raise ArgumentError.new(nil, "rge_hors_date") if rge_qualifications.empty? && rge.present?
     end
 
-    rge_qualifications.any?
+    rge_qualifications.any? ? rge_qualifications : false
   end
+  # rubocop:enable Metrics/PerceivedComplexity
   # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/AbcSize
 
