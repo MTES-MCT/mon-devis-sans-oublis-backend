@@ -9,6 +9,37 @@ ademe_swagger = YAML.safe_load(ademe_yaml, aliases: true)
 ademe_result_schema = ademe_swagger.dig("paths", "/lines", "get", "responses", "200", "content", "application/json",
                                         "schema", "properties", "results", "items", "properties")
 
+def data_check_result(items_schema = nil) # rubocop:disable Metrics/MethodLength
+  schema = {
+    type: :object,
+    properties: {
+      error_details: {
+        type: :array,
+        items: {
+          type: :object,
+          properties: {
+            code: { "$ref" => "#/components/schemas/quote_check_error_code" }
+          }
+        },
+        description: "liste des erreurs avec détails dans ordre à afficher",
+        nullable: true
+      },
+      valid: { type: :boolean, nullable: true }
+    }
+  }
+
+  if items_schema
+    schema[:properties][:results] = {
+      type: :array,
+      items: items_schema,
+      description: "liste des résultats correspondant à la requête",
+      nullable: true
+    }
+  end
+
+  schema
+end
+
 # Via Rswag gems
 RSpec.configure do |config|
   # Specify a root folder where Swagger JSON files are generated
@@ -121,23 +152,8 @@ RSpec.configure do |config|
             "#{type}: #{description}"
           end.join(" | ")
         },
-        data_check_result: {
-          type: :object,
-          properties: {
-            error_details: {
-              type: :array,
-              items: {
-                type: :object,
-                properties: {
-                  code: { "$ref" => "#/components/schemas/quote_check_error_code" }
-                }
-              },
-              description: "liste des erreurs avec détails dans ordre à afficher",
-              nullable: true
-            },
-            valid: { type: :boolean, nullable: true }
-          }
-        },
+        data_check_result: data_check_result,
+        data_check_rge_result: data_check_result({ "$ref" => "#/components/schemas/ademe_result_schema" }),
         quote_check_error_details: {
           type: :object,
           properties: {

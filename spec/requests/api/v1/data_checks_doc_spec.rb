@@ -40,7 +40,7 @@ describe "Data Checks API" do
                   description: "RGE à Valider, sinon Trouve un RGE selon les critères"
         parameter name: :date, in: :query, type: :date
 
-        schema "$ref" => "#/components/schemas/data_check_result"
+        schema "$ref" => "#/components/schemas/data_check_rge_result"
 
         let(:siret) { "52503410400014" } # valid SIRET
         let(:rge) { "Q90513" } # valid RGE
@@ -50,7 +50,7 @@ describe "Data Checks API" do
       end
 
       response "400", "RGE non valide" do
-        schema "$ref" => "#/components/schemas/data_check_result"
+        schema "$ref" => "#/components/schemas/data_check_rge_result"
 
         let(:siret) { "52503410400014" } # valid SIRET
         let(:rge) { "Q90514" } # invalid RGE

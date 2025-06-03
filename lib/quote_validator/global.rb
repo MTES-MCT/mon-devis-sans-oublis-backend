@@ -82,7 +82,7 @@ module QuoteValidator
       begin
         RgeValidator.valid?(
           siret: @pro[:siret]&.presence,
-          rge_labels: @pro[:rge_labels]&.presence,
+          rge: Array.wrap(@pro[:rge_labels]&.presence).first,
           date: quote[:date_devis]&.presence
         )
       rescue QuoteValidator::Base::ArgumentError => e

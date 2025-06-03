@@ -265,7 +265,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.datatourisme.fr/ontology/core/1.0/#siret
-          x-cardinality: 63370
+          x-cardinality: 63398
           x-capabilities:
             textAgg: true
           x-concept:
@@ -277,7 +277,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.w3.org/2000/01/rdf-schema#label
-          x-cardinality: 62897
+          x-cardinality: 62800
           x-capabilities:
             textAgg: true
           x-concept:
@@ -289,7 +289,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/address
-          x-cardinality: 63800
+          x-cardinality: 63733
           x-capabilities:
             textAgg: true
           x-concept:
@@ -301,7 +301,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/postalCode
-          x-cardinality: 5981
+          x-cardinality: 5984
           x-capabilities:
             textAgg: true
           x-concept:
@@ -313,7 +313,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/City
-          x-cardinality: 19482
+          x-cardinality: 19489
           x-capabilities:
             textAgg: true
           x-concept:
@@ -345,7 +345,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#tel
-          x-cardinality: 59763
+          x-cardinality: 59736
           x-capabilities:
             textAgg: true
           x-concept:
@@ -357,7 +357,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#email
-          x-cardinality: 61639
+          x-cardinality: 61605
           x-capabilities:
             textAgg: true
           x-concept:
@@ -369,7 +369,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://schema.org/WebPage
-          x-cardinality: 37584
+          x-cardinality: 37600
           x-capabilities:
             textAgg: true
           x-concept:
@@ -395,7 +395,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/DigitalDocument
-          x-cardinality: 76002
+          x-cardinality: 75920
           x-capabilities: {}
           x-concept:
             id: attachment
@@ -707,6 +707,27 @@ components:
           nullable: true
         valid:
           type: boolean
+          nullable: true
+    data_check_rge_result:
+      type: object
+      properties:
+        error_details:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                "$ref": "#/components/schemas/quote_check_error_code"
+          description: liste des erreurs avec détails dans ordre à afficher
+          nullable: true
+        valid:
+          type: boolean
+          nullable: true
+        results:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ademe_result_schema"
+          description: liste des résultats correspondant à la requête
           nullable: true
     quote_check_error_details:
       type: object
@@ -1136,3 +1157,7 @@ servers:
   description: Production server
 - url: http://localhost:3000/api/v1
   description: Development server
+- url: https://2d23-2a0d-3341-cdbf-1410-f489-f57f-e261-b83b.ngrok-free.app
+  variables:
+    defaultHost:
+      default: 2d23-2a0d-3341-cdbf-1410-f489-f57f-e261-b83b.ngrok-free.app

@@ -4,7 +4,29 @@ require "rails_helper"
 
 RSpec.describe "/api/v1/data_checks/rge" do
   describe "GET /api/v1/data_checks/rge" do
-    let(:json) { response.parsed_body }
+    subject(:json) { response.parsed_body }
+
+    before { get api_v1_data_checks_rge_url, params: params }
+
+    context "with SIRET, RGE and related date" do
+      let(:params) { { siret: "52503410400014", rge: "Q90513", date: "2024-07-08" } }
+
+      it "returns a success response" do
+        expect(response).to have_http_status(:success)
+      end
+
+      it "returns valid" do
+        expect(json.fetch("valid")).to be true
+      end
+
+      it "returns results" do
+        expect(json.dig("results", 0, "domaine")).to eq("Ventilation mécanique")
+      end
+
+      it "does not return error" do
+        expect(json).not_to have_key("error_details")
+      end
+    end
 
     context "with SIRET but unrelated RGE" do
       let(:params) { { siret: "52503410400014", rge: "Q90514" } }

@@ -9,19 +9,19 @@ RSpec.describe RgeValidator, type: :service do
     context "with SIRET only and having an RGE" do
       let(:params) { { siret: "52503410400014" } }
 
-      it { is_expected.to be true }
+      it { is_expected.to be_truthy }
     end
 
     context "with SIRET and related RGE" do
       let(:params) { { siret: "52503410400014", rge: "Q90513" } }
 
-      it { is_expected.to be true }
+      it { is_expected.to be_truthy }
     end
 
-    context "with SIRET and related RGE in data" do
+    context "with SIRET and related RGE in date" do
       let(:params) { { siret: "52503410400014", rge: "Q90513", date: "2024-07-08" } }
 
-      it { is_expected.to be true }
+      it { is_expected.to be_truthy }
     end
 
     context "with SIRET and related RGE but too early date" do
