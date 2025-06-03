@@ -4,6 +4,7 @@ fr:
       admin: "Mentions administratives"
       file: "Fichier"
       gestes: "Descriptif technique des gestes"
+      server: "Serveur"
     error_types:
       error: "Erreur"
       missing: "Information manquante"
