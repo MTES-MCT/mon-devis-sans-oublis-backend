@@ -8,6 +8,7 @@ fr:
     error_types:
       error: "Erreur"
       missing: "Information manquante"
+      warning: "Avertissement"
       wrong: "Information erronée"
     errors:
       date_format_erreur: "Le format de la date n'est pas valide."
