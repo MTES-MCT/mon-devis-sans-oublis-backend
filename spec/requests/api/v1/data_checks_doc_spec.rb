@@ -23,7 +23,9 @@ describe "Data Checks API" do
 
         let(:siret) { "12345678900000" } # wrong SIRET
 
-        run_test!
+        VCR.use_cassette("data_checks/siret_inexistant_404") do
+          run_test!
+        end
       end
     end
   end
