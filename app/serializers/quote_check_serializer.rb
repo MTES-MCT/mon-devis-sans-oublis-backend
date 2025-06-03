@@ -13,7 +13,8 @@ class QuoteCheckSerializer < BaseSerializer
              :finished_at,
              :comment,
              # Virtual attributes
-             :errors, :error_details, :error_messages, :controls_count,
+             :errors, :error_details, :error_messages,
+             :control_codes, :controls_count,
              :gestes
 
   attribute :case_id, if: :full?
@@ -31,6 +32,10 @@ class QuoteCheckSerializer < BaseSerializer
 
   def comment
     sanitize(object.comment)
+  end
+
+  def control_codes
+    object.validation_control_codes
   end
 
   def controls_count

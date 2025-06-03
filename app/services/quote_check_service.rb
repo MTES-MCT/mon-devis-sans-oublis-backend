@@ -177,6 +177,7 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
     quote_validator.validate!
 
     quote_check.assign_attributes(
+      validation_control_codes: quote_validator.control_codes,
       validation_controls_count: quote_validator.controls_count,
       validation_errors: quote_validator.errors,
       validation_error_details: quote_validator.error_details,

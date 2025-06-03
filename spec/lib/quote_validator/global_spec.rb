@@ -9,6 +9,14 @@ RSpec.describe QuoteValidator::Global, type: :service do
     {}
   end
 
+  describe "#control_codes" do
+    before { quote_validator.validate! }
+
+    it "returns control_codes" do
+      expect(quote_validator.control_codes).to include("devis_manquant", "date_chantier_manquant")
+    end
+  end
+
   describe "#controls_count" do
     before { quote_validator.validate! }
 

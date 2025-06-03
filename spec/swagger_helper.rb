@@ -516,6 +516,12 @@ RSpec.configure do |config|
               items: { "$ref" => "#/components/schemas/quote_check_geste" },
               nullable: true
             },
+            control_codes: {
+              type: :array,
+              items: { "$ref" => "#/components/schemas/quote_check_error_code" },
+              description: "liste des codes des points contrôlés",
+              nullable: true
+            },
             controls_count: {
               type: :integer,
               description: "nombre de points contrôlés",

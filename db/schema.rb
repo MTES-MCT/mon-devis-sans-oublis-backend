@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_05_13_094455) do
+ActiveRecord::Schema[7.2].define(version: 2025_06_03_163100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -184,6 +184,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_13_094455) do
     t.uuid "case_id"
     t.string "reference"
     t.string "renovation_type", default: "geste", null: false
+    t.jsonb "validation_control_codes"
     t.index ["case_id"], name: "index_quote_checks_on_case_id"
     t.index ["file_id"], name: "index_quote_checks_on_file_id"
     t.index ["parent_id"], name: "index_quote_checks_on_parent_id"
