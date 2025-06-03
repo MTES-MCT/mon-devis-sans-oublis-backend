@@ -80,11 +80,11 @@ module QuoteValidator
 
       provided_value ||= value
 
-      if category && self.class.error_categories.keys.include?(category.to_s)
+      if category && self.class.error_categories.keys.exclude?(category.to_s)
         e = NotImplementedError.new("Category '#{category}' is not listed")
         ErrorNotifier.notify(e)
       end
-      if type && self.class.error_types.keys.include?(type.to_s)
+      if type && self.class.error_types.keys.exclude?(type.to_s)
         e = NotImplementedError.new("Type '#{type}' is not listed")
         ErrorNotifier.notify(e)
       end
