@@ -33,10 +33,10 @@ fr:
       pro_forme_juridique_manquant: "La forme juridique de la structure effectuant les travaux est manquante"
       pro_forme_juridique_manquant_infos: "La forme juridique est obligatoire sur un devis, voici quelques exemples possibles : EURL, SARL, SA, SNC, SAS."
       tva_manquant: "Le numéro individuel d'identification à la TVA est manquant"
-      tva_manquant_infos : "En France, le numéro de TVA est constitué du code FR et de 11 chiffres (une clé informatique de 2 chiffres et le numéro SIREN à 9 chiffres de la structure)."
+      tva_manquant_infos: "En France, le numéro de TVA est constitué du code FR et de 11 chiffres (une clé informatique de 2 chiffres et le numéro SIREN à 9 chiffres de la structure)."
       capital_manquant: "Le capital social de la structure effectuant les travaux est manquant"
       siret_manquant: "Le SIRET de l'établissement est manquant"
-      siret_manquant_infos : "Le Numéro SIRET (système d’identification du répertoire des établissements) est une série de 14 chiffres. Il correspond au numéro SIREN (Système d’Identification du Répertoire des Entreprises, à 9 chiffres) délivré lors de la création de la structure, suivi du numéro NIC (numéro interne de classement)."
+      siret_manquant_infos: "Le Numéro SIRET (système d’identification du répertoire des établissements) est une série de 14 chiffres. Il correspond au numéro SIREN (Système d’Identification du Répertoire des Entreprises, à 9 chiffres) délivré lors de la création de la structure, suivi du numéro NIC (numéro interne de classement)."
       siret_format_erreur: "Le numéro de SIRET n'a pas le bon format"
       siret_format_erreur_infos: "Attention, il semblerait que le SIREN ait été utilisé à la place du SIRET. Le SIRET est une série de 14 chiffres."
       rcs_manquant: "Le N° RCS et ville d'immatriculation (pour les sociétés) ou le N° RNE est manquant"
@@ -184,7 +184,7 @@ fr:
       isolation_r_manquant_infos: "La résistance thermique (R) de l'installation doit être précisée et est définie en m2.K/W." # Decimal (m².K/W)
       # validate_isolation_toiture_terrasse
       isolation_type_isolation_toiture_terrasse_manquant: "Le type de l'isolation de la toiture-terrasse est manquant" 
-      isolation_type_isolation_toiture_terrasse_manquant_infos : "L'isolation est-elle faite par l'intérieur ou par l'extérieur ?"
+      isolation_type_isolation_toiture_terrasse_manquant_infos: "L'isolation est-elle faite par l'intérieur ou par l'extérieur ?"
       # validate_isolation_plancher_bas
       isolation_localisation_plancher_bas_manquant: "L'emplacement de l'isolation des planchers bas n'est pas indiqué"
       isolation_localisation_plancher_bas_manquant_infos: "Pour l'isolation des planchers bas, il faut préciser sur quelle pièce cela donne."

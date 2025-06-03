@@ -36,10 +36,17 @@ module QuoteValidator
       @controls_count = 0
     end
 
+    # @return [Hash] error categories with their translations
     def self.error_categories
       I18n.t("quote_validator.error_categories").transform_keys(&:to_s)
     end
 
+    # @return [Hash] error codes with their translations
+    def self.error_codes
+      I18n.t("quote_validator.errors").transform_keys(&:to_s).except { it.match?(/_infos$/) }
+    end
+
+    # @return [Hash] error types with their translations, e.g. { "missing" => "Missing", "wrong" => "Wrong value" }
     def self.error_types
       I18n.t("quote_validator.error_types").transform_keys(&:to_s)
     end
@@ -63,6 +70,8 @@ module QuoteValidator
                   geste: nil,
                   provided_value: nil,
                   value: nil) # value is DEPRECATED
+      raise NotImplementedError, "Code '#{code}' is not listed" unless self.class.error_codes.keys.include?(code&.to_s)
+
       provided_value ||= value
 
       if category && self.class.error_categories.keys.include?(category.to_s)
