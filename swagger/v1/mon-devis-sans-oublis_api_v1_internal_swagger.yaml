@@ -1117,6 +1117,12 @@ components:
         metadata:
           "$ref": "#/components/schemas/quote_check_metadata"
           nullable: true
+        quote_checks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/quote_check"
+          description: liste des analyses de devis (QuoteChecks) dans ce dossier
+          nullable: true
       required:
       - id
     stats:

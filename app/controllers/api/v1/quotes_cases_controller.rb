@@ -26,8 +26,20 @@ module Api
 
       protected
 
-      def quotes_case
+      def quotes_case # rubocop:disable Metrics/MethodLength
+        hidable_quote_check_fields = %w[
+          text anonymised_text
+          file_text file_markdown
+        ]
+
         @quotes_case ||= QuotesCase
+                         .eager_load(quote_checks: :feedbacks)
+                         .select( # Avoid to load unnecessary heavy fields
+                           *QuotesCase.column_names,
+                           *(QuoteCheck.column_names - (hidable_quote_check_fields || [])).map do
+                             "#{QuoteCheck.table_name}.#{it} AS quote_check_#{it}"
+                           end
+                         )
                          .accessible_for_source(api_user)
                          .find(params[:id])
       end
