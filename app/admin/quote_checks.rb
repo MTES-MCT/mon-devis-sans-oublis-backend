@@ -198,6 +198,9 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
       it.metadata&.dig("aides")&.join("\n")
     end
 
+    column "Points contrôlés" do
+      it.validation_control_codes&.join("\n")
+    end
     column "Nb points de contrôle", &:validation_controls_count
 
     column "Nb erreurs" do
@@ -280,6 +283,9 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
             it.metadata&.dig("aides")&.join("\n")
           end
 
+          row "Points contrôlés" do
+            it.validation_control_codes&.join("\n")
+          end
           row "Nombre de points de contrôle", &:validation_controls_count
 
           row "Nombre d'erreurs" do

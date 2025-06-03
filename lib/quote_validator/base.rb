@@ -18,7 +18,10 @@ module QuoteValidator
 
     class NotImplementedError < ::NotImplementedError; end
 
-    attr_accessor :controls_count, :error_details, :quote, :quote_id, :warnings
+    attr_accessor :control_codes, :controls_count,
+                  :error_details,
+                  :quote, :quote_id,
+                  :warnings
 
     def self.geste_index(quote_id, geste_index)
       [quote_id, "geste", geste_index + 1].compact.join("-")
@@ -33,6 +36,7 @@ module QuoteValidator
       @quote_id = quote_id
       @error_details = error_details
 
+      @control_codes = []
       @controls_count = 0
     end
 
@@ -52,6 +56,8 @@ module QuoteValidator
     end
 
     def add_error_if(code, condition, **)
+      control_codes << code.to_s
+
       increment_controls_count
       return unless condition
 
