@@ -6,15 +6,12 @@ default: &default
 
 development:
   <<: *default
-  database: development
+  url: <%= ENV["DATABASE_URL"] %>
 
 test:
   <<: *default
   database: test
-  username: postgres
-  password: dummy
-  host: db
-  port: 5433
+  url: <%= ENV["DATABASE_URL"] %>
 
 test_source:
   <<: *default

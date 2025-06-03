@@ -1,10 +1,117 @@
-# Mon Devis Sans Oublis
+# Mon Devis Sans Oublis (MDSO) - Backend
 
-## Introduction
+Plateforme d'analyse de conformité de devis pour accélérer la rénovation énergétique des logements en simplifiant l'instruction des dossiers d'aide.
 
-Ce repo est le code source pour faire tourner la plateforme [Mon Devis Sans Oublis](https://mon-devis-sans-oublis.beta.gouv.fr/) (MDSO) basé sur certains services et outils choisis :
+🔗 **[Accéder à la plateforme](https://mon-devis-sans-oublis.beta.gouv.fr/)** 
 
-**Le projet est encore en tout début de phase de construction et donc sujet à évolutions à travers des cyclse courts.**
+## Prérequis
+
+- **Git** pour cloner le repository
+- **Docker Desktop** (recommandé, pour l'exécution avec Docker)
+
+si pas Docker :
+
+- **Ruby** 3.x voir `.ruby-version`
+- **Node.js** >= 18 voir `package.json`
+- **PostgreSQL** 16 voir `docker-compose.yml`
+
+## Installation
+
+Clonez le repository et installez les dépendances :
+
+```bash
+git clone https://github.com/MTES-MCT/mon-devis-sans-oublis-backend.git
+cd mon-devis-sans-oublis-backend
+docker compose up
+```
+
+## Configuration de l'environnement
+
+### Variables d'environnement requises
+
+Configurez les variables d'environnement selon votre méthode d'exécution :
+
+#### Pour l'exécution avec Node.js
+
+1. Copiez le fichier `.env.example` en `.env.local` :
+
+```bash
+cp .env.example .env.local
+```
+
+2. Éditez le fichier `.env.local` avec les valeurs réelles pour votre environnement de développement. 
+
+⚠️ **Important** : Ne laissez jamais de variables d'environnement vides (ex: `VARIABLE=`). Si vous n'avez pas besoin d'une variable, commentez-la avec `#` ou supprimez la ligne complètement.
+
+#### Pour l'exécution avec Docker
+
+1. Copiez le fichier `.env.example` en `.env.docker` :
+
+```bash
+cp .env.example .env.docker
+```
+
+2. Éditez le fichier `.env.docker` avec les valeurs appropriées pour l'environnement Docker.
+
+⚠️ **Important** : Ne laissez jamais de variables d'environnement vides (ex: `VARIABLE=`). Si vous n'avez pas besoin d'une variable, commentez-la avec `#` ou supprimez la ligne complètement.
+
+### Variables d'environnement principales
+
+| Variable                       | Description                           | Exemple                                                  | Requis    |
+| ------------------------------ | ------------------------------------- | -------------------------------------------------------- | --------- |
+| `ADMIN_EMAILS`                     | Mail ProConnect pouvant accédant aux Back Office             | `toto@gouv.fr,tata@gouv.fr`                            | Optionnel    |
+| `ALBERT_API_KEY`                     |              | `longueClé`                            | Requis    |
+| `ALBERT_MODEL`                     | Modèle Albert utilisé par défaut si disponible            | `neuralmagic/Meta-Llama-3.1-70B-Instruct-FP8`                            | Optionnel    |
+| `APPLICATION_HOST`                     | Host du backend pour générer des liens et la connexion OAuth            | `http://localhost:3000`, `https://api.mon-devis-sans-oublis.beta.gouv.fr`                            | Requis    |
+| `APP_ENV`                     | Environnement applicatif, différent du RAILS_ENV technique           | `development`, `staging`, `production`                            | Requis    |
+| `BREVO_API_KEY`                     | Pour envoi de mails             | `longueClé`                            | Optionnel    |
+| `BREVO_SMTP_USER_NAME`                     |              | `longueClé`                            | Optionnel    |
+| `BREVO_SMTP_USER_PASSWORD`                     |              | `longueClé`                            | Optionnel    |
+| `DATABASE_URL`                     | URI de connexion à la base PostgreSQL             | `postgresql://postgres:dummy@localhost:5433/development`, `$SCALINGO_POSTGRESQL_URL`                            | Requis    |
+| `DEFAULT_EMAIL_FROM`                     |              | `toto@gouv.fr`                            | Optionnel    |
+| `FRONTEND_APPLICATION_HOST`                     | Host du frontend pour autoriser API            | `http://localhost:3001`, `https://mon-devis-sans-oublis.beta.gouv.fr`                            | Optionnel    |
+| `GOOD_JOB_PASSWORD`                     | Mot de passe accès au Back Office Jobs            | `secret`                            | Requis    |
+| `GOOD_JOB_USERNAME`                     | Utilisateur accès au Back Office Jobs            | `secret`                            | Requis    |
+| `MATOMO_SITE_ID`                     |             | `123`                            | Optionnel    |
+| `MATOMO_TOKEN_AUTH`                     |             | `hash`                            | Optionnel    |
+| `MDSO_API_KEY_FOR_MDSO`                     | Clé API pour frontend            | `hash` via `rake secret`                           | Optionnel    |
+| `MDSO_API_KEY_FOR_PARTNER1`                     | Clé API pour PARTNER1            | `hash` via `rake secret`                           | Optionnel    |
+| `MDSO_API_KEY_FOR_PARTNER2`                     | Clé API pour PARTNER2            | `hash` via `rake secret`                           | Optionnel    |
+| `MDSO_API_PASSWORD`                     | Ancienne clé API pour frontend            | `hash` via `rake secret`                           | Optionnel    |
+| `MDSO_OCR_API_KEY`                     | Clé API du système OCR MDSO            |                            | Optionnel    |
+| `MDSO_SITE_PASSWORD`                     | Ancienne clé accès au Back Office            | `hash` via `rake secret`                           | Optionnel    |
+| `MISTRAL_API_KEY`                     |              | `longueClé`                            | Requis    |
+| `MISTRAL_MODEL`                     | Modèle Mistral utilisé par défaut si disponible            | `mistral-large-latest`                            | Optionnel    |
+| `PROCONNECT_CLIENT_ID`                     |             | `hash`                            | Optionnel    |
+| `PROCONNECT_CLIENT_SECRET`                     |             | `hash`                            | Optionnel    |
+| `PROCONNECT_DOMAIN`                     |             | `https://auth.agentconnect.gouv.fr/api/v2`, `https://fca.integ01.dev-agentconnect.fr/api/v2`                            | Optionnel    |
+| `QUOTE_CHECK_EMAIL_RECIPIENTS`       | Emails pour être informé des dépôts | `toto@gouv.fr,tata@gouv.fr`                              | Optionnel |
+| `SENTRY_DSN`       | DSN Sentry pour le tracking d'erreurs | `https://xxx@sentry.io/xxx`                              | Optionnel |
+| `SENTRY_ENVIRONMENT`       | Environnement Sentry pour le tracking d'erreurs | `$APP_ENV`                              | Optionnel |
+
+### Configuration Scalingo
+
+Scalingo est notre hébergeur type PaaS applicatif :
+
+#### Staging
+```bash
+APPLICATION_HOST=https://api.mon-devis-sans-oublis.beta.gouv.fr
+APP_ENV=staging
+DATABASE_URL=$SCALINGO_POSTGRESQL_URL
+FRONTEND_APPLICATION_HOST=https://staging.mon-devis-sans-oublis.beta.gouv.fr
+# SCALINGO_POSTGRESQL_URL=générer par Scalingo
+```
+
+#### Production
+```bash
+APPLICATION_HOST=https://api.staging.mon-devis-sans-oublis.beta.gouv.fr
+APP_ENV=production
+DATABASE_URL=$SCALINGO_POSTGRESQL_URL
+FRONTEND_APPLICATION_HOST=https://mon-devis-sans-oublis.beta.gouv.fr
+# SCALINGO_POSTGRESQL_URL=générer par Scalingo
+```
+
+## Technologies sous-jacente utilisées
 
 * [Ruby on Rails](https://rubyonrails.org/) version 7 comme boîte à outil et socle technique applicatif ;
 * le [DSFR](https://www.systeme-de-design.gouv.fr/) pour réutiliser les éléments graphiques officiels via la [librairie de
@@ -58,6 +165,7 @@ sequenceDiagram
     QuoteCheckCheckJob->>QuoteCheckCheckJob: Réduction du texte si conditions générales
 
     QuoteCheckCheckJob<<->>Albert LLM: Extraction des données personnelles et administratives
+    QuoteCheckCheckJob<<->>SIRENE API: Extension des données commerciales via recherche SIRET
     QuoteCheckCheckJob<<->>ADEME API: Extension des données commerciales et certifications via recherche SIRET
 
     QuoteCheckCheckJob->>QuoteCheckCheckJob: Anonymisation du texte
@@ -121,23 +229,6 @@ QuoteCheck.find(quote_check_id).update!(validation_errors: nil, validation_error
 - vérifier sur le back office MDSO onglet "API Keys" la présence de l'accès
 - tester si besoin via le playground API doc du contexte correspondant
 
-## Démarrage
-
-```shell
-docker-compose up
-```
-
-ou si vous l'installez directement (non recommandé)
-
-```shell
-DATABASE_URL='postgresql://postgres:dummy@localhost:5433' bin/rails server -b 0.0.0.0
-```
-
-## Environnement
-
-Tout l'environnement est configuré pour et depuis [Docker](https://www.docker.com/). Des
-commandes utiles sont fournies dans le [Makefile](./Makefile).
-
 ## Installation de tesseract sous Mac OSX
 
 `brew install tesseract tesseract-lang`
@@ -149,7 +240,7 @@ curl -O https://github.com/tesseract-ocr/tessdata_best/raw/main/fra.traineddata
 # check that you really download the file and it's not empty
 ```
 
-## Back office
+## Back Office (BO)
 
 Un tableau de suivis des devis soumis est disponible sur [/mdso/admin](http://localhost:3000/mdso/admin) sous mot de passe hors développement.
 
