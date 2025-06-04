@@ -26,7 +26,9 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
 
     column "Source", :source_name
     column "Référence", :reference
-    column :created_at
+    column :created_at do
+      local_time(it.created_at)
+    end
 
     column "Persona", :profile
     column "Type de rénovation", :renovation_type
@@ -38,7 +40,9 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
         attributes_table do
           row :source_name, label: "Source"
           row :reference, label: "Référence"
-          row :created_at
+          row :created_at do
+            local_time(it.created_at)
+          end
 
           row :profile, label: "Persona"
           row :renovation_type, label: "Type de rénovation"
@@ -57,7 +61,9 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
             end
           end
 
-          row :updated_at
+          row :updated_at do
+            local_time(it.updated_at)
+          end
         end
       end
     end
