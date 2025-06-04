@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddOcrResultToQuoteFiles < ActiveRecord::Migration[7.2]
   def change
     add_column :quote_files, :ocr_result, :jsonb
