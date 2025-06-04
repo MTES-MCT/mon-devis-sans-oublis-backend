@@ -12,9 +12,14 @@ class AdminUserSessionsController < ApplicationController
     render "admin_user/sessions/new", layout: false
   end
 
-  def create
+  def create # rubocop:disable Metrics/MethodLength
     auth = request.env["omniauth.auth"]
-    email = auth.info.email
+
+    email = if auth.nil? && Rails.env.development?
+              "dev@localhost"
+            else
+              auth.info.email
+            end
 
     if ADMIN_EMAILS.include?(email)
       session[:admin_user] = email
