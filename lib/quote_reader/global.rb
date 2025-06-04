@@ -51,7 +51,11 @@ module QuoteReader
 
           ocr_instance.extract_text
         ensure
-          quote_file&.update!(force_ocr:, ocr: ocr_instance&.ocr || ocr)
+          quote_file&.update!(
+            force_ocr:,
+            ocr: ocr_instance&.ocr || ocr,
+            ocr_result: ocr_instance&.result
+          )
         end
 
         return ocr_instance&.text
