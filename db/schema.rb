@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_06_03_163100) do
+ActiveRecord::Schema[7.2].define(version: 2025_06_04_073415) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -205,7 +205,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_03_163100) do
     t.string "ocr"
     t.boolean "security_scan_good"
     t.boolean "force_ocr", default: false, null: false
+    t.jsonb "ocr_result"
     t.index ["hexdigest", "filename"], name: "index_quote_files_on_hexdigest_and_filename", unique: true
+    t.index ["ocr"], name: "index_quote_files_on_ocr"
   end
 
   create_table "quotes_cases", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
