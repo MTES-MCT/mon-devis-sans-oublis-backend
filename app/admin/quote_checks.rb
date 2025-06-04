@@ -242,13 +242,19 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
       column do # rubocop:disable Metrics/BlockLength
         attributes_table do # rubocop:disable Metrics/BlockLength
           row "Nom de fichier" do
-            if resource.file.security_scan_good == false
-              "#{resource.file.filename} (⚠ virus)"
-            else
-              link_to resource.file.filename,
-                      view_file_admin_quote_file_path(resource.file, format: resource.file.extension),
-                      target: "_blank", rel: "noopener"
-            end
+            file_link = if resource.file.security_scan_good == false
+                          "#{resource.file.filename} (⚠ virus)"
+                        else
+                          link_to resource.file.filename,
+                                  view_file_admin_quote_file_path(resource.file, format: resource.file.extension),
+                                  target: "_blank", rel: "noopener"
+                        end
+
+            safe_join([
+                        file_link,
+                        content_tag(:br),
+                        link_to(it.file.id, admin_quote_file_path(it.file))
+                      ])
           end
 
           row "Dossier" do

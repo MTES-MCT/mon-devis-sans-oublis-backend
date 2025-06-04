@@ -141,5 +141,13 @@ ActiveAdmin.register QuoteFile do # rubocop:disable Metrics/BlockLength
         end
       end
     end
+
+    tabs do
+      if resource.ocr_result.present?
+        tab "OCR Result" do
+          pre JSON.pretty_generate(resource.ocr_result)
+        end
+      end
+    end
   end
 end
