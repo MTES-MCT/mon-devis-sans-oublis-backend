@@ -24,20 +24,20 @@ module QuoteValidator
                   :warnings
 
     def self.geste_index(quote_id, geste_index)
+      raise ArgumentError, "geste_index should be an Integer" unless geste_index.is_a?(Integer)
+
       [quote_id, "geste", geste_index + 1].compact.join("-")
     end
 
     # @param [Hash] quote
     # quote is a hash with the following keys
     # - siret: [String] the SIRET number of the company
-    def initialize(quote_attributes, quote_id: nil, error_details: nil)
+    def initialize(quote_attributes, quote_id: nil)
       @quote = TrackingHash.new(quote_attributes)
 
       @quote_id = quote_id
-      @error_details = error_details
 
-      @control_codes = []
-      @controls_count = 0
+      reset_errors
     end
 
     # @return [Hash] error categories with their translations
@@ -116,6 +116,16 @@ module QuoteValidator
     # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/AbcSize
 
+    # rubocop:disable Metrics/AbcSize
+    def add_validator_errors(*validator_or_validators)
+      Array.wrap(validator_or_validators.flatten).each do |validator|
+        error_details.concat(validator.error_details) if validator.error_details.present?
+        control_codes.concat(validator.control_codes) if validator.control_codes.present?
+        increment_controls_count(validator.controls_count) if validator.controls_count.present?
+      end
+    end
+    # rubocop:enable Metrics/AbcSize
+
     def errors
       error_details&.map { it.fetch(:code) } || []
     end
@@ -124,13 +134,22 @@ module QuoteValidator
       quote&.keys_accessed || []
     end
 
-    def increment_controls_count
-      @controls_count += 1
+    def increment_controls_count(increment = 1)
+      @controls_count += increment
+    end
+
+    def reset_errors
+      @error_details = []
+      @control_codes = []
+      @controls_count = 0
     end
 
     # TODO: doit valider les critères techniques associés aux gestes présents dans le devis
     def validate!
       @error_details = []
+
+      @control_codes = []
+      @controls_count = 0
 
       yield
 
