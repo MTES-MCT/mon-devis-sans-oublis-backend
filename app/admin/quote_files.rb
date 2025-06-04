@@ -52,7 +52,9 @@ ActiveAdmin.register QuoteFile do # rubocop:disable Metrics/BlockLength
         it.security_scan_good ? "Oui" : "Non"
       end
     end
-    column :created_at
+    column :created_at do
+      local_time(it.created_at)
+    end
 
     column "Nombre d'images de pages (si PDF)" do |quote_file|
       if quote_file.imagified_pages&.size&.positive?
@@ -98,7 +100,9 @@ ActiveAdmin.register QuoteFile do # rubocop:disable Metrics/BlockLength
           it.security_scan_good ? "Oui" : "Non"
         end
       end
-      row :created_at
+      row :created_at do
+        local_time(it.created_at)
+      end
 
       row "Nombre d'images de pages (si PDF)" do |quote_file|
         if quote_file.imagified_pages&.size&.positive?

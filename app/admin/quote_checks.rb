@@ -174,7 +174,9 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
     column "Dossier", :case_id do |quote_check|
       link_to quote_check.case.id, admin_quotes_case_path(quote_check.case) if quote_check.case
     end
-    column "Date soumission", &:started_at
+    column "Date soumission" do
+      local_time(it.started_at)
+    end
 
     column "Source", :source_name
     column "Référence", :reference
@@ -213,7 +215,9 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
 
     column "Commentaire ?", &:commented?
 
-    column "Date édition", &:edited_at
+    column "Date édition" do
+      local_time(it.edited_at)
+    end
 
     column "Persona", :profile
     column "Type de rénovation", :renovation_type
@@ -251,7 +255,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
             link_to quote_check.case.id, admin_quotes_case_path(quote_check.case) if quote_check.case
           end
           row "Date de soumission" do
-            resource.started_at
+            local_time(it.started_at)
           end
 
           row :source_name, lael: "Source"
@@ -303,7 +307,9 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
 
           row "Présence de commentaire ?", &:commented?
 
-          row "Date de dernière édition", &:edited_at
+          row "Date de dernière édition" do
+            local_time(it.edited_at)
+          end
 
           row :comment, label: "Commentaire global"
 
