@@ -113,7 +113,7 @@ FRONTEND_APPLICATION_HOST=https://mon-devis-sans-oublis.beta.gouv.fr
 
 ## Technologies sous-jacente utilisées
 
-* [Ruby on Rails](https://rubyonrails.org/) version 7 comme boîte à outil et socle technique applicatif ;
+* [Ruby on Rails](https://rubyonrails.org/) version 8 comme boîte à outil et socle technique applicatif ;
 * le [DSFR](https://www.systeme-de-design.gouv.fr/) pour réutiliser les éléments graphiques officiels via la [librairie de
 composants DSFR](https://github.com/betagouv/dsfr-view-components)
 * PostgreSQL comme base de données pour stocker les données ;
@@ -211,6 +211,13 @@ Différentes briques sont mises à contribution et encore en évaluation:
 ### Tester un devis en local
 
 `docker compose exec web rake 'quote_checks:create[tmp/devis_tests/DC004200PAC-Aireau+Chauffe eau thermo.pdf]' | less`
+
+#### Re-vérifier devis
+
+```
+quote_check_id = "b9705194-02aa-4db7-bc38-5fc2dcb6ce58"
+QuoteCheckCheckJob.perform_later(quote_check_id)
+```
 
 #### Forcer un devis à valide
 

@@ -17,6 +17,7 @@ require "action_cable/engine"
 # require "rails/test_unit/railtie"
 
 # include the DSFR View Components
+require "dsfr/assets"
 require "dsfr/components"
 
 # Require the gems listed in Gemfile, including any gems
@@ -27,7 +28,7 @@ module MesDevisSansOublis
   # Application configuration
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.2
+    config.load_defaults 8.0
 
     config.i18n.default_locale = :fr
     config.i18n.fallbacks = [:fr]

@@ -6,7 +6,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "~> 3.4.1"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails"
+gem "rails", "~> 8.0"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
@@ -50,7 +50,10 @@ gem "bootsnap", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
+# Views and components
+gem "dsfr-assets"
 gem "dsfr-view-components"
+gem "view_component", "~> 3.19"
 
 # Mon Devis Sans Oublis custom gems
 gem "active_model_serializers"
@@ -103,13 +106,20 @@ group :development, :test do
 end
 
 group :test do
+  gem "capybara"
+  gem "cucumber-rails", require: false # , "~> 3.0"
+  gem "database_cleaner"
   gem "faker", require: false
   gem "guard"
+  gem "guard-cucumber"
   gem "guard-rspec"
   gem "rspec"
   gem "rubocop"
+  gem "rubocop-capybara"
   gem "rubocop-factory_bot"
+  gem "rubocop-performance"
   gem "rubocop-rails"
+  gem "rubocop-rake"
   gem "rubocop-rspec"
   gem "rubocop-rspec_rails"
   gem "vcr"
