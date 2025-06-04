@@ -3,9 +3,9 @@
 require "rails_helper"
 
 RSpec.describe "/api/v1/data_checks/rge" do
-  describe "GET /api/v1/data_checks/rge" do
-    subject(:json) { response.parsed_body }
+  subject(:json) { response.parsed_body }
 
+  describe "GET /api/v1/data_checks/rge" do
     before { get api_v1_data_checks_rge_url, params: params }
 
     context "with SIRET, RGE and related date" do

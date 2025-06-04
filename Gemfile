@@ -103,6 +103,7 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "rspec-rails"
   gem "rswag-specs" # Allows API documentation via specs
+  gem "rubycritic"
 end
 
 group :test do
@@ -134,7 +135,6 @@ group :development do
   gem "rails_best_practices"
   gem "rails-erd"
   gem "rails_stats"
-  gem "rubycritic"
   gem "rugged" # For licensed on Github Actions CI
 
   # Use console on exceptions pages [https://github.com/rails/web-console]

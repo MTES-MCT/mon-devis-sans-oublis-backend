@@ -3,22 +3,24 @@
 require "rails_helper"
 
 RSpec.describe "/api/v1/quote_checks" do
-  let(:json) { response.parsed_body }
+  subject(:json) { response.parsed_body }
 
   before do
     ClamAv.download_database! unless ClamAv.database_exists?
   end
 
   describe "GET /api/v1/quote_checks/metadata" do
+    before { get metadata_api_v1_quote_checks_url }
+
     it "returns a successful response" do
-      get metadata_api_v1_quote_checks_url
       expect(response).to be_successful
     end
 
-    # rubocop:disable RSpec/MultipleExpectations
-    it "returns the metadata" do # rubocop:disable RSpec/ExampleLength
-      get metadata_api_v1_quote_checks_url
+    it "returns the aides metadata" do
       expect(json.fetch("aides")).to include("CEE")
+    end
+
+    it "returns the gestes metadata" do # rubocop:disable RSpec/ExampleLength
       expect(json.fetch("gestes")).to include({
                                                 "group" => "Menuiserie",
                                                 "values" => [
@@ -27,7 +29,6 @@ RSpec.describe "/api/v1/quote_checks" do
                                                 ]
                                               })
     end
-    # rubocop:enable RSpec/MultipleExpectations
   end
 
   describe "POST /api/v1/quote_checks" do
@@ -40,25 +41,22 @@ RSpec.describe "/api/v1/quote_checks" do
       }
     end
 
+    before { post api_v1_quote_checks_url, params: quote_check_params, headers: api_key_header }
+
     it "returns a successful response" do
-      post api_v1_quote_checks_url, params: quote_check_params, headers: api_key_header
       expect(response).to be_successful
     end
 
     it "returns a created response" do
-      post api_v1_quote_checks_url, params: quote_check_params, headers: api_key_header
       expect(response).to have_http_status(:created)
     end
 
     it "returns a pending treatment response" do
-      post api_v1_quote_checks_url, params: quote_check_params, headers: api_key_header
       expect(json.fetch("status")).to eq("pending")
     end
 
     it "creates a QuoteCheck" do
-      expect do
-        post api_v1_quote_checks_url, params: quote_check_params, headers: api_key_header
-      end.to change(QuoteCheck, :count).by(1)
+      expect(QuoteCheck.find(json.fetch("id"))).to be_present
     end
 
     context "with case_id" do
@@ -72,7 +70,6 @@ RSpec.describe "/api/v1/quote_checks" do
       end
 
       it "reuses the renovation_type from case" do
-        post api_v1_quote_checks_url, params: quote_check_params, headers: api_key_header
         expect(QuoteCheck.find(json.fetch("id")).renovation_type).to eq(quote_case.renovation_type)
       end
     end
@@ -89,7 +86,6 @@ RSpec.describe "/api/v1/quote_checks" do
       end
 
       it "returns the parent_id" do
-        post api_v1_quote_checks_url, params: quote_check_params, headers: api_key_header
         expect(json.fetch("parent_id")).to eq(quote_check.id)
       end
     end
@@ -106,7 +102,6 @@ RSpec.describe "/api/v1/quote_checks" do
       end
 
       it "uses the file_text provided" do
-        post api_v1_quote_checks_url, params: quote_check_params, headers: api_key_header
         expect(QuoteCheck.find(json.fetch("id")).text).to eq("Devis 12")
       end
     end
@@ -118,43 +113,59 @@ RSpec.describe "/api/v1/quote_checks" do
 
     before do
       QuoteCheckCheckJob.new.perform(quote_check.id)
-    end
 
-    # rubocop:disable RSpec/MultipleExpectations
-    it "renders a successful response" do # rubocop:disable RSpec/ExampleLength
       get api_v1_quote_check_url(quote_check), as: :json, headers: api_key_header
-      expect(response).to be_successful
-      expect(json.fetch("status")).to eq("invalid")
-      expect(json.fetch("error_details").first).to include({
-                                                             code: "file_reading_error",
-                                                             type: "error"
-                                                           })
     end
-    # rubocop:enable RSpec/MultipleExpectations
 
-    context "with invalid file type" do
-      let(:file) { Rails.root.join("spec/fixtures/files/quote_files/Devis_test.png").open }
-      let(:quote_file) { create(:quote_file, file: file) }
-
-      # rubocop:disable RSpec/MultipleExpectations
-      it "returns a direct error response" do # rubocop:disable RSpec/ExampleLength
-        get api_v1_quote_check_url(quote_check), as: :json, headers: api_key_header
+    context "with file reading error" do
+      it "returns a successful response" do
         expect(response).to be_successful
+      end
+
+      it "returns an invalid status" do
         expect(json.fetch("status")).to eq("invalid")
+      end
+
+      it "returns an error" do
         expect(json.fetch("errors")).to include("file_reading_error")
+      end
+
+      it "returns an error_details" do
         expect(json.fetch("error_details").first).to include({
                                                                code: "file_reading_error",
                                                                type: "error"
                                                              })
       end
-      # rubocop:enable RSpec/MultipleExpectations
+    end
+
+    context "with invalid file type" do
+      let(:file) { Rails.root.join("spec/fixtures/files/quote_files/Devis_test.png").open }
+      let(:quote_file) { create(:quote_file, file: file) }
+
+      it "returns a successful response" do
+        expect(response).to be_successful
+      end
+
+      it "returns an invalid status" do
+        expect(json.fetch("status")).to eq("invalid")
+      end
+
+      it "returns an error" do
+        expect(json.fetch("errors")).to include("file_reading_error")
+      end
+
+      it "returns an error_details" do
+        expect(json.fetch("error_details").first).to include({
+                                                               code: "file_reading_error",
+                                                               type: "error"
+                                                             })
+      end
     end
 
     context "with another source" do
       let(:quote_check) { create(:quote_check, file: quote_file, source_name: "another") }
 
       it "renders a not found" do
-        get api_v1_quote_check_url(quote_check), as: :json, headers: api_key_header
         expect(response).to have_http_status(:not_found)
       end
 
