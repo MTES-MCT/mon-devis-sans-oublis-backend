@@ -3,11 +3,11 @@
 require "rails_helper"
 
 RSpec.describe "/api/v1/quote_checks/:quote_check_id/error_details/:validation_error_detail_id/feedbacks" do
+  subject(:json) { response.parsed_body }
+
   let(:quote_check) { create(:quote_check, :invalid) }
   let(:validation_error_details_id) { quote_check.validation_error_details.first.fetch("id") }
   let(:quote_check_id) { quote_check.id }
-
-  let(:json) { response.parsed_body }
 
   describe "POST /api/v1/quote_checks/:quote_check_id/error_details/:validation_error_detail_id/feedbacks" do
     let(:quote_check_feedback_params) do

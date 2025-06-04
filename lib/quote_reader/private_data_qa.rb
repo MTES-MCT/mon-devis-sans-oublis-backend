@@ -43,6 +43,32 @@ module QuoteReader
         @result = llm.result
         raise QuoteReader::ReadError if @result.nil?
 
+        # Ensure that the read list attributes are always Arrays of strings
+        # List of lists from prompts/private_data.txt
+        @read_attributes = @read_attributes&.merge(
+          noms: Array.wrap(@read_attributes[:noms]).map(&:to_s).presence,
+          adresses: Array.wrap(@read_attributes[:adresses]).map(&:to_s).presence,
+          telephones: Array.wrap(@read_attributes[:telephones]).map(&:to_s).presence,
+          raison_sociales: Array.wrap(@read_attributes[:raison_sociales]).map(&:to_s).presence,
+          sirets: Array.wrap(@read_attributes[:sirets]).map(&:to_s).presence,
+          ville_immatriculation_rcss: Array.wrap(@read_attributes[:ville_immatriculation_rcss]).map(&:to_s).presence,
+          numero_rcss: Array.wrap(@read_attributes[:numero_rcss]).map(&:to_s).presence,
+          rnes: Array.wrap(@read_attributes[:rnes]).map(&:to_s).presence,
+          assurances: Array.wrap(@read_attributes[:assurances]).map(&:to_s).presence,
+          numero_rge: Array.wrap(@read_attributes[:numero_rge]).map(&:to_s).presence,
+          emails: Array.wrap(@read_attributes[:emails]).map(&:to_s).presence,
+          numeros_tva: Array.wrap(@read_attributes[:numeros_tva]).map(&:to_s).presence,
+          ibans: Array.wrap(@read_attributes[:ibans]).map(&:to_s).presence,
+          uris: Array.wrap(@read_attributes[:uris]).map(&:to_s).presence,
+          client_noms_de_famille: Array.wrap(@read_attributes[:client_noms_de_famille]).map(&:to_s).presence,
+          client_prenoms: Array.wrap(@read_attributes[:client_prenoms]).map(&:to_s).presence,
+          client_civilite: Array.wrap(@read_attributes[:client_civilite]).map(&:to_s).presence,
+          client_adresses: Array.wrap(@read_attributes[:client_adresses]).map(&:to_s).presence,
+          pro_adresses: Array.wrap(@read_attributes[:pro_adresses]).map(&:to_s).presence,
+          forme_juridiques: Array.wrap(@read_attributes[:forme_juridiques]).map(&:to_s).presence,
+          capital_social: Array.wrap(@read_attributes[:capital_social]).map(&:to_s).presence
+        )&.compact.presence
+
         @read_attributes = @read_attributes&.merge(
           client: {
             adresse: @read_attributes.dig(:client_adresses, 0),
