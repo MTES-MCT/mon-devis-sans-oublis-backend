@@ -828,7 +828,7 @@ DEPENDENCIES
   pg
   puma (~> 6.0)
   rack-cors
-  rails (~> 8.0.0)
+  rails (~> 8.0)
   rails-erd
   rails_best_practices
   rails_stats
