@@ -30,8 +30,6 @@ module QuoteReader
         raise ReadError, "No content provided" if content.nil? || content.empty? # rubocop:disable Rails/Blank
 
         @text = extract_text_from_image # TODO: fix_french_characters if needed
-      rescue StandardError => e
-        raise parse_error(e)
       end
 
       def ocr
