@@ -28,6 +28,7 @@ module QuoteReader
       # Using Albert OCR model
       def extract_text_from_image(model: nil)
         @model = model if model
+        puts "@@@ Extracting text from image with Albert OCR model: #{model}"
 
         content = albert_ocr(model:)
         raise ResultError, "Content empty" unless content
