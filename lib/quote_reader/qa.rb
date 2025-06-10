@@ -20,22 +20,28 @@ module QuoteReader
 
     private
 
+    # rubocop:disable Metrics/AbcSize
     def llm_read_attributes(llm) # rubocop:disable Metrics/MethodLength
       llm_klass = "Llms::#{llm.capitalize}".constantize
       return unless llm_klass.configured?
 
-      mistral = llm_klass.new(prompt)
+      processing_log = quote_file.start_processing_log("Qa", "Qa/#{llm_klass.name}") if quote_file
+
+      llm = llm_klass.new(prompt)
       begin
-        mistral.chat_completion(text)
+        llm.chat_completion(text)
       rescue llm_klass::ResultError => e
         ErrorNotifier.notify(e)
       end
 
-      @read_attributes = TrackingHash.new(mistral.read_attributes)
-      @result = mistral.result
+      @read_attributes = TrackingHash.new(llm.read_attributes)
+      @result = llm.result
+
+      quote_file.end_processing_log(processing_log) if processing_log
 
       read_attributes
     end
+    # rubocop:enable Metrics/AbcSize
 
     def prompt
       Rails.root.join("lib/quote_reader/prompts/qa.txt").read

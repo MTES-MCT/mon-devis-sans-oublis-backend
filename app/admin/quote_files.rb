@@ -148,6 +148,8 @@ ActiveAdmin.register QuoteFile do # rubocop:disable Metrics/BlockLength
           pre JSON.pretty_generate(resource.ocr_result)
         end
       end
+
+      instance_exec(&processing_logs_tab(resource))
     end
   end
 end

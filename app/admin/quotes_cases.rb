@@ -34,7 +34,7 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
     column "Type de rénovation", :renovation_type
   end
 
-  show do
+  show do # rubocop:disable Metrics/BlockLength
     columns do
       column do
         attributes_table do
@@ -66,6 +66,10 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
           end
         end
       end
+    end
+
+    tabs do
+      instance_exec(&processing_logs_tab(resource))
     end
   end
 

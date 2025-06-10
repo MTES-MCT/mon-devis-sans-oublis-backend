@@ -20,6 +20,9 @@ module QuoteReader
         raise NotImplementedError, "Can not process directly from file, should be in database" unless quote_file
 
         raise NotImplementedError
+        # quote_file.start_processing_log("MdsoOcr") do
+        # TODO
+        # end
       end
 
       def ocr
