@@ -7,6 +7,24 @@ module QuoteInputMetadata
   PROFILES = %w[artisan particulier conseiller].freeze # Also called Persona
   DEPRECATED_PROFILES = %w[mandataire].freeze
 
+  # Complete list of Gestes types from QA prompts
+  GESTE_TYPES = %w[
+    chauffe_eau_thermo
+    chauffe_eau_solaire_individuel
+    isolation_comble_perdu
+    isolation_rampants_toiture
+    isolation_toiture_terrasse
+    isolation_thermique_par_interieur_ITI
+    isolation_thermique_par_exterieur_ITE
+    isolation_plancher_bas
+    menuiserie_fenetre
+    menuiserie_fenetre_toit
+    menuiserie_porte
+    menuiserie_volet_isolant
+    poele_insert
+    vmc_simple_flux,vmc_double_flux
+  ].freeze
+
   RENOVATION_TYPES = %w[geste ampleur].freeze
 
   included do

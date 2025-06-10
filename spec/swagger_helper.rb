@@ -98,6 +98,10 @@ RSpec.configure do |config|
             }
           }
         },
+        geste_type: {
+          type: :string,
+          enum: QuoteCheck::GESTE_TYPES
+        },
         profile: {
           type: :string,
           enum: QuoteCheck::PROFILES,
@@ -185,6 +189,10 @@ RSpec.configure do |config|
           properties: {
             id: { type: :string },
             intitule: { type: :string },
+            type: {
+              "$ref" => "#/components/schemas/geste_type",
+              nullable: true
+            },
             valid: { type: :boolean, nullable: true }
           },
           required: %w[id intitule]
