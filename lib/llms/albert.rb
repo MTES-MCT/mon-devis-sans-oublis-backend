@@ -10,6 +10,9 @@ module Llms
   # Albert API client : following OpenAI API structure
   # Documentation https://github.com/etalab-ia/albert-api
   class Albert < Base
+    class ResponseError < StandardError; end
+    class UnauthorizedError < ResponseError; end
+
     attr_reader :prompt, :read_attributes, :result
 
     DEFAULT_MODEL = ENV.fetch("ALBERT_MODEL", "meta-llama/Meta-Llama-3.1-70B-Instruct")
@@ -35,7 +38,7 @@ module Llms
     # - meta-llama/Meta-Llama-3.1-70B-Instruct
     # - AgentPublic/llama3-instruct-8b (default)
     # - AgentPublic/Llama-3.1-8B-Instruct
-    def chat_completion(text, model: nil, model_fallback: true)
+    def chat_completion(text, model: nil, model_fallback: true, model_type: "text-generation")
       @model = model if model
 
       uri = URI("#{HOST}/chat/completions")
@@ -57,7 +60,7 @@ module Llms
       # Auto switch model if not found
       if response.code == "404" && model_fallback
         backup_model = (self.class.sort_models(
-          models.filter { it.fetch("type") == "text-generation" }
+          models.filter { it.fetch("type") == model_type }
                 .map { it.fetch("id") }
         ) - [model].compact).first
         return chat_completion(text, model: backup_model) if backup_model
@@ -77,11 +80,25 @@ module Llms
     # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/AbcSize
 
-    def models
+    # rubocop:disable Metrics/AbcSize
+    def models # rubocop:disable Metrics/MethodLength
       uri = URI("#{HOST}/models")
-      body = Net::HTTP.get(uri, headers)
-      JSON.parse(body).fetch("data")
+
+      http = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https")
+      request = Net::HTTP::Get.new(uri, headers)
+      response = http.request(request)
+
+      json = JSON.parse(response.body)
+      case response.code
+      when "401", "403"
+        raise UnauthorizedError, json.fetch("detail")
+      else
+        raise ResponseError, json.fetch("detail") if response.code != "200"
+      end
+
+      json.fetch("data")
     end
+    # rubocop:enable Metrics/AbcSize
 
     def model
       result&.fetch("model") || super

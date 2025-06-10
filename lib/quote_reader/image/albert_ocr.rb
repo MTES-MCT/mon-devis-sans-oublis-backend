@@ -18,11 +18,15 @@ module QuoteReader
       def initialize(content, content_type, quote_file: nil, model: DEFAULT_MODEL)
         super(content, content_type, quote_file:)
         @api_key = ENV.fetch("ALBERT_API_KEY")
-        @model = model
+        @model = model || DEFAULT_MODEL
       end
 
       def self.configured?
         ENV.key?("ALBERT_API_KEY")
+      end
+
+      def self.sort_models(models)
+        Llms::Base.sort_models(models)
       end
 
       # Using Albert OCR model
@@ -41,6 +45,10 @@ module QuoteReader
         "AlbertOcr"
       end
 
+      def models
+        Llms::Albert.new("").models
+      end
+
       private
 
       def headers
@@ -51,7 +59,7 @@ module QuoteReader
       end
 
       # rubocop:disable Metrics/AbcSize
-      def albert_chat(model: nil) # rubocop:disable Metrics/MethodLength
+      def albert_chat(model: nil, model_fallback: true, model_type: "image-text-to-text") # rubocop:disable Metrics/MethodLength
         # LLM Chat way
 
         uri = URI("#{HOST}/chat/completions")
@@ -74,15 +82,17 @@ module QuoteReader
         request = Net::HTTP::Post.new(uri, headers)
         request.body = body.to_json
         response = http.request(request)
-        raise TimeoutError if response.status == "504"
+        raise TimeoutError if response.code == "504"
 
         # Auto switch model if not found
         if response.code == "404" && model_fallback
           backup_model = (self.class.sort_models(
-            models.filter { it.fetch("type") == "text-generation" }
+            models.filter { it.fetch("type") == model_type }
                   .map { it.fetch("id") }
           ) - [model].compact).first
-          return chat_completion(text, model: backup_model) if backup_model
+          raise ResultError, "Model #{model} not found" unless backup_model
+
+          return albert_chat(model: backup_model, model_fallback: false)
         end
         raise ResultError, "Error: #{response.code} - #{response.message}" unless response.is_a?(Net::HTTPSuccess)
 
@@ -95,7 +105,8 @@ module QuoteReader
       # See documentation https://albert.api.etalab.gouv.fr/documentation#tag/Ocr/operation/ocr_v1_ocr_beta_post
       # Currently ONLY PDF
       # rubocop:disable Metrics/AbcSize
-      def albert_ocr(model: nil) # rubocop:disable Metrics/MethodLength
+      # rubocop:disable Metrics/CyclomaticComplexity
+      def albert_ocr(model: nil, model_fallback: true, model_type: "image-text-to-text") # rubocop:disable Metrics/MethodLength
         connection = Faraday.new(url: HOST, headers: headers.slice("Authorization")) do |f|
           f.request :multipart
           f.request :url_encoded
@@ -110,14 +121,28 @@ module QuoteReader
         response = connection.post("/v1/ocr-beta", payload)
         @result = JSON.parse(response.body)
 
-        if response.status == 400 && @result["detail"]&.include?(/file must be/i)
-          raise QuoteReader::UnsupportedFileType, @result.fetch("detail")
+        case response.status
+        when 400
+          raise QuoteReader::UnsupportedFileType, @result.fetch("detail") if @result["detail"]&.match?(/file must be/i)
+        when 401, 403
+          raise Llms::Albert::UnauthorizedError, @result.fetch("detail")
+        when 404
+          if @result["detail"]&.match?(/model not found/i) && model_fallback
+            backup_model = (self.class.sort_models(
+              models.filter { it.fetch("type") == model_type }
+                    .map { it.fetch("id") }
+            ) - [model].compact).first
+            raise ResultError, "Model #{model} not found" unless backup_model
+
+            return albert_ocr(model: backup_model, model_fallback: false)
+          end
         end
 
         result.fetch("data").filter_map do
           Llms::Base.extract_markdown(it.fetch("text").gsub("Aucun texte détecté", ""))
         end.join("\n\n\n")
       end
+      # rubocop:enable Metrics/CyclomaticComplexity
       # rubocop:enable Metrics/AbcSize
     end
   end
