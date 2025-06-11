@@ -84,7 +84,7 @@ module QuoteReader
 
       @shrinked_text = Shrinker.new(text).shrinked_text
 
-      private_data_qa_reader = PrivateDataQa.new(shrinked_text)
+      private_data_qa_reader = PrivateDataQa.new(shrinked_text, quote_file:)
       begin
         @private_data_qa_attributes = private_data_qa_reader.read || {}
       ensure

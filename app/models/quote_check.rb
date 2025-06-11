@@ -2,6 +2,7 @@
 
 # QuoteCheck represents a submission of a quote to be checked.
 class QuoteCheck < ApplicationRecord
+  include ProcessingLogs
   include QuoteCheckBackoffice
   include QuoteCheckEdits
   include QuoteCheckExpectations

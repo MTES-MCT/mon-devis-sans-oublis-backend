@@ -2,6 +2,7 @@
 
 # This class is responsible for managing the quote files in a same case.
 class QuotesCase < ApplicationRecord
+  include ProcessingLogs
   include QuoteInputMetadata
   include QuotesCaseBackoffice
   include QuotesCasePostCheckMetadata

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_04_073415) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_10_165954) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -135,6 +135,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_04_073415) do
     t.index ["priority", "scheduled_at"], name: "index_good_jobs_on_priority_scheduled_at_unfinished_unlocked", where: "((finished_at IS NULL) AND (locked_by_id IS NULL))"
     t.index ["queue_name", "scheduled_at"], name: "index_good_jobs_on_queue_name_and_scheduled_at", where: "(finished_at IS NULL)"
     t.index ["scheduled_at"], name: "index_good_jobs_on_scheduled_at", where: "(finished_at IS NULL)"
+  end
+
+  create_table "processing_logs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "tags", default: [], array: true
+    t.string "processable_type"
+    t.uuid "processable_id"
+    t.jsonb "input_parameters"
+    t.jsonb "output_result"
+    t.datetime "started_at", null: false
+    t.datetime "finished_at"
+    t.index ["processable_type", "processable_id"], name: "index_processing_logs_on_processable"
   end
 
   create_table "quote_check_feedbacks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

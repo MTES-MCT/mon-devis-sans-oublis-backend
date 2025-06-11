@@ -361,6 +361,8 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
           QuoteCheckSerializer.new(resource).as_json
         )
       end
+
+      instance_exec(&processing_logs_tab(resource))
     end
   end
 end

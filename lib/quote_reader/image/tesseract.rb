@@ -14,7 +14,10 @@ module QuoteReader
       end
 
       # Using Tesseract OCR
+      # rubocop:disable Metrics/AbcSize
       def extract_text_from_image # rubocop:disable Metrics/MethodLength
+        processing_log = quote_file.start_processing_log("Tesseract") if quote_file
+
         extension = determine_extension
 
         Tempfile.open(["ocr_image", extension]) do |tempfile|
@@ -29,9 +32,12 @@ module QuoteReader
           @pages_text = @text = RTesseract.new(processed_image.path, lang: "fra").to_s # French language
           raise ResultError, "Content empty" unless @text
 
+          quote_file.end_processing_log(processing_log) if processing_log
+
           @text
         end
       end
+      # rubocop:enable Metrics/AbcSize
 
       def ocr
         "Tesseract"
