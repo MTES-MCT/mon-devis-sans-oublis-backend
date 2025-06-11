@@ -9,7 +9,6 @@ module ProcessingLogs
   end
 
   def start_processing_log(*tags, **kwargs) # rubocop:disable Metrics/MethodLength
-    tags = Array.wrap(tags).compact
     raise ArgumentError, "tags must be a String or Array of Strings" unless tags.any?
 
     input_parameters = kwargs[:input_parameters]
