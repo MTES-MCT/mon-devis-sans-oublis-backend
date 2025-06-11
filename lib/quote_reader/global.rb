@@ -103,7 +103,7 @@ module QuoteReader
       )
       @anonymised_text = Anonymiser.new(shrinked_text).anonymised_text(private_extended_attributes)
 
-      qa_reader = Qa.new(anonymised_text)
+      qa_reader = Qa.new(anonymised_text, quote_file:)
       begin
         @qa_attributes = qa_reader.read(llm: qa_llm) || {}
       ensure
