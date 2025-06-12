@@ -17,7 +17,10 @@ module QuoteReader
     def shrinked_text(attributes = nil)
       return nil if @raw_text.nil?
 
-      attributes ||= QuoteReader::NaiveText.new(@raw_text).read
+      attributes ||= {
+        powered_by: QuoteReader::NaiveText.find_powered_by(@raw_text),
+        terms: QuoteReader::NaiveText.find_terms(@raw_text)
+      }
       Anonymiser.replace_text_from_attributes(attributes, FIELDS_TO_SHRINKED, @raw_text)
     end
   end
