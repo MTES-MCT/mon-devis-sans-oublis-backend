@@ -409,11 +409,18 @@ RSpec.configure do |config|
           type: :object,
           nullable: true,
           properties: {
+            bad_file: {
+              type: :boolean,
+              nullable: true,
+              description: "le fichier n'est pas un devis valide, unique propriété présente si true"
+            },
             version: {
-              type: :string
+              type: :string,
+              nullable: true
             },
             mention_devis: {
-              type: :boolean
+              type: :boolean,
+              nullable: true
             },
             numero_devis: {
               type: :string,

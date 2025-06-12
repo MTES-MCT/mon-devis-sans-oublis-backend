@@ -265,7 +265,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.datatourisme.fr/ontology/core/1.0/#siret
-          x-cardinality: 63398
+          x-cardinality: 63285
           x-capabilities:
             textAgg: true
           x-concept:
@@ -277,7 +277,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.w3.org/2000/01/rdf-schema#label
-          x-cardinality: 62800
+          x-cardinality: 62711
           x-capabilities:
             textAgg: true
           x-concept:
@@ -289,7 +289,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/address
-          x-cardinality: 63733
+          x-cardinality: 63463
           x-capabilities:
             textAgg: true
           x-concept:
@@ -301,7 +301,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/postalCode
-          x-cardinality: 5984
+          x-cardinality: 5987
           x-capabilities:
             textAgg: true
           x-concept:
@@ -313,7 +313,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/City
-          x-cardinality: 19489
+          x-cardinality: 19516
           x-capabilities:
             textAgg: true
           x-concept:
@@ -345,7 +345,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#tel
-          x-cardinality: 59736
+          x-cardinality: 59603
           x-capabilities:
             textAgg: true
           x-concept:
@@ -357,7 +357,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#email
-          x-cardinality: 61605
+          x-cardinality: 61426
           x-capabilities:
             textAgg: true
           x-concept:
@@ -369,7 +369,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://schema.org/WebPage
-          x-cardinality: 37600
+          x-cardinality: 37557
           x-capabilities:
             textAgg: true
           x-concept:
@@ -380,14 +380,14 @@ components:
           title: Code qualification
           type: string
           description: ''
-          x-cardinality: 462
+          x-cardinality: 464
           x-capabilities:
             textAgg: true
         nom_qualification:
           title: Nom de la qualification
           type: string
           description: ''
-          x-cardinality: 470
+          x-cardinality: 472
           x-capabilities:
             textAgg: true
         url_qualification:
@@ -395,7 +395,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/DigitalDocument
-          x-cardinality: 75920
+          x-cardinality: 75855
           x-capabilities: {}
           x-concept:
             id: attachment
@@ -405,7 +405,7 @@ components:
           title: Libellé du certificat
           type: string
           description: ''
-          x-cardinality: 40
+          x-cardinality: 41
           x-capabilities:
             textAgg: true
           examples:
@@ -449,6 +449,7 @@ components:
           - CERTIFICAT_PLENETUDE
           - CERTIFICAT_P_ET_G_PLENETUDE
           - CERTIFICAT_SARL_DOMINIQUE_CALLIET
+          - Certiforage module Sonde
         domaine:
           title: Domaine de travaux
           type: string
@@ -541,7 +542,7 @@ components:
           description: Cette date correspond à la date de début de qualification transmise
             par l'organisme de qualification
           x-capabilities: {}
-          x-cardinality: 1857
+          x-cardinality: 1865
         lien_date_fin:
           title: Date de fin de qualification
           type: string
@@ -549,7 +550,7 @@ components:
           description: Cette date correspond à la date de fin de qualification transmise
             par l'organisme de qualification
           x-capabilities: {}
-          x-cardinality: 1554
+          x-cardinality: 1548
         _file.content:
           x-calculated: true
           type: string
@@ -613,6 +614,23 @@ components:
           type: array
           items:
             type: string
+    geste_type:
+      type: string
+      enum:
+      - chauffe_eau_thermo
+      - chauffe_eau_solaire_individuel
+      - isolation_comble_perdu
+      - isolation_rampants_toiture
+      - isolation_toiture_terrasse
+      - isolation_thermique_par_interieur_ITI
+      - isolation_thermique_par_exterieur_ITE
+      - isolation_plancher_bas
+      - menuiserie_fenetre
+      - menuiserie_fenetre_toit
+      - menuiserie_porte
+      - menuiserie_volet_isolant
+      - poele_insert
+      - vmc_simple_flux,vmc_double_flux
     profile:
       type: string
       enum:
@@ -691,9 +709,10 @@ components:
       enum:
       - error
       - missing
+      - warning
       - wrong
-      description: 'error: Erreur | missing: Information manquante | wrong: Information
-        erronée'
+      description: 'error: Erreur | missing: Information manquante | warning: Avertissement
+        | wrong: Information erronée'
     data_check_result:
       type: object
       properties:
@@ -777,6 +796,9 @@ components:
           type: string
         intitule:
           type: string
+        type:
+          "$ref": "#/components/schemas/geste_type"
+          nullable: true
         valid:
           type: boolean
           nullable: true
