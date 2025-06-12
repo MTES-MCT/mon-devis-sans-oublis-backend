@@ -265,7 +265,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.datatourisme.fr/ontology/core/1.0/#siret
-          x-cardinality: 63285
+          x-cardinality: 63258
           x-capabilities:
             textAgg: true
           x-concept:
@@ -277,7 +277,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.w3.org/2000/01/rdf-schema#label
-          x-cardinality: 62711
+          x-cardinality: 62666
           x-capabilities:
             textAgg: true
           x-concept:
@@ -289,7 +289,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/address
-          x-cardinality: 63463
+          x-cardinality: 63590
           x-capabilities:
             textAgg: true
           x-concept:
@@ -301,7 +301,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/postalCode
-          x-cardinality: 5987
+          x-cardinality: 5986
           x-capabilities:
             textAgg: true
           x-concept:
@@ -313,7 +313,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/City
-          x-cardinality: 19516
+          x-cardinality: 19525
           x-capabilities:
             textAgg: true
           x-concept:
@@ -345,7 +345,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#tel
-          x-cardinality: 59603
+          x-cardinality: 59562
           x-capabilities:
             textAgg: true
           x-concept:
@@ -357,7 +357,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#email
-          x-cardinality: 61426
+          x-cardinality: 61519
           x-capabilities:
             textAgg: true
           x-concept:
@@ -369,7 +369,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://schema.org/WebPage
-          x-cardinality: 37557
+          x-cardinality: 37594
           x-capabilities:
             textAgg: true
           x-concept:
@@ -395,7 +395,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/DigitalDocument
-          x-cardinality: 75855
+          x-cardinality: 75707
           x-capabilities: {}
           x-concept:
             id: attachment
@@ -542,7 +542,7 @@ components:
           description: Cette date correspond à la date de début de qualification transmise
             par l'organisme de qualification
           x-capabilities: {}
-          x-cardinality: 1865
+          x-cardinality: 1866
         lien_date_fin:
           title: Date de fin de qualification
           type: string
@@ -550,7 +550,7 @@ components:
           description: Cette date correspond à la date de fin de qualification transmise
             par l'organisme de qualification
           x-capabilities: {}
-          x-cardinality: 1548
+          x-cardinality: 1552
         _file.content:
           x-calculated: true
           type: string
@@ -957,10 +957,17 @@ components:
       type: object
       nullable: true
       properties:
+        bad_file:
+          type: boolean
+          nullable: true
+          description: le fichier n'est pas un devis valide, unique propriété présente
+            si true
         version:
           type: string
+          nullable: true
         mention_devis:
           type: boolean
+          nullable: true
         numero_devis:
           type: string
           nullable: true
