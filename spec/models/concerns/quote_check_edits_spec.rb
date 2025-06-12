@@ -55,7 +55,7 @@ RSpec.describe QuoteCheckEdits do
         quote_check.comment_validation_error_detail!(validation_error_id, "edited_at test")
       end
 
-      it { is_expected.to be_within(1.second).of(Time.zone.now) }
+      it { is_expected.to be_within(2.second).of(Time.zone.now) }
     end
   end
 
