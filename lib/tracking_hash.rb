@@ -21,6 +21,22 @@ class TrackingHash < Hash
     end
   end
 
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/PerceivedComplexity
+  def self.deep_merge_if_absent(hash1, hash2)
+    (hash1 || {}).merge(hash2 || {}) do |_key, old_val, new_val|
+      if old_val.is_a?(Hash) && new_val.is_a?(Hash)
+        deep_merge_if_absent(old_val, new_val)
+      elsif old_val.is_a?(Array) && new_val.is_a?(Array)
+        (old_val + new_val).presence
+      else
+        (old_val.nil? ? new_val : old_val).presence
+      end
+    end
+  end
+  # rubocop:enable Metrics/PerceivedComplexity
+  # rubocop:enable Metrics/CyclomaticComplexity
+
   # rubocop:enable Metrics/MethodLength
   # rubocop:disable Metrics/CyclomaticComplexity
   def self.nilify_empty_values(value, compact: false, compact_array: true) # rubocop:disable Metrics/MethodLength

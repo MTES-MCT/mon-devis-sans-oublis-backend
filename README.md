@@ -219,6 +219,30 @@ quote_check_id = "b9705194-02aa-4db7-bc38-5fc2dcb6ce58"
 QuoteCheckCheckJob.perform_later(quote_check_id)
 ```
 
+#### Débugguer anonymisation devis
+
+```
+quote_check_id = "47db654b-a9fb-453b-b36f-b0c362279233"
+quote_check = QuoteCheck.find(quote_check_id)
+
+file_text = quote_check.file_text || quote_check.text
+
+quote_reader = QuoteReader::Global.new(
+  quote_check.file.content,
+  quote_check.file.content_type,
+  quote_file: quote_check.file
+)
+
+private_attributes = quote_check.private_data_qa_attributes || {}
+private_extended_attributes = TrackingHash.deep_merge_if_absent(
+  private_attributes,
+  ExtendedData.new(private_attributes).extended_attributes
+)
+
+# From quote_reader.read(file_text:)
+anonymised_text = QuoteReader::Anonymiser.new(file_text).anonymised_text(private_extended_attributes)
+```
+
 #### Forcer un devis à valide
 
 ```
