@@ -169,6 +169,9 @@ module QuoteReader
       text.scan(
         /(?:T[eé]l\.?(?:[eé]phone)#{BETWEEN_LABEL_VALUE_REGEX})?(#{PHONE_REGEX})/i
       ).flatten.filter_map { it&.strip }.uniq
+    rescue Regexp::TimeoutError => e # Skip too long RegExp
+      ErrorNotifier.notify(e)
+      []
     end
 
     def self.find_terms(text)
