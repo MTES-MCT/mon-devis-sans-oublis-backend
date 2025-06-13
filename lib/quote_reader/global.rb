@@ -92,12 +92,12 @@ module QuoteReader
         @private_data_qa_version = private_data_qa_reader.version
       end
 
-      private_attributes = deep_merge_if_absent(
+      private_attributes = TrackingHash.deep_merge_if_absent(
         @naive_attributes,
         @private_data_qa_attributes
       )
 
-      private_extended_attributes = deep_merge_if_absent(
+      private_extended_attributes = TrackingHash.deep_merge_if_absent(
         private_attributes,
         ExtendedData.new(private_attributes).extended_attributes
       )
@@ -112,7 +112,7 @@ module QuoteReader
       end
 
       @read_attributes = TrackingHash.nilify_empty_values(
-        deep_merge_if_absent(
+        TrackingHash.deep_merge_if_absent(
           private_extended_attributes,
           qa_attributes
         ),
@@ -121,23 +121,5 @@ module QuoteReader
     end
     # rubocop:enable Metrics/MethodLength
     # rubocop:enable Metrics/AbcSize
-
-    private
-
-    # rubocop:disable Metrics/CyclomaticComplexity
-    # rubocop:disable Metrics/PerceivedComplexity
-    def deep_merge_if_absent(hash1, hash2)
-      (hash1 || {}).merge(hash2 || {}) do |_key, old_val, new_val|
-        if old_val.is_a?(Hash) && new_val.is_a?(Hash)
-          deep_merge_if_absent(old_val, new_val)
-        elsif old_val.is_a?(Array) && new_val.is_a?(Array)
-          (old_val + new_val).presence
-        else
-          (old_val.nil? ? new_val : old_val).presence
-        end
-      end
-    end
-    # rubocop:enable Metrics/PerceivedComplexity
-    # rubocop:enable Metrics/CyclomaticComplexity
   end
 end

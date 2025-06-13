@@ -39,7 +39,7 @@ module QuoteReader
       if fields_or_field.is_a?(Symbol)
         return text unless attributes.key?(fields_or_field)
 
-        values = Array.wrap(attributes.fetch(fields_or_field)).compact
+        values = Array.wrap(attributes.fetch(fields_or_field)).compact.filter(&:presence)
 
         tmp_anonymised_text = text
         values.each do |value|
