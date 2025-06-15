@@ -107,6 +107,7 @@ module QuoteReader
       # Currently ONLY PDF
       # rubocop:disable Metrics/AbcSize
       # rubocop:disable Metrics/CyclomaticComplexity
+      # rubocop:disable Metrics/PerceivedComplexity
       def albert_ocr(model: nil, model_fallback: true, model_type: "image-text-to-text") # rubocop:disable Metrics/MethodLength
         quote_file.start_processing_log("AlbertOcr", "AlbertOcr/Ocr") do # rubocop:disable Metrics/BlockLength
           connection = Faraday.new(url: HOST, headers: headers.slice("Authorization")) do |f|
@@ -143,11 +144,14 @@ module QuoteReader
             end
           end
 
-          result.fetch("data").filter_map do
-            Llms::Base.extract_markdown(it.fetch("text").gsub("Aucun texte détecté", ""))
+          result.fetch("data").filter_map do |data|
+            raise ResultError, data unless data.key?("text")
+
+            Llms::Base.extract_markdown(data.fetch("text").gsub("Aucun texte détecté", ""))
           end.join("\n\n\n")
         end
       end
+      # rubocop:enable Metrics/PerceivedComplexity
       # rubocop:enable Metrics/CyclomaticComplexity
       # rubocop:enable Metrics/AbcSize
     end
