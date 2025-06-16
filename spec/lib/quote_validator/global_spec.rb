@@ -3,9 +3,9 @@
 require "rails_helper"
 
 RSpec.describe QuoteValidator::Global, type: :service do
-  subject(:validator) { described_class.new(quote_attributes) }
+  subject(:validator) { described_class.new(attributes) }
 
-  let(:quote_attributes) do
+  let(:attributes) do
     {}
   end
 
@@ -47,7 +47,7 @@ RSpec.describe QuoteValidator::Global, type: :service do
     end
 
     context "with symbolized and stringified keys" do
-      let(:quote_attributes) do
+      let(:attributes) do
         {
           client: {
             nom: "DOE",

@@ -3,9 +3,9 @@
 require "rails_helper"
 
 RSpec.describe QuoteValidator::Works::Chauffage, type: :service do
-  subject(:validator) { described_class.new(quote_attributes) }
+  subject(:validator) { described_class.new(attributes) }
 
-  let(:quote_attributes) do
+  let(:attributes) do
     {}
   end
 

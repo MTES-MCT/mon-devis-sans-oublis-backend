@@ -2,7 +2,7 @@
 
 module QuoteValidator
   # Validator for the Quote
-  class Base
+  class Base # rubocop:disable Metrics/ClassLength
     # Custom ArgumentError with error_code
     class ArgumentError < ArgumentError
       attr_reader :error_code
@@ -20,7 +20,9 @@ module QuoteValidator
 
     attr_accessor :control_codes, :controls_count,
                   :error_details,
-                  :quote, :quote_id,
+                  :object, :object_id,
+                  :quote, :quotes_case,
+                  :quote_id, :quotes_case_id,
                   :warnings
 
     def self.geste_index(quote_id, geste_index)
@@ -29,13 +31,25 @@ module QuoteValidator
       [quote_id, "geste", geste_index + 1].compact.join("-")
     end
 
-    # @param [Hash] quote
-    # quote is a hash with the following keys
+    # @param [Hash] attributes
+    # attributes is a hash with the following keys
     # - siret: [String] the SIRET number of the company
-    def initialize(quote_attributes, quote_id: nil)
-      @quote = TrackingHash.new(quote_attributes)
+    def initialize(attributes, quote_id: nil, quotes_case_id: nil) # rubocop:disable Metrics/MethodLength
+      @object = TrackingHash.new(attributes)
+
+      if quote_id && quotes_case_id
+        raise ArgumentError, "either quote_id or quotes_case_id must be provided but not both"
+      end
 
       @quote_id = quote_id
+      @quotes_case_id = quotes_case_id
+      if quotes_case_id
+        @quotes_case = @object
+      else
+        @quote = @object
+      end
+
+      @object_id = @object[:id] || @quote_id || @quotes_case_id
 
       reset_errors
     end
@@ -98,7 +112,7 @@ module QuoteValidator
 
       error_details << TrackingHash.nilify_empty_values(
         {
-          id: [quote_id, error_details.count + 1].compact.join("-"),
+          id: [object_id, error_details.count + 1].compact.join("-"),
           geste_id:,
           code:,
           category:, type:,
@@ -131,7 +145,7 @@ module QuoteValidator
     end
 
     def fields
-      quote&.keys_accessed || []
+      object&.keys_accessed || []
     end
 
     def increment_controls_count(increment = 1)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_10_165954) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_16_213352) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -222,7 +222,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_10_165954) do
   end
 
   create_table "quotes_cases", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "quote_checks", default: "mdso"
     t.string "source_name", default: "mdso"
     t.string "reference"
     t.datetime "created_at", null: false
@@ -230,7 +229,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_10_165954) do
     t.string "renovation_type", default: "ampleur", null: false
     t.jsonb "metadata"
     t.string "profile", default: "conseiller", null: false
-    t.index ["quote_checks"], name: "index_quotes_cases_on_quote_checks"
     t.index ["reference"], name: "index_quotes_cases_on_reference"
     t.index ["renovation_type"], name: "index_quotes_cases_on_renovation_type"
     t.index ["source_name"], name: "index_quotes_cases_on_source_name"

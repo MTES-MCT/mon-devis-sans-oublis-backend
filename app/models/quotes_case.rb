@@ -6,6 +6,7 @@ class QuotesCase < ApplicationRecord
   include QuoteInputMetadata
   include QuotesCaseBackoffice
   include QuotesCasePostCheckMetadata
+  include QuotesCaseValidation
 
   has_many :quote_checks, inverse_of: :case, dependent: :destroy
 end

@@ -180,12 +180,12 @@ sequenceDiagram
 
     QuoteCheckCheckJob<<->>Mistral LLM: Extraction des données gestes et caractéristiques du texte anonymisé
 
-    QuoteCheckCheckJob->>QuoteCheckCheckJob: Validation des données selon algorithme Ruby maison et ajout d'erreurs
+    QuoteCheckCheckJob->>QuoteCheckCheckJob: Validation des données selon algorithme Ruby maison et ajout d'erreurs, dont vérification cohérence avec données externes (SIRENE, ADEME)
 
     QuoteCheckCheckJob->>Backend: retours avec données et erreurs
     deactivate QuoteCheckCheckJob
 
-    Backend->>Frontend: Retour API et affichage du résultat
+    Backend->>Frontend: Retour API QuotesCase et/ou QuoteCheck(s) avec erreurs cohérence dossier à la volée et affichage du résultat
 ```
 
 Nous suivons les recommendations et les conventions du framework Ruby on Rails et de la communauté.

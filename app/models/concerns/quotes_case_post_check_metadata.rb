@@ -26,7 +26,7 @@ module QuotesCasePostCheckMetadata
   end
 
   # valid? is already used by the framework
-  def quote_case_valid?
+  def quotes_case_valid?
     status == "valid"
   end
 

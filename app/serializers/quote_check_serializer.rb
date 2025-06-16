@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class QuoteCheckSerializer < BaseSerializer
+class QuoteCheckSerializer < ObjectWithValidationSerializer
   include ActionView::Helpers::SanitizeHelper
 
   TIMEOUT_FOR_PROCESSING = Integer(ENV.fetch("MDSO_TIMEOUT_FOR_PROCESSING", 15)).minutes
@@ -10,7 +10,7 @@ class QuoteCheckSerializer < BaseSerializer
              :parent_id,
              :filename,
              :gestes,
-             :finished_at,
+             :started_at, :finished_at,
              :comment,
              # Virtual attributes
              :errors, :error_details, :error_messages,
@@ -32,33 +32,6 @@ class QuoteCheckSerializer < BaseSerializer
 
   def comment
     sanitize(object.comment)
-  end
-
-  def control_codes
-    object.validation_control_codes
-  end
-
-  def controls_count
-    object.validation_controls_count
-  end
-
-  def errors
-    validation_errors
-  end
-
-  def error_details
-    validation_error_details&.map do
-      it.merge(
-        "comment" => sanitize(object.validation_error_edits&.dig(it["id"], "comment")),
-        "deleted" => object.validation_error_edits&.dig(it["id"], "deleted") || false
-      ).compact
-    end
-  end
-
-  def error_messages
-    validation_errors&.index_with do
-      I18n.t("quote_validator.errors.#{it}")
-    end
   end
 
   def gestes # rubocop:disable Metrics/MethodLength
@@ -91,10 +64,6 @@ class QuoteCheckSerializer < BaseSerializer
     object.status == "pending" && object.started_at < TIMEOUT_FOR_PROCESSING.ago
   end
 
-  def validation_errors
-    validation_error_details&.map { it.fetch("code") }
-  end
-
   def validation_error_details # rubocop:disable Metrics/MethodLength
     @validation_error_details ||= if consider_timeout?
                                     code = "server_timeout_error"
@@ -105,9 +74,7 @@ class QuoteCheckSerializer < BaseSerializer
                                       "title" => I18n.t("quote_validator.errors.#{code}")
                                     }]
                                   else
-                                    object.validation_error_details&.map do |it|
-                                      it.transform_keys(&:to_s)
-                                    end
+                                    super
                                   end
   end
 end

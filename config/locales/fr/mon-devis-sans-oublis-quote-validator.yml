@@ -2,6 +2,7 @@ fr:
   quote_validator:
     error_categories:
       admin: "Mentions administratives"
+      case_incoherence: "Incohérence des documents du dossier"
       file: "Fichier"
       gestes: "Descriptif technique des gestes"
       server: "Serveur"
@@ -26,7 +27,7 @@ fr:
       numero_devis_manquant_infos: "Un devis doit avoir un numéro unique permettant un suivi plus précis."
       date_validite_manquant: "Attention, si la date de validité n'est pas indiquée, elle est de 3 mois par défaut"
       date_devis_manquant: "La date d'édition du devis est manquante"
-      date_chantier_manquant: "La date prévue de début de chantier n'est pas présente, elle est cependant recommandée" 
+      date_chantier_manquant: "La date prévue de début de chantier n'est pas présente, elle est cependant recommandée"
       date_pre_visite_manquant: "La date de pré visite technique est fortement recommandée, notamment dans le cadre des CEE"
 
       # Informations de l'artisan
@@ -52,12 +53,12 @@ fr:
       pro_assurance_manquant_infos: "Assurance professionnelle souscrite avec le N° de la police d'assurance, le type (décennale, biennale ...), les coordonnées de l'assureur ou du garant et la couverture géographique du contrat ou de la garantie."
 
       # Information du client : 
-      client_prenom_manquant: "Le prénom du client est manquant" 
+      client_prenom_manquant: "Le prénom du client est manquant"
       client_prenom_manquant_infos: "Mise en garde : le devis doit être établi au nom et prénom de la personne ayant fait la demande d’aide."
       client_nom_manquant: "Le nom du client est manquant"
       client_nom_manquant_infos: "Mise en garde : le devis doit être établi au nom et prénom de la personne ayant fait la demande d’aide."
       client_civilite_manquant: "La civilité du client est manquante"
-      client_adresse_manquant: "L'adresse du client est manquante" 
+      client_adresse_manquant: "L'adresse du client est manquante"
       chantier_adresse_manquant: "Si l'adresse du chantier est différente de l'adresse de facturation, il faut l'indiquer clairement."
       chantier_facturation_idem: "L'adresse de réalisation des travaux n'est pas indiquée. Est-ce bien la même que l'adresse de facturation ?"
 
@@ -107,7 +108,7 @@ fr:
       chaudiere_reference_regulateur_manquant: "Le modèle du régulateur installé n'est pas indiqué"
       chaudiere_classe_regulateur_manquant: "Le régulateur doit être de classe IV et cela doit être indiqué"
       # validate_poele_insert
-      poele_type_combustible_manquant: "Le combustible utilisé par le poêle ou l'insert n'est pas indiqué" 
+      poele_type_combustible_manquant: "Le combustible utilisé par le poêle ou l'insert n'est pas indiqué"
       poele_type_combustible_manquant_infos: "Le combustible peut être le bois, les bûches ou les granulés."
       poele_rendement_energetique_manquant: "Le rendement énergétique du poêle ou de l'insert est manquant"
       poele_rendement_energetique_manquant_infos: "Le rendement est une valeur en pourcentage."
@@ -167,7 +168,7 @@ fr:
       # validate_chauffe_eau_thermodynamique
       chauffe_eau_thermodynamique_cop_manquant: "Le coefficient de performance de l'équipement n'est pas indiqué"
       chauffe_eau_thermodynamique_cop_manquant_infos: "Le COP doit être mesuré conformément aux condition de la norme EN 16147."
-      chauffe_eau_thermodynamique_type_installation_manquant: "Le type d'installation du chauffe-eau thermodynamique n'est pas indiqué" 
+      chauffe_eau_thermodynamique_type_installation_manquant: "Le type d'installation du chauffe-eau thermodynamique n'est pas indiqué"
       chauffe_eau_thermodynamique_type_installation_manquant_infos: " Le chauffe-eau thermodynamique est-il sur air extérieur, sur air extrait ou sur air ambiant?" # air exterieur, sur air exrait ou sur air ambiant
 
 
@@ -181,10 +182,10 @@ fr:
       isolation_surface_manquant: "La surface isolée n'est pas indiquée"
       isolation_epaisseur_manquant: "L'épaisseur de l'isolant est manquante"
       isolation_epaisseur_manquant_infos: "L'épaisseur totale de l'isolant doit être précisée en cm."
-      isolation_r_manquant: "La résistance thermique de l'installation n'est pas indiquée" 
+      isolation_r_manquant: "La résistance thermique de l'installation n'est pas indiquée"
       isolation_r_manquant_infos: "La résistance thermique (R) de l'installation doit être précisée et est définie en m2.K/W." # Decimal (m².K/W)
       # validate_isolation_toiture_terrasse
-      isolation_type_isolation_toiture_terrasse_manquant: "Le type de l'isolation de la toiture-terrasse est manquant" 
+      isolation_type_isolation_toiture_terrasse_manquant: "Le type de l'isolation de la toiture-terrasse est manquant"
       isolation_type_isolation_toiture_terrasse_manquant_infos: "L'isolation est-elle faite par l'intérieur ou par l'extérieur ?"
       # validate_isolation_plancher_bas
       isolation_localisation_plancher_bas_manquant: "L'emplacement de l'isolation des planchers bas n'est pas indiqué"
@@ -256,3 +257,13 @@ fr:
       vmc_double_flux_emplacement_bouches_soufflage_manquant: "L'emplacement des bouches de soufflages n'est pas précisé"
       vmc_double_flux_emplacement_bouches_soufflage_manquant_infos: "Attention de vérifier l'absence d'entrées d'air sur toutes les menuiseries."
       vmc_double_flux_nombre_bouches_soufflage_manquant: "Le nombre de bouches de soufflage n'est pas précisé"
+
+
+#################################################
+####         QUOTES CASE COHERENCE           ####
+#################################################
+
+
+      client_prenom_incoherent: "Le prénom du client est différent dans les documents"
+      client_nom_incoherent: "Le nom du client est différent dans les documents"
+      client_adresse_incoherent: "L'adresse du client est différent dans les documentse"
