@@ -73,7 +73,7 @@ module QuoteReader
                 { type: "image_url",
                   # TODO: sending full file content in Base64 is not working
                   # image_url: "data:#{content_type};base64,#{Base64.encode64(content)}"
-                  image_url: file_image_url }
+                  image_url: file_url }
               ] }
             ]
           }

@@ -58,7 +58,7 @@ module QuoteReader
       end
 
       # Ensure temporary HTTPS secure URL for Mdso to fetch the image
-      def file_image_url
+      def file_url
         url = Rails.application.routes.url_helpers.rails_blob_url(
           quote_file.file,
           expires_in: 10.minutes,
