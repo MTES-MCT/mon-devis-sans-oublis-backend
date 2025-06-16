@@ -26,6 +26,7 @@ class QuoteCheck < ApplicationRecord
 
   scope :default_order, -> { order(created_at: :desc) }
   scope :with_file_error, -> { where("validation_error_details @> ?", [{ "category" => "file" }].to_json) }
+  scope :with_file_type_error, -> { where("validation_error_details @> ?", [{ "code" => "file_type_error" }].to_json) }
 
   def set_application_version
     self.application_version = Rails.application.config.application_version
