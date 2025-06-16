@@ -5,7 +5,7 @@ class QuoteFileImagifyPdfJob < ApplicationJob
   queue_as :low
 
   def perform(quote_file_id)
-    quote_file = QuoteFile.find(quote_file_id)
+    quote_file = QuoteFile.find_by(id: quote_file_id)
     return unless quote_file&.content_type == "application/pdf"
 
     imagified_pages = QuoteReader::Pdf.new(quote_file.file.download).to_images

@@ -5,7 +5,7 @@ class QuoteFileSecurityScanJob < ApplicationJob
   queue_as :default
 
   def perform(quote_file_id) # rubocop:disable Metrics/MethodLength
-    quote_file = QuoteFile.find(quote_file_id)
+    quote_file = QuoteFile.find_by(id: quote_file_id)
     return unless quote_file
 
     begin
