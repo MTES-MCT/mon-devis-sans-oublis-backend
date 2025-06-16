@@ -691,7 +691,7 @@ RSpec.configure do |config|
         url: "http://localhost:3000/api/v1",
         description: "Development server"
       },
-      if ENV.key?("APPLICATION_HOST") # current host
+      if ENV.key?("APPLICATION_HOST") && ENV["APPLICATION_HOST"].exclude?(".ngrok-free.app") # current host
         {
           url: "http#{Rails.env.development? ? '' : 's'}://#{Rails.application.config.application_host}",
           variables: {
@@ -705,7 +705,11 @@ RSpec.configure do |config|
         url: "http#{Rails.env.development? ? '' : 's'}://{defaultHost}",
         variables: {
           defaultHost: {
-            default: Rails.application.config.application_host
+            default: (if Rails.application.config.application_host.exclude?(".ngrok-free.app")
+                        Rails.application.config.application_host
+                      else
+                        "localhost:3000"
+                      end)
           }
         }
       }

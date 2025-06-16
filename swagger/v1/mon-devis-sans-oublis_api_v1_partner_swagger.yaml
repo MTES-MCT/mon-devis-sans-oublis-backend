@@ -378,7 +378,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.datatourisme.fr/ontology/core/1.0/#siret
-          x-cardinality: 63253
+          x-cardinality: 63252
           x-capabilities:
             textAgg: true
           x-concept:
@@ -390,7 +390,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.w3.org/2000/01/rdf-schema#label
-          x-cardinality: 62656
+          x-cardinality: 62619
           x-capabilities:
             textAgg: true
           x-concept:
@@ -402,7 +402,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/address
-          x-cardinality: 63598
+          x-cardinality: 63474
           x-capabilities:
             textAgg: true
           x-concept:
@@ -426,7 +426,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/City
-          x-cardinality: 19525
+          x-cardinality: 19541
           x-capabilities:
             textAgg: true
           x-concept:
@@ -458,7 +458,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#tel
-          x-cardinality: 59524
+          x-cardinality: 59534
           x-capabilities:
             textAgg: true
           x-concept:
@@ -470,7 +470,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#email
-          x-cardinality: 61501
+          x-cardinality: 61513
           x-capabilities:
             textAgg: true
           x-concept:
@@ -482,7 +482,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://schema.org/WebPage
-          x-cardinality: 37591
+          x-cardinality: 37557
           x-capabilities:
             textAgg: true
           x-concept:
@@ -508,7 +508,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/DigitalDocument
-          x-cardinality: 75660
+          x-cardinality: 75488
           x-capabilities: {}
           x-concept:
             id: attachment
@@ -656,7 +656,7 @@ components:
           description: Cette date correspond à la date de début de qualification transmise
             par l'organisme de qualification
           x-capabilities: {}
-          x-cardinality: 1866
+          x-cardinality: 1867
         lien_date_fin:
           title: Date de fin de qualification
           type: string
@@ -664,7 +664,7 @@ components:
           description: Cette date correspond à la date de fin de qualification transmise
             par l'organisme de qualification
           x-capabilities: {}
-          x-cardinality: 1551
+          x-cardinality: 1549
         _file.content:
           x-calculated: true
           type: string
@@ -1313,7 +1313,3 @@ servers:
   description: Production server
 - url: http://localhost:3000/api/v1
   description: Development server
-- url: https://2d23-2a0d-3341-cdbf-1410-f489-f57f-e261-b83b.ngrok-free.app
-  variables:
-    defaultHost:
-      default: 2d23-2a0d-3341-cdbf-1410-f489-f57f-e261-b83b.ngrok-free.app
