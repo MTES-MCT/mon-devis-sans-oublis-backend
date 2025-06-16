@@ -15,8 +15,10 @@ module QuoteReader
       end
 
       # Using Mistral OCR
-      # Documentation: https://docs.mistral.ai/capabilities/document/#ocr-with-image
+      # Documentation: https://docs.mistral.ai/capabilities/OCR/basic_ocr/
+      # And https://docs.mistral.ai/capabilities/document/#ocr-with-image
       # rubocop:disable Metrics/AbcSize
+      # rubocop:disable Metrics/CyclomaticComplexity
       def extract_text_from_image # rubocop:disable Metrics/MethodLength
         raise NotImplementedError, "Can not process directly from file, should be in database" unless quote_file
 
@@ -27,14 +29,16 @@ module QuoteReader
             "Authorization" => "Bearer #{api_key}"
           }
 
+          type = content_type == "application/pdf" ? "document_url" : "image_url"
           body = {
             model: "mistral-ocr-latest",
             document: {
-              type: "image_url",
+              type: type,
               # TODO: sending full file content in Base64 is not working
               # image_url: "data:#{content_type};base64,#{Base64.encode64(content)}"
-              image_url: file_image_url
-            }
+              type => file_url
+            },
+            include_image_base64: true
           }
 
           http = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true)
@@ -60,6 +64,7 @@ module QuoteReader
           raise TimeoutError, e
         end
       end
+      # rubocop:enable Metrics/CyclomaticComplexity
       # rubocop:enable Metrics/AbcSize
 
       def ocr
