@@ -42,6 +42,6 @@ module QuotesCasePostCheckMetadata
 
     return "pending" if quote_checks.any? { it.status == "pending" }
 
-    vquote_checks.all?(&:quote_check_valid?) ? "valid" : "invalid"
+    quote_checks.all?(&:valid?) ? "valid" : "invalid"
   end
 end
