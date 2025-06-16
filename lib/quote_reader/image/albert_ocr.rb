@@ -59,6 +59,7 @@ module QuoteReader
       end
 
       # LLM Chat way
+      # NOT RECOMMENDED FOR OCR
       # rubocop:disable Metrics/AbcSize
       def albert_chat(model: nil, model_fallback: true, model_type: "image-text-to-text") # rubocop:disable Metrics/MethodLength
         quote_file.start_processing_log("AlbertOcr", "AlbertOcr/LLM") do # rubocop:disable Metrics/BlockLength
@@ -145,9 +146,9 @@ module QuoteReader
           end
 
           result.fetch("data").filter_map do |data|
-            raise ResultError, data unless data.key?("text")
+            raise ResultError, data unless data.key?("content")
 
-            Llms::Base.extract_markdown(data.fetch("text").gsub("Aucun texte détecté", ""))
+            Llms::Base.extract_markdown(data.fetch("content").gsub("Aucun texte détecté", ""))
           end.join("\n\n\n")
         end
       end
