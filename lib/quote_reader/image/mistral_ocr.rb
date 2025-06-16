@@ -20,7 +20,7 @@ module QuoteReader
       def extract_text_from_image # rubocop:disable Metrics/MethodLength
         raise NotImplementedError, "Can not process directly from file, should be in database" unless quote_file
 
-        quote_file.start_processing_log("MistralOcr") do
+        quote_file.start_processing_log("MistralOcr") do # rubocop:disable Metrics/BlockLength
           uri = URI("https://api.mistral.ai/v1/ocr")
           headers = {
             "Content-Type" => "application/json",
@@ -44,9 +44,13 @@ module QuoteReader
           response = http.request(request)
           raise TimeoutError if response.code == "504"
 
+          @result = begin
+            JSON.parse(response.body)
+          rescue JSON::ParserError
+            response.body
+          end
           raise ResultError, "Error: #{response.code} - #{response.message}" unless response.is_a?(Net::HTTPSuccess)
 
-          @result = JSON.parse(response.body)
           @pages_text = result.fetch("pages").map { it.fetch("markdown") }
           @text = @pages_text.join("\n").strip
           raise ResultError, "Content empty" unless @text

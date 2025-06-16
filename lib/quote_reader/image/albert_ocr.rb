@@ -145,6 +145,8 @@ module QuoteReader
             end
           end
 
+          raise ResultError, result.fetch("detail") unless result.key?("data")
+
           result.fetch("data").filter_map do |data|
             raise ResultError, data unless data.key?("content")
 
