@@ -49,9 +49,9 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
 
           row :status
 
-          row :quote_checks do |quote_case|
+          row :quote_checks do |quotes_case|
             content_tag(:ul) do
-              quote_case.quote_checks.default_order.map do |quote_check|
+              quotes_case.quote_checks.default_order.map do |quote_check|
                 content_tag(:li, link_to(
                                    quote_check.file.filename,
                                    admin_quote_check_path(quote_check),
@@ -69,6 +69,12 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
     end
 
     tabs do
+      tab "Retour API avec erreurs incohérence pour frontend" do
+        pre JSON.pretty_generate(
+          QuotesCaseSerializer.new(resource).as_json
+        )
+      end
+
       instance_exec(&processing_logs_tab(resource))
     end
   end

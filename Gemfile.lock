@@ -2,6 +2,9 @@ GEM
   remote: https://rubygems.org/
   specs:
     Ascii85 (2.0.1)
+    RubyInline (3.14.2)
+      ZenTest (~> 4.3)
+    ZenTest (4.12.2)
     actioncable (8.0.2)
       actionpack (= 8.0.2)
       activesupport (= 8.0.2)
@@ -287,6 +290,8 @@ GEM
     fugit (1.11.1)
       et-orbi (~> 1, >= 1.2.11)
       raabro (~> 1.4)
+    fuzzy-string-match (1.0.1)
+      RubyInline (>= 3.8.6)
     globalid (1.2.1)
       activesupport (>= 6.1)
     good_job (4.10.2)
@@ -808,6 +813,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   faraday
+  fuzzy-string-match
   good_job
   guard
   guard-cucumber
@@ -865,6 +871,8 @@ DEPENDENCIES
 
 CHECKSUMS
   Ascii85 (2.0.1) sha256=15cb5d941808543cbb9e7e6aea3c8ec3877f154c3461e8b3673e97f7ecedbe5a
+  RubyInline (3.14.2) sha256=211cbec89f1961a4bc8d49f75540546c19942984b218d7d0c66575a82c54da10
+  ZenTest (4.12.2) sha256=814e7478a28f631df8f802aee40bd1faa2a53df1fb50e086eb8655f9ee5d60b9
   actioncable (8.0.2) sha256=7bcce2df62e91a80143592600e16583c273e98aab50ae40a9f6a2604bb3289a0
   actionmailbox (8.0.2) sha256=3d8fb3453913e6257da4d02004bbfa2b997dfd10672f8d990e95013983e2cedb
   actionmailer (8.0.2) sha256=b0c968b38576ec56a3dc2795931818e0aaae6a18cc9801f53f175c12d4b277d0
@@ -964,6 +972,7 @@ CHECKSUMS
   formtastic (5.0.0) sha256=71cc99c8227208f64da8d2b0926d97cef1e5f77e0105047cd57fddeccd3a6416
   formtastic_i18n (0.7.0) sha256=ecef51c9e9030c00f19e69d2483b77f4515c9587d74268b76cf4b6e7988c8e78
   fugit (1.11.1) sha256=e89485e7be22226d8e9c6da411664d0660284b4b1c08cacb540f505907869868
+  fuzzy-string-match (1.0.1) sha256=0740e515b3d1f7a40bd7f058a67a63682a9f4d98e4a95a9eb670aa562a047549
   globalid (1.2.1) sha256=70bf76711871f843dbba72beb8613229a49429d1866828476f9c9d6ccc327ce9
   good_job (4.10.2) sha256=df4f1c29f6d82dd7199ebf351b30755978852235e4c64d777edf714b095126ff
   guard (2.19.1) sha256=b8bc52694be3d8b26730280de7dcec7fe92ea1cff3414246fe96af3f23580f3d

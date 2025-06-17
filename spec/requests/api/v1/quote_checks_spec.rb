@@ -60,17 +60,17 @@ RSpec.describe "/api/v1/quote_checks" do
     end
 
     context "with case_id" do
-      let(:quote_case) { create(:quotes_case) }
+      let(:quotes_case) { create(:quotes_case) }
       let(:quote_check_params) do
         {
           file: file,
           profile: "artisan",
-          case_id: quote_case.id
+          case_id: quotes_case.id
         }
       end
 
       it "reuses the renovation_type from case" do
-        expect(QuoteCheck.find(json.fetch("id")).renovation_type).to eq(quote_case.renovation_type)
+        expect(QuoteCheck.find(json.fetch("id")).renovation_type).to eq(quotes_case.renovation_type)
       end
     end
 

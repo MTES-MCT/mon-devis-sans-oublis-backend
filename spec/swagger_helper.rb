@@ -562,6 +562,9 @@ RSpec.configure do |config|
               },
               nullable: true
             },
+            started_at: {
+              type: :datetime
+            },
             finished_at: {
               type: :datetime,
               nullable: true
@@ -635,6 +638,44 @@ RSpec.configure do |config|
               type: :array,
               items: { "$ref" => "#/components/schemas/quote_check" },
               description: "liste des analyses de devis (QuoteChecks) dans ce dossier",
+              nullable: true
+            },
+            control_codes: {
+              type: :array,
+              items: { "$ref" => "#/components/schemas/quote_check_error_code" },
+              description: "liste des codes des points contrôlés",
+              nullable: true
+            },
+            controls_count: {
+              type: :integer,
+              description: "nombre de points contrôlés",
+              nullable: true
+            },
+            errors: {
+              type: :array,
+              items: { "$ref" => "#/components/schemas/quote_check_error_code" },
+              description: "liste des erreurs dans ordre à afficher",
+              nullable: true
+            },
+            error_details: {
+              type: :array,
+              items: { "$ref" => "#/components/schemas/quote_check_error_details" },
+              description: "liste des erreurs avec détails dans ordre à afficher",
+              nullable: true
+            },
+            error_messages: {
+              type: :object,
+              additionalProperties: {
+                type: :string,
+                description: "code d'erreur => message"
+              },
+              nullable: true
+            },
+            started_at: {
+              type: :datetime
+            },
+            finished_at: {
+              type: :datetime,
               nullable: true
             }
           },

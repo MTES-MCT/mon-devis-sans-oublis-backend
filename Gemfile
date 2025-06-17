@@ -69,6 +69,7 @@ gem "sib-api-v3-sdk", require: false # Brevo (ex Sendinblue) API
 gem "strip_attributes"
 
 # Quote files Reading
+gem "fuzzy-string-match", require: false
 gem "mime-types", require: false
 gem "mini_magick", require: false
 gem "pdf-reader", require: false

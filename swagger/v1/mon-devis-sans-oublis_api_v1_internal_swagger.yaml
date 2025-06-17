@@ -265,7 +265,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.datatourisme.fr/ontology/core/1.0/#siret
-          x-cardinality: 63252
+          x-cardinality: 63250
           x-capabilities:
             textAgg: true
           x-concept:
@@ -277,7 +277,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.w3.org/2000/01/rdf-schema#label
-          x-cardinality: 62619
+          x-cardinality: 62574
           x-capabilities:
             textAgg: true
           x-concept:
@@ -289,7 +289,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/address
-          x-cardinality: 63474
+          x-cardinality: 63455
           x-capabilities:
             textAgg: true
           x-concept:
@@ -313,7 +313,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/City
-          x-cardinality: 19541
+          x-cardinality: 19531
           x-capabilities:
             textAgg: true
           x-concept:
@@ -345,7 +345,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#tel
-          x-cardinality: 59534
+          x-cardinality: 59543
           x-capabilities:
             textAgg: true
           x-concept:
@@ -357,7 +357,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#email
-          x-cardinality: 61513
+          x-cardinality: 61591
           x-capabilities:
             textAgg: true
           x-concept:
@@ -369,7 +369,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://schema.org/WebPage
-          x-cardinality: 37557
+          x-cardinality: 37598
           x-capabilities:
             textAgg: true
           x-concept:
@@ -380,14 +380,14 @@ components:
           title: Code qualification
           type: string
           description: ''
-          x-cardinality: 465
+          x-cardinality: 464
           x-capabilities:
             textAgg: true
         nom_qualification:
           title: Nom de la qualification
           type: string
           description: ''
-          x-cardinality: 473
+          x-cardinality: 472
           x-capabilities:
             textAgg: true
         url_qualification:
@@ -395,7 +395,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/DigitalDocument
-          x-cardinality: 75488
+          x-cardinality: 75492
           x-capabilities: {}
           x-concept:
             id: attachment
@@ -543,7 +543,7 @@ components:
           description: Cette date correspond à la date de début de qualification transmise
             par l'organisme de qualification
           x-capabilities: {}
-          x-cardinality: 1867
+          x-cardinality: 1869
         lien_date_fin:
           title: Date de fin de qualification
           type: string
@@ -551,7 +551,7 @@ components:
           description: Cette date correspond à la date de fin de qualification transmise
             par l'organisme de qualification
           x-capabilities: {}
-          x-cardinality: 1549
+          x-cardinality: 1551
         _file.content:
           x-calculated: true
           type: string
@@ -694,11 +694,13 @@ components:
       type: string
       enum:
       - admin
+      - case_incoherence
       - file
       - gestes
       - server
-      description: 'admin: Mentions administratives | file: Fichier | gestes: Descriptif
-        technique des gestes | server: Serveur'
+      description: 'admin: Mentions administratives | case_incoherence: Incohérence
+        des documents du dossier | file: Fichier | gestes: Descriptif technique des
+        gestes | server: Serveur'
     quote_check_error_code:
       type: string
       description: code d'erreur de validation
@@ -1085,6 +1087,8 @@ components:
             type: string
             description: code d'erreur => message
           nullable: true
+        started_at:
+          type: datetime
         finished_at:
           type: datetime
           nullable: true
@@ -1158,6 +1162,39 @@ components:
           items:
             "$ref": "#/components/schemas/quote_check"
           description: liste des analyses de devis (QuoteChecks) dans ce dossier
+          nullable: true
+        control_codes:
+          type: array
+          items:
+            "$ref": "#/components/schemas/quote_check_error_code"
+          description: liste des codes des points contrôlés
+          nullable: true
+        controls_count:
+          type: integer
+          description: nombre de points contrôlés
+          nullable: true
+        errors:
+          type: array
+          items:
+            "$ref": "#/components/schemas/quote_check_error_code"
+          description: liste des erreurs dans ordre à afficher
+          nullable: true
+        error_details:
+          type: array
+          items:
+            "$ref": "#/components/schemas/quote_check_error_details"
+          description: liste des erreurs avec détails dans ordre à afficher
+          nullable: true
+        error_messages:
+          type: object
+          additionalProperties:
+            type: string
+            description: code d'erreur => message
+          nullable: true
+        started_at:
+          type: datetime
+        finished_at:
+          type: datetime
           nullable: true
       required:
       - id
