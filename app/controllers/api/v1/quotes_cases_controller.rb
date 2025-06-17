@@ -57,6 +57,8 @@ module Api
       def quotes_case_params
         params.permit(
           :reference, :profile, :renovation_type, :metadata
+        ).merge(
+          source_name: api_user.downcase
         )
       end
     end
