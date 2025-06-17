@@ -62,21 +62,21 @@ describe "Devis API" do
             allOf: [
               { "$ref" => "#/components/schemas/profile" }
             ],
-            description: "hérité du QuoteCase à la création si vide",
+            description: "hérité du QuotesCase à la création si vide",
             nullable: true
           },
           renovation_type: {
             allOf: [
               { "$ref" => "#/components/schemas/renovation_type" }
             ],
-            description: "hérité du QuoteCase à la création si vide",
+            description: "hérité du QuotesCase à la création si vide",
             nullable: true
           },
           metadata: {
             allOf: [
               { "$ref" => "#/components/schemas/quote_check_metadata" }
             ],
-            description: "hérité du QuoteCase à la création si vide",
+            description: "hérité du QuotesCase à la création si vide",
             nullable: true
           },
           parent_id: {

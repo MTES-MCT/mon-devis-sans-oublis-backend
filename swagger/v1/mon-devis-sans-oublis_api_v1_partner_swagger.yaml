@@ -193,17 +193,17 @@ paths:
                 profile:
                   allOf:
                   - "$ref": "#/components/schemas/profile"
-                  description: hérité du QuoteCase à la création si vide
+                  description: hérité du QuotesCase à la création si vide
                   nullable: true
                 renovation_type:
                   allOf:
                   - "$ref": "#/components/schemas/renovation_type"
-                  description: hérité du QuoteCase à la création si vide
+                  description: hérité du QuotesCase à la création si vide
                   nullable: true
                 metadata:
                   allOf:
                   - "$ref": "#/components/schemas/quote_check_metadata"
-                  description: hérité du QuoteCase à la création si vide
+                  description: hérité du QuotesCase à la création si vide
                   nullable: true
                 parent_id:
                   type: string
@@ -750,13 +750,13 @@ components:
       - artisan
       - particulier
       - conseiller
-      description: hérité du QuoteCase à la création si vide
+      description: hérité du QuotesCase à la création si vide
     renovation_type:
       type: string
       enum:
       - geste
       - ampleur
-      description: hérité du QuoteCase à la création si vide
+      description: hérité du QuotesCase à la création si vide
     quote_check_metadata:
       type: object
       properties:
@@ -793,7 +793,7 @@ components:
             - Volet isolant
             - Ventilation Mécanique Double-Flux
             - Ventilation Mécanique Simple-Flux
-      description: hérité du QuoteCase à la création si vide
+      description: hérité du QuotesCase à la création si vide
     quote_check_status:
       type: string
       enum:
@@ -1141,7 +1141,7 @@ components:
         case_id:
           type: string
           nullable: true
-          description: disponible si appelé depuis QuoteCase et non directement
+          description: disponible si appelé depuis QuotesCase et non directement
         status:
           "$ref": "#/components/schemas/quote_check_status"
         filename:
@@ -1154,17 +1154,17 @@ components:
         profile:
           allOf:
           - "$ref": "#/components/schemas/profile"
-          description: hérité du QuoteCase à la création si vide
+          description: hérité du QuotesCase à la création si vide
           nullable: true
         renovation_type:
           allOf:
           - "$ref": "#/components/schemas/renovation_type"
-          description: hérité du QuoteCase à la création si vide
+          description: hérité du QuotesCase à la création si vide
           nullable: true
         metadata:
           allOf:
           - "$ref": "#/components/schemas/quote_check_metadata"
-          description: hérité du QuoteCase à la création si vide
+          description: hérité du QuotesCase à la création si vide
           nullable: true
         gestes:
           type: array

@@ -71,7 +71,7 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
     tabs do
       tab "Retour API avec erreurs incohérence pour frontend" do
         pre JSON.pretty_generate(
-          QuotesCaseSerializer.new(resource).as_json
+          QuotesCaseSerializer.new(resource.custom_validate!).as_json
         )
       end
 

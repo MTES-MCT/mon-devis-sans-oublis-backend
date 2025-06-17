@@ -19,7 +19,7 @@ module QuotesCaseValidation
     @validation_errors = []
     @validation_error_details = []
 
-    validator = QuotesCaseValidator.new(
+    validator = QuoteValidator::QuotesCase.new(
       attributes.merge("quote_checks" => quote_checks.map(&:attributes)),
       quotes_case_id: id
     )
@@ -38,5 +38,7 @@ module QuotesCaseValidation
     @validation_errors = validator.errors
     @validation_error_details = validator.error_details
     @validation_version = validator.version
+
+    self
   end
 end
