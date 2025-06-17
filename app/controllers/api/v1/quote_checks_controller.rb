@@ -73,7 +73,7 @@ module Api
       end
 
       def quotes_case
-        return unless params[:case_id].present?
+        return if params[:case_id].blank?
 
         @quotes_case ||= QuotesCase
                          .select(:id)
