@@ -105,12 +105,12 @@ RSpec.configure do |config|
         profile: {
           type: :string,
           enum: QuoteCheck::PROFILES,
-          description: "hérité du QuoteCase à la création si vide"
+          description: "hérité du QuotesCase à la création si vide"
         },
         renovation_type: {
           type: :string,
           enum: QuoteCheck::RENOVATION_TYPES,
-          description: "hérité du QuoteCase à la création si vide"
+          description: "hérité du QuotesCase à la création si vide"
         },
         quote_check_metadata: {
           type: :object,
@@ -122,7 +122,7 @@ RSpec.configure do |config|
               items: { type: :string, enum: }
             }]
           end,
-          description: "hérité du QuoteCase à la création si vide"
+          description: "hérité du QuotesCase à la création si vide"
         },
         quote_check_status: {
           type: :string,
@@ -496,7 +496,7 @@ RSpec.configure do |config|
             case_id: {
               type: :string,
               nullable: true,
-              description: "disponible si appelé depuis QuoteCase et non directement"
+              description: "disponible si appelé depuis QuotesCase et non directement"
             },
             status: { "$ref" => "#/components/schemas/quote_check_status" },
             filename: { type: :string, nullable: true },
@@ -509,21 +509,21 @@ RSpec.configure do |config|
               allOf: [
                 { "$ref" => "#/components/schemas/profile" }
               ],
-              description: "hérité du QuoteCase à la création si vide",
+              description: "hérité du QuotesCase à la création si vide",
               nullable: true
             },
             renovation_type: {
               allOf: [
                 { "$ref" => "#/components/schemas/renovation_type" }
               ],
-              description: "hérité du QuoteCase à la création si vide",
+              description: "hérité du QuotesCase à la création si vide",
               nullable: true
             },
             metadata: {
               allOf: [
                 { "$ref" => "#/components/schemas/quote_check_metadata" }
               ],
-              description: "hérité du QuoteCase à la création si vide",
+              description: "hérité du QuotesCase à la création si vide",
               nullable: true
             },
             gestes: {

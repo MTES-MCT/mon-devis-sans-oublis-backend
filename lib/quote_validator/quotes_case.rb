@@ -42,6 +42,10 @@ module QuoteValidator
                 category:)
     end
 
+    def version
+      self.class::VERSION
+    end
+
     private
 
     def arrays_intersect(arrays, threshold: 0.90)

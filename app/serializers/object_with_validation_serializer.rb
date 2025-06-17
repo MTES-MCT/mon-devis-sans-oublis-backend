@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ObjectWithValidationSerializer < BaseSerializer
+  include ActionView::Helpers::SanitizeHelper
+
   def control_codes
     object.validation_control_codes
   end
@@ -16,8 +18,8 @@ class ObjectWithValidationSerializer < BaseSerializer
   def error_details
     validation_error_details&.map do
       it.merge(
-        "comment" => sanitize(object.validation_error_edits&.dig(it["id"], "comment")),
-        "deleted" => object.validation_error_edits&.dig(it["id"], "deleted") || false
+        "comment" => sanitize(validation_error_edits&.dig(it["id"], "comment")),
+        "deleted" => validation_error_edits&.dig(it["id"], "deleted") || false
       ).compact
     end
   end
@@ -35,6 +37,14 @@ class ObjectWithValidationSerializer < BaseSerializer
   def validation_error_details
     @validation_error_details ||= object.validation_error_details&.map do |it|
       it.transform_keys(&:to_s)
+    end
+  end
+
+  def validation_error_edits
+    if object.respond_to?(:validation_error_edits)
+      object.validation_error_edits
+    else
+      {}
     end
   end
 end

@@ -63,13 +63,13 @@ RSpec.describe QuotesCasePostCheckMetadata do
       expect(quotes_case.status).to eq("pending")
     end
 
-    context "when all quote_checks are valid" do
+    context "when all quote_checks are invalid" do
       before do
         quote_checks.each { it.update!(finished_at: Time.current) }
       end
 
-      it "returns 'valid'" do
-        expect(quotes_case.status).to eq("valid")
+      it "returns 'invalid'" do
+        expect(quotes_case.status).to eq("invalid")
       end
     end
   end
