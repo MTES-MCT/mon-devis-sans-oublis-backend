@@ -215,7 +215,6 @@ paths:
                   nullable: true
               required:
               - file
-              - profile
   "/quote_checks/{id}":
     get:
       summary: Récupérer un Devis

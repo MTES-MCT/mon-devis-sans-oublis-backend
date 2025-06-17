@@ -90,7 +90,7 @@ describe "Devis API" do
             nullable: true
           }
         },
-        required: %w[file profile]
+        required: %w[file]
       }
 
       # See skip below
