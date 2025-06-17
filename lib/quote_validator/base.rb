@@ -112,7 +112,7 @@ module QuoteValidator
 
       error_details << TrackingHash.nilify_empty_values(
         {
-          id: [object_id, error_details.count + 1].compact.join("-"),
+          id: [object_id, geste_id, error_details.count + 1].compact.join("-"),
           geste_id:,
           code:,
           category:, type:,
