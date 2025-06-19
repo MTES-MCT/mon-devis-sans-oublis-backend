@@ -2,7 +2,7 @@
 
 module Llms
   # Base API client
-  class Base
+  class Base # rubocop:disable Metrics/ClassLength
     class ResultError < StandardError; end
     class TimeoutError < ResultError; end
 
@@ -85,6 +85,21 @@ module Llms
 
     def self.include_null_bytes?(text)
       text&.gsub("\x00", "")
+    end
+
+    def self.llm_from_result(result)
+      return unless result
+
+      case result["id"]
+      when /\Achatcmpl-/
+        "Albert"
+      else
+        "Mistral" if model_from_result(result)&.start_with?("mistral-")
+      end
+    end
+
+    def self.model_from_result(result)
+      result&.dig("model")
     end
 
     def self.remove_null_bytes(text)

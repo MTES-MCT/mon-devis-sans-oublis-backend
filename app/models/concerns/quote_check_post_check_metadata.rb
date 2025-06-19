@@ -46,6 +46,11 @@ module QuoteCheckPostCheckMetadata
     )
   end
 
+  def private_data_qa_llm
+    @private_data_qa_llm ||= read_attribute(:private_data_qa_llm) ||
+                             Llms::Base.llm_from_result(private_data_qa_result)
+  end
+
   def processing_time
     return unless finished_at
 
@@ -54,16 +59,7 @@ module QuoteCheckPostCheckMetadata
 
   def qa_llm
     @qa_llm ||= read_attribute(:qa_llm) ||
-                case qa_result&.dig("id")
-                when /\Achatcmpl-/
-                  "Albert"
-                else
-                  "Mistral" if qa_model&.start_with?("mistral-")
-                end
-  end
-
-  def qa_model
-    qa_result&.dig("model")
+                Llms::Base.llm_from_result(qa_result)
   end
 
   # valid? is already used by the framework
