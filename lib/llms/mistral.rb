@@ -10,10 +10,11 @@ module Llms
   class Mistral < Base
     attr_reader :prompt, :read_attributes, :result
 
-    def initialize(prompt)
+    DEFAULT_MODEL = ENV.fetch("MISTRAL_MODEL", "mistral-large-latest")
+
+    def initialize(prompt, model: DEFAULT_MODEL, result_format: :json)
       super
       @api_key = ENV.fetch("MISTRAL_API_KEY")
-      @model = ENV.fetch("MISTRAL_MODEL", "mistral-large-latest")
     end
 
     # Returns the cost in € with VAT

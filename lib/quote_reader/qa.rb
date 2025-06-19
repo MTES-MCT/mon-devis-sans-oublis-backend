@@ -3,7 +3,7 @@
 module QuoteReader
   # Read Quote text to extract Quote attributes by asking questions via LLM prompt online services
   class Qa < Text
-    DEFAULT_LLM = "mistral"
+    DEFAULT_LLM = ENV.fetch("QA_DEFAULT_LLM", "mistral")
     VERSION = "0.0.1"
 
     attr_reader :read_attributes, :result
@@ -30,7 +30,7 @@ module QuoteReader
       llm = llm_klass.new(prompt)
       begin
         llm.chat_completion(text)
-      rescue llm_klass::ResultError => e
+      rescue Llms::Base::TimeoutError, llm_klass::ResultError => e
         ErrorNotifier.notify(e)
       end
 

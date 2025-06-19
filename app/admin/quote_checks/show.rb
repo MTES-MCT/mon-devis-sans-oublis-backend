@@ -101,7 +101,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
         end
       end
 
-      column do
+      column do # rubocop:disable Metrics/BlockLength
         panel "Process théorique" do
           content_tag(:table) do
             [
@@ -116,13 +116,14 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
                 content_tag(:td, "2.") + content_tag(:td, "Données privées via méthode naïve hors ligne")
               end,
               content_tag(:tr) do
-                content_tag(:td, "3.") + content_tag(:td, "Données privées et Attributs via par Albert (Gouv)")
+                content_tag(:td, "3.") +
+                  content_tag(:td, "Données privées et Attributs via par #{resource.private_data_qa_llm}")
               end,
               content_tag(:tr) do
                 content_tag(:td, "4.") + content_tag(:td, "Texte Anonymisé")
               end,
               content_tag(:tr) do
-                content_tag(:td, "5.") + content_tag(:td, "Attributs via par Mistral")
+                content_tag(:td, "5.") + content_tag(:td, "Attributs via par #{resource.qa_llm}")
               end,
               content_tag(:tr) do
                 content_tag(:td, "6.") + content_tag(:td, "Retour API pour frontend")
@@ -338,7 +339,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
         pre JSON.pretty_generate(resource.naive_attributes)
       end
 
-      tab "3. Données privées et Attributs via par Albert (Gouv)" do
+      tab "3. Données privées et Attributs via par #{resource.private_data_qa_llm}" do
         pre JSON.pretty_generate(resource.private_data_qa_attributes)
 
         h1 "Résultat technique brut"
@@ -349,7 +350,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
         pre resource.anonymised_text
       end
 
-      tab "5. Attributs via par Mistral" do
+      tab "5. Attributs via par #{resource.qa_llm}" do
         pre JSON.pretty_generate(resource.qa_attributes)
 
         h1 "Résultat technique brut"
