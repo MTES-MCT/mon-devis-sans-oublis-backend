@@ -32,6 +32,7 @@ module QuoteReader
         llm.chat_completion(text)
       rescue Llms::Base::TimeoutError, llm_klass::ResultError => e
         ErrorNotifier.notify(e)
+        raise QuoteReader::LlmError, e
       end
 
       @read_attributes = TrackingHash.new(llm.read_attributes)

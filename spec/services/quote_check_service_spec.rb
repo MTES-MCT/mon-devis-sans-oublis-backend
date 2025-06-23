@@ -30,7 +30,32 @@ RSpec.describe QuoteCheckService, type: :service do
 
     before do
       stub_request(:post, /albert\.api\.etalab\.gouv\.fr/)
-        .to_return(status: 200, body: "{\"bad_file\": false }")
+        .to_return(
+          status: 200,
+          body: {
+            "choices" => [
+              {
+                "message" => {
+                  "content" => JSON.generate({ bad_file: false })
+                }
+              }
+            ]
+          }.to_json
+        )
+
+      stub_request(:post, /mistral\.ai/)
+        .to_return(
+          status: 200,
+          body: {
+            "choices" => [
+              {
+                "message" => {
+                  "content" => JSON.generate({ version: "2.1.2" })
+                }
+              }
+            ]
+          }.to_json
+        )
     end
 
     # rubocop:disable RSpec/MultipleExpectations
