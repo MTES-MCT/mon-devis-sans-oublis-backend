@@ -99,21 +99,21 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
         file_markdown: quote_check.file_markdown
       )
 
-      unless quote_reader.text&.strip.presence
-        add_error("file_reading_error",
-                  category: "file",
-                  type: "error")
-      end
-    rescue QuoteReader::NoFileContentError
+      raise QuoteReader::NoFileContentError unless quote_reader.text&.strip.presence
+    rescue QuoteReader::UnsupportedFileType
+      add_error("unsupported_file_format",
+                category: "file",
+                type: "error")
+    rescue QuoteReader::LlmError
+      add_error("llm_error",
+                category: "server",
+                type: "error")
+    rescue QuoteReader::NoFileContentError # no data
       add_error("empty_file_error",
                 category: "file",
                 type: "error")
     rescue QuoteReader::ReadError
       add_error("file_reading_error",
-                category: "file",
-                type: "error")
-    rescue QuoteReader::UnsupportedFileType
-      add_error("unsupported_file_format",
                 category: "file",
                 type: "error")
     ensure

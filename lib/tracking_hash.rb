@@ -49,7 +49,7 @@ class TrackingHash < Hash
                  else
                    value.map { nilify_empty_values(it, compact:, compact_array:) }
                  end
-               when value.presence
+               when value != false && value.presence
                  value
                end
     return subvalue unless subvalue.methods.include?(:compact)
