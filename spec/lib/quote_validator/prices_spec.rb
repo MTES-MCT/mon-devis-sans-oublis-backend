@@ -44,14 +44,21 @@ RSpec.describe QuoteValidator::Prices, type: :service do
   end
 
   context "when validating quote check prices" do
-    let(:env_json) { { geste_pas_cher: "10..20", geste_cher: "1000..2000" }.to_json }
+    let(:env_json) do
+      {
+        geste_pas_cher: "10..20",
+        geste_cher: "1000..2000",
+        geste_unite_m2: "300".."400"
+      }.to_json
+    end
 
     let(:validator) { described_class.new(attributes) }
     let(:attributes) do
       { gestes: [
-        { type: "geste_pas_cher", price: 15.3 },
-        { type: "geste_moyen_cher", price: 100.2 },
-        { type: "geste_cher", price: 5_000 }
+        { type: "geste_pas_cher", prix_total_ht: 15.3 },
+        { type: "geste_moyen_cher", prix_total_ht: 100.2 },
+        { type: "geste_cher", prix_total_ht: 5_000 },
+        { type: "geste_unite_m2", prix_total_ht: 1_000, quantite: 2 }
       ] }
     end
 
@@ -65,25 +72,29 @@ RSpec.describe QuoteValidator::Prices, type: :service do
 
     describe "#control_codes" do
       it "returns control_codes" do
-        expect(validator.control_codes).to include("geste_prix_inhabituel", "geste_prix_inhabituel")
+        expect(validator.control_codes.count("geste_prix_inhabituel")).to eq(3)
       end
     end
 
     describe "#controls_count" do
       it "returns controls_count" do
-        expect(validator.controls_count).to eq(2)
+        expect(validator.controls_count).to eq(3)
       end
     end
 
     describe "#errors" do
       it "returns errors" do
-        expect(validator.errors).to include("geste_prix_inhabituel")
+        expect(validator.errors.count("geste_prix_inhabituel")).to eq(2)
       end
     end
 
     describe "#error_details" do
       it "returns error_details" do
         expect(validator.error_details.dig(0, :code)).to eq("geste_prix_inhabituel")
+      end
+
+      it "includes prices" do
+        expect(validator.error_details.dig(1, :provided_value)).to eq(500)
       end
     end
 

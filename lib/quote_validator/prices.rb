@@ -9,6 +9,7 @@ module QuoteValidator
       return @gestes_prices_ranges if defined?(@gestes_prices_ranges) && !env
 
       # In the JSON stringified format '{ "geste": "12..34" }'
+      # HT = Hors Taxe, without VAT taxes
       @gestes_prices_ranges = JSON.parse(
         env || ENV.fetch("MDSO_GESTE_PRICES_RANGES", "{}")
       ).transform_values do |range_str|
@@ -37,20 +38,32 @@ module QuoteValidator
         geste_type = geste[:type].to_s
         next unless self.class.gestes_prices_ranges.key?(geste_type)
 
+        price = case geste_type
+                when "isolation_comble_perdu", "geste_unite_m2"
+                  if geste[:prix_unitaire_ht] ||
+                     geste[:quantite]
+                    ((geste[:prix_ht] || geste[:prix_total_ht]) / geste[:quantite])
+                  end
+                else
+                  geste[:prix_total_ht]
+                end
+        next if price.nil? || price.zero?
+
         add_error_if(
           "geste_prix_inhabituel",
-          self.class.gestes_prices_ranges[geste_type].exclude?(geste[:price]),
-          geste
+          self.class.gestes_prices_ranges[geste_type].exclude?(price),
+          geste,
+          provided_value: price
         )
       end
     end
 
-    def add_error_if(code, condition, geste, category: "geste_prices", type: "warning")
+    def add_error_if(code, condition, geste, category: "geste_prices", type: "warning", provided_value: nil)
       super(code, condition,
                 type:,
                 category:,
                 geste:,
-                provided_value: geste[:intitule])
+                provided_value:)
     end
 
     def version
