@@ -59,7 +59,8 @@ module RgeValidator
   end.freeze
 
   def self.filter_rge_qualifications(rge_qualifications)
-    rge_qualifications.select { it.fetch("nom_certificat").match?(/RGE/i) }
+    rge_qualifications # Consider all as RGE qualifications for now
+    # rge_qualifications.select { it.fetch("nom_certificat").match?(/RGE/i) }
   end
 
   # rubocop:disable Metrics/AbcSize
