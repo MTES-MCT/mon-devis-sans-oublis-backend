@@ -265,7 +265,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.datatourisme.fr/ontology/core/1.0/#siret
-          x-cardinality: 63250
+          x-cardinality: 63190
           x-capabilities:
             textAgg: true
           x-concept:
@@ -277,7 +277,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.w3.org/2000/01/rdf-schema#label
-          x-cardinality: 62574
+          x-cardinality: 62528
           x-capabilities:
             textAgg: true
           x-concept:
@@ -289,7 +289,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/address
-          x-cardinality: 63455
+          x-cardinality: 63229
           x-capabilities:
             textAgg: true
           x-concept:
@@ -301,7 +301,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/postalCode
-          x-cardinality: 5986
+          x-cardinality: 5978
           x-capabilities:
             textAgg: true
           x-concept:
@@ -313,7 +313,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/City
-          x-cardinality: 19531
+          x-cardinality: 19456
           x-capabilities:
             textAgg: true
           x-concept:
@@ -345,7 +345,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#tel
-          x-cardinality: 59543
+          x-cardinality: 59638
           x-capabilities:
             textAgg: true
           x-concept:
@@ -357,7 +357,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#email
-          x-cardinality: 61591
+          x-cardinality: 61500
           x-capabilities:
             textAgg: true
           x-concept:
@@ -369,7 +369,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://schema.org/WebPage
-          x-cardinality: 37598
+          x-cardinality: 37593
           x-capabilities:
             textAgg: true
           x-concept:
@@ -395,7 +395,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/DigitalDocument
-          x-cardinality: 75492
+          x-cardinality: 75657
           x-capabilities: {}
           x-concept:
             id: attachment
@@ -430,8 +430,8 @@ components:
           - Qualiforage Nappe
           - Qualisol Collectif
           - RGE Etudes Audits énergétiques Batiments
-          - Certiforage module Nappe
           - Certiforage module Sonde
+          - Certiforage module Nappe
           - CERTIFACT_EUSKADI_EKO
           - CERTIFACT_RLB_SQA
           - CERTIFICAT_ABCDOMUS
@@ -480,8 +480,8 @@ components:
           - Audit énergétique Logement collectif
           - Etude thermique reglementaire
           - Etude solaire photovoltaïque
-          - Etude bois énergie
           - Etude forage géothermique
+          - Etude bois énergie
           - Projet complet de rénovation
           - Etude solaire thermique
           - Etude ACV
@@ -543,7 +543,7 @@ components:
           description: Cette date correspond à la date de début de qualification transmise
             par l'organisme de qualification
           x-capabilities: {}
-          x-cardinality: 1869
+          x-cardinality: 1870
         lien_date_fin:
           title: Date de fin de qualification
           type: string
@@ -551,7 +551,7 @@ components:
           description: Cette date correspond à la date de fin de qualification transmise
             par l'organisme de qualification
           x-capabilities: {}
-          x-cardinality: 1551
+          x-cardinality: 1560
         _file.content:
           x-calculated: true
           type: string
@@ -696,11 +696,12 @@ components:
       - admin
       - case_incoherence
       - file
+      - geste_prices
       - gestes
       - server
       description: 'admin: Mentions administratives | case_incoherence: Incohérence
-        des documents du dossier | file: Fichier | gestes: Descriptif technique des
-        gestes | server: Serveur'
+        des documents du dossier | file: Fichier | geste_prices: Prix des gestes |
+        gestes: Descriptif technique des gestes | server: Serveur'
     quote_check_error_code:
       type: string
       description: code d'erreur de validation

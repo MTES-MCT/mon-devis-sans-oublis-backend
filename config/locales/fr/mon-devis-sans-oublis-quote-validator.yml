@@ -4,6 +4,7 @@ fr:
       admin: "Mentions administratives"
       case_incoherence: "Incohérence des documents du dossier"
       file: "Fichier"
+      geste_prices: "Prix des gestes"
       gestes: "Descriptif technique des gestes"
       server: "Serveur"
     error_types:
@@ -65,6 +66,7 @@ fr:
 
 
       # Prix / TVA : 
+      geste_prix_inhabituel: "Le prix du geste est hors de la fourchette de prix recommandée"
       separation_fourniture_pose_manquant: "La séparation fourniture et pose est manquante"
       separation_fourniture_pose_manquant_infos: "Il est obligatoire de bien séparer la fourniture et la pose du matériel en indiquant clairement les prix associés."
       prix_total_ttc_manquant: "Le prix total TTC du devis est manquant"
@@ -157,7 +159,7 @@ fr:
       eau_chaude_etas_manquant: "L'efficacité énergétique saisonière (ETAS) du chauffe eau est manquante"
       eau_chaude_etas_manquant_infos: "L'ETAS est un pourcentage."
       eau_chaude_profil_soutirage_manquant: "Le profil de soutirage du chauffe-eau n'est pas indiqué"
-      eau_chaude_profil_soutirage_manquant: " Le profil de soutirage est une des options suivantes : M, L, XL ou XXL."
+      eau_chaude_profil_soutirage_manquant: "Le profil de soutirage est une des options suivantes : M, L, XL ou XXL."
       # validate_cesi
       cesi_type_appoint_manquant: "L'énergie d'appoint du chauffe-eau n'est pas indiquée" # electrique ou autre
       cesi_type_appoint_manquant_infos: "Quelle énergie d'appoint est utilisée par le chauffe-eau solaire individuel ?"
@@ -170,7 +172,7 @@ fr:
       chauffe_eau_thermodynamique_cop_manquant: "Le coefficient de performance de l'équipement n'est pas indiqué"
       chauffe_eau_thermodynamique_cop_manquant_infos: "Le COP doit être mesuré conformément aux condition de la norme EN 16147."
       chauffe_eau_thermodynamique_type_installation_manquant: "Le type d'installation du chauffe-eau thermodynamique n'est pas indiqué"
-      chauffe_eau_thermodynamique_type_installation_manquant_infos: " Le chauffe-eau thermodynamique est-il sur air extérieur, sur air extrait ou sur air ambiant?" # air exterieur, sur air exrait ou sur air ambiant
+      chauffe_eau_thermodynamique_type_installation_manquant_infos: "Le chauffe-eau thermodynamique est-il sur air extérieur, sur air extrait ou sur air ambiant?" # air exterieur, sur air exrait ou sur air ambiant
 
 
 #################################################

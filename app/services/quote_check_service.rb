@@ -77,7 +77,7 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
       id: [quote_check.id, quote_check.validation_error_details.count + 1].compact.join("-"),
       code:,
       category:, type:,
-      title: title || I18n.t("quote_validator.errors.#{code}")
+      title: (title || I18n.t("quote_validator.errors.#{code}"))&.strip
     }
   end
   # rubocop:enable Metrics/AbcSize

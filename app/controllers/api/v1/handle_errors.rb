@@ -13,7 +13,9 @@ module Api
         attr_reader :error_code, :validator_error_code
 
         def initialize(message = nil, validator_error_code: nil)
-          message ||= I18n.t("quote_validator.errors.#{validator_error_code}", default: nil) if validator_error_code
+          if validator_error_code
+            message ||= I18n.t("quote_validator.errors.#{validator_error_code}", default: nil)&.strip
+          end
 
           super(message)
 

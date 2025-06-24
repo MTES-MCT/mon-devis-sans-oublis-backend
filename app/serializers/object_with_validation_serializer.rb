@@ -3,6 +3,10 @@
 class ObjectWithValidationSerializer < BaseSerializer
   include ActionView::Helpers::SanitizeHelper
 
+  # Virtual attributes
+  attributes :errors, :error_details, :error_messages,
+             :control_codes, :controls_count
+
   def control_codes
     object.validation_control_codes
   end
@@ -35,8 +39,8 @@ class ObjectWithValidationSerializer < BaseSerializer
   end
 
   def validation_error_details
-    @validation_error_details ||= object.validation_error_details&.map do |it|
-      it.transform_keys(&:to_s)
+    @validation_error_details ||= object.validation_error_details&.filter_map do |it|
+      it.transform_keys(&:to_s) if it["category"] != "geste_prices"
     end
   end
 

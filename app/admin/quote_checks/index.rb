@@ -27,6 +27,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
   scope "mauvais fichier", :with_file_type_error
   scope "devis avec corrections", :with_edits
   scope "devis avec contact email", :with_feedback_email
+  scope "devis avec erreur prix", :with_price_error
 
   controller do
     # Overwrite "includes :file, :feedbacks" to not load full File data
