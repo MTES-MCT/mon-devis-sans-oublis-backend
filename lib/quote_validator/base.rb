@@ -20,7 +20,7 @@ module QuoteValidator
 
     attr_accessor :control_codes, :controls_count,
                   :error_details,
-                  :object, :object_id,
+                  :object, :object_id_str,
                   :quote, :quotes_case,
                   :quote_id, :quotes_case_id,
                   :warnings
@@ -49,7 +49,7 @@ module QuoteValidator
         @quote = @object
       end
 
-      @object_id = @object[:id] || @quote_id || @quotes_case_id
+      @object_id_str = @object[:id] || @quote_id || @quotes_case_id
 
       reset_errors
     end
@@ -112,7 +112,7 @@ module QuoteValidator
 
       error_details << TrackingHash.nilify_empty_values(
         {
-          id: [object_id, geste_id, error_details.count + 1].compact.join("-"),
+          id: [object_id_str, geste_id, error_details.count + 1].compact.join("-"),
           geste_id:,
           code:,
           category:, type:,
