@@ -64,7 +64,8 @@ module QuoteValidator
     # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/AbcSize
 
-    def add_error_if(code, condition, geste, category: "geste_prices", type: "warning", provided_value: nil)
+    def add_error_if(code, condition, geste, # rubocop:disable Metrics/ParameterLists
+                     category: "geste_prices", type: "warning", provided_value: nil)
       super(code, condition,
                 type:,
                 category:,
