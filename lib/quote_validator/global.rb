@@ -10,6 +10,7 @@ module QuoteValidator
         if validate_file # Skip other checks if file not relevant
           validate_admin
           validate_works
+          validate_prices
         end
       end
     end
@@ -30,6 +31,13 @@ module QuoteValidator
 
     def validate_works
       validator = QuoteValidator::Works::Global.new(quote, quote_id:)
+      validator.validate!
+      add_validator_errors(validator)
+      validator.error_details.empty?
+    end
+
+    def validate_prices
+      validator = QuoteValidator::Prices.new(quote, quote_id:)
       validator.validate!
       add_validator_errors(validator)
       validator.error_details.empty?
