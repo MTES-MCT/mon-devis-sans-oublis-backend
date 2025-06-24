@@ -12,9 +12,6 @@ class QuoteCheckSerializer < ObjectWithValidationSerializer
              :gestes,
              :started_at, :finished_at,
              :comment,
-             # Virtual attributes
-             :errors, :error_details, :error_messages,
-             :control_codes, :controls_count,
              :gestes
 
   attribute :case_id, if: :full?

@@ -1,0 +1,60 @@
+# frozen_string_literal: true
+
+module QuoteValidator
+  # Validator for the QuoteCheck Prices
+  class Prices < Base
+    VERSION = "0.0.1"
+
+    def self.gestes_prices_ranges(env = nil)
+      return @gestes_prices_ranges if defined?(@gestes_prices_ranges) && !env
+
+      # In the JSON stringified format '{ "geste": "12..34" }'
+      @gestes_prices_ranges = JSON.parse(
+        env || ENV.fetch("MDSO_GESTE_PRICES_RANGES", "{}")
+      ).transform_values do |range_str|
+        parse_generic_range(range_str)
+      end.freeze
+    end
+
+    def self.parse_generic_range(str)
+      parts = str.split("..")
+      raise ArgumentError, "Invalid range format for #{str}" unless parts.size == 2
+
+      Range.new(Integer(parts[0]), Integer(parts[1]))
+    end
+
+    def validate!
+      super do
+        validate_quote_check_prices if self.class.gestes_prices_ranges.any?
+      end
+    end
+
+    def validate_quote_check_prices # rubocop:disable Metrics/MethodLength
+      gestes = quote[:gestes] || []
+      gestes.each_with_index do |geste, index|
+        geste[:index] = index
+
+        geste_type = geste[:type].to_s
+        next unless self.class.gestes_prices_ranges.key?(geste_type)
+
+        add_error_if(
+          "geste_prix_inhabituel",
+          self.class.gestes_prices_ranges[geste_type].exclude?(geste[:price]),
+          geste
+        )
+      end
+    end
+
+    def add_error_if(code, condition, geste, category: "geste_prices", type: "warning")
+      super(code, condition,
+                type:,
+                category:,
+                geste:,
+                provided_value: geste[:intitule])
+    end
+
+    def version
+      self.class::VERSION
+    end
+  end
+end

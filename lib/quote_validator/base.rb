@@ -8,7 +8,7 @@ module QuoteValidator
       attr_reader :error_code
 
       def initialize(message = nil, error_code = nil)
-        message ||= I18n.t("quote_validator.errors.#{error_code}", default: nil) if error_code
+        message ||= I18n.t("quote_validator.errors.#{error_code}", default: nil)&.strip if error_code
 
         super(message)
 
@@ -116,9 +116,9 @@ module QuoteValidator
           geste_id:,
           code:,
           category:, type:,
-          title: title || I18n.t("quote_validator.errors.#{code}"),
+          title: (title || I18n.t("quote_validator.errors.#{code}"))&.strip,
           problem:,
-          solution: solution || I18n.t("quote_validator.errors.#{code}_infos", default: nil),
+          solution: (solution || I18n.t("quote_validator.errors.#{code}_infos", default: nil))&.strip,
           provided_value:
         },
         compact: true

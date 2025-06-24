@@ -26,6 +26,7 @@ module QuoteCheckBackoffice
         with_feedback_email
         with_file_error
         with_file_type_error
+        with_price_error
       ]
     end
   end
