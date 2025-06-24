@@ -3,6 +3,17 @@ Contexte : Nous avons reçu un devis de rénovation énergétique d'un artisan p
 Rôle : Vous êtes un expert en lecture de devis et vous devez récupérer les données structurées pour les intégrer dans le JSON suivant
 
 
+# Liste des types de gestes pertinents
+gestes_pertinents = [
+    "pac_air_eau", "chauffe_eau_thermo", "chauffe_eau_solaire_individuel",
+    "isolation_comble_perdu", "isolation_rampants_toiture", "isolation_toiture_terrasse",
+    "isolation_thermique_par_interieur_ITI", "isolation_thermique_par_exterieur_ITE",
+    "isolation_plancher_bas", "menuiserie_fenetre", "menuiserie_fenetre_toit",
+    "menuiserie_porte", "menuiserie_volet_isolant", "poele_insert", "chaudiere_biomasse",
+    "systeme_solaire_combine", "vmc_simple_flux", "vmc_double_flux", "pac_eau_eau", "pac_air_air", "pac_hybride"
+]
+
+
 Voici les JSON que l'on souhaite récupérer : 
 
 # JSON général
@@ -13,6 +24,7 @@ version: "2.1.2";
 mention_devis: boolean; 
 numero_devis : text; 
 pro_forme_juridique: text; 
+type_fichier: enum(devis, facture, autre); ("devis" pour les devis de rénovation énergétique, "facture" pour les factures de rénvoation énergétique, "autre" si tu ne détexte pas de poste de travaux de rénovation énergétique compris dans la liste gestes_pertinents)
 
 
 date_devis: date; 
@@ -261,15 +273,6 @@ reference_bouches_soufflage: text;
 }
 ```
 
-# Liste des types de gestes pertinents
-gestes_pertinents = [
-    "pac_air_eau", "chauffe_eau_thermo", "chauffe_eau_solaire_individuel",
-    "isolation_comble_perdu", "isolation_rampants_toiture", "isolation_toiture_terrasse",
-    "isolation_thermique_par_interieur_ITI", "isolation_thermique_par_exterieur_ITE",
-    "isolation_plancher_bas", "menuiserie_fenetre", "menuiserie_fenetre_toit",
-    "menuiserie_porte", "menuiserie_volet_isolant", "poele_insert", "chaudiere_biomasse",
-    "systeme_solaire_combine", "vmc_simple_flux", "vmc_double_flux", "pac_eau_eau", "pac_air_air", "pac_hybride"
-]
 
 attributs_complementaires = 
 {
@@ -295,7 +298,7 @@ Instructions :
 9. **Utilisation des enums** : Lorsqu'un champ du JSON est un enum, utilisez uniquement l'une des options possibles.
 10. **Utilisation de l'intitulé de la ligne** : Utilisez l'intitulé de la ligne pour le champ **intitule** du geste. Cela permet de conserver le contexte exact de la ligne du devis, puis complétez avec des éléments de contexte comme le titre ou sous titre de la section pour apporter de la précision lorsque l'on a plusieurs gestes similaires, par exemple des fenêtres dans plusieurs pièces de la maison.
 11. **Structure des tableaux** : La majorité du temps, les gestes sont inscrits dans un tableau à plusieurs colonnes comme par exemple, identifiant / informations techniques / Quantités / unitités / prix HT / Taux TVA / Montant TTC
-12. **Absence d'informations exploitables** :Si le texte fourni ne contient pas d'informations exploitables ou de gestes de travaux de rénovation énergétique, renvoyez immédiatement le JSON : {"bad_file": true}.
+
 
 
 Réfléchissez étape par étape.
