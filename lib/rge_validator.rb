@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Check RGE
-module RgeValidator
+module RgeValidator # rubocop:disable Metrics/ModuleLength
   class ArgumentError < QuoteValidator::Base::ArgumentError; end
 
   RGE_NUMBER_REGEX = /\d{3,}/
@@ -51,11 +51,52 @@ module RgeValidator
     "CERTIFICAT_P_ET_G_PLENETUDE" => nil,
     "CERTIFICAT_SARL_DOMINIQUE_CALLIET" => nil,
     "Certiforage module Sonde" => nil
-  }.to_h do |ademe_certificat, mdso_geste_types|
+  }.to_h do |ademe_certificate, mdso_geste_types|
     unkown_geste_types = Array.wrap(mdso_geste_types) - QuoteCheck::GESTE_TYPES
     raise NotImplemented, "Unkown Geste type #{unkown_geste_types}" if unkown_geste_types.any?
 
-    [ademe_certificat, mdso_geste_types]
+    [ademe_certificate, mdso_geste_types]
+  end
+
+  ADEME_DOMAINE_TO_MDSO_GESTE_TYPE = {
+    "Isolation par l'intérieur des murs ou rampants de toitures  ou plafonds" =>
+      "isolation_thermique_par_interieur_ITI",
+    "Chauffe-Eau Thermodynamique" => "chauffe_eau_thermo",
+    "Pompe à chaleur : chauffage" => %w[pac_air_eau pac_eau_eau pac_air_air pac_hybride],
+    "Fenêtres, volets, portes donnant sur l'extérieur" => nil,
+    "Isolation des combles perdus" => "isolation_comble_perdu",
+    "Isolation des murs par l'extérieur" => "isolation_thermique_par_exterieur_ITE",
+    "Poêle ou insert bois" => "poele_insert",
+    "Chaudière condensation ou micro-cogénération gaz ou fioul" => nil,
+    "Isolation des toitures terrasses ou des toitures par l'extérieur" => "isolation_toiture_terrasse",
+    "Fenêtres de toit" => "menuiserie_fenetre_toit",
+    "Ventilation mécanique" => %w[vmc_simple_flux vmc_double_flux],
+    "Panneaux solaires photovoltaïques" => nil,
+    "Isolation des planchers bas" => "isolation_plancher_bas",
+    "Audit énergétique Maison individuelle" => nil,
+    "Radiateurs électriques, dont régulation." => nil,
+    "Architecte" => nil,
+    "Chaudière bois" => "chaudiere_biomasse",
+    "Chauffage et/ou eau chaude solaire" => "chauffe_eau_solaire_individuel",
+    "Audit énergétique Logement collectif" => nil,
+    "Etude thermique reglementaire" => nil,
+    "Etude solaire photovoltaïque" => nil,
+    "Etude forage géothermique" => nil,
+    "Etude bois énergie" => nil,
+    "Projet complet de rénovation" => nil,
+    "Etude solaire thermique" => nil,
+    "Etude ACV" => nil,
+    "Etude système technique bâtiment" => nil,
+    "Etude eclairage" => nil,
+    "Inconnu" => nil,
+    "Etude enveloppe du bâtiment" => nil,
+    "Commisionnement" => nil,
+    "Forage géothermique" => nil
+  }.to_h do |ademe_domain, mdso_geste_types|
+    unkown_geste_types = Array.wrap(mdso_geste_types) - QuoteCheck::GESTE_TYPES
+    raise NotImplemented, "Unkown Geste type #{unkown_geste_types}" if unkown_geste_types.any?
+
+    [ademe_domain, mdso_geste_types]
   end.freeze
 
   def self.filter_rge_qualifications(rge_qualifications)
