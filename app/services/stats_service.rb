@@ -21,14 +21,14 @@ class StatsService
 
   def average_quote_check_cost
     quote_checks_with_qa = QuoteCheck.where.not(qa_result: nil)
-    return nil if quote_checks_with_qa.count.zero?
+    return nil if quote_checks_with_qa.none?
 
     costs = quote_checks_with_qa.select(:qa_result).flat_map(&:cost).compact
     (costs.sum.to_f / costs.size).ceil(2) if costs.any?
   end
 
   def average_quote_check_errors_count
-    return nil if QuoteCheck.count.zero?
+    return nil if QuoteCheck.none?
 
     total_errors_count = QuoteCheck.where.not(validation_errors: nil).pluck(:validation_errors).sum(&:size)
     (total_errors_count.to_f / QuoteCheck.count).ceil(1)
@@ -37,7 +37,7 @@ class StatsService
   # In seconds
   def average_quote_check_processing_time
     quote_checks_finished = QuoteCheck.with_valid_processing_time
-    return nil if quote_checks_finished.count.zero?
+    return nil if quote_checks_finished.none?
 
     total_processing_time = quote_checks_finished.select(:finished_at, :started_at).sum(&:processing_time)
     (total_processing_time.to_f / quote_checks_finished.count).ceil
@@ -46,7 +46,7 @@ class StatsService
   # In seconds
   def median_quote_check_processing_time
     quote_checks_finished = QuoteCheck.with_valid_processing_time
-    return nil if quote_checks_finished.count.zero?
+    return nil if quote_checks_finished.none?
 
     processing_times = quote_checks_finished.select(:finished_at, :started_at).map { it.processing_time.ceil }
     median(processing_times)

@@ -26,7 +26,8 @@ class MdsoApi
 
   protected
 
-  def validate_response(path, method, data_hash, status_code = 200) # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/MethodLength
+  def validate_response(path, method, data_hash, status_code = 200) # rubocop:disable Naming/PredicateMethod
     strict = true
     schema = Committee::Drivers.load_from_file(schema_path, parser_options: { strict_reference_validation: strict })
 
@@ -50,6 +51,7 @@ class MdsoApi
 
     true
   end
+  # rubocop:enable Metrics/MethodLength
 
   private
 

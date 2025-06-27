@@ -14,6 +14,7 @@ module QuoteValidator
     end
 
     # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Style/ItBlockParameter
     def validate_quote_checks_coherence # rubocop:disable Metrics/MethodLength
       add_error_if(
         "client_prenom_incoherent",
@@ -34,6 +35,7 @@ module QuoteValidator
         end).empty?
       )
     end
+    # rubocop:enable Style/ItBlockParameter
     # rubocop:enable Metrics/AbcSize
 
     def add_error_if(code, condition, category: "case_incoherence", type: "error")

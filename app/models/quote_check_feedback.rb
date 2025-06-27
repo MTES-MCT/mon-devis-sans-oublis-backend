@@ -32,7 +32,7 @@ class QuoteCheckFeedback < ApplicationRecord
   def validation_error_details
     return unless validation_error_details_id
 
-    quote_check.validation_error_details.find do
+    quote_check.validation_error_details.find do # rubocop:disable Style/ItBlockParameter
       it.fetch("id") == validation_error_details_id
     end
   end

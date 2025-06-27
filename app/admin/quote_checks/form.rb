@@ -114,7 +114,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
                 include_blank: false,
                 multiple: true
 
-        if QuoteCheck.count.positive?
+        if QuoteCheck.any?
           f.input :parent_id,
                   as: :select,
                   collection: QuoteCheck.order(created_at: :desc).all.map { [it.id, it.id] }
@@ -129,6 +129,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
                 label: "Forcer l'OCR",
                 hint: "Forcer l'OCR même si le fichier est déjà PDF"
 
+        # rubocop:disable Style/ItBlockParameter
         f.input :ocr,
                 as: :select,
                 collection: Rails.application.config.ocrs_configured,
@@ -148,6 +149,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
                             it.match(/#{QuoteReader::Qa::DEFAULT_LLM}/i)
                           } ||
                           Rails.application.config.llms_configured.first
+        # rubocop:enable Style/ItBlockParameter
 
         f.input :file_text, as: :text
         f.input :file_markdown, as: :text

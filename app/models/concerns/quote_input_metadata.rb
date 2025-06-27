@@ -88,7 +88,7 @@ module QuoteInputMetadata
 
     if metadata&.key?("gestes")
       metadata["gestes"] = # Backport
-        metadata["gestes"].map do
+        metadata["gestes"].map do # rubocop:disable Style/ItBlockParameter
           it.gsub("Poêle à granulés", "Poêle/insert à bois/granulés")
         end
     end

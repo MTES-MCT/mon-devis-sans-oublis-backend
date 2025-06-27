@@ -5,7 +5,8 @@ require "net/http"
 # From form https://www.sirene.fr/sirene/public/recherche
 class SireneApi
   # Returns true if the SIRET is known, false otherwise
-  def recherche(siret) # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/MethodLength
+  def recherche(siret) # rubocop:disable Naming/PredicateMethod
     body = Net::HTTP.start(
       "www.sirene.fr", 443,
       use_ssl: true,
@@ -28,4 +29,5 @@ class SireneApi
 
     body.include?("result-left") # TODO: return result including state !body.include?("	Fermé")
   end
+  # rubocop:enable Metrics/MethodLength
 end

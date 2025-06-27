@@ -20,6 +20,10 @@ Style/Documentation:
     - 'app/mailers/**/*.rb'
     - 'app/serializers/**/*.rb'
     - 'db/migrate/**/*.rb'
+Style/ItBlockParameter:
+  Enabled: true
+  Exclude:
+    - 'app/admin/**/*.rb'
 Style/StringLiterals:
   Enabled: true
   EnforcedStyle: "double_quotes"
