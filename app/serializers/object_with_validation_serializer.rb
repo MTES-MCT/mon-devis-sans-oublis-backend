@@ -20,7 +20,7 @@ class ObjectWithValidationSerializer < BaseSerializer
   end
 
   def error_details
-    validation_error_details&.map do
+    validation_error_details&.map do # rubocop:disable Style/ItBlockParameter
       it.merge(
         "comment" => sanitize(validation_error_edits&.dig(it["id"], "comment")),
         "deleted" => validation_error_edits&.dig(it["id"], "deleted") || false
@@ -29,7 +29,7 @@ class ObjectWithValidationSerializer < BaseSerializer
   end
 
   def error_messages
-    validation_errors&.index_with do
+    validation_errors&.index_with do # rubocop:disable Style/ItBlockParameter
       I18n.t("quote_validator.errors.#{it}")
     end
   end
@@ -39,7 +39,7 @@ class ObjectWithValidationSerializer < BaseSerializer
   end
 
   def validation_error_details
-    @validation_error_details ||= object.validation_error_details&.filter_map do |it|
+    @validation_error_details ||= object.validation_error_details&.filter_map do # rubocop:disable Style/ItBlockParameter
       it.transform_keys(&:to_s) if it["category"] != "geste_prices"
     end
   end

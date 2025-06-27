@@ -66,6 +66,7 @@ module RgeValidator
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/CyclomaticComplexity
   # rubocop:disable Metrics/PerceivedComplexity
+  # rubocop:disable Style/ItBlockParameter
   # @return [Array, false] Returns an array of RGE qualifications or false if none found.
   # @raise [ArgumentError] Raises an error if the RGE format is invalid or if the date is not in the correct format.
   def self.valid?(rge: nil, siret: nil, date: nil) # rubocop:disable Metrics/MethodLength
@@ -94,6 +95,7 @@ module RgeValidator
 
     rge_qualifications.any? ? rge_qualifications : false
   end
+  # rubocop:enable Style/ItBlockParameter
   # rubocop:enable Metrics/PerceivedComplexity
   # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/AbcSize

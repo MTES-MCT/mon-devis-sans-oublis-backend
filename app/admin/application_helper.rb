@@ -17,6 +17,7 @@ module ActiveAdmin
 
     # Call via "instance_exec(&processing_logs_tab(resource))"
     # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Style/ItBlockParameter
     def processing_logs_tab(resource) # rubocop:disable Metrics/MethodLength
       return -> {} if resource.processing_logs.none?
 
@@ -42,6 +43,7 @@ module ActiveAdmin
         end
       end
     end
+    # rubocop:enable Style/ItBlockParameter
     # rubocop:enable Metrics/AbcSize
   end
 end

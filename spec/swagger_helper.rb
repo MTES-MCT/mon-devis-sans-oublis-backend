@@ -719,7 +719,8 @@ RSpec.configure do |config|
         }
       }
     },
-    servers: [ # Swagger reccomends to have path version listed inside server URLs
+    # Swagger reccomends to have path version listed inside server URLs
+    servers: [ # rubocop:disable Style/ItBlockParameter
       {
         url: "https://api.staging.mon-devis-sans-oublis.beta.gouv.fr/api/v1",
         description: "Staging test server : accessible depuis CORS localhost"
@@ -734,7 +735,7 @@ RSpec.configure do |config|
       },
       if ENV.key?("APPLICATION_HOST") && ENV["APPLICATION_HOST"].exclude?(".ngrok-free.app") # current host
         {
-          url: "http#{Rails.env.development? ? '' : 's'}://#{Rails.application.config.application_host}",
+          url: "http#{'s' unless Rails.env.development?}://#{Rails.application.config.application_host}",
           variables: {
             defaultHost: {
               default: Rails.application.config.application_host
@@ -743,7 +744,7 @@ RSpec.configure do |config|
         }
       end || nil,
       { # example host
-        url: "http#{Rails.env.development? ? '' : 's'}://{defaultHost}",
+        url: "http#{'s' unless Rails.env.development?}://{defaultHost}",
         variables: {
           defaultHost: {
             default: (if Rails.application.config.application_host.exclude?(".ngrok-free.app")

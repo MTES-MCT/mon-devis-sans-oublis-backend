@@ -38,7 +38,7 @@ class QuoteCheckSerializer < ObjectWithValidationSerializer
         "intitule" => "#{geste['numero_ligne']} #{geste['intitule']}",
         "id" => geste_id,
         "valid" =>
-          validation_error_details.nil? || validation_error_details.none? do
+          validation_error_details.nil? || validation_error_details.none? do # rubocop:disable Style/ItBlockParameter
             it["geste_id"] == geste_id
           end
       }

@@ -32,7 +32,7 @@ module Api
       end
 
       def validation_error_detail_deletion_reasons
-        data = QuoteCheck::VALIDATION_ERROR_DELETION_REASONS.index_with do
+        data = QuoteCheck::VALIDATION_ERROR_DELETION_REASONS.index_with do # rubocop:disable Style/ItBlockParameter
           I18n.t("quote_checks.validation_error_detail_deletion_reasons.#{it}")
         end
 

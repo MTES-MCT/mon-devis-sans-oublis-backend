@@ -159,7 +159,7 @@ module QuoteValidator
     end
 
     # TODO: doit valider les critères techniques associés aux gestes présents dans le devis
-    def validate!
+    def validate! # rubocop:disable Naming/PredicateMethod
       @error_details = []
 
       @control_codes = []
