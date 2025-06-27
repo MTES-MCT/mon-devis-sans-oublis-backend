@@ -54,12 +54,13 @@ RSpec.describe QuoteValidator::Prices, type: :service do
 
     let(:validator) { described_class.new(attributes) }
     let(:attributes) do
-      { gestes: [
-        { type: "geste_pas_cher", prix_total_ht: 15.3 },
-        { type: "geste_moyen_cher", prix_total_ht: 100.2 },
-        { type: "geste_cher", prix_total_ht: 5_000 },
-        { type: "geste_unite_m2", prix_total_ht: 1_000, quantite: 2 }
-      ] }
+      build(:quote_check_qa_attributes,
+            { gestes: [
+              { type: "geste_pas_cher", prix_total_ht: 15.3 },
+              { type: "geste_moyen_cher", prix_total_ht: 100.2 },
+              { type: "geste_cher", prix_total_ht: 5_000 },
+              { type: "geste_unite_m2", prix_total_ht: 1_000, quantite: 2 }
+            ] })
     end
 
     before do

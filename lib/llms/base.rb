@@ -140,8 +140,6 @@ module Llms
           content_json_result = self.class.extract_json(content)
           raise ResultError, "JSON content empty: #{content}" unless content_json_result
 
-          content_json_result = { bad_file: true }.to_json if content_json_result.include?("bad_file: true")
-
           @read_attributes = begin
             TrackingHash.nilify_empty_values(
               JSON.parse(content_json_result, symbolize_names: true)

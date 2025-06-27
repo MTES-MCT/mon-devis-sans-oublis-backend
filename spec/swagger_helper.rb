@@ -412,7 +412,12 @@ RSpec.configure do |config|
             bad_file: {
               type: :boolean,
               nullable: true,
-              description: "le fichier n'est pas un devis valide, unique propriété présente si true"
+              description: "DEPRECATED, le fichier n'est pas un devis valide, unique propriété présente si true"
+            },
+            type_fichier: {
+              type: :string,
+              enum: %w[devis facture autre],
+              nullable: true
             },
             version: {
               type: :string,
