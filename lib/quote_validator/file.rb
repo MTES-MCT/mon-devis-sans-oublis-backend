@@ -14,7 +14,7 @@ module QuoteValidator
     def validate
       add_error_if(
         "file_type_error",
-        !%w[devis facture].include?(quote[:type_fichier]),
+        %w[devis facture].exclude?(quote[:type_fichier]),
         category: "file",
         type: "error"
       )
