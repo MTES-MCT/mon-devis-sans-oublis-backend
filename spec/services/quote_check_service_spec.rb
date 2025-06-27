@@ -36,7 +36,7 @@ RSpec.describe QuoteCheckService, type: :service do
             "choices" => [
               {
                 "message" => {
-                  "content" => JSON.generate({ bad_file: false })
+                  "content" => JSON.generate({ type_fichier: "devis" })
                 }
               }
             ]

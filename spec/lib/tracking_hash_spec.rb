@@ -43,7 +43,7 @@ RSpec.describe TrackingHash, type: :service do
     end
 
     it "returns false for false values" do
-      expect(described_class.nilify_empty_values({ bad_file: false }).fetch(:bad_file)).to be false
+      expect(described_class.nilify_empty_values({ key: false }).fetch(:key)).to be false
     end
 
     context "with compact option" do

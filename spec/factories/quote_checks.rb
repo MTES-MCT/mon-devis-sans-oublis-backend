@@ -35,7 +35,7 @@ FactoryBot.define do
       private_data_qa_attributes { {} }
       private_data_qa_result { {} }
       private_data_qa_version { QuoteReader::PrivateDataQa::VERSION }
-      qa_attributes { {} }
+      qa_attributes { build(:quote_check_qa_attributes) } # rubocop:disable FactoryBot/FactoryAssociationWithStrategy
       qa_result { {} }
       qa_version { QuoteReader::Qa::VERSION }
 

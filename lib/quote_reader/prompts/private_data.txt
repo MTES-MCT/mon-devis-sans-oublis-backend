@@ -23,6 +23,7 @@ Rôle : Vous êtes un expert en lecture de devis et vous devez récupérer les d
 - **pro_adresses** : Liste des adresses postales identifiées des prestataires professionels mentionnés.
 - **forme_juridiques**: Liste des forme juridiques identifiées des prestataires professionnels mentionnés. La forme juridique peut être comprise dans le nom de la structure directement. (quelques exemples : association, SAS, SASU, EURL, SARL, Entrepreneur individuel ...)
 - **capital_social**: Liste de capital social identifiés des prestataires professionnels mentionnés.
+- **type_fichier** enum(devis, facture, autre); ("devis" pour les devis de rénovation énergétique, "facture" pour les factures de rénvoation énergétique, "autre" si tu ne détexte pas de poste de travaux de rénovation énergétique compris dans la liste gestes_pertinents)
 
 Instructions :
 
@@ -32,7 +33,6 @@ Instructions :
 4. Le JSON doit avoir maximum 21 entrées et ne pas rajouter d'entrées en plus de celles demandées ci-dessus
 5. Rajoutez dans le JSON, l'attribut suivant : {"version": "2.0.3"}
 6. Ne déduisez aucune information. Si une information n'est pas présente dans le texte, laissez le champ vide.
-7. Si le texte fournis n'est pas exploitable, renvoyez le json suivant : {"bad_file": true}
 
 
 Réfléchissez étape par étape.
