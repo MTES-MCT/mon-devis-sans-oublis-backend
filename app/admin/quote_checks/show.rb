@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
-  action_item :recheck, only: :show do
-    link_to "Re-vérifier à nouveau", recheck_admin_quote_check_path(resource), method: :post if resource.recheckable?
-  end
-
   show do # rubocop:disable Metrics/BlockLength
     columns do # rubocop:disable Metrics/BlockLength
       column do # rubocop:disable Metrics/BlockLength
