@@ -56,7 +56,19 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
       quote_check.finished_at = Time.current
     ensure
       quote_check.application_version = Rails.application.config.application_version
-      quote_check.save! if save
+      if save
+        quote_check.save!
+
+        # If last QuoteCheck of a QuotesCase checked
+        quotes_case = quote_check.reload.case
+        if quotes_case
+          quotes_case_check_service = QuotesCaseCheckService.new(quotes_case)
+          quotes_case_check_service.reset_check.save!
+          if quotes_case.quote_checks.pending.where.not(id: quote_check.id).empty?
+            QuotesCaseCheckService.new(quotes_case).check
+          end
+        end
+      end
     end
 
     quote_check
@@ -170,18 +182,18 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
   end
 
   def validate_quote # rubocop:disable Metrics/MethodLength
-    quote_validator = QuoteValidator::Global.new(
+    validator = QuoteValidator::Global.new(
       quote_check.read_attributes,
       quote_id: quote_check.id
     )
-    quote_validator.validate!
+    validator.validate!
 
     quote_check.assign_attributes(
-      validation_control_codes: quote_validator.control_codes,
-      validation_controls_count: quote_validator.controls_count,
-      validation_errors: quote_validator.errors,
-      validation_error_details: quote_validator.error_details,
-      validation_version: quote_validator.version
+      validation_control_codes: validator.control_codes,
+      validation_controls_count: validator.controls_count,
+      validation_errors: validator.errors,
+      validation_error_details: validator.error_details,
+      validation_version: validator.version
     )
   end
 end

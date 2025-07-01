@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_16_213352) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_30_165352) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -229,6 +229,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_16_213352) do
     t.string "renovation_type", default: "ampleur", null: false
     t.jsonb "metadata"
     t.string "profile", default: "conseiller", null: false
+    t.jsonb "validation_errors"
+    t.jsonb "validation_error_details"
+    t.string "validation_version"
+    t.integer "validation_controls_count"
+    t.jsonb "validation_control_codes"
+    t.datetime "finished_at"
     t.index ["reference"], name: "index_quotes_cases_on_reference"
     t.index ["renovation_type"], name: "index_quotes_cases_on_renovation_type"
     t.index ["source_name"], name: "index_quotes_cases_on_source_name"

@@ -15,10 +15,6 @@ module QuotesCasePostCheckMetadata
     quote_checks.filter_map(&:cost).sum
   end
 
-  def finished_at
-    quote_checks.maximum(:finished_at)
-  end
-
   def processing_time
     return unless finished_at
 
@@ -34,13 +30,19 @@ module QuotesCasePostCheckMetadata
     quote_checks.minimum(:started_at)
   end
 
+  def finished_at
+    read_attribute(:finished_at) ||
+      quote_checks.maximum(:finished_at)
+  end
+
   # pending if any quote_check is pending
   # valid if all quote_checks are valid
   # else invalid
   def status
     return unless quote_checks.any?
 
-    return "pending" if quote_checks.any? { it.status == "pending" }
+    return "pending" if quote_checks.any? { it.status == "pending" } ||
+                        finished_at.nil?
 
     quote_checks.all?(&:quote_valid?) ? "valid" : "invalid"
   end

@@ -27,6 +27,7 @@ module QuoteCheckPostCheckMetadata
     } do |parent|
       parent.table[:finished_at]
     end
+    scope :pending, -> { where(finished_at: nil) }
 
     VALID_PROCESSING_TIME = 1_000.seconds.to_i # In seconds # rubocop:disable Lint/ConstantDefinitionInBlock
     scope :with_valid_processing_time, lambda {

@@ -87,6 +87,7 @@ module QuoteValidator
                   category: nil, type: nil,
                   title: nil,
                   problem: nil, solution: nil,
+                  from_case: false,
                   geste: nil,
                   provided_value: nil,
                   value: nil) # value is DEPRECATED
@@ -113,6 +114,7 @@ module QuoteValidator
       error_details << TrackingHash.nilify_empty_values(
         {
           id: [object_id_str, geste_id, error_details.count + 1].compact.join("-"),
+          from_case:,
           geste_id:,
           code:,
           category:, type:,

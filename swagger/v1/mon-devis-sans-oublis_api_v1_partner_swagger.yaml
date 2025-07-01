@@ -377,7 +377,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.datatourisme.fr/ontology/core/1.0/#siret
-          x-cardinality: 63167
+          x-cardinality: 62997
           x-capabilities:
             textAgg: true
           x-concept:
@@ -389,7 +389,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.w3.org/2000/01/rdf-schema#label
-          x-cardinality: 62720
+          x-cardinality: 62575
           x-capabilities:
             textAgg: true
           x-concept:
@@ -401,7 +401,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/address
-          x-cardinality: 63236
+          x-cardinality: 63007
           x-capabilities:
             textAgg: true
           x-concept:
@@ -413,7 +413,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/postalCode
-          x-cardinality: 5981
+          x-cardinality: 5978
           x-capabilities:
             textAgg: true
           x-concept:
@@ -425,7 +425,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/City
-          x-cardinality: 19462
+          x-cardinality: 19325
           x-capabilities:
             textAgg: true
           x-concept:
@@ -457,7 +457,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#tel
-          x-cardinality: 59683
+          x-cardinality: 59435
           x-capabilities:
             textAgg: true
           x-concept:
@@ -469,7 +469,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#email
-          x-cardinality: 61592
+          x-cardinality: 61329
           x-capabilities:
             textAgg: true
           x-concept:
@@ -481,7 +481,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://schema.org/WebPage
-          x-cardinality: 37631
+          x-cardinality: 37555
           x-capabilities:
             textAgg: true
           x-concept:
@@ -492,14 +492,14 @@ components:
           title: Code qualification
           type: string
           description: ''
-          x-cardinality: 464
+          x-cardinality: 462
           x-capabilities:
             textAgg: true
         nom_qualification:
           title: Nom de la qualification
           type: string
           description: ''
-          x-cardinality: 472
+          x-cardinality: 470
           x-capabilities:
             textAgg: true
         url_qualification:
@@ -507,7 +507,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/DigitalDocument
-          x-cardinality: 75444
+          x-cardinality: 74989
           x-capabilities: {}
           x-concept:
             id: attachment
@@ -517,7 +517,7 @@ components:
           title: Libellé du certificat
           type: string
           description: ''
-          x-cardinality: 42
+          x-cardinality: 40
           x-capabilities:
             textAgg: true
           examples:
@@ -538,12 +538,10 @@ components:
           - QualiPAC module CET
           - CERTIBAT-RGE
           - AUDIT ENERGETIQUE BATIMENT
-          - Qualiforage Sonde
-          - Qualiforage Nappe
           - Qualisol Collectif
-          - RGE Etudes Audits énergétiques Batiments
           - Certiforage module Sonde
           - Certiforage module Nappe
+          - RGE Etudes Audits énergétiques Batiments
           - CERTIFACT_EUSKADI_EKO
           - CERTIFACT_RLB_SQA
           - CERTIFICAT_ABCDOMUS
@@ -567,7 +565,7 @@ components:
           title: Domaine de travaux
           type: string
           description: ''
-          x-cardinality: 33
+          x-cardinality: 32
           x-capabilities:
             textAgg: true
           examples:
@@ -578,8 +576,8 @@ components:
           - Isolation des combles perdus
           - Isolation des murs par l'extérieur
           - Poêle ou insert bois
-          - Chaudière condensation ou micro-cogénération gaz ou fioul
           - Isolation des toitures terrasses ou des toitures par l'extérieur
+          - Chaudière condensation ou micro-cogénération gaz ou fioul
           - Fenêtres de toit
           - Ventilation mécanique
           - Panneaux solaires photovoltaïques
@@ -602,7 +600,6 @@ components:
           - Inconnu
           - Etude enveloppe du bâtiment
           - Commisionnement
-          - Forage géothermique
           - Non renseigné
           x-separator: "; "
         meta_domaine:
@@ -663,7 +660,7 @@ components:
           description: Cette date correspond à la date de fin de qualification transmise
             par l'organisme de qualification
           x-capabilities: {}
-          x-cardinality: 1562
+          x-cardinality: 1560
         _file.content:
           x-calculated: true
           type: string
