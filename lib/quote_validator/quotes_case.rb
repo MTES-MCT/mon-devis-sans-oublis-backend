@@ -41,7 +41,8 @@ module QuoteValidator
     def add_error_if(code, condition, category: "case_incoherence", type: "error")
       super(code, condition,
                 type:,
-                category:)
+                category:,
+                from_case: true)
     end
 
     def version

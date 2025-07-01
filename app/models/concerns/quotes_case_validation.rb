@@ -9,36 +9,4 @@ module QuotesCaseValidation
                   :validation_errors, :validation_error_details,
                   :validation_version
   end
-
-  # Validates the QuotesCase attributes
-  # and sets the validation virtual attributes.
-  def custom_validate! # rubocop:disable Metrics/MethodLength
-    @validation_control_codes = 0
-    @validation_controls_count = 0
-
-    @validation_errors = []
-    @validation_error_details = []
-
-    validator = QuoteValidator::QuotesCase.new(
-      attributes.merge("quote_checks" => quote_checks.map(&:attributes)),
-      quotes_case_id: id
-    )
-    validator.validate!
-
-    # TODO: Record in database
-    # quotes_case.assign_attributes(
-    #   validation_control_codes: validator.control_codes,
-    #   validation_controls_count: validator.controls_count,
-    #   validation_errors: validator.errors,
-    #   validation_error_details: validator.error_details,
-    #   validation_version: validator.version
-    # )
-    @validation_control_codes = validator.control_codes
-    @validation_controls_count = validator.controls_count
-    @validation_errors = validator.errors
-    @validation_error_details = validator.error_details
-    @validation_version = validator.version
-
-    self
-  end
 end

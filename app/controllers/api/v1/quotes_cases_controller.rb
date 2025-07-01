@@ -9,7 +9,7 @@ module Api
       before_action :quotes_case, except: %i[create]
 
       def show
-        render json: quotes_case.custom_validate!
+        render json: quotes_case_json
       end
 
       def create

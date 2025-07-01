@@ -23,12 +23,24 @@ RSpec.describe QuotesCasePostCheckMetadata do
   end
 
   describe "#finished_at" do
-    before do
-      quote_checks.last.update!(finished_at: 1.year.from_now)
+    context "without dedicated finished_at" do
+      before do
+        quote_checks.last.update!(finished_at: 1.year.from_now)
+      end
+
+      it "returns the latest quotes_checks finished_at" do
+        expect(quotes_case.finished_at).to eq(quote_checks.last.finished_at)
+      end
     end
 
-    it "returns the latest quotes_checks finished_at" do
-      expect(quotes_case.finished_at).to eq(quote_checks.last.finished_at)
+    context "with dedicated finished_at" do
+      before do
+        quotes_case.update!(finished_at: 2.years.ago)
+      end
+
+      it "returns the quotes_case finished_at" do
+        expect(quotes_case.finished_at).to be_within(2.days).of(2.years.ago)
+      end
     end
   end
 
@@ -66,6 +78,7 @@ RSpec.describe QuotesCasePostCheckMetadata do
     context "when all quote_checks are invalid" do
       before do
         quote_checks.each { it.update!(finished_at: Time.current) }
+        quotes_case.update!(finished_at: Time.current)
       end
 
       it "returns 'invalid'" do
