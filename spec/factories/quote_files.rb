@@ -7,7 +7,8 @@ FactoryBot.define do
     uploaded_at { Time.zone.now }
 
     transient do
-      filepath { Rails.root.join("spec/fixtures/files/quote_files/Devis_test.pdf") }
+      file { nil }
+      filepath { file ? Pathname.new(file.path) : Rails.root.join("spec/fixtures/files/quote_files/Devis_test.pdf") }
     end
 
     filename { filepath&.basename&.to_s }
