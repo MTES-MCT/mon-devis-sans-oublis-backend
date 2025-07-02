@@ -42,7 +42,13 @@ module Api
       protected
 
       def quote_check
-        @quote_check ||= QuoteCheck.find(params[:quote_check_id])
+        @quote_check ||= QuoteCheck
+                         .select(*(QuoteCheck.column_names - %w[
+                           text anonymised_text
+                           file_text file_markdown
+                         ]))
+                         .accessible_for_source(api_user)
+                         .find(params[:quote_check_id])
       end
 
       def validation_error_details_edit_params

@@ -29,7 +29,14 @@ module Api
       end
 
       def quote_check
-        @quote_check ||= QuoteCheck.find(params[:quote_check_id])
+        @quote_check ||= QuoteCheck
+                         .select(
+                           :id,
+                           :validation_error_details
+                         )
+                         .includes(:feedbacks)
+                         .accessible_for_source(api_user)
+                         .find(params[:quote_check_id])
       end
 
       def quote_check_feedback_params
