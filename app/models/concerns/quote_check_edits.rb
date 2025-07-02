@@ -44,7 +44,7 @@ module QuoteCheckEdits
     validation_error_edits[error_id].merge!(
       "deleted" => true,
       "deleted_at" => Time.zone.now.iso8601,
-      "reason" => reason&.presence&.first(QuoteCheck::MAX_EDITION_REASON_LENGTH)
+      "reason" => reason&.presence&.first(::MAX_EDITION_REASON_LENGTH)
     )
     self.validation_error_edited_at = validation_error_edits[error_id].fetch("deleted_at")
 

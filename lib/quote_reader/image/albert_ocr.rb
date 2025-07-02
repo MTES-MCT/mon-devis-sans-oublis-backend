@@ -127,14 +127,14 @@ module QuoteReader
 
           case response.status
           when 400
-            if @result["detail"]&.match?(/file must be/i)
+            if result["detail"]&.match?(/file must be/i)
               raise QuoteReader::UnsupportedFileType,
-                    @result.fetch("detail")
+                    result.fetch("detail")
             end
           when 401, 403
-            raise Llms::Albert::UnauthorizedError, @result.fetch("detail")
+            raise Llms::Albert::UnauthorizedError, result.fetch("detail")
           when 404
-            if @result["detail"]&.match?(/model not found/i) && model_fallback
+            if result["detail"]&.match?(/model not found/i) && model_fallback
               backup_model = (self.class.sort_models(
                 models.filter { it.fetch("type") == model_type }
                       .map { it.fetch("id") }
