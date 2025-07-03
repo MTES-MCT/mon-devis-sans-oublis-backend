@@ -79,6 +79,8 @@ cp .env.example .env.docker
 | `MDSO_API_KEY_FOR_PARTNER2`                     | Clé API pour PARTNER2            | `hash` via `rake secret`                           | Optionnel    |
 | `MDSO_API_PASSWORD`                     | Ancienne clé API pour frontend            | `hash` via `rake secret`                           | Optionnel    |
 | `MDSO_OCR_API_KEY`                     | Clé API du système OCR MDSO            |                            | Optionnel    |
+| `MDSO_OCR_HOST`                     | Host du système OCR MDSO            |                            | Optionnel    |
+| `MDSO_OCR_MODEL`                     | Modèle du système OCR MDSO utilisé par défaut si disponible            |                            | Optionnel    |
 | `MDSO_SITE_PASSWORD`                     | Ancienne clé accès au Back Office            | `hash` via `rake secret`                           | Optionnel    |
 | `MISTRAL_API_KEY`                     |              | `longueClé`                            | Requis    |
 | `MISTRAL_MODEL`                     | Modèle Mistral utilisé par défaut si disponible            | `mistral-large-latest`                            | Optionnel    |
