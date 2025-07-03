@@ -14,6 +14,8 @@ VCR.configure do |config|
   config.debug_logger = File.open("log/vcr_debug.log", "w")
 
   # Filter sensitive data
-  config.filter_sensitive_data("<ALBERT_API_KEY>") { ENV.fetch("ALBERT_API_KEY") }
-  config.filter_sensitive_data("<MISTRAL_API_KEY>") { ENV.fetch("MISTRAL_API_KEY") }
+  config.filter_sensitive_data("<ALBERT_API_KEY>") { ENV.fetch("ALBERT_API_KEY", "ALBERT_API_KEY") }
+  config.filter_sensitive_data("<MDSO_OCR_API_KEY>") { ENV.fetch("MDSO_OCR_API_KEY", "MDSO_OCR_API_KEY") }
+  config.filter_sensitive_data("<MDSO_OCR_HOST>") { ENV.fetch("MDSO_OCR_HOST", "http://MDSO_OCR_HOST") }
+  config.filter_sensitive_data("<MISTRAL_API_KEY>") { ENV.fetch("MISTRAL_API_KEY", "MISTRAL_API_KEY") }
 end

@@ -22,11 +22,11 @@ FactoryBot.define do
 
     after(:build) do |quote_file, evaluator|
       if evaluator.filepath
-        data = evaluator.filepath.open
+        data = evaluator.filepath.open.read
 
         quote_file.data = data
         quote_file.file.attach(
-          io: data,
+          io: StringIO.new(data),
           filename: quote_file.filename,
           content_type: quote_file.content_type
         )

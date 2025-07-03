@@ -82,6 +82,8 @@ jobs:
             -e DATABASE_URL="${{ env.DATABASE_URL }}" \
             -e MDSO_API_KEY_FOR_TEST=test \
             -e MDSO_API_KEY_FOR_MDSO=mdso \
+            -e MDSO_OCR_API_KEY=MDSO_OCR_API_KEY \
+            -e MDSO_OCR_HOST=http://MDSO_OCR_HOST \
             -v /var/run/docker.sock:/var/run/docker.sock \
             --rm rails-template bash -c "bin/rails db:environment:set RAILS_ENV=test && bundle exec rspec"
   code-quality:
