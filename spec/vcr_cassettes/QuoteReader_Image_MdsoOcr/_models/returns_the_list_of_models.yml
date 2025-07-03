@@ -1,0 +1,35 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: "<MDSO_OCR_HOST>/services"
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      X-Api-Key:
+      - "<MDSO_OCR_API_KEY>"
+      User-Agent:
+      - Faraday v2.13.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 03 Jul 2025 07:14:33 GMT
+      Server:
+      - uvicorn
+      Content-Length:
+      - '34'
+      Content-Type:
+      - application/json
+    body:
+      encoding: UTF-8
+      string: '{"services":["nanonets","olmocr"]}'
+  recorded_at: Thu, 03 Jul 2025 07:14:33 GMT
+recorded_with: VCR 6.3.1

@@ -7,6 +7,34 @@ RSpec.describe "/api/v1/quote_checks" do
 
   before do
     ClamAv.download_database! unless ClamAv.database_exists?
+
+    stub_request(:post, /albert/i)
+      .to_return(
+        status: 200,
+        body: {
+          "data" => [
+            {
+              "message" => {
+                "content" => JSON.generate({ type_fichier: "devis" })
+              }
+            }
+          ]
+        }.to_json
+      )
+
+    stub_request(:post, /mistral/i)
+      .to_return(
+        status: 200,
+        body: {
+          "choices" => [
+            {
+              "message" => {
+                "content" => JSON.generate({ version: "2.1.2" })
+              }
+            }
+          ]
+        }.to_json
+      )
   end
 
   describe "GET /api/v1/quote_checks/metadata" do
