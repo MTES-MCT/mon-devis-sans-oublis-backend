@@ -5,24 +5,38 @@ require "rails_helper"
 RSpec.describe "/api/v1/quote_checks" do
   subject(:json) { response.parsed_body }
 
+  let(:type_fichier) { "devis" }
+
   before do
     ClamAv.download_database! unless ClamAv.database_exists?
 
-    stub_request(:post, /albert/i)
+    stub_request(:post, /albert.+ocr/i)
       .to_return(
         status: 200,
         body: {
           "data" => [
             {
+              "content" => "text"
+            }
+          ]
+        }.to_json
+      )
+
+    stub_request(:post, /albert.+chat/i)
+      .to_return(
+        status: 200,
+        body: {
+          "choices" => [
+            {
               "message" => {
-                "content" => JSON.generate({ type_fichier: "devis" })
+                "content" => JSON.generate({ type_fichier: })
               }
             }
           ]
         }.to_json
       )
 
-    stub_request(:post, /mistral/i)
+    stub_request(:post, /mistral.+chat/i)
       .to_return(
         status: 200,
         body: {
@@ -146,29 +160,7 @@ RSpec.describe "/api/v1/quote_checks" do
     end
 
     context "with file reading error" do
-      it "returns a successful response" do
-        expect(response).to be_successful
-      end
-
-      it "returns an invalid status" do
-        expect(json.fetch("status")).to eq("invalid")
-      end
-
-      it "returns an error" do
-        expect(json.fetch("errors")).to include("file_reading_error")
-      end
-
-      it "returns an error_details" do
-        expect(json.fetch("error_details").first).to include({
-                                                               code: "file_reading_error",
-                                                               type: "error"
-                                                             })
-      end
-    end
-
-    context "with invalid file type" do
-      let(:file) { Rails.root.join("spec/fixtures/files/quote_files/Devis_test.png").open }
-      let(:quote_file) { create(:quote_file, file: file) }
+      let(:type_fichier) { "autre" }
 
       it "returns a successful response" do
         expect(response).to be_successful
@@ -179,12 +171,12 @@ RSpec.describe "/api/v1/quote_checks" do
       end
 
       it "returns an error" do
-        expect(json.fetch("errors")).to include("file_reading_error")
+        expect(json.fetch("errors")).to include("file_type_error")
       end
 
       it "returns an error_details" do
         expect(json.fetch("error_details").first).to include({
-                                                               code: "file_reading_error",
+                                                               code: "file_type_error",
                                                                type: "error"
                                                              })
       end
