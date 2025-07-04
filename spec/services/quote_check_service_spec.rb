@@ -29,7 +29,7 @@ RSpec.describe QuoteCheckService, type: :service do
     subject(:quote_check) { described_class.new(tempfile, filename, profile, renovation_type, source_name:).check }
 
     before do
-      stub_request(:post, /albert/i)
+      stub_request(:post, /albert.+chat/i)
         .to_return(
           status: 200,
           body: {
@@ -43,7 +43,7 @@ RSpec.describe QuoteCheckService, type: :service do
           }.to_json
         )
 
-      stub_request(:post, /mistral/i)
+      stub_request(:post, /mistral.+chat/i)
         .to_return(
           status: 200,
           body: {
