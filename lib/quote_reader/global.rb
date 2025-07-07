@@ -44,7 +44,7 @@ module QuoteReader
                          when "MistralOcr"
                            Image::MistralOcr.new(content, content_type, quote_file:)
                          when "MdsoOcr"
-                           Image::MdosOcr.new(content, content_type, quote_file:)
+                           Image::MdsoOcr.new(content, content_type, quote_file:)
                          when "Tesseract"
                            Image::Tesseract.new(content, content_type, quote_file:)
                          else
