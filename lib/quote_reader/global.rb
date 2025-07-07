@@ -39,16 +39,14 @@ module QuoteReader
       if force_ocr || QuoteFile.new(content_type:).ocrable?
         begin
           ocr_instance = case ocr || DEFAULT_OCR
-                         when "AlbertOcr"
-                           Image::AlbertOcr.new(content, content_type, quote_file:)
-                         when "MistralOcr"
-                           Image::MistralOcr.new(content, content_type, quote_file:)
                          when "MdsoOcr"
-                           Image::MdsoOcr.new(content, content_type, quote_file:)
-                         when "Tesseract"
-                           Image::Tesseract.new(content, content_type, quote_file:)
+                           Image::MdsoOcr.new(content, content_type, quote_file:) # Example
                          else
-                           raise NotImplementedError, "OCR #{ocr} is not implemented"
+                           klass = "QuoteReader::Image::#{ocr}".constantize
+                           raise NotImplementedError, "OCR #{ocr} is not implemented" unless defined?(klass)
+
+                           klass.new(content, content_type, quote_file:)
+
                          end
 
           ocr_instance.extract_text

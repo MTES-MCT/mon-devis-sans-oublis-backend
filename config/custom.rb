@@ -8,10 +8,9 @@ require "llms/ollama"
 
 require "quote_reader/read_error"
 require "quote_reader/image/base"
-require "quote_reader/image/albert_ocr"
-require "quote_reader/image/mdso_ocr"
-require "quote_reader/image/mistral_ocr"
-require "quote_reader/image/tesseract"
+Rails.root.glob("lib/quote_reader/image/*.rb").each do |filepath|
+  require_relative(filepath) unless filepath.to_s.end_with?("base.rb")
+end
 
 # Custom configuration for Mon Devis Sans Oublis
 # added beside common Rails configuration
@@ -33,9 +32,11 @@ Rails.application.configure do
     Llms::Ollama
   ].keep_if(&:configured?).map { it.name.split("::").last }
 
+  # OCR will be auto-selected and retrieved via the class name and its class name method.
   config.ocrs_configured = [
     QuoteReader::Image::AlbertOcr,
-    QuoteReader::Image::MdsoOcr,
+    QuoteReader::Image::MdsoOcrOlmOcr,
+    QuoteReader::Image::MdsoOcrNanonets,
     QuoteReader::Image::MistralOcr,
     QuoteReader::Image::Tesseract
   ].keep_if(&:configured?).map { it.name.split("::").last }
