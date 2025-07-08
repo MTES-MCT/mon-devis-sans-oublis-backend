@@ -31,6 +31,10 @@ module QuoteCheckBackoffice
     end
   end
 
+  included do
+    attr_accessor :process_synchronously
+  end
+
   def frontend_webapp_url
     return unless id
 

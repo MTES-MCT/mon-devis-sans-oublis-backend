@@ -7,7 +7,8 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
                 :parent_id,
                 :reference, :profile, :renovation_type,
                 :aides, :gestes, # Virtual attributes
-                :ocr, :qa_llm # Check params
+                :ocr, :qa_llm, # Check params
+                :process_synchronously
 
   controller do # rubocop:disable Metrics/BlockLength
     # rubocop:disable Metrics/AbcSize
@@ -39,12 +40,19 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
       @quote_check = quote_check_service.quote_check
       if @quote_check
         QuoteFileSecurityScanJob.perform_later(@quote_check.file.id)
-        QuoteCheckCheckJob.perform_later(
-          @quote_check.id,
+
+        job_args = [@quote_check.id]
+        job_kwargs = {
           force_ocr: ActiveModel::Type::Boolean.new.cast(new_quote_check_params[:force_ocr]),
           ocr: new_quote_check_params[:ocr],
           qa_llm: new_quote_check_params[:qa_llm]
-        )
+        }
+        if ActiveModel::Type::Boolean.new.cast(new_quote_check_params[:process_synchronously])
+          QuoteCheckCheckJob.new.perform(*job_args, **job_kwargs)
+        else
+          QuoteCheckCheckJob.perform_later(*job_args, **job_kwargs)
+        end
+
         redirect_to admin_quote_check_path(@quote_check), notice: "Devis uploadé, en cours d'analyse."
       else
         flash.now[:error] = "Erreur dans les données du devis"
@@ -81,6 +89,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
         :reference, :profile, :renovation_type,
         :file_text, :file_markdown,
         :force_ocr, :ocr, :qa_llm, # Check params
+        :process_synchronously, # Back Office params
         aides: [], gestes: [] # Virtual attributes
       )
     end
@@ -153,6 +162,13 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
 
         f.input :file_text, as: :text
         f.input :file_markdown, as: :text
+
+        hr
+
+        f.input :process_synchronously,
+                as: :boolean,
+                label: "Traiter de manière synchrone",
+                hint: "Traiter le devis immédiatement au lieu de l'envoyer en tâche de fond."
       end
 
       unless f.object.new_record?
