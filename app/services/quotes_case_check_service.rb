@@ -25,6 +25,8 @@ class QuotesCaseCheckService
 
   # Reset results but keep attributes
   def reset_check
+    reset_quotes_check!
+
     quotes_case.assign_attributes(
       finished_at: nil,
 
@@ -36,6 +38,22 @@ class QuotesCaseCheckService
   end
 
   private
+
+  def reset_quotes_check!
+    quotes_case.quote_checks.each do |quote_check|
+      quote_check.update!(
+        # TODO: Update validation_control_codes and validation_controls_count ?
+        validation_error_details: quote_check.validation_error_details&.reject do |it|
+          it.fetch("category") == "case_incoherence"
+        end,
+        validation_error_edits: quote_check.validation_error_edits&.reject do |error_id, _|
+          quote_check.validation_error_details&.any? do
+            it.fetch("id") == error_id && it.fetch("category") == "case_incoherence"
+          end
+        end
+      )
+    end
+  end
 
   # rubocop:disable Metrics/AbcSize
   def validate_quotes_case # rubocop:disable Metrics/MethodLength
