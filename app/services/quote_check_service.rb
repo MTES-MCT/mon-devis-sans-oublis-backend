@@ -75,6 +75,19 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
   end
   # rubocop:enable Metrics/AbcSize
 
+  # Reset results but keep attributes
+  def reset_check
+    quote_check.assign_attributes(
+      finished_at: nil,
+
+      validation_errors: nil,
+      validation_error_details: nil,
+      validation_version: nil,
+
+      validation_error_edits: nil
+    )
+  end
+
   private
 
   # rubocop:disable Metrics/AbcSize
@@ -169,17 +182,6 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
   end
   # rubocop:enable Metrics/MethodLength
   # rubocop:enable Metrics/AbcSize
-
-  # Reset results but keep attributes
-  def reset_check
-    quote_check.assign_attributes(
-      finished_at: nil,
-
-      validation_errors: nil,
-      validation_error_details: nil,
-      validation_version: nil
-    )
-  end
 
   def validate_quote # rubocop:disable Metrics/MethodLength
     validator = QuoteValidator::Global.new(

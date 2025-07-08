@@ -247,6 +247,105 @@ paths:
                 reference:
                   type: string
                   nullable: true
+  "/quotes_cases/error_detail_deletion_reasons":
+    get:
+      summary: Récupérer les détails de suppression d'erreur disponibles
+      tags:
+      - Erreurs Devis
+      responses:
+        '200':
+          description: liste des raisons de suppression d'erreur
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    additionalProperties:
+                      "$ref": "#/components/schemas/quotes_case_error_deletion_reason_code"
+                required:
+                - data
+  "/quotes_cases/{quotes_case_id}/error_details/{error_details_id}":
+    post:
+      summary: Annuler la suppression d'un détail d'erreur donc le Ré-ajouter comme
+        originellement
+      tags:
+      - Erreurs Devis
+      security:
+      - bearer_api_key: []
+      parameters:
+      - name: quotes_case_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: error_details_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: détail d'erreur ré-ajouté
+    delete:
+      summary: Supprimer un détail d'erreur
+      tags:
+      - Erreurs Devis
+      security:
+      - bearer_api_key: []
+      parameters:
+      - name: quotes_case_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: error_details_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: reason
+        in: query
+        schema:
+          oneOf:
+          - "$ref": "#/components/schemas/quotes_case_error_deletion_reason_code"
+          - type: string
+            maxLength: 255
+        description: Raison de la suppression (soit un code quotes_case_error_deletion_reason_code
+          ou champs libre)
+        maxLength: 255
+      responses:
+        '204':
+          description: détail d'erreur supprimé
+    patch:
+      summary: Modifier le commentaire sur le détail d'erreur
+      tags:
+      - Erreurs Devis
+      security:
+      - bearer_api_key: []
+      parameters:
+      - name: quotes_case_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: error_details_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: détail d'erreur mis à jour
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comment:
+                  type: string
 produces:
 - application/json
 consumes:
@@ -417,8 +516,8 @@ components:
           - CERTIBAT-RGE
           - AUDIT ENERGETIQUE BATIMENT
           - Certiforage module Sonde
-          - Certiforage module Nappe
           - Qualisol Collectif
+          - Certiforage module Nappe
           - RGE Etudes Audits énergétiques Batiments
           - CERTIFACT_EUSKADI_EKO
           - CERTIFACT_RLB_SQA
@@ -710,6 +809,9 @@ components:
       type: string
       description: code d'erreur de validation
     quote_check_error_deletion_reason_code:
+      type: string
+      description: code de raison de suppression d'erreur, remplaçant le message d'erreur
+    quotes_case_error_deletion_reason_code:
       type: string
       description: code de raison de suppression d'erreur, remplaçant le message d'erreur
     quote_check_error_type:

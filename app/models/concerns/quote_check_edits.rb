@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Edits Quote after analysis, adding some comments for the end-user.
-module QuoteCheckEdits
+module QuoteCheckEdits # rubocop:disable Metrics/ModuleLength
   extend ActiveSupport::Concern
 
   MAX_COMMENT_LENGTH = 1_000
@@ -12,33 +12,65 @@ module QuoteCheckEdits
   ].freeze
 
   included do
-    validates :comment, length: { maximum: MAX_COMMENT_LENGTH }
+    before_validation :format_commented_at, if: -> { has_attribute?(:commented_at) }
+    validates :comment, length: { maximum: MAX_COMMENT_LENGTH }, if: -> { has_attribute?(:comment) }
 
-    before_validation :format_commented_at
     before_validation :format_validation_error_edits
     validate :validation_error_edits_data
 
     scope :with_edits, -> { where.not(validation_error_edits: nil) }
   end
 
-  def comment_validation_error_detail!(error_id, comment)
+  def error_id_for_code(error_code)
+    validation_error_details.detect do |error_details|
+      error_details.fetch("code") == error_code
+    end&.fetch("id")
+  end
+
+  def comment_validation_error_detail!(error_id, comment) # rubocop:disable Metrics/AbcSize
     self.validation_error_edits ||= {}
     validation_error_edits[error_id] ||= {}
+    last_comment = validation_error_edits[error_id]&.fetch("comment", nil)
+
     validation_error_edits[error_id].merge!(
       "comment" => comment&.presence&.first(MAX_COMMENT_LENGTH),
       "commented_at" => Time.zone.now.iso8601
     )
     self.validation_error_edited_at = validation_error_edits[error_id].fetch("commented_at")
 
+    repercute_comment_validation_error_detail!(error_id, comment, last_comment)
+
     save!
   end
 
-  def commented?
-    comment.present? || commented_at.present? ||
+  # rubocop:disable Metrics/CyclomaticComplexity
+  def repercute_comment_validation_error_detail!(error_id, comment, last_comment) # rubocop:disable Metrics/MethodLength
+    return unless instance_of?(QuotesCase)
+
+    error_code = validation_error_details.detect do |error_details|
+      error_details.fetch("id") == error_id
+    end.fetch("code")
+
+    quote_checks.each do |quote_check|
+      check_error_id = quote_check.error_id_for_code(error_code)
+      check_error_details_edit = quote_check.validation_error_edits&.dig(check_error_id)
+      next unless check_error_id
+
+      # If the comment has not been overwritten, we add/update it.
+      if check_error_details_edit.nil? || check_error_details_edit["comment"] == last_comment
+        quote_check.comment_validation_error_detail!(check_error_id, comment)
+      end
+    end
+  end
+  # rubocop:enable Metrics/CyclomaticComplexity
+
+  def commented? # rubocop:disable Metrics/CyclomaticComplexity
+    (has_attribute?(:comment) && comment.present?) ||
+      (has_attribute?(:commented_at) && commented_at.present?) ||
       validation_error_edits&.values&.any? { it.key? "commented_at" } || false
   end
 
-  def delete_validation_error_detail!(error_id, reason: nil)
+  def delete_validation_error_detail!(error_id, reason: nil) # rubocop:disable Metrics/AbcSize
     self.validation_error_edits ||= {}
     validation_error_edits[error_id] ||= {}
     validation_error_edits[error_id].merge!(
@@ -48,7 +80,22 @@ module QuoteCheckEdits
     )
     self.validation_error_edited_at = validation_error_edits[error_id].fetch("deleted_at")
 
+    repercute_delete_validation_error_detail!(error_id, reason:)
+
     save!
+  end
+
+  def repercute_delete_validation_error_detail!(error_id, reason: nil)
+    return unless instance_of?(QuotesCase)
+
+    error_code = validation_error_details.detect do |error_details|
+      error_details.fetch("id") == error_id
+    end.fetch("code")
+
+    quote_checks.each do |quote_check|
+      check_error_id = quote_check.error_id_for_code(error_code)
+      quote_check.delete_validation_error_detail!(check_error_id, reason:) if check_error_id
+    end
   end
 
   def edited_at
@@ -63,7 +110,7 @@ module QuoteCheckEdits
   end
 
   def format_commented_at
-    self.commented_at = comment.present? ? Time.zone.now : nil
+    self.commented_at = comment.present? ? Time.zone.now : nil if has_attribute?(:comment)
   end
 
   def format_validation_error_edits
@@ -76,14 +123,29 @@ module QuoteCheckEdits
     validation_error_edits
   end
 
-  def readd_validation_error_detail!(validation_error_id)
-    if validation_error_edits&.key?(validation_error_id)
-      self.validation_error_edits[validation_error_id] = validation_error_edits[validation_error_id]
-                                                         .except("deleted", "deleted_at", "reason").presence
+  def readd_validation_error_detail!(error_id)
+    if validation_error_edits&.key?(error_id)
+      self.validation_error_edits[error_id] = validation_error_edits[error_id]
+                                              .except("deleted", "deleted_at", "reason").presence
       self.validation_error_edited_at = Time.zone.now
+
+      repercute_readd_validation_error_detail!(error_id)
     end
 
     save!
+  end
+
+  def repercute_readd_validation_error_detail!(error_id)
+    return unless instance_of?(QuotesCase)
+
+    error_code = validation_error_details.detect do |error_details|
+      error_details.fetch("id") == error_id
+    end.fetch("code")
+
+    quote_checks.each do |quote_check|
+      check_error_id = quote_check.error_id_for_code(error_code)
+      quote_check.readd_validation_error_detail!(check_error_id) if check_error_id
+    end
   end
 
   # rubocop:disable Metrics/AbcSize

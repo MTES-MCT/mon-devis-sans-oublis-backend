@@ -2,19 +2,19 @@
 
 module Api
   module V1
-    # Controller for QuoteChecks ValidationErrorDetails API
-    class QuoteChecksValidationErrorDetailsController < BaseController
+    # Controller for QuotesCases ValidationErrorDetails API
+    class QuotesCasesValidationErrorDetailsController < BaseController
       before_action :authorize_internal_mdso_only, except: :validation_error_detail_deletion_reasons
       before_action :validation_error_details, except: :validation_error_detail_deletion_reasons
 
       def create
-        quote_check.readd_validation_error_detail!(validation_error_details.fetch("id"))
+        quotes_case.readd_validation_error_detail!(validation_error_details.fetch("id"))
 
         head :created
       end
 
       def update
-        quote_check.comment_validation_error_detail!(
+        quotes_case.comment_validation_error_detail!(
           validation_error_details.fetch("id"),
           validation_error_details_edit_params.fetch(:comment)
         )
@@ -23,7 +23,7 @@ module Api
       end
 
       def destroy
-        quote_check.delete_validation_error_detail!(
+        quotes_case.delete_validation_error_detail!(
           validation_error_details.fetch("id"),
           reason: params.fetch(:reason, nil).presence
         )
@@ -32,7 +32,7 @@ module Api
       end
 
       def validation_error_detail_deletion_reasons
-        data = QuoteCheck::VALIDATION_ERROR_DELETION_REASONS.index_with do # rubocop:disable Style/ItBlockParameter
+        data = QuotesCase::VALIDATION_ERROR_DELETION_REASONS.index_with do # rubocop:disable Style/ItBlockParameter
           I18n.t("validation_error_detail_deletion_reasons.#{it}")
         end
 
@@ -41,14 +41,8 @@ module Api
 
       protected
 
-      def quote_check
-        @quote_check ||= QuoteCheck
-                         .select(*(QuoteCheck.column_names - %w[
-                           text anonymised_text
-                           file_text file_markdown
-                         ]))
-                         .accessible_for_source(api_user)
-                         .find(params[:quote_check_id])
+      def quotes_case
+        @quotes_case ||= QuotesCase.find(params[:quotes_case_id])
       end
 
       def validation_error_details_edit_params
@@ -56,9 +50,9 @@ module Api
       end
 
       def validation_error_details
-        raise ActiveRecord::RecordNotFound, "QuoteCheck still in progress" if quote_check.status == "in_progress"
+        raise ActiveRecord::RecordNotFound, "QuotesCase still in progress" if quotes_case.status == "in_progress"
 
-        @validation_error_details ||= quote_check.validation_error_details.detect do |error_details|
+        @validation_error_details ||= quotes_case.validation_error_details.detect do |error_details|
           error_details.fetch("id") == params[:id]
         end || raise(ActiveRecord::RecordNotFound,
                      "Couldn't find ValidationErrorDetails with 'id'=#{params[:id]}")
