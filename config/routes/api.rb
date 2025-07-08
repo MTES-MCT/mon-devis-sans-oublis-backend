@@ -24,7 +24,17 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
         get :siret
       end
 
-      resources :quotes_cases, only: %i[create show update]
+      resources :quotes_cases, only: %i[create show update] do
+        resources :quotes_case_validation_error_details,
+                  path: "error_details",
+                  as: :validation_error_details,
+                  only: %i[destroy update] do
+          member do
+            post "", action: :create
+          end
+        end
+      end
+
       resources :quote_checks, only: %i[create show update] do
         collection do
           get :metadata
