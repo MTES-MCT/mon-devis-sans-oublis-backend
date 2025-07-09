@@ -5,9 +5,9 @@ module QuoteFileOcr
   extend ActiveSupport::Concern
 
   def ocr
-    return unless ocrable?
+    return unless ocrable? || !force_ocr
 
-    @ocr ||= read_attribute(:ocr) || QuoteReader::Global::DEFAULT_OCR # TODO: save in a field
+    read_attribute(:ocr) || QuoteReader::Global::DEFAULT_OCR # TODO: save in a field
   end
 
   def ocrable?
