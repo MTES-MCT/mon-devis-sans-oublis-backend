@@ -24,6 +24,9 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
       link_to "Dossier #{it.id}", admin_quotes_case_path(it)
     end
 
+    column "Nb devis" do
+      it.quote_checks.count
+    end
     column "Source", :source_name
     column "Référence", :reference
     column :created_at do
@@ -35,9 +38,12 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
   end
 
   show do # rubocop:disable Metrics/BlockLength
-    columns do
+    columns do # rubocop:disable Metrics/BlockLength
       column do
         attributes_table do
+          row "Nb devis" do
+            it.quote_checks.count
+          end
           row :source_name, label: "Source"
           row :reference, label: "Référence"
           row :created_at do
@@ -52,6 +58,8 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
           row :quote_checks do |quotes_case|
             content_tag(:ul) do
               quotes_case.quote_checks.default_order.map do |quote_check|
+                next unless quote_check.file
+
                 content_tag(:li, link_to(
                                    quote_check.file.filename,
                                    admin_quote_check_path(quote_check),
