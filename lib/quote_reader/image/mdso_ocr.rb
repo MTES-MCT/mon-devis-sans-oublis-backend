@@ -10,7 +10,7 @@ module QuoteReader
     class MdsoOcr < Base
       attr_reader :model, :result
 
-      DEFAULT_MODEL = ENV.fetch("MDSO_OCR_MODEL", "olmocr")
+      DEFAULT_MODEL = ENV.fetch("MDSO_OCR_MODEL", "nanonets")
       HOST = ENV.fetch("MDSO_OCR_HOST", "http://localhost:8000")
 
       def self.configured?
