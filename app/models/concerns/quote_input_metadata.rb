@@ -22,7 +22,14 @@ module QuoteInputMetadata
     menuiserie_porte
     menuiserie_volet_isolant
     poele_insert
-    vmc_simple_flux,vmc_double_flux
+    vmc_simple_flux
+    vmc_double_flux
+    pac_air_eau
+    chaudiere_biomasse
+    systeme_solaire_combine
+    pac_eau_eau
+    pac_air_air
+    pac_hybride
   ].freeze
 
   RENOVATION_TYPES = %w[geste ampleur].freeze
