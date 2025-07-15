@@ -340,6 +340,10 @@ Pour respecter la confidentialité, les données sensibles sont automatiquement 
 
 Les données analytiques (dates, statuts, codes d'erreur, métriques) sont conservées pour permettre les analyses.
 
+### Automatisation
+
+L'export est automatisé via un CRON (défini dans `cron.json`) qui s'exécute **tous les matins à 9h** pour maintenir les données Metabase à jour avec les dernières données anonymisées.
+
 ### Exécution manuelle
 
 ```bash
@@ -348,4 +352,4 @@ scalingo --app mon-devis-sans-oublis-backend-staging env-set \
   METABASE_DATA_DB_URL="postgresql://user:pass@host:port/dbname"
 
 # Lancement de l'export
-scalingo --app mon-devis-sans-oublis-backend-staging run scripts/export-db-metabase.sh
+scalingo --app mon-devis-sans-oublis-backend-staging run db/scripts/export-db-metabase.sh

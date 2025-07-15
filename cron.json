@@ -1,0 +1,8 @@
+{
+  "jobs": [
+    {
+      "command": "0 8 * * * db/scripts/export-db-metabase.sh",
+      "size": "M"
+    }
+  ]
+}
