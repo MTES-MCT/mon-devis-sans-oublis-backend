@@ -53,6 +53,8 @@ fr:
       rge_hors_date: "Le numéro de certification RGE du professionnel est hors date"
       pro_assurance_manquant: "Assurance professionnelle souscrite manquante"
       pro_assurance_manquant_infos: "Assurance professionnelle souscrite avec le N° de la police d'assurance, le type (décennale, biennale ...), les coordonnées de l'assureur ou du garant et la couverture géographique du contrat ou de la garantie."
+      rge_siret_manquant: "RGE ou SIRET manquant pour recherche"
+      geste_type_inconnu: "Le type de geste indiqué n'est pas reconnu"
 
       # Information du client : 
       client_prenom_manquant: "Le prénom du client est manquant"

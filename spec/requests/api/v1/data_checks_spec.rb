@@ -2,8 +2,20 @@
 
 require "rails_helper"
 
-RSpec.describe "/api/v1/data_checks/rge" do
+RSpec.describe "/api/v1/data_checks" do
   subject(:json) { response.parsed_body }
+
+  describe "GET /api/v1/data_checks/geste_types" do
+    it "returns a successful response" do
+      get api_v1_data_checks_geste_types_url
+      expect(response).to be_successful
+    end
+
+    it "returns a complete response" do
+      get api_v1_data_checks_geste_types_url
+      expect(json.fetch("data")).to include(*QuoteCheck::GESTE_TYPES)
+    end
+  end
 
   describe "GET /api/v1/data_checks/rge" do
     before { get api_v1_data_checks_rge_url, params: params }
@@ -25,6 +37,48 @@ RSpec.describe "/api/v1/data_checks/rge" do
 
       it "does not return error" do
         expect(json).not_to have_key("error_details")
+      end
+    end
+
+    context "with SIRET and Geste Type" do
+      let(:params) { { siret: "52503410400014", geste_types: "vmc_double_flux" } }
+
+      it "returns results" do
+        expect(json.dig("results", 0, "domaine")).to eq("Ventilation mécanique")
+      end
+    end
+
+    context "with SIRET, RGE and Geste Type" do
+      let(:params) { { siret: "52503410400014", rge: "Q90513", geste_types: "vmc_double_flux" } }
+
+      it "returns results" do
+        expect(json.dig("results", 0, "domaine")).to eq("Ventilation mécanique")
+      end
+    end
+
+    context "with SIRET, RGE and matching Geste Types" do
+      let(:params) do
+        { siret: "52503410400014", rge: "Q90513", geste_types: "menuiserie_fenetre_toit,vmc_double_flux" }
+      end
+
+      it "returns results" do
+        expect(json.dig("results", 0, "domaine")).to eq("Ventilation mécanique")
+      end
+    end
+
+    context "with SIRET, RGE and unrelated Geste Types" do
+      let(:params) { { siret: "52503410400014", rge: "Q90513", geste_types: "isolation_plancher_bas" } }
+
+      it "returns a not found error" do
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+
+    context "with SIRET, RGE and unknown Geste Types" do
+      let(:params) { { siret: "52503410400014", rge: "Q90513", geste_types: "abcd" } }
+
+      it "returns a bad request error" do
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
 

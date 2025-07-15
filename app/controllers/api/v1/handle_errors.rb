@@ -27,6 +27,7 @@ module Api
       class BadRequestError < ApiErrorWithCode; end
       class NotFoundError < ApiErrorWithCode; end
       class UnauthorizedError < ApiError; end
+      class UnprocessableEntityError < ApiErrorWithCode; end
 
       included do
         rescue_from ActionController::ParameterMissing, with: :handle_parameter_missing
@@ -36,6 +37,7 @@ module Api
         rescue_from BadRequestError, with: :handle_bad_request
         rescue_from NotFoundError, with: :handle_record_not_found
         rescue_from UnauthorizedError, with: :handle_unauthorized
+        rescue_from UnprocessableEntityError, with: :handle_unprocessable_entity
       end
 
       private
@@ -86,6 +88,11 @@ module Api
       def handle_unauthorized(exception = nil)
         error = exception.is_a?(ApiErrorWithCode) ? exception : "Unauthorized"
         api_error(error, exception&.message || "HTTP Basic: Access denied.", :unauthorized)
+      end
+
+      def handle_unprocessable_entity(exception = nil)
+        error = exception.is_a?(ApiErrorWithCode) ? exception : "Unprocessable entity"
+        api_error(error, exception&.message || "Unprocessable entity.", :unprocessable_entity)
       end
     end
   end

@@ -265,7 +265,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.datatourisme.fr/ontology/core/1.0/#siret
-          x-cardinality: 62997
+          x-cardinality: 63178
           x-capabilities:
             textAgg: true
           x-concept:
@@ -277,7 +277,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.w3.org/2000/01/rdf-schema#label
-          x-cardinality: 62575
+          x-cardinality: 62455
           x-capabilities:
             textAgg: true
           x-concept:
@@ -289,7 +289,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/address
-          x-cardinality: 63007
+          x-cardinality: 62984
           x-capabilities:
             textAgg: true
           x-concept:
@@ -301,7 +301,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/postalCode
-          x-cardinality: 5978
+          x-cardinality: 5971
           x-capabilities:
             textAgg: true
           x-concept:
@@ -313,7 +313,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/City
-          x-cardinality: 19325
+          x-cardinality: 19271
           x-capabilities:
             textAgg: true
           x-concept:
@@ -345,7 +345,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#tel
-          x-cardinality: 59435
+          x-cardinality: 59388
           x-capabilities:
             textAgg: true
           x-concept:
@@ -357,7 +357,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#email
-          x-cardinality: 61329
+          x-cardinality: 61409
           x-capabilities:
             textAgg: true
           x-concept:
@@ -369,7 +369,7 @@ components:
           type: string
           description: ''
           x-refersTo: https://schema.org/WebPage
-          x-cardinality: 37555
+          x-cardinality: 37401
           x-capabilities:
             textAgg: true
           x-concept:
@@ -395,7 +395,7 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/DigitalDocument
-          x-cardinality: 74989
+          x-cardinality: 75106
           x-capabilities: {}
           x-concept:
             id: attachment
@@ -415,8 +415,8 @@ components:
           - Tableau de l´Ordre
           - Qualibois Eau
           - QualiPV 36
-          - Qualibois Air
           - Certificat Qualifelec RGE
+          - Qualibois Air
           - Ventilation +
           - Qualisol CESI
           - Chauffage +
@@ -426,8 +426,8 @@ components:
           - QualiPAC module CET
           - CERTIBAT-RGE
           - AUDIT ENERGETIQUE BATIMENT
-          - Qualisol Collectif
           - Certiforage module Sonde
+          - Qualisol Collectif
           - Certiforage module Nappe
           - RGE Etudes Audits énergétiques Batiments
           - CERTIFACT_EUSKADI_EKO
@@ -540,7 +540,7 @@ components:
           description: Cette date correspond à la date de début de qualification transmise
             par l'organisme de qualification
           x-capabilities: {}
-          x-cardinality: 1872
+          x-cardinality: 1876
         lien_date_fin:
           title: Date de fin de qualification
           type: string
@@ -548,7 +548,7 @@ components:
           description: Cette date correspond à la date de fin de qualification transmise
             par l'organisme de qualification
           x-capabilities: {}
-          x-cardinality: 1560
+          x-cardinality: 1574
         _file.content:
           x-calculated: true
           type: string
@@ -628,7 +628,14 @@ components:
       - menuiserie_porte
       - menuiserie_volet_isolant
       - poele_insert
-      - vmc_simple_flux,vmc_double_flux
+      - vmc_simple_flux
+      - vmc_double_flux
+      - pac_air_eau
+      - chaudiere_biomasse
+      - systeme_solaire_combine
+      - pac_eau_eau
+      - pac_air_air
+      - pac_hybride
     profile:
       type: string
       enum:
