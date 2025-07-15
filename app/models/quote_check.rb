@@ -13,8 +13,8 @@ class QuoteCheck < ApplicationRecord
   belongs_to :file, class_name: "QuoteFile"
   belongs_to :case, class_name: "QuotesCase", optional: true
 
-  belongs_to :parent, class_name: "QuoteFile", optional: true
-  has_many :children, class_name: "QuoteFile", foreign_key: :parent_id, inverse_of: :parent, dependent: :nullify
+  belongs_to :parent, class_name: "QuoteCheck", optional: true
+  has_many :children, class_name: "QuoteCheck", foreign_key: :parent_id, inverse_of: :parent, dependent: :nullify
 
   after_initialize :set_application_version
   strip_attributes
