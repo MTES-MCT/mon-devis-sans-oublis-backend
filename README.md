@@ -2,7 +2,7 @@
 
 Plateforme d'analyse de conformité de devis pour accélérer la rénovation énergétique des logements en simplifiant l'instruction des dossiers d'aide.
 
-🔗 **[Accéder à la plateforme](https://mon-devis-sans-oublis.beta.gouv.fr/)** 
+🔗 **[Accéder à la plateforme](https://mon-devis-sans-oublis.beta.gouv.fr/)**
 
 ## Prérequis
 
@@ -39,7 +39,7 @@ Configurez les variables d'environnement selon votre méthode d'exécution :
 cp .env.example .env.local
 ```
 
-2. Éditez le fichier `.env.local` avec les valeurs réelles pour votre environnement de développement. 
+2. Éditez le fichier `.env.local` avec les valeurs réelles pour votre environnement de développement.
 
 ⚠️ **Important** : Ne laissez jamais de variables d'environnement vides (ex: `VARIABLE=`). Si vous n'avez pas besoin d'une variable, commentez-la avec `#` ou supprimez la ligne complètement.
 
@@ -96,6 +96,7 @@ cp .env.example .env.docker
 Scalingo est notre hébergeur type PaaS applicatif :
 
 #### Staging
+
 ```bash
 APPLICATION_HOST=https://api.mon-devis-sans-oublis.beta.gouv.fr
 APP_ENV=staging
@@ -105,6 +106,7 @@ FRONTEND_APPLICATION_HOST=https://staging.mon-devis-sans-oublis.beta.gouv.fr
 ```
 
 #### Production
+
 ```bash
 APPLICATION_HOST=https://api.staging.mon-devis-sans-oublis.beta.gouv.fr
 APP_ENV=production
@@ -115,24 +117,24 @@ FRONTEND_APPLICATION_HOST=https://mon-devis-sans-oublis.beta.gouv.fr
 
 ## Technologies sous-jacente utilisées
 
-* [Ruby on Rails](https://rubyonrails.org/) version 8 comme boîte à outil et socle technique applicatif ;
-* le [DSFR](https://www.systeme-de-design.gouv.fr/) pour réutiliser les éléments graphiques officiels via la [librairie de
+- [Ruby on Rails](https://rubyonrails.org/) version 8 comme boîte à outil et socle technique applicatif ;
+- le [DSFR](https://www.systeme-de-design.gouv.fr/) pour réutiliser les éléments graphiques officiels via la [librairie de
 composants DSFR](https://github.com/betagouv/dsfr-view-components)
-* PostgreSQL comme base de données pour stocker les données ;
-*  des solutions de LLM pour interroger les devis, via la boîte à outils [LangChain](https://rubydoc.info/gems/langchainrb)
-*** Albert API d'Etalab
+- PostgreSQL comme base de données pour stocker les données ;
+- des solutions de LLM pour interroger les devis, via la boîte à outils [LangChain](https://rubydoc.info/gems/langchainrb)
+***Albert API d'Etalab
 *** Mistral.ai : données publiques et/ou anonymisées
 *** Ollama : un modèle Llama local
-* l'API Data de l'ADEME pour croiser les données d'entreprises qualifiées ;
-* des annuaires officiels de professionnels pour croiser des données ;
-* ~~[Publi.codes](https://publi.codes/) pour un moteur de validation basé sur des règles~~ (plus utilisé pour le moment) ;
-* Sentry pour monitorer et être alerté en cas d'erreur ;
-* Matomo pour mesurer et comprendre l'usage via des analytics ;
-* RSpec comme framework de tests ;
-* Rswag comme outil de documentation au format Swagger/ OpenAPI de l'API à travers des tests ;
-* Rubocop (RSpec et Rails) pour le linting ;
-* Docker pour avoir un environnement de développement ;
-* ClamAV pour scanner les fichiers déposés.
+- l'API Data de l'ADEME pour croiser les données d'entreprises qualifiées ;
+- des annuaires officiels de professionnels pour croiser des données ;
+- ~~[Publi.codes](https://publi.codes/) pour un moteur de validation basé sur des règles~~ (plus utilisé pour le moment) ;
+- Sentry pour monitorer et être alerté en cas d'erreur ;
+- Matomo pour mesurer et comprendre l'usage via des analytics ;
+- RSpec comme framework de tests ;
+- Rswag comme outil de documentation au format Swagger/ OpenAPI de l'API à travers des tests ;
+- Rubocop (RSpec et Rails) pour le linting ;
+- Docker pour avoir un environnement de développement ;
+- ClamAV pour scanner les fichiers déposés.
 
 ## Moteur et fonctionnement interne / Architecture
 
@@ -196,6 +198,7 @@ Nous suivons les recommendations et les conventions du framework Ruby on Rails e
 - dossier `app/services` : pour organiser la logique métier propre et interne à notre projet
 
 Les fichiers devis sont traités par le `QuoteChecksController` qui les envoient aux services:
+
 - `QuoteReader` lisant le devis brut puis extractant les information du devis de manière naïve en se basant sur le texte du PDF et via solutions LLM avec croisement de données d'annuaires publiques de la rénovation
 - puis ces attributs de devis sont vérifier par le `QuoteValdiator` qui controlle un ensemble de règles et renvoit les erreurs correspondantes
 
@@ -203,12 +206,12 @@ Les fichiers devis sont traités par le `QuoteChecksController` qui les envoient
 
 Différentes briques sont mises à contribution et encore en évaluation:
 
-* pour la reconnaissance des images et lire leur contenu via OCR
-  * Surya (Python) 
-  * tesseract (natif)
-* pour transformer les PDF en images
-  * librairie Poppler `pdftoppm` (natif)
-  * la gem MiniMagick (IM) `mini_magick` avec ImageMagick 6.9 (comme sur Scalingo) (natif)
+- pour la reconnaissance des images et lire leur contenu via OCR
+  - Surya (Python)
+  - tesseract (natif)
+- pour transformer les PDF en images
+  - librairie Poppler `pdftoppm` (natif)
+  - la gem MiniMagick (IM) `mini_magick` avec ImageMagick 6.9 (comme sur Scalingo) (natif)
 
 ### Tester un devis en local
 
@@ -307,3 +310,42 @@ Cette cinématique commence d'abord par construire l'image Docker
 qu'elle transmet ensuite aux trois étapes ci-dessus, ce qui évite de
 répéter trois fois l'installation et la configuration du projet sans
 sacrifier le parallèlisme de ces étapes.
+
+## Anonymisation et Export vers Metabase
+
+### Vue d'ensemble
+
+Le back-end dispose d'un système d'export automatisé qui permet de copier et anonymiser les données de production vers une base de données dédiée à Metabase pour les analyses et tableaux de bord.
+
+### Scripts d'anonymisation
+
+Le processus d'anonymisation est géré par trois scripts situés dans le dossier `db/scripts` :
+
+- **`export-db-metabase.sh`** : Script principal d'orchestration
+- **`anonymize-data.sql`** : Création des tables avec données anonymisées
+- **`cleanup-metabase-db.sql`** : Nettoyage de la base Metabase avant import
+
+### Données anonymisées
+
+Pour respecter la confidentialité, les données sensibles sont automatiquement anonymisées :
+
+| Type de données | Anonymisation |
+|-----------------|---------------|
+| **Contenu des devis** | Remplacé par "Texte anonymisé [ID]" |
+| **Fichiers PDF** | Contenu binaire exclu, noms anonymisés |
+| **Texte OCR** | Remplacé par "Contenu OCR anonymisé [ID]" |
+| **Emails utilisateurs** | Format `user_[ID]@example.com` |
+| **Commentaires** | Remplacés par "Commentaire anonymisé" |
+| **Métadonnées sensibles** | Anonymisées ou exclues |
+
+Les données analytiques (dates, statuts, codes d'erreur, métriques) sont conservées pour permettre les analyses.
+
+### Exécution manuelle
+
+```bash
+# Configuration de la variable d'environnement
+scalingo --app mon-devis-sans-oublis-backend-staging env-set \
+  METABASE_DATA_DB_URL="postgresql://user:pass@host:port/dbname"
+
+# Lancement de l'export
+scalingo --app mon-devis-sans-oublis-backend-staging run scripts/export-db-metabase.sh
