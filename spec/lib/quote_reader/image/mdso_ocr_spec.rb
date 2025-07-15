@@ -9,13 +9,13 @@ RSpec.describe QuoteReader::Image::MdsoOcr, type: :service do
   let(:quote_file) { create(:quote_file, file:) }
 
   describe "#extract_text", :vcr do
-    it "returns the content", :vcr do
+    it "returns the content" do
       expect(mdso_ocr.extract_text).to include("Nice")
     end
   end
 
   describe "#models", :vcr do
-    it "returns the list of models", :vcr do
+    it "returns the list of models" do
       expect(mdso_ocr.models).to include("olmocr")
     end
   end
