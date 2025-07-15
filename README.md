@@ -311,13 +311,13 @@ qu'elle transmet ensuite aux trois étapes ci-dessus, ce qui évite de
 répéter trois fois l'installation et la configuration du projet sans
 sacrifier le parallèlisme de ces étapes.
 
-## Anonymisation et Export vers Metabase
+# Anonymisation et Export vers Metabase
 
-### Vue d'ensemble
+## Vue d'ensemble
 
 Le back-end dispose d'un système d'export automatisé qui permet de copier et anonymiser les données de production vers une base de données dédiée à Metabase pour les analyses et tableaux de bord.
 
-### Scripts d'anonymisation
+## Scripts d'anonymisation
 
 Le processus d'anonymisation est géré par trois scripts situés dans le dossier `db/scripts` :
 
@@ -325,7 +325,30 @@ Le processus d'anonymisation est géré par trois scripts situés dans le dossie
 - **`anonymize-data.sql`** : Création des tables avec données anonymisées
 - **`cleanup-metabase-db.sql`** : Nettoyage de la base Metabase avant import
 
-### Données anonymisées
+## Variables d'environnement requises
+
+L'export nécessite deux variables d'environnement sur l'application backend :
+
+| Variable | Description | Source |
+|----------|-------------|---------|
+| `DATABASE_URL` | URL de la base de données backend | Automatiquement configurée par Scalingo |
+| `METABASE_DATA_DB_URL` | URL de la base de données Metabase | À configurer manuellement |
+
+### Configuration de la variable Metabase
+
+```bash
+# 1. Récupérer l'URL de la DB Metabase
+scalingo --app mon-devis-metabase env | grep DATABASE_URL
+
+# 2. Configurer cette URL sur l'app backend
+scalingo --app mon-devis-sans-oublis-backend-staging env-set \
+  METABASE_DATA_DB_URL="postgresql://user:password@host:port/database"
+
+# 3. Vérifier la configuration
+scalingo --app mon-devis-sans-oublis-backend-staging env | grep DATABASE
+```
+
+## Données anonymisées
 
 Pour respecter la confidentialité, les données sensibles sont automatiquement anonymisées :
 
@@ -340,16 +363,26 @@ Pour respecter la confidentialité, les données sensibles sont automatiquement 
 
 Les données analytiques (dates, statuts, codes d'erreur, métriques) sont conservées pour permettre les analyses.
 
-### Automatisation
+## Automatisation
 
 L'export est automatisé via un CRON (défini dans `cron.json`) qui s'exécute **tous les matins à 9h** pour maintenir les données Metabase à jour avec les dernières données anonymisées.
 
-### Exécution manuelle
+## Exécution manuelle
 
 ```bash
-# Configuration de la variable d'environnement
-scalingo --app mon-devis-sans-oublis-backend-staging env-set \
-  METABASE_DATA_DB_URL="postgresql://user:pass@host:port/dbname"
+# Pré-requis : Vérifier que METABASE_DATA_DB_URL est configurée
+scalingo --app mon-devis-sans-oublis-backend-staging env | grep METABASE_DATA_DB_URL
 
 # Lancement de l'export
 scalingo --app mon-devis-sans-oublis-backend-staging run db/scripts/export-db-metabase.sh
+```
+
+## Surveillance
+
+```bash
+# Voir les tâches programmées
+scalingo --app mon-devis-sans-oublis-backend-staging cron-tasks
+
+# Consulter les logs d'exécution
+scalingo --app mon-devis-sans-oublis-backend-staging logs --filter cron
+```
