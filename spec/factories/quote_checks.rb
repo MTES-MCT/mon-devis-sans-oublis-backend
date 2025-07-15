@@ -10,8 +10,10 @@ FactoryBot.define do
     file factory: %i[quote_file]
 
     started_at { Time.zone.now }
-    finished_at { nil } # Default pending status
 
+    trait :pending do
+      finished_at { nil }
+    end
     trait :finished do
       text do
         <<~TEXT
@@ -46,6 +48,7 @@ FactoryBot.define do
       validation_version { QuoteValidator::Global::VERSION }
       validation_errors { [] }
     end
+
     trait :valid do
       finished
 

@@ -1,5 +1,19 @@
 # frozen_string_literal: true
 
+Rails.application.configure do
+  config.good_job = {
+    queues: "*", # critical,default;low
+    enable_cron: true,
+    cron: {
+      quote_checks_timeout_job: {
+        cron: "*/5 * * * *",
+        class: "QuoteChecksTimeoutJob"
+      }
+    },
+    dashboard_default_locale: config.i18n.default_locale
+  }
+end
+
 if Rails.env.production?
   GoodJob::Engine.middleware.use(Rack::Auth::Basic) do |username, password|
     ActiveSupport::SecurityUtils.secure_compare(ENV.fetch("GOOD_JOB_USERNAME"), username) &
