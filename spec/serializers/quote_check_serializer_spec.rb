@@ -11,21 +11,6 @@ RSpec.describe QuoteCheckSerializer, type: :serializer do
   let(:quote_check) { create(:quote_check) }
 
   describe "serialization" do
-    context "when check timeout" do
-      let(:quote_check) { create(:quote_check, started_at: 2.hours.ago) }
-
-      it "has invalid status" do
-        expect(json).to include("status" => "invalid")
-      end
-
-      it "add the timeout error" do
-        expect(json.dig("error_details", 0)).to include(
-          "code" => "server_timeout_error",
-          "category" => "server"
-        )
-      end
-    end
-
     context "with geste_prices validation error" do
       before do
         quote_check.update!(

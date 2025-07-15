@@ -34,10 +34,6 @@ module MesDevisSansOublis
     config.i18n.fallbacks = [:fr]
     config.i18n.available_locales = [:fr]
 
-    config.good_job = {
-      dashboard_default_locale: config.i18n.default_locale
-    }
-
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

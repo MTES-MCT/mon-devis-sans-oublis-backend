@@ -3,8 +3,6 @@
 class QuoteCheckSerializer < ObjectWithValidationSerializer
   include ActionView::Helpers::SanitizeHelper
 
-  TIMEOUT_FOR_PROCESSING = Integer(ENV.fetch("MDSO_TIMEOUT_FOR_PROCESSING", 15)).minutes
-
   attributes :id, :status, :profile,
              :reference, :metadata,
              :parent_id,
@@ -47,31 +45,5 @@ class QuoteCheckSerializer < ObjectWithValidationSerializer
 
   def finished_at
     format_datetime(object.finished_at)
-  end
-
-  def status
-    return "invalid" if consider_timeout?
-
-    object.status
-  end
-
-  protected
-
-  def consider_timeout?
-    object.status == "pending" && object.started_at < TIMEOUT_FOR_PROCESSING.ago
-  end
-
-  def validation_error_details # rubocop:disable Metrics/MethodLength
-    @validation_error_details ||= if consider_timeout?
-                                    code = "server_timeout_error"
-                                    [{
-                                      "id" => [object.id, 1].compact.join("-"),
-                                      "code" => code,
-                                      "category" => "server", type: "error",
-                                      "title" => I18n.t("quote_validator.errors.#{code}")
-                                    }]
-                                  else
-                                    super
-                                  end
   end
 end
