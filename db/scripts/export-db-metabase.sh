@@ -73,6 +73,7 @@ SELECT
     (SELECT count(*) FROM quote_checks) +
     (SELECT count(*) FROM quote_check_feedbacks) +
     (SELECT count(*) FROM quotes_cases)
+    (SELECT count(*) FROM quote_error_edits)
 ;" | tr -d ' ' || echo "0")
 
 # Log de succès
@@ -93,5 +94,7 @@ UNION ALL
 SELECT 'quote_check_feedbacks' as table_name, count(*) as count FROM quote_check_feedbacks
 UNION ALL
 SELECT 'quotes_cases' as table_name, count(*) as count FROM quotes_cases
+UNION ALL
+SELECT 'quote_error_edits' as table_name, count(*) as count FROM quote_error_edits
 ORDER BY table_name;
 "
