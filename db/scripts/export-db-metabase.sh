@@ -35,8 +35,8 @@ if [ ! -f "$SCRIPT_DIR/anonymize-data.sql" ]; then
     exit 1
 fi
 
-if [ ! -f "$SCRIPT_DIR/cleanup_metabase_db.sql" ]; then
-    echo "Erreur: Fichier cleanup_metabase_db.sql introuvable"
+if [ ! -f "$SCRIPT_DIR/cleanup-metabase.sql" ]; then
+    echo "Erreur: Fichier cleanup-metabase.sql introuvable"
     exit 1
 fi
 
@@ -58,7 +58,7 @@ pg_dump $SOURCE_DB_URL \
 sed -i 's/export_anonymized\.//g' /tmp/anonymized_data.sql
 
 echo "Étape 3: Nettoyage de la DB Metabase..."
-psql $TARGET_DB_URL -f "$SCRIPT_DIR/cleanup_metabase_db.sql"
+psql $TARGET_DB_URL -f "$SCRIPT_DIR/cleanup-metabase.sql"
 
 echo "Étape 4: Import des données vers Metabase..."
 psql $TARGET_DB_URL -f /tmp/anonymized_data.sql
