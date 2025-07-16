@@ -40,6 +40,11 @@ if [ ! -f "$SCRIPT_DIR/cleanup-metabase.sql" ]; then
     exit 1
 fi
 
+if [ ! -f "$SCRIPT_DIR/export-anonymized-data.sql" ]; then
+    echo "Erreur: Fichier export-anonymized-data.sql introuvable"
+    exit 1
+fi
+
 echo "Étape 1: Création des tables anonymisées dans la DB source..."
 psql $SOURCE_DB_URL -f "$SCRIPT_DIR/anonymize-data.sql"
 
@@ -47,15 +52,7 @@ psql $SOURCE_DB_URL -f "$SCRIPT_DIR/anonymize-data.sql"
 psql $SOURCE_DB_URL -c "INSERT INTO export_logs (status, message) VALUES ('started', 'Export en cours');"
 
 echo "Étape 2: Export des données anonymisées..."
-pg_dump $SOURCE_DB_URL \
-    --schema=export_anonymized \
-    --data-only \
-    --inserts \
-    --no-owner \
-    --no-privileges > /tmp/anonymized_data.sql
-
-# Enlever le préfixe du schéma dans le dump
-sed -i 's/export_anonymized\.//g' /tmp/anonymized_data.sql
+psql $SOURCE_DB_URL -f "$SCRIPT_DIR/export-anonymized-data.sql"
 
 echo "Étape 3: Nettoyage de la DB Metabase..."
 psql $TARGET_DB_URL -f "$SCRIPT_DIR/cleanup-metabase.sql"
