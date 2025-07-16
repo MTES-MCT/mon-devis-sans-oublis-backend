@@ -11,7 +11,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   get "/rails/active_storage/postgresql/:signed_id/*filename" => "active_storage/fixed_postgresql#show",
       as: :rails_postgresql_blob
 
-  namespace :api do
+  namespace :api do # rubocop:disable Metrics/BlockLength
     namespace :v1 do
       get "auth/check", to: "auth#check", as: :auth_check
 
@@ -19,8 +19,9 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
       resources :renovation_types, only: %i[index]
 
       scope path: "data_checks", controller: :data_checks, as: :data_checks do
-        get :siret
+        get :geste_types
         get :rge
+        get :siret
       end
 
       resources :quotes_cases, only: %i[create show update]

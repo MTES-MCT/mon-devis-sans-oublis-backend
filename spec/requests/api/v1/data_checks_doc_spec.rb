@@ -3,6 +3,25 @@
 require "swagger_helper"
 
 describe "Data Checks API" do
+  path "/data_checks/geste_types" do
+    get "Récupérer les types de gestes disponibles" do
+      tags "Checks"
+      produces "application/json"
+
+      response "200", "liste des types de gestes" do
+        schema type: :object,
+               properties: {
+                 data: {
+                   type: :array,
+                   data: { type: "#/components/schemas/geste_type" }
+                 }
+               },
+               required: ["data"]
+        run_test!
+      end
+    end
+  end
+
   path "/data_checks/siret" do
     get "Vérifier le SIRET" do
       tags "Checks"
@@ -42,12 +61,18 @@ describe "Data Checks API" do
         parameter name: :rge, in: :query, type: :string,
                   description: "RGE à Valider, sinon Trouve un RGE selon les critères"
         parameter name: :date, in: :query, type: :date
+        parameter name: :geste_types, in: :query, # , type: :string,
+                  type: :array, items: { type: :string },
+                  style: :form, explode: false,
+                  example: %w[menuiserie_fenetre_toit vmc_double_flux],
+                  description: "Type(s) de gestes séparés par des virgules, retournent les certificats correspondants à l'un des gestes" # rubocop:disable Layout/LineLength
 
         schema "$ref" => "#/components/schemas/data_check_rge_result"
 
         let(:siret) { "52503410400014" } # valid SIRET
         let(:rge) { "Q90513" } # valid RGE
         let(:date) { "2024-07-08" } # optional date
+        let(:geste_types) { [] } # optional geste types
 
         run_test!
       end
@@ -58,6 +83,7 @@ describe "Data Checks API" do
         let(:siret) { "52503410400014" } # valid SIRET
         let(:rge) { "Q90514" } # invalid RGE
         let(:date) { "2023-10-01" } # optional date
+        let(:geste_types) { [] } # optional geste types
 
         run_test!
       end
@@ -68,6 +94,7 @@ describe "Data Checks API" do
         let(:siret) { "12345678900000" } # wrong SIRET
         let(:rge) { "Q90513" } # valid RGE
         let(:date) { "2023-10-01" } # optional date
+        let(:geste_types) { [] } # optional geste types
 
         run_test!
       end
@@ -78,6 +105,7 @@ describe "Data Checks API" do
         let(:siret) { "52503410400014" } # valid SIRET
         let(:rge) { "Q90513" } # valid RGE
         let(:date) { "1990-10-01" } # optional date
+        let(:geste_types) { [] } # optional geste types
 
         run_test!
       end
@@ -88,6 +116,18 @@ describe "Data Checks API" do
         let(:siret) { "52503410400014" } # valid SIRET
         let(:rge) { nil }
         let(:date) { "1990-10-01" } # optional date
+        let(:geste_types) { [] } # optional geste types
+
+        run_test!
+      end
+
+      response "422", "Geste type invalide" do
+        schema "$ref" => "#/components/schemas/data_check_rge_result"
+
+        let(:siret) { "52503410400014" } # valid SIRET
+        let(:rge) { nil }
+        let(:date) { nil }
+        let(:geste_types) { ["abcd"] } # optional date
 
         run_test!
       end

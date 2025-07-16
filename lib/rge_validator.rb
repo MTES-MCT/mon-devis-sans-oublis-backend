@@ -52,8 +52,8 @@ module RgeValidator # rubocop:disable Metrics/ModuleLength
     "CERTIFICAT_SARL_DOMINIQUE_CALLIET" => nil,
     "Certiforage module Sonde" => nil
   }.to_h do |ademe_certificate, mdso_geste_types|
-    unkown_geste_types = Array.wrap(mdso_geste_types) - QuoteCheck::GESTE_TYPES
-    raise NotImplemented, "Unkown Geste type #{unkown_geste_types}" if unkown_geste_types.any?
+    unknown_geste_types = Array.wrap(mdso_geste_types) - QuoteCheck::GESTE_TYPES
+    raise NotImplemented, "Unknown Geste type #{unknown_geste_types}" if unknown_geste_types.any?
 
     [ademe_certificate, mdso_geste_types]
   end
@@ -93,8 +93,8 @@ module RgeValidator # rubocop:disable Metrics/ModuleLength
     "Commisionnement" => nil,
     "Forage géothermique" => nil
   }.to_h do |ademe_domain, mdso_geste_types|
-    unkown_geste_types = Array.wrap(mdso_geste_types) - QuoteCheck::GESTE_TYPES
-    raise NotImplemented, "Unkown Geste type #{unkown_geste_types}" if unkown_geste_types.any?
+    unknown_geste_types = Array.wrap(mdso_geste_types) - QuoteCheck::GESTE_TYPES
+    raise NotImplemented, "Unknown Geste type #{unknown_geste_types}" if unknown_geste_types.any?
 
     [ademe_domain, mdso_geste_types]
   end.freeze
@@ -110,12 +110,19 @@ module RgeValidator # rubocop:disable Metrics/ModuleLength
   # rubocop:disable Style/ItBlockParameter
   # @return [Array, false] Returns an array of RGE qualifications or false if none found.
   # @raise [ArgumentError] Raises an error if the RGE format is invalid or if the date is not in the correct format.
-  def self.valid?(rge: nil, siret: nil, date: nil) # rubocop:disable Metrics/MethodLength
+  def self.valid?(rge: nil, siret: nil, date: nil, geste_types: nil) # rubocop:disable Metrics/MethodLength
     date = validate_date!(date) if date.present?
     rge = validate_format!(rge) if rge.present?
+    raise ArgumentError.new(nil, "rge_siret_manquant") if rge.blank? && siret.blank?
 
+    geste_types = Array.wrap(geste_types).presence&.uniq
+    unknown_geste_types = geste_types - QuoteCheck::GESTE_TYPES if geste_types.present?
+    raise ArgumentError.new(nil, "geste_type_inconnu") if unknown_geste_types&.any?
+
+    qs = "siret:#{siret}" if siret.present?
+    qs ||= "rge:#{rge}" if rge.present?
     rge_qualifications = filter_rge_qualifications(
-      DataAdeme.new.historique_rge(qs: "siret:#{siret}").fetch("results")
+      DataAdeme.new.historique_rge(qs:).fetch("results")
     )
 
     if rge.present?
@@ -130,6 +137,16 @@ module RgeValidator # rubocop:disable Metrics/ModuleLength
         date.between?(Date.parse(it.fetch("date_debut")), Date.parse(it.fetch("date_fin")))
       end
       raise ArgumentError.new(nil, "rge_hors_date") if rge_qualifications.empty? && rge.present?
+    end
+
+    if geste_types.present?
+      rge_qualifications = rge_qualifications.select do
+        ademe_geste_types = [
+          ADEME_NOM_CERTIFICAT_TO_MDSO_GESTE_TYPE[it.fetch("nom_certificat")],
+          ADEME_DOMAINE_TO_MDSO_GESTE_TYPE[it.fetch("domaine")]
+        ].flatten.compact
+        ademe_geste_types.intersect?(geste_types)
+      end
     end
 
     # TODO: Validate with geste_types with ADEME_NOM_CERTIFICAT_TO_MDSO_GESTE_TYPE
