@@ -8,7 +8,47 @@ module RgeValidator # rubocop:disable Metrics/ModuleLength
 
   # Mapping of ADEME certificate names to MDSO GESTE types
   # See nom_certificat "Libellé du certificat" on https://data.ademe.fr/data-fair/api/v1/datasets/liste-des-entreprises-rge-2/api-docs.json
-  # And QA prompts
+  ADEME_DOMAINE_TO_MDSO_GESTE_TYPE = {
+    "Isolation par l'intérieur des murs ou rampants de toitures  ou plafonds" =>
+      "isolation_thermique_par_interieur_ITI",
+    "Chauffe-Eau Thermodynamique" => "chauffe_eau_thermo",
+    "Pompe à chaleur : chauffage" => %w[pac_air_eau pac_eau_eau pac_air_air pac_hybride],
+    "Fenêtres, volets, portes donnant sur l'extérieur" => nil,
+    "Isolation des combles perdus" => "isolation_comble_perdu",
+    "Isolation des murs par l'extérieur" => "isolation_thermique_par_exterieur_ITE",
+    "Poêle ou insert bois" => "poele_insert",
+    "Chaudière condensation ou micro-cogénération gaz ou fioul" => nil,
+    "Isolation des toitures terrasses ou des toitures par l'extérieur" => "isolation_toiture_terrasse",
+    "Fenêtres de toit" => "menuiserie_fenetre_toit",
+    "Ventilation mécanique" => %w[vmc_simple_flux vmc_double_flux],
+    "Panneaux solaires photovoltaïques" => nil,
+    "Isolation des planchers bas" => "isolation_plancher_bas",
+    "Audit énergétique Maison individuelle" => nil,
+    "Radiateurs électriques, dont régulation." => nil,
+    "Architecte" => nil,
+    "Chaudière bois" => "chaudiere_biomasse",
+    "Chauffage et/ou eau chaude solaire" => "chauffe_eau_solaire_individuel",
+    "Audit énergétique Logement collectif" => nil,
+    "Etude thermique reglementaire" => nil,
+    "Etude solaire photovoltaïque" => nil,
+    "Etude forage géothermique" => nil,
+    "Etude bois énergie" => nil,
+    "Projet complet de rénovation" => nil,
+    "Etude solaire thermique" => nil,
+    "Etude ACV" => nil,
+    "Etude système technique bâtiment" => nil,
+    "Etude eclairage" => nil,
+    "Inconnu" => nil,
+    "Etude enveloppe du bâtiment" => nil,
+    "Commisionnement" => nil,
+    "Forage géothermique" => nil
+  }.to_h do |ademe_domain, mdso_geste_types|
+    unknown_geste_types = Array.wrap(mdso_geste_types) - QuoteCheck::GESTE_TYPES
+    raise NotImplemented, "Unknown Geste type #{unknown_geste_types}" if unknown_geste_types.any?
+
+    [ademe_domain, mdso_geste_types]
+  end.freeze
+
   ADEME_NOM_CERTIFICAT_TO_MDSO_GESTE_TYPE = {
     "QUALIBAT-RGE" => nil,
     "QualiPAC module Chauffage et ECS" => nil,
@@ -58,67 +98,39 @@ module RgeValidator # rubocop:disable Metrics/ModuleLength
     [ademe_certificate, mdso_geste_types]
   end
 
-  ADEME_DOMAINE_TO_MDSO_GESTE_TYPE = {
-    "Isolation par l'intérieur des murs ou rampants de toitures  ou plafonds" =>
-      "isolation_thermique_par_interieur_ITI",
-    "Chauffe-Eau Thermodynamique" => "chauffe_eau_thermo",
-    "Pompe à chaleur : chauffage" => %w[pac_air_eau pac_eau_eau pac_air_air pac_hybride],
-    "Fenêtres, volets, portes donnant sur l'extérieur" => nil,
-    "Isolation des combles perdus" => "isolation_comble_perdu",
-    "Isolation des murs par l'extérieur" => "isolation_thermique_par_exterieur_ITE",
-    "Poêle ou insert bois" => "poele_insert",
-    "Chaudière condensation ou micro-cogénération gaz ou fioul" => nil,
-    "Isolation des toitures terrasses ou des toitures par l'extérieur" => "isolation_toiture_terrasse",
-    "Fenêtres de toit" => "menuiserie_fenetre_toit",
-    "Ventilation mécanique" => %w[vmc_simple_flux vmc_double_flux],
-    "Panneaux solaires photovoltaïques" => nil,
-    "Isolation des planchers bas" => "isolation_plancher_bas",
-    "Audit énergétique Maison individuelle" => nil,
-    "Radiateurs électriques, dont régulation." => nil,
-    "Architecte" => nil,
-    "Chaudière bois" => "chaudiere_biomasse",
-    "Chauffage et/ou eau chaude solaire" => "chauffe_eau_solaire_individuel",
-    "Audit énergétique Logement collectif" => nil,
-    "Etude thermique reglementaire" => nil,
-    "Etude solaire photovoltaïque" => nil,
-    "Etude forage géothermique" => nil,
-    "Etude bois énergie" => nil,
-    "Projet complet de rénovation" => nil,
-    "Etude solaire thermique" => nil,
-    "Etude ACV" => nil,
-    "Etude système technique bâtiment" => nil,
-    "Etude eclairage" => nil,
-    "Inconnu" => nil,
-    "Etude enveloppe du bâtiment" => nil,
-    "Commisionnement" => nil,
-    "Forage géothermique" => nil
-  }.to_h do |ademe_domain, mdso_geste_types|
-    unknown_geste_types = Array.wrap(mdso_geste_types) - QuoteCheck::GESTE_TYPES
-    raise NotImplemented, "Unknown Geste type #{unknown_geste_types}" if unknown_geste_types.any?
-
-    [ademe_domain, mdso_geste_types]
-  end.freeze
+  def self.ademe_geste_types(domaine: nil, nom_certificat: nil)
+    [
+      ADEME_DOMAINE_TO_MDSO_GESTE_TYPE[domaine],
+      ADEME_NOM_CERTIFICAT_TO_MDSO_GESTE_TYPE[nom_certificat]
+    ].flatten.compact.uniq.sort
+  end
 
   def self.filter_rge_qualifications(rge_qualifications)
     rge_qualifications # Consider all as RGE qualifications for now
     # rge_qualifications.select { it.fetch("nom_certificat").match?(/RGE/i) }
   end
 
+  def self.geste_types_for_rge(siret, rge)
+    rge_qualifications(siret:, rge:).flat_map do |qualification|
+      ademe_geste_types(
+        nom_certificat: qualification.fetch("nom_certificat"),
+        domaine: qualification.fetch("domaine")
+      )
+    end.compact.uniq.sort
+  end
+
+  def self.geste_types_with_certification
+    (
+      ADEME_DOMAINE_TO_MDSO_GESTE_TYPE.values +
+      ADEME_NOM_CERTIFICAT_TO_MDSO_GESTE_TYPE.values
+    ).flatten.compact.uniq.sort
+  end
+
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/CyclomaticComplexity
   # rubocop:disable Metrics/PerceivedComplexity
   # rubocop:disable Style/ItBlockParameter
-  # @return [Array, false] Returns an array of RGE qualifications or false if none found.
-  # @raise [ArgumentError] Raises an error if the RGE format is invalid or if the date is not in the correct format.
-  def self.valid?(rge: nil, siret: nil, date: nil, geste_types: nil) # rubocop:disable Metrics/MethodLength
-    date = validate_date!(date) if date.present?
-    rge = validate_format!(rge) if rge.present?
-    raise ArgumentError.new(nil, "rge_siret_manquant") if rge.blank? && siret.blank?
-
-    geste_types = Array.wrap(geste_types).presence&.uniq
-    unknown_geste_types = geste_types - QuoteCheck::GESTE_TYPES if geste_types.present?
-    raise ArgumentError.new(nil, "geste_type_inconnu") if unknown_geste_types&.any?
-
+  def self.rge_qualifications(rge: nil, siret: nil, date: nil, geste_types: nil) # rubocop:disable Metrics/MethodLength
     qs = "siret:#{siret}" if siret.present?
     qs ||= "rge:#{rge}" if rge.present?
     rge_qualifications = filter_rge_qualifications(
@@ -141,19 +153,37 @@ module RgeValidator # rubocop:disable Metrics/ModuleLength
 
     if geste_types.present?
       rge_qualifications = rge_qualifications.select do
-        ademe_geste_types = [
-          ADEME_NOM_CERTIFICAT_TO_MDSO_GESTE_TYPE[it.fetch("nom_certificat")],
-          ADEME_DOMAINE_TO_MDSO_GESTE_TYPE[it.fetch("domaine")]
-        ].flatten.compact
-        ademe_geste_types.intersect?(geste_types)
+        ademe_geste_types(
+          nom_certificat: it.fetch("nom_certificat"),
+          domaine: it.fetch("domaine")
+        ).intersect?(geste_types)
       end
     end
 
-    # TODO: Validate with geste_types with ADEME_NOM_CERTIFICAT_TO_MDSO_GESTE_TYPE
-
-    rge_qualifications.any? ? rge_qualifications : false
+    rge_qualifications
   end
   # rubocop:enable Style/ItBlockParameter
+  # rubocop:enable Metrics/PerceivedComplexity
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/AbcSize
+
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/PerceivedComplexity
+  # @return [Array, false] Returns an array of RGE qualifications or false if none found.
+  # @raise [ArgumentError] Raises an error if the RGE format is invalid or if the date is not in the correct format.
+  def self.valid?(rge: nil, siret: nil, date: nil, geste_types: nil)
+    date = validate_date!(date) if date.present?
+    rge = validate_format!(rge) if rge.present?
+    raise ArgumentError.new(nil, "rge_siret_manquant") if rge.blank? && siret.blank?
+
+    geste_types = Array.wrap(geste_types).presence&.uniq
+    unknown_geste_types = geste_types - QuoteCheck::GESTE_TYPES if geste_types.present?
+    raise ArgumentError.new(nil, "geste_type_inconnu") if unknown_geste_types&.any?
+
+    filtered_rge_qualifications = rge_qualifications(rge:, siret:, date:, geste_types:)
+    filtered_rge_qualifications.any? ? filtered_rge_qualifications : false
+  end
   # rubocop:enable Metrics/PerceivedComplexity
   # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/AbcSize
