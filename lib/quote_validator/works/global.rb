@@ -21,6 +21,10 @@ module QuoteValidator
       def rge
         Array.wrap(pro[:rge_labels]&.presence).first
       end
+      
+      def siret
+        pro[:siret]&.presence
+      end
 
 
       # doit valider les critères techniques associés aux gestes présents dans le devis
