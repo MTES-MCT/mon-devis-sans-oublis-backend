@@ -7,7 +7,7 @@ module QuoteInputMetadata
   PROFILES = %w[artisan particulier conseiller].freeze # Also called Persona
   DEPRECATED_PROFILES = %w[mandataire].freeze
 
-  # Complete list of Gestes types from QA prompts
+  # Complete list of Geste types from QA prompts
   GESTE_TYPES = %w[
     chauffe_eau_thermo
     chauffe_eau_solaire_individuel
