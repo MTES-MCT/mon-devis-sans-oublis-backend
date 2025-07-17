@@ -211,7 +211,7 @@ module QuoteValidator
           !geste_type_has_rge,
           geste: geste,
           provided_value: geste_type,
-          category: "admin",
+          category: "gestes",
           type: "warning"
         )
         return unless geste_type_has_rge
@@ -226,7 +226,7 @@ module QuoteValidator
           end,
           geste: geste,
           provided_value: "#{geste_type} #{I18n.l(date, format: :long, locale: :fr)}",
-          category: "admin",
+          category: "gestes",
           type: "warning"
         )
       end
