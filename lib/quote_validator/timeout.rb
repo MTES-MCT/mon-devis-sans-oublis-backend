@@ -13,10 +13,6 @@ module QuoteValidator
       end
     end
 
-    def version
-      self.class::VERSION
-    end
-
     protected
 
     def consider_timeout?

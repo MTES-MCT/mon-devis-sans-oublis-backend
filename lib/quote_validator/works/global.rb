@@ -12,6 +12,8 @@ module QuoteValidator
         end
       end
 
+      protected
+
       # doit valider les critères techniques associés aux gestes présents dans le devis
       # rubocop:disable Metrics/AbcSize
       # rubocop:disable Metrics/CyclomaticComplexity
@@ -154,10 +156,6 @@ module QuoteValidator
           provided_value: geste[:intitule],
           geste: geste
         )
-      end
-
-      def version
-        self.class::VERSION
       end
     end
   end

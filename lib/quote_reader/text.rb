@@ -14,5 +14,9 @@ module QuoteReader
     def read
       @read_attributes = {}
     end
+
+    def version
+      self.class::VERSION
+    end
   end
 end

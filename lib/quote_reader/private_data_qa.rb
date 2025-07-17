@@ -14,10 +14,6 @@ module QuoteReader
       llm_read_attributes(llm || DEFAULT_LLM)
     end
 
-    def version
-      self.class::VERSION
-    end
-
     private
 
     # rubocop:disable Metrics/AbcSize

@@ -30,6 +30,8 @@ module QuoteValidator
       end
     end
 
+    protected
+
     # rubocop:disable Metrics/AbcSize
     # rubocop:disable Metrics/CyclomaticComplexity
     # rubocop:disable Metrics/PerceivedComplexity
@@ -71,10 +73,6 @@ module QuoteValidator
                 category:,
                 geste:,
                 provided_value:)
-    end
-
-    def version
-      self.class::VERSION
     end
   end
 end

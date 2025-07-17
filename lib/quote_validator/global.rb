@@ -15,6 +15,8 @@ module QuoteValidator
       end
     end
 
+    protected
+
     def validate_file # rubocop:disable Naming/PredicateMethod
       validator = QuoteValidator::File.new(quote, quote_id:)
       validator.validate!
@@ -41,10 +43,6 @@ module QuoteValidator
       validator.validate!
       add_validator_errors(validator)
       validator.error_details.empty?
-    end
-
-    def version
-      self.class::VERSION
     end
   end
 end
