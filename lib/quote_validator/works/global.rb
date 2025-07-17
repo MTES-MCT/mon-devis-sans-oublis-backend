@@ -21,9 +21,29 @@ module QuoteValidator
       def rge
         Array.wrap(pro[:rge_labels]&.presence).first
       end
-      
+
       def siret
         pro[:siret]&.presence
+      end
+
+      def qualifications_per_geste_type
+        @qualifications_per_geste_type ||= begin
+          RgeValidator.rge_qualifications(siret:, rge:).each_with_object({}) do |qualification, hash|
+            geste_types = RgeValidator.ademe_geste_types(
+              nom_certificat: qualification.fetch("nom_certificat"),
+              domaine: qualification.fetch("domaine")
+            ).compact.uniq
+
+            geste_types.each do |type|
+              hash[type] ||= []
+              hash[type] << qualification
+            end
+          end
+        end
+      end
+
+      def geste_types_with_certification
+        @geste_types_with_certification ||= RgeValidator.geste_types_with_certification
       end
 
 
@@ -41,21 +61,6 @@ module QuoteValidator
 
         gestes = quote[:gestes] || []
         geste_reconnu = true
-
-        geste_types_with_certification = RgeValidator.geste_types_with_certification
-
-        rge_qualifications = RgeValidator.rge_qualifications(siret:, rge:)
-        qualifications_per_geste_type = rge_qualifications.each_with_object({}) do |qualification, hash|
-          qualification_geste_types = RgeValidator.ademe_geste_types(
-            nom_certificat: qualification.fetch("nom_certificat"),
-            domaine: qualification.fetch("domaine")
-          ).compact.uniq
-
-          qualification_geste_types.each do |geste_type|
-            hash[geste_type] ||= []
-            hash[geste_type] << qualification
-          end
-        end
 
 
         gestes.each_with_index do |geste, index| # rubocop:disable Metrics/BlockLength
