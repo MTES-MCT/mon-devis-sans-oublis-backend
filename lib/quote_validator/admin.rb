@@ -216,9 +216,9 @@ module QuoteValidator
         )
         next unless geste_type_has_rge
 
-        next if date.blank?
+        date = RgeValidator.validate_date!(date) if date.present?
+        next unless date
 
-        date = validate_date!(date)
         add_error_if(
           "geste_rge_hors_date",
           qualifications_per_geste_type[geste_type].none? do |qualification|
