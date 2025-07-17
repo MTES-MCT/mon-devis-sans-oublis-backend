@@ -216,8 +216,9 @@ module QuoteValidator
         )
         next unless geste_type_has_rge
 
-        next unless date
+        next if date.blank?
 
+        date = validate_date!(date)
         add_error_if(
           "geste_rge_hors_date",
           qualifications_per_geste_type[geste_type].none? do |qualification|
@@ -229,6 +230,8 @@ module QuoteValidator
           type: "warning"
         )
       end
+    rescue RgeValidator::ArgumentError
+      nil
     end
     # rubocop:enable Metrics/PerceivedComplexity
     # rubocop:enable Metrics/CyclomaticComplexity
