@@ -181,7 +181,7 @@ module QuoteValidator
     # rubocop:disable Metrics/CyclomaticComplexity
     # rubocop:disable Metrics/PerceivedComplexity
     def validate_rge_gestes # rubocop:disable Metrics/MethodLength
-      return unless rge || siret
+      return unless siret && rge
 
       geste_types_with_certification = RgeValidator.geste_types_with_certification
 
