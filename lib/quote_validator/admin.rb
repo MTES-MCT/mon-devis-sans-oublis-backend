@@ -2,7 +2,7 @@
 
 module QuoteValidator
   # Validator for the Quote
-  class Admin < Base
+  class Admin < Base # rubocop:disable Metrics/ClassLength
     VERSION = "0.0.1"
 
     def validate!
@@ -13,7 +13,24 @@ module QuoteValidator
 
     protected
 
+    def date
+      quote[:date_devis]&.presence
+    end
+
+    def pro
+      @pro ||= quote[:pro] ||= TrackingHash.new
+    end
+
+    def rge
+      Array.wrap(pro[:rge_labels]&.presence).first
+    end
+
+    def siret
+      pro[:siret]&.presence
+    end
+
     # doit valider les mentions administratives du devis
+    # rubocop:disable Metrics/AbcSize
     def validate # rubocop:disable Metrics/MethodLength
       # mention devis présente ou non, quote[:mention_devis] est un boolean
       add_error_if(
@@ -27,9 +44,11 @@ module QuoteValidator
       validate_dates
       validate_pro
       validate_client
-      validate_rge
+      validate_rge_global
+      validate_rge_gestes
       validate_prix
     end
+    # rubocop:enable Metrics/AbcSize
 
     # numéro, rue, cp, ville - si pas suffisant numéro de parcelle cadastrale. V0, on check juste la présence ?
     def validate_address(address, type)
@@ -156,24 +175,72 @@ module QuoteValidator
       validate_address(address, "pro")
     end
 
-    # V0 on check la présence - attention devrait dépendre du geste, à terme,
-    # on pourra utiliser une API pour vérifier la validité
-    # Attention, souvent on a le logo mais rarement le numéro RGE.
+    # Validate the RGE geste type matching only if the pro has a RGE label
+    # (SIRET correspondance and date are already managed in global RGE check)
     # rubocop:disable Metrics/AbcSize
     # rubocop:disable Metrics/CyclomaticComplexity
-    def validate_rge # rubocop:disable Metrics/MethodLength
-      @pro = quote[:pro] ||= TrackingHash.new
-      rge_labels = @pro[:rge_labels]
-      add_error_if("rge_manquant", rge_labels.blank?, category: "admin", type: "missing")
+    # rubocop:disable Metrics/PerceivedComplexity
+    def validate_rge_gestes # rubocop:disable Metrics/MethodLength
+      return unless rge || siret
 
-      return unless @pro[:siret] && @pro[:rge_labels]
+      geste_types_with_certification = RgeValidator.geste_types_with_certification
+
+      rge_qualifications = RgeValidator.rge_qualifications(siret:, rge:)
+      qualifications_per_geste_type = rge_qualifications.each_with_object({}) do |qualification, hash|
+        qualification_geste_types = RgeValidator.ademe_geste_types(
+          nom_certificat: qualification.fetch("nom_certificat"),
+          domaine: qualification.fetch("domaine")
+        ).compact.uniq
+
+        qualification_geste_types.each do |geste_type|
+          hash[geste_type] ||= []
+          hash[geste_type] << qualification
+        end
+      end
+
+      gestes = quote[:gestes] || []
+      gestes.each_with_index do |geste, index|
+        geste[:index] = index
+
+        geste_type = geste[:type].to_s
+        next unless geste_types_with_certification.include?(geste_type)
+
+        geste_type_has_rge = qualifications_per_geste_type.key?(geste_type)
+        add_error_if(
+          "geste_rge_non_correspondant",
+          !geste_type_has_rge,
+          geste:,
+          provided_value: geste_type,
+          category: "admin",
+          type: "warning"
+        )
+        next unless geste_type_has_rge
+
+        next unless date
+
+        add_error_if(
+          "geste_rge_hors_date",
+          qualifications_per_geste_type[geste_type].none? do |qualification|
+            date.between?(Date.parse(qualification.fetch("date_debut")), Date.parse(qualification.fetch("date_fin")))
+          end,
+          geste:,
+          provided_value: "#{geste_type} #{I18n.l(date, format: :long, locale: :fr)}",
+          category: "admin",
+          type: "warning"
+        )
+      end
+    end
+    # rubocop:enable Metrics/PerceivedComplexity
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/AbcSize
+
+    def validate_rge_global # rubocop:disable Metrics/MethodLength
+      add_error_if("rge_manquant", pro[:rge_labels].blank?, category: "admin", type: "missing")
+
+      return unless siret && rge
 
       begin
-        RgeValidator.valid?(
-          siret: @pro[:siret]&.presence,
-          rge: Array.wrap(@pro[:rge_labels]&.presence).first,
-          date: quote[:date_devis]&.presence
-        )
+        RgeValidator.valid?(siret:, rge:, date:)
       rescue QuoteValidator::Base::ArgumentError => e
         add_error_if(
           e.error_code,
@@ -183,7 +250,5 @@ module QuoteValidator
         )
       end
     end
-    # rubocop:enable Metrics/CyclomaticComplexity
-    # rubocop:enable Metrics/AbcSize
   end
 end
