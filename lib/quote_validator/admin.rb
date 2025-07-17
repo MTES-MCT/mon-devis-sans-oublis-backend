@@ -45,7 +45,6 @@ module QuoteValidator
       validate_pro
       validate_client
       validate_rge_global
-      validate_rge_gestes
       validate_prix
     end
     # rubocop:enable Metrics/AbcSize

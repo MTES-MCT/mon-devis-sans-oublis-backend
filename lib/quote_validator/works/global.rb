@@ -133,7 +133,7 @@ module QuoteValidator
           if geste_reconnu
             validate_prix_geste(geste)
             if siret
-
+              validate_rge_geste(geste)
             end
           end
         end
