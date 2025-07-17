@@ -13,6 +13,8 @@ module QuoteValidator
       end
     end
 
+    protected
+
     # rubocop:disable Metrics/AbcSize
     # rubocop:disable Style/ItBlockParameter
     def validate_quote_checks_coherence # rubocop:disable Metrics/MethodLength
@@ -43,10 +45,6 @@ module QuoteValidator
                 type:,
                 category:,
                 from_case: true)
-    end
-
-    def version
-      self.class::VERSION
     end
 
     private

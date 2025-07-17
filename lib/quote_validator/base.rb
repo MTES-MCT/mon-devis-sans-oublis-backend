@@ -69,6 +69,36 @@ module QuoteValidator
       I18n.t("quote_validator.error_types").transform_keys(&:to_s)
     end
 
+    def errors
+      error_details&.map { it.fetch(:code) } || []
+    end
+
+    def fields
+      object&.keys_accessed || []
+    end
+
+    # TODO: doit valider les critères techniques associés aux gestes présents dans le devis
+    def validate! # rubocop:disable Naming/PredicateMethod
+      @error_details = []
+
+      @control_codes = []
+      @controls_count = 0
+
+      yield
+
+      valid?
+    end
+
+    def valid?
+      !error_details.nil? && error_details.empty?
+    end
+
+    def version
+      self.class::VERSION
+    end
+
+    protected
+
     def add_error_if(code, condition, **)
       control_codes << code.to_s
 
@@ -142,14 +172,6 @@ module QuoteValidator
     end
     # rubocop:enable Metrics/AbcSize
 
-    def errors
-      error_details&.map { it.fetch(:code) } || []
-    end
-
-    def fields
-      object&.keys_accessed || []
-    end
-
     def increment_controls_count(increment = 1)
       @controls_count += increment
     end
@@ -158,22 +180,6 @@ module QuoteValidator
       @error_details = []
       @control_codes = []
       @controls_count = 0
-    end
-
-    # TODO: doit valider les critères techniques associés aux gestes présents dans le devis
-    def validate! # rubocop:disable Naming/PredicateMethod
-      @error_details = []
-
-      @control_codes = []
-      @controls_count = 0
-
-      yield
-
-      valid?
-    end
-
-    def valid?
-      !error_details.nil? && error_details.empty?
     end
   end
 end

@@ -49,10 +49,6 @@ module QuoteReader
     # rubocop:enable Metrics/MethodLength
     # rubocop:enable Metrics/AbcSize
 
-    def version
-      self.class::VERSION
-    end
-
     NUMBER_REFERENCE_REGEX = /n?[.°]/i
 
     BETWEEN_LABEL_VALUE_REGEX = /\s*(?:#{NUMBER_REFERENCE_REGEX})?\s*(?::\s*)?/i

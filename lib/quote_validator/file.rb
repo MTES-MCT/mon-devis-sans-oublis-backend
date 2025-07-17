@@ -11,6 +11,8 @@ module QuoteValidator
       end
     end
 
+    protected
+
     def validate
       add_error_if(
         "file_type_error",
@@ -18,10 +20,6 @@ module QuoteValidator
         category: "file",
         type: "error"
       )
-    end
-
-    def version
-      self.class::VERSION
     end
   end
 end

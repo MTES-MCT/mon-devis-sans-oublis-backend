@@ -121,5 +121,9 @@ module QuoteReader
     end
     # rubocop:enable Metrics/MethodLength
     # rubocop:enable Metrics/AbcSize
+
+    def version
+      self.class::VERSION
+    end
   end
 end

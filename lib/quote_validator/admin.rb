@@ -2,7 +2,7 @@
 
 module QuoteValidator
   # Validator for the Quote
-  class Admin < Base # rubocop:disable Metrics/ClassLength
+  class Admin < Base
     VERSION = "0.0.1"
 
     def validate!
@@ -10,6 +10,8 @@ module QuoteValidator
         validate
       end
     end
+
+    protected
 
     # doit valider les mentions administratives du devis
     def validate # rubocop:disable Metrics/MethodLength
@@ -27,6 +29,43 @@ module QuoteValidator
       validate_client
       validate_rge
       validate_prix
+    end
+
+    # numéro, rue, cp, ville - si pas suffisant numéro de parcelle cadastrale. V0, on check juste la présence ?
+    def validate_address(address, type)
+      case type
+      when "client"
+        add_error_if("client_adresse_manquant", address.blank?, category: "admin", type: "missing")
+      when "chantier" # ne devrait pas arriver, mais par la suite, faudrait vérifier la justesse de l'adresse
+        add_error_if("chantier_adresse_manquant", address.blank?, category: "admin", type: "missing")
+      when "pro"
+        add_error_if("pro_adresse_manquant", address.blank?, category: "admin", type: "missing")
+      end
+    end
+
+    # doit valider les mentions administratives associées au client
+    def validate_client
+      @client = quote[:client] ||= TrackingHash.new
+
+      add_error_if("client_prenom_manquant", @client[:prenom].blank?, category: "admin", type: "missing")
+      add_error_if("client_nom_manquant", @client[:nom].blank?, category: "admin", type: "missing")
+      add_error_if("client_civilite_manquant", @client[:civilite].blank?, category: "admin", type: "missing")
+
+      validate_client_address
+    end
+
+    # vérifier la présence de l'adresse du client.
+    # + Warning pour préciser que l'adresse de facturation = adresse de chantier si pas de présence
+    def validate_client_address
+      client_address = @client[:adresse]
+      validate_address(client_address, "client")
+
+      # site_address = @client[:adresse_chantier]
+      # if site_address.blank?
+      #   add_error("chantier_facturation_idem", category: "admin", type: "warning")
+      # else
+      #   validate_address(site_address, "chantier")
+      # end
     end
 
     # date d'emission, date de pré-visite (CEE uniquement ?),
@@ -51,35 +90,25 @@ module QuoteValidator
     end
     # rubocop:enable Metrics/AbcSize
 
-    # V0 on check la présence - attention devrait dépendre du geste, à terme,
-    # on pourra utiliser une API pour vérifier la validité
-    # Attention, souvent on a le logo mais rarement le numéro RGE.
-    # rubocop:disable Metrics/AbcSize
-    # rubocop:disable Metrics/CyclomaticComplexity
-    def validate_rge # rubocop:disable Metrics/MethodLength
-      @pro = quote[:pro] ||= TrackingHash.new
-      rge_labels = @pro[:rge_labels]
-      add_error_if("rge_manquant", rge_labels.blank?, category: "admin", type: "missing")
+    def validate_prix
+      # Valider qu'on a une séparation matériaux et main d'oeuvre
+      # TODO V2, il faudra sûrement vérifier la séparation pose / fourniture par geste et non juste un boolean.
+      add_error_if("separation_fourniture_pose_manquant", !quote[:separation_prix_fourniture_pose],
+                   category: "admin", type: "missing")
 
-      return unless @pro[:siret] && @pro[:rge_labels]
-
-      begin
-        RgeValidator.valid?(
-          siret: @pro[:siret]&.presence,
-          rge: Array.wrap(@pro[:rge_labels]&.presence).first,
-          date: quote[:date_devis]&.presence
-        )
-      rescue QuoteValidator::Base::ArgumentError => e
-        add_error_if(
-          e.error_code,
-          true,
-          category: "admin",
-          type: "error"
-        )
-      end
+      # Valider qu'on a le prix total HT / TTC
+      add_error_if("prix_total_ttc_manquant", quote[:prix_total_ttc].blank?, category: "admin", type: "missing")
+      add_error_if("prix_total_ht_manquant", quote[:prix_total_ht].blank?, category: "admin", type: "missing")
+      # Valider qu'on a le montant de TVA pour chacun des taux
+      # {taux_tva: decimal;
+      # prix_ht_total: decimal;
+      # montant_tva_total: decimal
+      # }
+      # TODO Vérifier si utile de le faire ?
+      # tvas = quote[:tva] || []
+      # tvas.each do |tva|
+      # end
     end
-    # rubocop:enable Metrics/CyclomaticComplexity
-    # rubocop:enable Metrics/AbcSize
 
     # doit valider les mentions administratives associées à l'artisan
     # rubocop:disable Metrics/AbcSize
@@ -122,70 +151,39 @@ module QuoteValidator
     # rubocop:enable Metrics/MethodLength
     # rubocop:enable Metrics/AbcSize
 
-    # doit valider les mentions administratives associées au client
-    def validate_client
-      @client = quote[:client] ||= TrackingHash.new
-
-      add_error_if("client_prenom_manquant", @client[:prenom].blank?, category: "admin", type: "missing")
-      add_error_if("client_nom_manquant", @client[:nom].blank?, category: "admin", type: "missing")
-      add_error_if("client_civilite_manquant", @client[:civilite].blank?, category: "admin", type: "missing")
-
-      validate_client_address
-    end
-
-    # vérifier la présence de l'adresse du client.
-    # + Warning pour préciser que l'adresse de facturation = adresse de chantier si pas de présence
-    def validate_client_address
-      client_address = @client[:adresse]
-      validate_address(client_address, "client")
-
-      # site_address = @client[:adresse_chantier]
-      # if site_address.blank?
-      #   add_error("chantier_facturation_idem", category: "admin", type: "warning")
-      # else
-      #   validate_address(site_address, "chantier")
-      # end
-    end
-
     def validate_pro_address
       address = @pro[:adresse]
       validate_address(address, "pro")
     end
 
-    # numéro, rue, cp, ville - si pas suffisant numéro de parcelle cadastrale. V0, on check juste la présence ?
-    def validate_address(address, type)
-      case type
-      when "client"
-        add_error_if("client_adresse_manquant", address.blank?, category: "admin", type: "missing")
-      when "chantier" # ne devrait pas arriver, mais par la suite, faudrait vérifier la justesse de l'adresse
-        add_error_if("chantier_adresse_manquant", address.blank?, category: "admin", type: "missing")
-      when "pro"
-        add_error_if("pro_adresse_manquant", address.blank?, category: "admin", type: "missing")
+    # V0 on check la présence - attention devrait dépendre du geste, à terme,
+    # on pourra utiliser une API pour vérifier la validité
+    # Attention, souvent on a le logo mais rarement le numéro RGE.
+    # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/CyclomaticComplexity
+    def validate_rge # rubocop:disable Metrics/MethodLength
+      @pro = quote[:pro] ||= TrackingHash.new
+      rge_labels = @pro[:rge_labels]
+      add_error_if("rge_manquant", rge_labels.blank?, category: "admin", type: "missing")
+
+      return unless @pro[:siret] && @pro[:rge_labels]
+
+      begin
+        RgeValidator.valid?(
+          siret: @pro[:siret]&.presence,
+          rge: Array.wrap(@pro[:rge_labels]&.presence).first,
+          date: quote[:date_devis]&.presence
+        )
+      rescue QuoteValidator::Base::ArgumentError => e
+        add_error_if(
+          e.error_code,
+          true,
+          category: "admin",
+          type: "error"
+        )
       end
     end
-
-    def validate_prix
-      # Valider qu'on a une séparation matériaux et main d'oeuvre
-      # TODO V2, il faudra sûrement vérifier la séparation pose / fourniture par geste et non juste un boolean.
-      add_error_if("separation_fourniture_pose_manquant", !quote[:separation_prix_fourniture_pose],
-                   category: "admin", type: "missing")
-
-      # Valider qu'on a le prix total HT / TTC
-      add_error_if("prix_total_ttc_manquant", quote[:prix_total_ttc].blank?, category: "admin", type: "missing")
-      add_error_if("prix_total_ht_manquant", quote[:prix_total_ht].blank?, category: "admin", type: "missing")
-      # Valider qu'on a le montant de TVA pour chacun des taux
-      # {taux_tva: decimal;
-      # prix_ht_total: decimal;
-      # montant_tva_total: decimal
-      # }
-      # TODO Vérifier si utile de le faire ?
-      # tvas = quote[:tva] || []
-      # tvas.each do |tva|
-      # end
-    end
-
-    def version
-      self.class::VERSION
-    end
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/AbcSize
   end
 end
