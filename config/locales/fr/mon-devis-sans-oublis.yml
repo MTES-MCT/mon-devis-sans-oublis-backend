@@ -12,7 +12,7 @@ fr:
     index:
       quote_check_cta: "Vérifier mon devis"
   quotes:
-    profiles:
+    profile:
       title:
         artisan: Artisan
         particulier: Particulier
@@ -23,6 +23,29 @@ fr:
         ampleur: Rénovation d'ampleur
         geste: Rénovation par geste
   quote_checks:
+    geste_type:
+      title:
+        chaudiere_biomasse: Chaudière biomasse
+        chauffe_eau_solaire_individuel: Chauffe-eau solaire individuel
+        chauffe_eau_thermo: Chauffe-eau thermodynamique (CET)
+        isolation_comble_perdu: Isolation des planchers de combles perdus
+        isolation_plancher_bas: Isolation des planchers bas
+        isolation_rampants_toiture: Isolation de la toiture en pente - plafond de combles
+        isolation_thermique_par_exterieur_ITE: Isolation des murs par l'extérieur (ITE)
+        isolation_thermique_par_interieur_ITI: Isolation des murs par l'intérieur (ITI)
+        isolation_toiture_terrasse: Isolation de la toiture-terrasse
+        menuiserie_fenetre: Menuiserie Remplacement des fenêtres ou porte-fenêtres
+        menuiserie_fenetre_toit: Menuiserie des fenêtres ou toit
+        menuiserie_porte:  Menuiserie des portes
+        menuiserie_volet_isolant: Menuiserie Volet isolant
+        pac_air_air: Pompe à chaleur air / air
+        pac_air_eau: Pompe à chaleur air / eau
+        pac_eau_eau: Pompe à chaleur eau / eau
+        pac_hybride: Pompe à chaleur géothermique
+        poele_insert: Poêle/insert à bois/granulés
+        systeme_solaire_combine: Chauffage solaire combiné
+        vmc_double_flux: Ventilation Mécanique Double-Flux
+        vmc_simple_flux: Ventilation Mécanique Simple-Flux
     metadata: # Update API Doc if keys updated
       aides:
         - MaPrimeRénov' par geste

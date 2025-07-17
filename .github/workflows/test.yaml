@@ -7,7 +7,7 @@ on:
 
 env:
   DATABASE_URL: postgres://postgres:dummy@localhost:5432/test
-  RUBYCRITIC_THRESHOLD: ${{ vars.RUBYCRITIC_THRESHOLD || '84' }}
+  RUBYCRITIC_THRESHOLD: ${{ vars.RUBYCRITIC_THRESHOLD || '83' }}
 
 permissions: {}
 

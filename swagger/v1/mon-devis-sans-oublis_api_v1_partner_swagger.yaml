@@ -53,6 +53,10 @@ paths:
                     type: array
                     data:
                       type: "#/components/schemas/geste_type"
+                  options:
+                    type: array
+                    data:
+                      type: "#/components/schemas/option"
                 required:
                 - data
   "/data_checks/siret":
@@ -149,6 +153,10 @@ paths:
                     type: array
                     data:
                       type: "#/components/schemas/profile"
+                  options:
+                    type: array
+                    data:
+                      type: "#/components/schemas/option"
                 required:
                 - data
   "/quote_checks/metadata":
@@ -381,6 +389,10 @@ paths:
                     type: array
                     data:
                       type: "#/components/schemas/renovation_type"
+                  options:
+                    type: array
+                    data:
+                      type: "#/components/schemas/option"
                 required:
                 - data
   "/stats":
@@ -553,8 +565,8 @@ components:
           - Tableau de l´Ordre
           - Qualibois Eau
           - QualiPV 36
-          - Qualibois Air
           - Certificat Qualifelec RGE
+          - Qualibois Air
           - Ventilation +
           - Qualisol CESI
           - Chauffage +
@@ -768,6 +780,14 @@ components:
       - pac_eau_eau
       - pac_air_air
       - pac_hybride
+    option:
+      type: object
+      properties:
+        label:
+          type: string
+        value:
+          type: string
+      description: Option type enum
     profile:
       type: string
       enum:

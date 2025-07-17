@@ -6,14 +6,18 @@ RSpec.describe "/api/v1/data_checks" do
   subject(:json) { response.parsed_body }
 
   describe "GET /api/v1/data_checks/geste_types" do
+    before { get api_v1_data_checks_geste_types_url }
+
     it "returns a successful response" do
-      get api_v1_data_checks_geste_types_url
       expect(response).to be_successful
     end
 
     it "returns a complete response" do
-      get api_v1_data_checks_geste_types_url
       expect(json.fetch("data")).to include(*QuoteCheck::GESTE_TYPES)
+    end
+
+    it "includes labels" do
+      expect(json.dig("options", 1, "label")).to eq("Chauffe-eau solaire individuel")
     end
   end
 

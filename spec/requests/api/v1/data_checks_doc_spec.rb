@@ -14,6 +14,10 @@ describe "Data Checks API" do
                  data: {
                    type: :array,
                    data: { type: "#/components/schemas/geste_type" }
+                 },
+                 options: {
+                   type: :array,
+                   data: { type: "#/components/schemas/option" }
                  }
                },
                required: ["data"]
