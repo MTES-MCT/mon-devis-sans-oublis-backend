@@ -8,6 +8,7 @@ ademe_yaml = URI.open(ADEME_SWAGGER_URI).read # rubocop:disable Security/Open
 ademe_swagger = YAML.safe_load(ademe_yaml, aliases: true)
 ademe_result_schema = ademe_swagger.dig("paths", "/lines", "get", "responses", "200", "content", "application/json",
                                         "schema", "properties", "results", "items", "properties")
+                                   .transform_values! { it.except("x-cardinality") } # change without usefullness
 
 def data_check_result(items_schema = nil) # rubocop:disable Metrics/MethodLength
   schema = {

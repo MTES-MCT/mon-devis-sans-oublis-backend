@@ -415,7 +415,6 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.datatourisme.fr/ontology/core/1.0/#siret
-          x-cardinality: 63178
           x-capabilities:
             textAgg: true
           x-concept:
@@ -427,7 +426,6 @@ components:
           type: string
           description: ''
           x-refersTo: http://www.w3.org/2000/01/rdf-schema#label
-          x-cardinality: 62455
           x-capabilities:
             textAgg: true
           x-concept:
@@ -439,7 +437,6 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/address
-          x-cardinality: 62984
           x-capabilities:
             textAgg: true
           x-concept:
@@ -451,7 +448,6 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/postalCode
-          x-cardinality: 5971
           x-capabilities:
             textAgg: true
           x-concept:
@@ -463,7 +459,6 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/City
-          x-cardinality: 19271
           x-capabilities:
             textAgg: true
           x-concept:
@@ -495,7 +490,6 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#tel
-          x-cardinality: 59388
           x-capabilities:
             textAgg: true
           x-concept:
@@ -507,7 +501,6 @@ components:
           type: string
           description: ''
           x-refersTo: https://www.w3.org/2006/vcard/ns#email
-          x-cardinality: 61409
           x-capabilities:
             textAgg: true
           x-concept:
@@ -519,7 +512,6 @@ components:
           type: string
           description: ''
           x-refersTo: https://schema.org/WebPage
-          x-cardinality: 37401
           x-capabilities:
             textAgg: true
           x-concept:
@@ -530,14 +522,12 @@ components:
           title: Code qualification
           type: string
           description: ''
-          x-cardinality: 462
           x-capabilities:
             textAgg: true
         nom_qualification:
           title: Nom de la qualification
           type: string
           description: ''
-          x-cardinality: 470
           x-capabilities:
             textAgg: true
         url_qualification:
@@ -545,7 +535,6 @@ components:
           type: string
           description: ''
           x-refersTo: http://schema.org/DigitalDocument
-          x-cardinality: 75106
           x-capabilities: {}
           x-concept:
             id: attachment
@@ -555,7 +544,6 @@ components:
           title: Libellé du certificat
           type: string
           description: ''
-          x-cardinality: 40
           x-capabilities:
             textAgg: true
           examples:
@@ -565,8 +553,8 @@ components:
           - Tableau de l´Ordre
           - Qualibois Eau
           - QualiPV 36
-          - Certificat Qualifelec RGE
           - Qualibois Air
+          - Certificat Qualifelec RGE
           - Ventilation +
           - Qualisol CESI
           - Chauffage +
@@ -603,7 +591,6 @@ components:
           title: Domaine de travaux
           type: string
           description: ''
-          x-cardinality: 32
           x-capabilities:
             textAgg: true
           examples:
@@ -644,7 +631,6 @@ components:
           title: Méta domaine
           type: string
           description: ''
-          x-cardinality: 6
           x-capabilities:
             textAgg: true
           examples:
@@ -658,7 +644,6 @@ components:
           title: Organisme
           type: string
           description: ''
-          x-cardinality: 12
           x-capabilities:
             textAgg: true
           examples:
@@ -678,7 +663,6 @@ components:
           title: Travaille pour les particuliers
           type: boolean
           description: ''
-          x-cardinality: 2
           x-capabilities: {}
           examples:
           - 'true'
@@ -690,7 +674,6 @@ components:
           description: Cette date correspond à la date de début de qualification transmise
             par l'organisme de qualification
           x-capabilities: {}
-          x-cardinality: 1876
         lien_date_fin:
           title: Date de fin de qualification
           type: string
@@ -698,7 +681,6 @@ components:
           description: Cette date correspond à la date de fin de qualification transmise
             par l'organisme de qualification
           x-capabilities: {}
-          x-cardinality: 1574
         _file.content:
           x-calculated: true
           type: string
