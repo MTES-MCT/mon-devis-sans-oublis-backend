@@ -14,6 +14,10 @@ module QuoteValidator
 
       protected
 
+      def date
+        quote[:date_devis]&.presence
+      end
+
       def pro
         @pro ||= quote[:pro] ||= TrackingHash.new
       end
@@ -26,18 +30,17 @@ module QuoteValidator
         pro[:siret]&.presence
       end
 
-      def qualifications_per_geste_type
-        @qualifications_per_geste_type ||= begin
-          RgeValidator.rge_qualifications(siret:, rge:).each_with_object({}) do |qualification, hash|
-            geste_types = RgeValidator.ademe_geste_types(
-              nom_certificat: qualification.fetch("nom_certificat"),
-              domaine: qualification.fetch("domaine")
-            ).compact.uniq
+      def qualifications_per_geste_type # rubocop:disable Metrics/MethodLength
+        @qualifications_per_geste_type ||= RgeValidator.rge_qualifications(siret:, rge:)
+                                                       .each_with_object({}) do |qualification, hash|
+          geste_types = RgeValidator.ademe_geste_types(
+            nom_certificat: qualification.fetch("nom_certificat"),
+            domaine: qualification.fetch("domaine")
+          ).compact.uniq
 
-            geste_types.each do |type|
-              hash[type] ||= []
-              hash[type] << qualification
-            end
+          geste_types.each do |type|
+            hash[type] ||= []
+            hash[type] << qualification
           end
         end
       end
@@ -45,7 +48,6 @@ module QuoteValidator
       def geste_types_with_certification
         @geste_types_with_certification ||= RgeValidator.geste_types_with_certification
       end
-
 
       # doit valider les critères techniques associés aux gestes présents dans le devis
       # rubocop:disable Metrics/AbcSize
@@ -61,7 +63,6 @@ module QuoteValidator
 
         gestes = quote[:gestes] || []
         geste_reconnu = true
-
 
         gestes.each_with_index do |geste, index| # rubocop:disable Metrics/BlockLength
           geste[:index] = index
@@ -139,12 +140,10 @@ module QuoteValidator
             "geste_inconnu"
           end
 
-          if geste_reconnu
-            validate_prix_geste(geste)
-            if siret
-              validate_rge_geste(geste)
-            end
-          end
+          next unless geste_reconnu
+
+          validate_prix_geste(geste)
+          validate_rge_geste(geste) if siret
         end
 
         add_validator_errors(
@@ -196,12 +195,11 @@ module QuoteValidator
           geste: geste
         )
       end
+
       # Validate the RGE geste type matching only if the pro has a RGE label
       # (SIRET correspondance and date are already managed in global RGE check)
       # rubocop:disable Metrics/AbcSize
-      # rubocop:disable Metrics/CyclomaticComplexity
-      # rubocop:disable Metrics/PerceivedComplexity
-      def validate_rge_geste(geste)# rubocop:disable Metrics/MethodLength
+      def validate_rge_geste(geste) # rubocop:disable Metrics/MethodLength
         geste_type = geste[:type].to_s
         return unless geste_types_with_certification.include?(geste_type)
 
@@ -216,20 +214,24 @@ module QuoteValidator
         )
         return unless geste_type_has_rge
 
-        date = RgeValidator.validate_date!(date) if date.present?
-        return unless date
+        formatted_date = RgeValidator.validate_date!(date) if date.present?
+        return unless formatted_date
 
         add_error_if(
           "geste_rge_hors_date",
           qualifications_per_geste_type[geste_type].none? do |qualification|
-            date.between?(Date.parse(qualification.fetch("date_debut")), Date.parse(qualification.fetch("date_fin")))
+            formatted_date.between?(
+              Date.parse(qualification.fetch("date_debut")),
+              Date.parse(qualification.fetch("date_fin"))
+            )
           end,
           geste: geste,
-          provided_value: "#{geste_type} #{I18n.l(date, format: :long, locale: :fr)}",
+          provided_value: "#{geste_type} #{I18n.l(formatted_date, format: :long, locale: :fr)}",
           category: "gestes",
           type: "warning"
         )
       end
+      # rubocop:enable Metrics/AbcSize
     end
   end
 end

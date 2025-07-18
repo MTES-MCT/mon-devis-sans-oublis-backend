@@ -30,7 +30,6 @@ module QuoteValidator
     end
 
     # doit valider les mentions administratives du devis
-    # rubocop:disable Metrics/AbcSize
     def validate # rubocop:disable Metrics/MethodLength
       # mention devis présente ou non, quote[:mention_devis] est un boolean
       add_error_if(
@@ -47,7 +46,6 @@ module QuoteValidator
       validate_rge_global
       validate_prix
     end
-    # rubocop:enable Metrics/AbcSize
 
     # numéro, rue, cp, ville - si pas suffisant numéro de parcelle cadastrale. V0, on check juste la présence ?
     def validate_address(address, type)
@@ -173,11 +171,6 @@ module QuoteValidator
       address = @pro[:adresse]
       validate_address(address, "pro")
     end
-
-    
-    # rubocop:enable Metrics/PerceivedComplexity
-    # rubocop:enable Metrics/CyclomaticComplexity
-    # rubocop:enable Metrics/AbcSize
 
     def validate_rge_global # rubocop:disable Metrics/MethodLength
       add_error_if("rge_manquant", pro[:rge_labels].blank?, category: "admin", type: "missing")
