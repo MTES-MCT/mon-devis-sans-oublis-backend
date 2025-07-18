@@ -30,7 +30,6 @@ module QuoteValidator
     end
 
     # doit valider les mentions administratives du devis
-    # rubocop:disable Metrics/AbcSize
     def validate # rubocop:disable Metrics/MethodLength
       # mention devis présente ou non, quote[:mention_devis] est un boolean
       add_error_if(
@@ -45,10 +44,8 @@ module QuoteValidator
       validate_pro
       validate_client
       validate_rge_global
-      validate_rge_gestes
       validate_prix
     end
-    # rubocop:enable Metrics/AbcSize
 
     # numéro, rue, cp, ville - si pas suffisant numéro de parcelle cadastrale. V0, on check juste la présence ?
     def validate_address(address, type)
@@ -174,68 +171,6 @@ module QuoteValidator
       address = @pro[:adresse]
       validate_address(address, "pro")
     end
-
-    # Validate the RGE geste type matching only if the pro has a RGE label
-    # (SIRET correspondance and date are already managed in global RGE check)
-    # rubocop:disable Metrics/AbcSize
-    # rubocop:disable Metrics/CyclomaticComplexity
-    # rubocop:disable Metrics/PerceivedComplexity
-    def validate_rge_gestes # rubocop:disable Metrics/MethodLength
-      return unless siret && rge
-
-      geste_types_with_certification = RgeValidator.geste_types_with_certification
-
-      rge_qualifications = RgeValidator.rge_qualifications(siret:, rge:)
-      qualifications_per_geste_type = rge_qualifications.each_with_object({}) do |qualification, hash|
-        qualification_geste_types = RgeValidator.ademe_geste_types(
-          nom_certificat: qualification.fetch("nom_certificat"),
-          domaine: qualification.fetch("domaine")
-        ).compact.uniq
-
-        qualification_geste_types.each do |geste_type|
-          hash[geste_type] ||= []
-          hash[geste_type] << qualification
-        end
-      end
-
-      gestes = quote[:gestes] || []
-      gestes.each_with_index do |geste, index|
-        geste[:index] = index
-
-        geste_type = geste[:type].to_s
-        next unless geste_types_with_certification.include?(geste_type)
-
-        geste_type_has_rge = qualifications_per_geste_type.key?(geste_type)
-        add_error_if(
-          "geste_rge_non_correspondant",
-          !geste_type_has_rge,
-          geste:,
-          provided_value: geste_type,
-          category: "admin",
-          type: "warning"
-        )
-        next unless geste_type_has_rge
-
-        date = RgeValidator.validate_date!(date) if date.present?
-        next unless date
-
-        add_error_if(
-          "geste_rge_hors_date",
-          qualifications_per_geste_type[geste_type].none? do |qualification|
-            date.between?(Date.parse(qualification.fetch("date_debut")), Date.parse(qualification.fetch("date_fin")))
-          end,
-          geste:,
-          provided_value: "#{geste_type} #{I18n.l(date, format: :long, locale: :fr)}",
-          category: "admin",
-          type: "warning"
-        )
-      end
-    rescue RgeValidator::ArgumentError
-      nil
-    end
-    # rubocop:enable Metrics/PerceivedComplexity
-    # rubocop:enable Metrics/CyclomaticComplexity
-    # rubocop:enable Metrics/AbcSize
 
     def validate_rge_global # rubocop:disable Metrics/MethodLength
       add_error_if("rge_manquant", pro[:rge_labels].blank?, category: "admin", type: "missing")
