@@ -5,7 +5,16 @@ module Api
     # Controller to handle API key authentication
     class DataChecksController < BaseController
       def geste_types
-        render json: { data: QuoteCheck::GESTE_TYPES }
+        geste_types = QuoteCheck::GESTE_TYPES
+        render json: {
+          data: geste_types,
+          options: geste_types.map do |geste_type|
+            {
+              label: I18n.t("quote_checks.geste_type.title.#{geste_type}"),
+              value: geste_type
+            }
+          end
+        }
       end
 
       # rubocop:disable Metrics/AbcSize

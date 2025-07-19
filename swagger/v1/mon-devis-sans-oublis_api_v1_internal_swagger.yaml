@@ -618,6 +618,14 @@ components:
       - pac_eau_eau
       - pac_air_air
       - pac_hybride
+    option:
+      type: object
+      properties:
+        label:
+          type: string
+        value:
+          type: string
+      description: Option type enum
     profile:
       type: string
       enum:

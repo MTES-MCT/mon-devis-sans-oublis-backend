@@ -14,6 +14,10 @@ describe "Profiles API" do
                  data: {
                    type: :array,
                    data: { type: "#/components/schemas/profile" }
+                 },
+                 options: {
+                   type: :array,
+                   data: { type: "#/components/schemas/option" }
                  }
                },
                required: ["data"]
