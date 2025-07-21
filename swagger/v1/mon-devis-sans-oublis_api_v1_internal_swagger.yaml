@@ -597,32 +597,37 @@ components:
     geste_type:
       type: string
       enum:
-      - chauffe_eau_thermo
+      - chaudiere_biomasse
+      - systeme_solaire_combine
+      - poele_insert
+      - pac_air_air
+      - pac_air_eau
+      - pac_hybride
       - chauffe_eau_solaire_individuel
+      - chauffe_eau_thermo
+      - isolation_thermique_par_exterieur_ITE
+      - isolation_thermique_par_interieur_ITI
       - isolation_comble_perdu
       - isolation_rampants_toiture
       - isolation_toiture_terrasse
-      - isolation_thermique_par_interieur_ITI
-      - isolation_thermique_par_exterieur_ITE
       - isolation_plancher_bas
       - menuiserie_fenetre
+      - menuiserie_volet_isolant
+      - vmc_double_flux
+      - vmc_simple_flux
       - menuiserie_fenetre_toit
       - menuiserie_porte
-      - menuiserie_volet_isolant
-      - poele_insert
-      - vmc_simple_flux
-      - vmc_double_flux
-      - pac_air_eau
-      - chaudiere_biomasse
-      - systeme_solaire_combine
       - pac_eau_eau
-      - pac_air_air
-      - pac_hybride
     option:
       type: object
       properties:
+        group:
+          type: string
+          nullable: true
+          description: groupe de l'option pour affichage
         label:
           type: string
+          description: label de l'option à afficher
         value:
           type: string
       description: Option type enum
