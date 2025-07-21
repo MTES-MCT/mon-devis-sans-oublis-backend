@@ -14,6 +14,10 @@ describe "RenovationTypes API" do
                  data: {
                    type: :array,
                    data: { type: "#/components/schemas/renovation_type" }
+                 },
+                 options: {
+                   type: :array,
+                   data: { type: "#/components/schemas/option" }
                  }
                },
                required: ["data"]

@@ -103,6 +103,14 @@ RSpec.configure do |config|
           type: :string,
           enum: QuoteCheck::GESTE_TYPES
         },
+        option: {
+          type: :object,
+          properties: {
+            label: { type: :string },
+            value: { type: :string }
+          },
+          description: "Option type enum"
+        },
         profile: {
           type: :string,
           enum: QuoteCheck::PROFILES,

@@ -5,7 +5,16 @@ module Api
     # Controller for RenovationTypes API
     class RenovationTypesController < BaseController
       def index
-        render json: { data: QuoteCheck::RENOVATION_TYPES }
+        renovation_types = QuoteCheck::RENOVATION_TYPES
+        render json: {
+          data: renovation_types,
+          options: renovation_types.map do |renovation_type|
+            {
+              label: I18n.t("quotes.renovation_type.title.#{renovation_type}"),
+              value: renovation_type
+            }
+          end
+        }
       end
     end
   end
