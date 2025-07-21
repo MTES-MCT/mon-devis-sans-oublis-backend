@@ -11,6 +11,8 @@ plugins:
   - rubocop-rspec_rails
 
 AllCops:
+  Exclude:
+    - 'spec/rails_helper.rb'
   NewCops: enable
 
 Style/Documentation:
