@@ -4,19 +4,19 @@ BEGIN;
 
 -- Création et import quote_checks
 CREATE TABLE mdso_analytics.quote_checks (
-    id INTEGER,
+    id UUID,
     profile VARCHAR(50),
     renovation_type VARCHAR(100),
     source_name VARCHAR(100),
     validation_controls_count INTEGER,
-    validation_errors INTEGER,
-    validation_control_codes TEXT,
+    validation_errors JSONB,
+    validation_control_codes JSONB,
     created_at TIMESTAMP,
     updated_at TIMESTAMP,
     started_at TIMESTAMP,
     finished_at TIMESTAMP,
-    case_id INTEGER,
-    parent_id INTEGER,
+    case_id UUID,
+    parent_id UUID,
     reference VARCHAR(100),
     validation_error_edited_at TIMESTAMP,
     text TEXT,
@@ -27,13 +27,13 @@ CREATE TABLE mdso_analytics.quote_checks (
 
 -- Création et import quotes_cases
 CREATE TABLE mdso_analytics.quotes_cases (
-    id INTEGER,
+    id UUID,
     profile VARCHAR(50),
     renovation_type VARCHAR(100),
     source_name VARCHAR(100),
     validation_controls_count INTEGER,
-    validation_errors INTEGER,
-    validation_control_codes TEXT,
+    validation_errors JSONB,
+    validation_control_codes JSONB,
     created_at TIMESTAMP,
     updated_at TIMESTAMP,
     finished_at TIMESTAMP,
@@ -44,9 +44,9 @@ CREATE TABLE mdso_analytics.quotes_cases (
 
 -- Création et import quote_check_feedbacks
 CREATE TABLE mdso_analytics.quote_check_feedbacks (
-    id INTEGER,
-    quote_check_id INTEGER,
-    validation_error_details_id INTEGER,
+    id UUID,
+    quote_check_id UUID,
+    validation_error_details_id VARCHAR(100),
     rating INTEGER,
     created_at TIMESTAMP,
     updated_at TIMESTAMP,
@@ -58,8 +58,8 @@ CREATE TABLE mdso_analytics.quote_check_feedbacks (
 
 -- Création et import quote_error_edits
 CREATE TABLE mdso_analytics.quote_error_edits (
-    id INTEGER,
-    validation_error_edits TEXT,
+    id UUID,
+    validation_error_edits JSONB,
     validation_error_edited_at TIMESTAMP,
     created_at TIMESTAMP
 );
