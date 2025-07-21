@@ -10,10 +10,11 @@ module RgeValidator # rubocop:disable Metrics/ModuleLength
   # See nom_certificat "Libellé du certificat" on https://data.ademe.fr/data-fair/api/v1/datasets/liste-des-entreprises-rge-2/api-docs.json
   ADEME_DOMAINE_TO_MDSO_GESTE_TYPE = {
     "Isolation par l'intérieur des murs ou rampants de toitures  ou plafonds" =>
-      "isolation_thermique_par_interieur_ITI",
+      %w[isolation_thermique_par_interieur_ITI isolation_rampants_toiture],
     "Chauffe-Eau Thermodynamique" => "chauffe_eau_thermo",
     "Pompe à chaleur : chauffage" => %w[pac_air_eau pac_eau_eau pac_air_air pac_hybride],
-    "Fenêtres, volets, portes donnant sur l'extérieur" => nil,
+    "Fenêtres, volets, portes donnant sur l'extérieur" =>
+    %w[menuiserie_fenetre menuiserie_volet_isolant menuiserie_porte],
     "Isolation des combles perdus" => "isolation_comble_perdu",
     "Isolation des murs par l'extérieur" => "isolation_thermique_par_exterieur_ITE",
     "Poêle ou insert bois" => "poele_insert",
@@ -27,7 +28,7 @@ module RgeValidator # rubocop:disable Metrics/ModuleLength
     "Radiateurs électriques, dont régulation." => nil,
     "Architecte" => nil,
     "Chaudière bois" => "chaudiere_biomasse",
-    "Chauffage et/ou eau chaude solaire" => "chauffe_eau_solaire_individuel",
+    "Chauffage et/ou eau chaude solaire" => %w[chauffe_eau_solaire_individuel systeme_solaire_combine],
     "Audit énergétique Logement collectif" => nil,
     "Etude thermique reglementaire" => nil,
     "Etude solaire photovoltaïque" => nil,
@@ -44,7 +45,7 @@ module RgeValidator # rubocop:disable Metrics/ModuleLength
     "Forage géothermique" => nil
   }.to_h do |ademe_domain, mdso_geste_types|
     unknown_geste_types = Array.wrap(mdso_geste_types) - QuoteCheck::GESTE_TYPES
-    raise NotImplemented, "Unknown Geste type #{unknown_geste_types}" if unknown_geste_types.any?
+    raise ::NotImplemented, "Unknown Geste type #{unknown_geste_types}" if unknown_geste_types.any?
 
     [ademe_domain, mdso_geste_types]
   end.freeze
@@ -93,7 +94,7 @@ module RgeValidator # rubocop:disable Metrics/ModuleLength
     "Certiforage module Sonde" => nil
   }.to_h do |ademe_certificate, mdso_geste_types|
     unknown_geste_types = Array.wrap(mdso_geste_types) - QuoteCheck::GESTE_TYPES
-    raise NotImplemented, "Unknown Geste type #{unknown_geste_types}" if unknown_geste_types.any?
+    raise ::NotImplemented, "Unknown Geste type #{unknown_geste_types}" if unknown_geste_types.any?
 
     [ademe_certificate, mdso_geste_types]
   end
