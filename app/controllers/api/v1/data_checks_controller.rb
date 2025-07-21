@@ -4,15 +4,18 @@ module Api
   module V1
     # Controller to handle API key authentication
     class DataChecksController < BaseController
-      def geste_types
+      def geste_types # rubocop:disable Metrics/MethodLength
         geste_types = QuoteCheck::GESTE_TYPES
         render json: {
           data: geste_types,
-          options: geste_types.map do |geste_type|
-            {
-              label: I18n.t("quote_checks.geste_type.title.#{geste_type}"),
-              value: geste_type
-            }
+          options: QuoteCheck::GESTE_TYPES_GROUPS.flat_map do |group, geste_types|
+            geste_types.map do |geste_type|
+              {
+                group: group,
+                label: I18n.t("quote_checks.geste_type.title.#{geste_type}"),
+                value: geste_type
+              }
+            end
           end
         }
       end

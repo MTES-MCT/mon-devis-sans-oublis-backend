@@ -8,29 +8,40 @@ module QuoteInputMetadata
   DEPRECATED_PROFILES = %w[mandataire].freeze
 
   # Complete list of Geste types from QA prompts
-  GESTE_TYPES = %w[
-    chauffe_eau_thermo
-    chauffe_eau_solaire_individuel
-    isolation_comble_perdu
-    isolation_rampants_toiture
-    isolation_toiture_terrasse
-    isolation_thermique_par_interieur_ITI
-    isolation_thermique_par_exterieur_ITE
-    isolation_plancher_bas
-    menuiserie_fenetre
-    menuiserie_fenetre_toit
-    menuiserie_porte
-    menuiserie_volet_isolant
-    poele_insert
-    vmc_simple_flux
-    vmc_double_flux
-    pac_air_eau
-    chaudiere_biomasse
-    systeme_solaire_combine
-    pac_eau_eau
-    pac_air_air
-    pac_hybride
-  ].freeze
+  GESTE_TYPES_GROUPS = {
+    "Chauffage" => %w[
+      chaudiere_biomasse
+      systeme_solaire_combine
+      poele_insert
+      pac_air_air
+      pac_air_eau
+      pac_hybride
+      pac_eau_eau
+    ],
+    "Eau chaude sanitaire" => %w[
+      chauffe_eau_solaire_individuel
+      chauffe_eau_thermo
+    ],
+    "Isolation" => %w[
+      isolation_thermique_par_exterieur_ITE
+      isolation_thermique_par_interieur_ITI
+      isolation_comble_perdu
+      isolation_rampants_toiture
+      isolation_toiture_terrasse
+      isolation_plancher_bas
+    ],
+    "Menuiserie" => %w[
+      menuiserie_fenetre
+      menuiserie_volet_isolant
+      menuiserie_fenetre_toit
+      menuiserie_porte
+    ],
+    "Ventilation" => %w[
+      vmc_double_flux
+      vmc_simple_flux
+    ]
+  }.freeze
+  GESTE_TYPES = GESTE_TYPES_GROUPS.values.flatten.freeze
 
   RENOVATION_TYPES = %w[geste ampleur].freeze
 

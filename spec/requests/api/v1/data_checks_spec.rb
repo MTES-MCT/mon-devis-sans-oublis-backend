@@ -17,7 +17,11 @@ RSpec.describe "/api/v1/data_checks" do
     end
 
     it "includes labels" do
-      expect(json.dig("options", 1, "label")).to eq("Chauffe-eau solaire individuel")
+      expect(json.dig("options", 1)).to include(
+        "group" => "Chauffage",
+        "label" => "Chauffage solaire combiné",
+        "value" => "systeme_solaire_combine"
+      )
     end
   end
 

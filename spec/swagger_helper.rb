@@ -106,7 +106,8 @@ RSpec.configure do |config|
         option: {
           type: :object,
           properties: {
-            label: { type: :string },
+            group: { type: :string, nullable: true, description: "groupe de l'option pour affichage" },
+            label: { type: :string, description: "label de l'option à afficher" },
             value: { type: :string }
           },
           description: "Option type enum"
