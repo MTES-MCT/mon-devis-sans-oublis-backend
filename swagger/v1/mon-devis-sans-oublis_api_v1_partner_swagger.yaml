@@ -765,6 +765,7 @@ components:
       - pac_air_air
       - pac_air_eau
       - pac_hybride
+      - pac_eau_eau
       - chauffe_eau_solaire_individuel
       - chauffe_eau_thermo
       - isolation_thermique_par_exterieur_ITE
@@ -775,11 +776,10 @@ components:
       - isolation_plancher_bas
       - menuiserie_fenetre
       - menuiserie_volet_isolant
-      - vmc_double_flux
-      - vmc_simple_flux
       - menuiserie_fenetre_toit
       - menuiserie_porte
-      - pac_eau_eau
+      - vmc_double_flux
+      - vmc_simple_flux
     option:
       type: object
       properties:
