@@ -104,7 +104,7 @@ echo "Étape 4: Import des CSV vers Metabase..."
 psql $TARGET_DB_URL -f "$SCRIPT_DIR/import-csv-to-metabase.sql"
 
 echo "Étape 5: Nettoyage du schéma temporaire..."
-psql $TARGET_DB_URL -f "$SCRIPT_DIR/cleanup-anonymized-source-data.sql"
+psql $SOURCE_DB_URL -f "$SCRIPT_DIR/cleanup-anonymized-source-data.sql"
 
 # Comptage des enregistrements exportés
 TOTAL_RECORDS=$(psql $TARGET_DB_URL -t -c "

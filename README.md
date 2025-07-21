@@ -324,13 +324,35 @@ sacrifier le parallèlisme de ces étapes.
 
 Le back-end dispose d'un système d'export automatisé qui permet de copier et anonymiser les données de production vers une base de données dédiée à Metabase pour les analyses et tableaux de bord.
 
+Les données sont exportées dans un schéma dédié `mdso_analytics` pour une organisation claire dans Metabase.
+
+## Architecture du processus
+
+```
+DB Source (Production) 
+    ↓ (anonymisation)
+Schéma temporaire export_anonymized
+    ↓ (export CSV)
+Fichiers CSV temporaires 
+    ↓ (import)
+DB Metabase → Schéma mdso_analytics
+```
+
 ## Scripts d'anonymisation
 
-Le processus d'anonymisation est géré par trois scripts situés dans le dossier `db/scripts` :
+Le processus d'anonymisation est géré par **6 scripts** situés dans le dossier `db/scripts` :
 
-- **`export-db-metabase.sh`** : Script principal d'orchestration
-- **`anonymize-data.sql`** : Création des tables avec données anonymisées
-- **`cleanup-metabase-db.sql`** : Nettoyage de la base Metabase avant import
+### Script principal
+
+- **`export-db-metabase.sh`** : Script bash d'orchestration complète
+
+### Scripts SQL
+
+- **`anonymize-data.sql`** : Création des tables avec données anonymisées dans un schéma temporaire
+- **`export-anonymized-data.sql`** : Export des données anonymisées vers fichiers CSV
+- **`cleanup-metabase.sql`** : Nettoyage et recréation du schéma `mdso_analytics`
+- **`import-csv-to-metabase.sql`** : Import des CSV vers le schéma `mdso_analytics`
+- **`cleanup-anonymized-source-data.sql`** : Suppression du schéma temporaire dans la DB source
 
 ## Variables d'environnement requises
 
@@ -355,20 +377,43 @@ scalingo --app mon-devis-sans-oublis-backend-staging env-set \
 scalingo --app mon-devis-sans-oublis-backend-staging env | grep DATABASE
 ```
 
-## Données anonymisées
+## Données exportées et anonymisation
+
+### Tables exportées
+
+1. **`quote_checks`** - Analyses de devis principales
+2. **`quotes_cases`** - Dossiers/cas de rénovation  
+3. **`quote_check_feedbacks`** - Retours utilisateurs
+4. **`quote_error_edits`** - Historique des corrections
+
+### Anonymisation appliquée
 
 Pour respecter la confidentialité, les données sensibles sont automatiquement anonymisées :
 
 | Type de données | Anonymisation |
 |-----------------|---------------|
-| **Contenu des devis** | Remplacé par "Texte anonymisé [ID]" |
-| **Fichiers PDF** | Contenu binaire exclu, noms anonymisés |
-| **Texte OCR** | Remplacé par "Contenu OCR anonymisé [ID]" |
-| **Emails utilisateurs** | Format `user_[ID]@example.com` |
-| **Commentaires** | Remplacés par "Commentaire anonymisé" |
-| **Métadonnées sensibles** | Anonymisées ou exclues |
+| **Contenu des devis** | Remplacé par "Contenu anonymisé pour export Metabase" |
+| **Commentaires utilisateurs** | Remplacés par "Commentaire anonymisé" |
+| **Emails utilisateurs** | Remplacés par `email-anonymise@example.com` |
+| **Texte OCR/PDF** | Exclu de l'export |
 
-Les données analytiques (dates, statuts, codes d'erreur, métriques) sont conservées pour permettre les analyses.
+Les **données analytiques** (dates, statuts, codes d'erreur, métriques, profils utilisateurs) sont **conservées** pour permettre les analyses.
+
+## Organisation dans Metabase
+
+Les données sont importées dans le schéma `mdso_analytics` avec la structure :
+
+- `mdso_analytics.quote_checks`
+- `mdso_analytics.quotes_cases`
+- `mdso_analytics.quote_check_feedbacks`
+- `mdso_analytics.quote_error_edits`
+
+## Sécurité et nettoyage
+
+- **Fichiers CSV temporaires** : Automatiquement supprimés après chaque exécution
+- **Schéma temporaire** : Nettoyé après export
+- **Protection Git** : Fichiers `.csv` exclus via `.gitignore`
+- **Gestion d'erreur** : Nettoyage automatique même en cas d'échec
 
 ## Automatisation
 
@@ -384,7 +429,7 @@ scalingo --app mon-devis-sans-oublis-backend-staging env | grep METABASE_DATA_DB
 scalingo --app mon-devis-sans-oublis-backend-staging run db/scripts/export-db-metabase.sh
 ```
 
-## Surveillance
+## Surveillance et logs
 
 ```bash
 # Voir les tâches programmées
@@ -392,4 +437,7 @@ scalingo --app mon-devis-sans-oublis-backend-staging cron-tasks
 
 # Consulter les logs d'exécution
 scalingo --app mon-devis-sans-oublis-backend-staging logs --filter cron
+
+# Vérifier les logs d'export dans la DB
+psql $DATABASE_URL -c "SELECT * FROM export_logs ORDER BY created_at DESC LIMIT 10;"
 ```
