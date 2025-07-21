@@ -147,6 +147,7 @@ sequenceDiagram
     participant QuoteCheckCheckJob as Process traitement
     participant Albert LLM as API Albert AI LLM
     participant Albert OCR as API Albert AI OCR LLM
+    participant MDSO OCR
     participant Mistral LLM as API Mistral AI LLM
     participant Tesseract as Tesseract OCR
 
@@ -169,7 +170,7 @@ sequenceDiagram
     Backend-->>Backend: Vérification de la non présence de virus (QuoteFileSecurityScanJob)
 
     QuoteCheckCheckJob->>QuoteCheckCheckJob: Extraction automatique du texte du PDF si bien formatté
-    QuoteCheckCheckJob->>QuoteCheckCheckJob: Sinon extraction du texte via OCR (Albert / Mistral / Tesseract) UNIQUEMENT VIA BO
+    QuoteCheckCheckJob->>QuoteCheckCheckJob: Sinon extraction du texte via OCR (Albert / MDSO / Mistral / Tesseract) UNIQUEMENT VIA BO
 
     QuoteCheckCheckJob->>QuoteCheckCheckJob: Extraction des données du texte via méthode naïve
     QuoteCheckCheckJob->>QuoteCheckCheckJob: Réduction du texte si conditions générales
@@ -202,9 +203,9 @@ Les fichiers devis sont traités par le `QuoteChecksController` qui les envoient
 - `QuoteReader` lisant le devis brut puis extractant les information du devis de manière naïve en se basant sur le texte du PDF et via solutions LLM avec croisement de données d'annuaires publiques de la rénovation
 - puis ces attributs de devis sont vérifier par le `QuoteValdiator` qui controlle un ensemble de règles et renvoit les erreurs correspondantes
 
-### Traitement des images / OCR
+### Traitement des images via OCR
 
-Différentes briques sont mises à contribution et encore en évaluation:
+Différentes briques sont mises à contribution et encore en évaluation via le projet dédié [mon-devis-sans-oublis-backend-ocr](https://github.com/MTES-MCT/mon-devis-sans-oublis-backend-ocr)
 
 - pour la reconnaissance des images et lire leur contenu via OCR
   - Surya (Python)
@@ -212,6 +213,12 @@ Différentes briques sont mises à contribution et encore en évaluation:
 - pour transformer les PDF en images
   - librairie Poppler `pdftoppm` (natif)
   - la gem MiniMagick (IM) `mini_magick` avec ImageMagick 6.9 (comme sur Scalingo) (natif)
+
+#### Configurer un nouveau service OCR
+
+- vérifier la disponibilité du service via `QuoteReader::Image::MdsoOcr.new("", "").models`
+- ajouter une class dédiée type `QuoteReader::Image:MdsoOcrMarker`
+- ajouter le nom de la classe dans `config/custom.rb`
 
 ### Tester un devis en local
 

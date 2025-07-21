@@ -37,6 +37,7 @@ Rails.application.configure do
     QuoteReader::Image::AlbertOcr,
     QuoteReader::Image::MdsoOcrOlmOcr,
     QuoteReader::Image::MdsoOcrNanonets,
+    QuoteReader::Image::MdsoOcrMarker,
     QuoteReader::Image::MistralOcr,
     QuoteReader::Image::Tesseract
   ].keep_if(&:configured?).map { it.name.split("::").last }
