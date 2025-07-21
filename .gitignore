@@ -45,3 +45,10 @@ node_modules
 .env.local
 .env.*.local
 .env.docker
+
+
+# CSV et données sensibles
+*.csv
+*.CSV
+**/*.csv
+**/*.CSV
