@@ -12,6 +12,8 @@ plugins:
 
 AllCops:
   Exclude:
+    - 'bin/**/*'
+    - 'db/schema.rb'
     - 'spec/rails_helper.rb'
   NewCops: enable
 
