@@ -114,12 +114,12 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
 
         f.input :gestes,
                 as: :select,
-                collection: QuoteCheck.metadata_values("gestes"),
+                collection: QuoteCheck.metadata_values_for("gestes"),
                 include_blank: false,
                 multiple: true
         f.input :aides,
                 as: :select,
-                collection: QuoteCheck.metadata_values("aides"),
+                collection: QuoteCheck.metadata_values_for("aides"),
                 include_blank: false,
                 multiple: true
 

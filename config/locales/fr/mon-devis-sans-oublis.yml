@@ -34,10 +34,10 @@ fr:
         isolation_thermique_par_exterieur_ITE: Isolation des murs par l'extérieur (ITE)
         isolation_thermique_par_interieur_ITI: Isolation des murs par l'intérieur (ITI)
         isolation_toiture_terrasse: Isolation de la toiture-terrasse
-        menuiserie_fenetre: Menuiserie Remplacement des fenêtres ou porte-fenêtres
+        menuiserie_fenetre: Remplacement des fenêtres ou porte-fenêtres
         menuiserie_fenetre_toit: Menuiserie des fenêtres de toit
         menuiserie_porte:  Menuiserie des portes
-        menuiserie_volet_isolant: Menuiserie Volet isolant
+        menuiserie_volet_isolant: Volet isolant
         pac_air_air: Pompe à chaleur air / air
         pac_air_eau: Pompe à chaleur air / eau
         pac_eau_eau: Pompe à chaleur eau / eau
@@ -53,7 +53,7 @@ fr:
         - CEE
         - Eco prêt à taux 0
         - Aide locale
-      gestes:
+      gestes: # TODO: use QuoteInputMetadata::GESTE_TYPES_GROUPS
         - group: "Chauffage"
           values:
             - Chaudière biomasse

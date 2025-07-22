@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Add profile and metadata from user inputs
-module QuoteInputMetadata
+module QuoteInputMetadata # rubocop:disable Metrics/ModuleLength
   extend ActiveSupport::Concern
 
   PROFILES = %w[artisan particulier conseiller].freeze # Also called Persona
@@ -60,11 +60,15 @@ module QuoteInputMetadata
   end
 
   class_methods do
-    def metadata_values(key)
+    def metadata_values_for(key)
       key_values = I18n.t("quote_checks.metadata").with_indifferent_access.fetch(key)
       return key_values unless key_values.first.is_a?(Hash)
 
       key_values.flat_map { it.fetch(:values) }
+    end
+
+    def metadata_values
+      I18n.t("quote_checks.metadata").with_indifferent_access
     end
   end
 
@@ -105,7 +109,7 @@ module QuoteInputMetadata
     self.metadata = metadata.transform_values(&:presence).compact # Remove empty values
 
     if metadata&.key?("gestes")
-      metadata["gestes"] = # Backport
+      metadata["gestes"] = # TODO: remove this Backport after fixing the frontend and database
         metadata["gestes"].map do # rubocop:disable Style/ItBlockParameter
           it.gsub("Poêle à granulés", "Poêle/insert à bois/granulés")
         end
@@ -123,7 +127,7 @@ module QuoteInputMetadata
     metadata.each do |key, values|
       next unless values
 
-      key_values = self.class.metadata_values(key)
+      key_values = self.class.metadata_values_for(key)
       errors.add(:metadata, "clé #{key} non autorisée") unless key_values
       values.each do |value|
         errors.add(:metadata, "valeur #{value} non autorisée pour #{key}") unless key_values.include?(value)

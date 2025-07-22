@@ -446,8 +446,8 @@ components:
           examples:
           - Isolation par l'intérieur des murs ou rampants de toitures  ou plafonds
           - Chauffe-Eau Thermodynamique
-          - 'Pompe à chaleur : chauffage'
           - Fenêtres, volets, portes donnant sur l'extérieur
+          - 'Pompe à chaleur : chauffage'
           - Isolation des combles perdus
           - Isolation des murs par l'extérieur
           - Poêle ou insert bois
