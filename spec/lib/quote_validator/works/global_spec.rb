@@ -41,7 +41,7 @@ RSpec.describe QuoteValidator::Works::Global, type: :service do
     before { validator.validate! }
 
     it "returns error_details" do
-      expect(validator.error_details.dig(0, :code)).to eq("geste_prix_ht_manquant")
+      expect(validator.error_details.dig(0, :code)).to eq("isolation_marque_manquant")
     end
   end
 

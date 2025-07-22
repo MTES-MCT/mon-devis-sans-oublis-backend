@@ -66,11 +66,9 @@ module QuoteValidator
         ventilation = Works::Ventilation.new(quote, quote_id:)
 
         gestes = quote[:gestes] || []
-        geste_reconnu = true
 
         gestes.each_with_index do |geste, index| # rubocop:disable Metrics/BlockLength
           geste[:index] = index
-          geste_reconnu = true
 
           case geste[:type]
 
@@ -133,21 +131,14 @@ module QuoteValidator
           # AUDIT ENERGETIQUE
 
           when "", nil
-            geste_reconnu = false
             next
 
           else
-            geste_reconnu = false
             e = NotImplementedError.new("Geste inconnu '#{geste[:type]}' is not listed")
             ErrorNotifier.notify(e)
 
             "geste_inconnu"
           end
-
-          next unless geste_reconnu
-
-          validate_prix_geste(geste)
-          validate_rge_geste(geste) if siret
         end
 
         add_validator_errors(
@@ -157,6 +148,11 @@ module QuoteValidator
           eau_chaude,
           ventilation
         )
+
+        gestes.each do |geste|
+          validate_prix_geste(geste)
+          validate_rge_geste(geste) if siret
+        end
       end
       # rubocop:enable Metrics/PerceivedComplexity
       # rubocop:enable Metrics/MethodLength
