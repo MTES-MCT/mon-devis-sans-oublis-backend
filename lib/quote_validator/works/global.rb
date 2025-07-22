@@ -160,6 +160,9 @@ module QuoteValidator
       # rubocop:enable Metrics/AbcSize
 
       def validate_prix_geste(geste) # rubocop:disable Metrics/MethodLength
+        geste_type = geste[:type].to_s
+        return unless QuoteCheck::GESTE_TYPES.include?(geste_type)
+
         # Valider qu'on a le prix HT sur chaque geste et son taux de TVA
         # {
         #   prix_ht: decimal;
