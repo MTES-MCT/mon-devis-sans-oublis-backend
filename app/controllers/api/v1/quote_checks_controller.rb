@@ -55,7 +55,7 @@ module Api
       end
 
       def metadata
-        render json: I18n.t("quote_checks.metadata").to_json
+        render json: QuoteCheck.metadata_values.to_json
       end
 
       protected
