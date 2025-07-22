@@ -145,13 +145,6 @@ module RgeValidator # rubocop:disable Metrics/ModuleLength
       raise ArgumentError.new(nil, "rge_non_correspondant") unless rge_qualifications.any?
     end
 
-    if date.present?
-      rge_qualifications = rge_qualifications.select do
-        date.between?(Date.parse(it.fetch("date_debut")), Date.parse(it.fetch("date_fin")))
-      end
-      raise ArgumentError.new(nil, "rge_hors_date") if rge_qualifications.empty? && rge.present?
-    end
-
     if geste_types.present?
       rge_qualifications = rge_qualifications.select do
         ademe_geste_types(
@@ -159,6 +152,14 @@ module RgeValidator # rubocop:disable Metrics/ModuleLength
           domaine: it.fetch("domaine")
         ).intersect?(geste_types)
       end
+    end
+
+    # Date check in the end to raise rge_hors_date specific error
+    if date.present?
+      rge_qualifications = rge_qualifications.select do
+        date.between?(Date.parse(it.fetch("date_debut")), Date.parse(it.fetch("date_fin")))
+      end
+      raise ArgumentError.new(nil, "rge_hors_date") if rge_qualifications.empty? && rge.present?
     end
 
     rge_qualifications

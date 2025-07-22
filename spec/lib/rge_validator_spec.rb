@@ -117,6 +117,20 @@ RSpec.describe RgeValidator, type: :service do
       end
     end
 
+    context "with SIRET and related Geste Type but too after date" do
+      let(:params) do
+        { siret: "87926701100010", rge: "Q182016", geste_types: %w[menuiserie_fenetre], date: "09/06/2027" }
+      end
+
+      it "raises an ArgumentError" do # rubocop:disable RSpec/MultipleExpectations
+        expect do
+          valid
+        end.to raise_error(RgeValidator::ArgumentError) { |error|
+                 expect(error.error_code).to eq("rge_hors_date")
+               }
+      end
+    end
+
     context "with SIRET and related RGE with good date" do
       let(:params) { { siret: "50432740400035", date: "20/07/2023" } }
 
