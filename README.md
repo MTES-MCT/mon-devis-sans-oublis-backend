@@ -356,12 +356,29 @@ Le processus d'anonymisation est géré par **6 scripts** situés dans le dossie
 
 ## Variables d'environnement requises
 
-L'export nécessite deux variables d'environnement sur l'application backend :
+L'export nécessite ces variables d'environnement sur l'application backend :
 
-| Variable | Description | Source |
-|----------|-------------|---------|
-| `DATABASE_URL` | URL de la base de données backend | Automatiquement configurée par Scalingo |
-| `METABASE_DATA_DB_URL` | URL de la base de données Metabase | À configurer manuellement |
+| Variable | Description | Source | Requis |
+|----------|-------------|---------|---------|
+| `DATABASE_URL` | URL de la base de données backend | Automatiquement configurée par Scalingo | ✅ |
+| `METABASE_DATA_DB_URL` | URL de la base de données Metabase | À configurer manuellement | ✅ |
+| `ENABLE_METABASE_EXPORT` | Active/désactive l'export automatique | `true` ou `false` | ✅ |
+
+### Configuration de l'activation/désactivation
+
+```bash
+# Activer l'export (recommandé pour la production)
+scalingo --app mon-devis-sans-oublis-backend-prod env-set ENABLE_METABASE_EXPORT="true"
+
+# Désactiver l'export (recommandé pour staging/dev)
+scalingo --app mon-devis-sans-oublis-backend-staging env-set ENABLE_METABASE_EXPORT="false"
+```
+
+**Comportement** :
+
+- Si `ENABLE_METABASE_EXPORT=true` : L'export s'exécute normalement
+- Si `ENABLE_METABASE_EXPORT=false` ou non définie : L'export se termine proprement sans erreur
+- Message explicite dans les logs pour indiquer l'état (activé/désactivé)
 
 ### Configuration de la variable Metabase
 
@@ -419,11 +436,13 @@ Les données sont importées dans le schéma `mdso_analytics` avec la structure 
 
 L'export est automatisé via un CRON (défini dans `cron.json`) qui s'exécute **tous les matins à 9h** pour maintenir les données Metabase à jour avec les dernières données anonymisées.
 
+**Important** : Le CRON ne s'exécute que si `ENABLE_METABASE_EXPORT=true`.
+
 ## Exécution manuelle
 
 ```bash
-# Pré-requis : Vérifier que METABASE_DATA_DB_URL est configurée
-scalingo --app mon-devis-sans-oublis-backend-staging env | grep METABASE_DATA_DB_URL
+# Pré-requis : Vérifier que les variables sont configurées
+scalingo --app mon-devis-sans-oublis-backend-staging env | grep -E "(METABASE_DATA_DB_URL|ENABLE_METABASE_EXPORT)"
 
 # Lancement de l'export
 scalingo --app mon-devis-sans-oublis-backend-staging run db/scripts/export-db-metabase.sh
