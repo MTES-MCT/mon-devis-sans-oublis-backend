@@ -3,6 +3,15 @@ set -e
 
 echo "=== Export et anonymisation DB MDSO vers Metabase (CSV) ==="
 
+# Vérification si l'export est activé
+if [ "$ENABLE_METABASE_EXPORT" != "true" ]; then
+    echo "Export Metabase désactivé (ENABLE_METABASE_EXPORT != 'true')"
+    echo "Pour activer: export ENABLE_METABASE_EXPORT=true"
+    exit 0
+fi
+
+echo "Export Metabase activé, démarrage..."
+
 # Variables d'environnement
 SOURCE_DB_URL="${DATABASE_URL}"
 TARGET_DB_URL="${METABASE_DATA_DB_URL}"
