@@ -95,25 +95,33 @@ module Api
         }
       end
 
-      def log_rge_request(request_params, result, source, started_at, success:)
-        ProcessingLog.create!(
+      def log_rge_request(request_params, result, _source, started_at, success:)
+        ProcessingLog.create!(log_attributes(request_params, result, started_at, success))
+      rescue StandardError => e
+        Rails.logger.error "Failed to log RGE request: #{e.message}"
+      end
+
+      def log_attributes(request_params, result, started_at, success)
+        {
           processable_type: nil,
           processable_id: nil,
           tags: ["rge_validation", success ? "success" : "error"].compact,
-          input_parameters: {
-            siret: request_params[:siret],
-            rge: request_params[:rge],
-            date: request_params[:date],
-            geste_types: request_params[:geste_types],
-            user_agent: request.headers["User-Agent"],
-            referer: request.headers["Referer"]
-          },
+          input_parameters: log_input_parameters(request_params),
           output_result: result,
           started_at: started_at,
           finished_at: Time.current
-        )
-      rescue StandardError => e
-        Rails.logger.error "Failed to log RGE request: #{e.message}"
+        }
+      end
+
+      def log_input_parameters(request_params)
+        {
+          siret: request_params[:siret],
+          rge: request_params[:rge],
+          date: request_params[:date],
+          geste_types: request_params[:geste_types],
+          user_agent: request.headers["User-Agent"],
+          referer: request.headers["Referer"]
+        }
       end
     end
   end
