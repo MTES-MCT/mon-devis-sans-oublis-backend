@@ -72,8 +72,8 @@ CREATE TABLE mdso_analytics.processing_logs (
     tags TEXT[],
     processable_type VARCHAR(100),
     processable_id UUID,
-    input_parameters JSONB,
-    output_result JSONB,
+    input_parameters TEXT,
+    output_result TEXT,
     started_at TIMESTAMP,
     finished_at TIMESTAMP
 );

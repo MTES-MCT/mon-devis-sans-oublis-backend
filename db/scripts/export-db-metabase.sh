@@ -15,7 +15,10 @@ echo "Export Metabase activé, démarrage..."
 # Variables d'environnement
 SOURCE_DB_URL="${DATABASE_URL}"
 TARGET_DB_URL="${METABASE_DATA_DB_URL}"
-SCRIPT_DIR="$(dirname "$0")"
+
+# Chemins absolus pour éviter les problèmes de changement de répertoire
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+INITIAL_DIR="$(pwd)"
 
 # Définition du répertoire cible
 if [ -w "/app" ]; then
@@ -26,7 +29,8 @@ else
     WORK_DIR="/tmp"
 fi
 
-echo "Répertoire : $WORK_DIR"
+echo "Répertoire de travail: $WORK_DIR"
+echo "Répertoire des scripts: $SCRIPT_DIR"
 
 # Chemins des fichiers CSV
 CSV_FILES=(
@@ -51,6 +55,8 @@ cleanup_csv_files() {
 # Fonction de gestion d'erreur
 handle_error() {
     echo "Erreur durant l'export"
+    # Retour au répertoire initial en cas d'erreur
+    cd "$INITIAL_DIR"
     cleanup_csv_files
     # Log seulement si la table existe
     psql $SOURCE_DB_URL -c "INSERT INTO export_logs (status, message) VALUES ('error', 'Erreur durant l export CSV');" 2>/dev/null || true
@@ -59,7 +65,7 @@ handle_error() {
 
 # Capture les erreurs et nettoyage automatique
 trap 'handle_error' ERR
-trap 'cleanup_csv_files' EXIT
+trap 'cleanup_csv_files; cd "$INITIAL_DIR"' EXIT
 
 # Vérifications
 if [ -z "$SOURCE_DB_URL" ]; then
@@ -76,7 +82,7 @@ fi
 REQUIRED_FILES=("anonymize-data.sql" "cleanup-metabase.sql" "export-anonymized-data.sql" "import-csv-to-metabase.sql" "cleanup-anonymized-source-data.sql")
 for file in "${REQUIRED_FILES[@]}"; do
     if [ ! -f "$SCRIPT_DIR/$file" ]; then
-        echo "Erreur: Fichier $file introuvable"
+        echo "Erreur: Fichier $SCRIPT_DIR/$file introuvable"
         exit 1
     fi
 done
@@ -91,8 +97,11 @@ psql $SOURCE_DB_URL -f "$SCRIPT_DIR/anonymize-data.sql"
 psql $SOURCE_DB_URL -c "INSERT INTO export_logs (status, message) VALUES ('started', 'Export CSV en cours');"
 
 echo "Étape 2: Export des données anonymisées vers CSV..."
-# Se placer dans le bon répertoire pour l'export
+
+# Se placer dans le répertoire de travail pour l'export CSV
 cd "$WORK_DIR"
+
+# Utilisation du chemin absolu pour le fichier SQL
 psql $SOURCE_DB_URL -f "$SCRIPT_DIR/export-anonymized-data.sql"
 
 # Vérification que les CSV ont été créés
@@ -107,11 +116,18 @@ for file in "${CSV_FILES[@]}"; do
     echo "Fichier créé: $(basename $file) ($lines lignes, $size)"
 done
 
+# Retour au répertoire initial pour les autres opérations
+cd "$INITIAL_DIR"
+
 echo "Étape 3: Nettoyage de la DB Metabase..."
 psql $TARGET_DB_URL -f "$SCRIPT_DIR/cleanup-metabase.sql"
 
 echo "Étape 4: Import des CSV vers Metabase..."
+# Se placer dans le répertoire des CSV pour l'import
+cd "$WORK_DIR"
 psql $TARGET_DB_URL -f "$SCRIPT_DIR/import-csv-to-metabase.sql"
+# Retour au répertoire initial
+cd "$INITIAL_DIR"
 
 echo "Étape 5: Nettoyage du schéma temporaire..."
 psql $SOURCE_DB_URL -f "$SCRIPT_DIR/cleanup-anonymized-source-data.sql"

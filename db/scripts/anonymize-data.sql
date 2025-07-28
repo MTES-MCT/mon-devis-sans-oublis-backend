@@ -87,19 +87,21 @@ FROM quote_checks
 WHERE validation_error_edits IS NOT NULL;
 
 -- 5. Table des logs de traitement (avec anonymisation)
-CREATE TABLE export_anonymized.processing_logs AS 
+CREATE TABLE export_anonymized.processing_logs AS
 SELECT 
     id,
     tags,
     processable_type,
     processable_id,
-    output_result,
+    -- Conversion des JSONB en TEXT pour éviter les erreurs d'export
+    CASE 
+        WHEN input_parameters IS NULL THEN NULL
+        ELSE input_parameters::text
+    END as input_parameters,
+    CASE 
+        WHEN output_result IS NULL THEN NULL
+        ELSE output_result::text
+    END as output_result,
     started_at,
-    finished_at,
-    -- Anonymisation des paramètres d'entrée sensibles
-    jsonb_build_object(
-        'geste_types', input_parameters->'geste_types',
-        'user_agent', input_parameters->'user_agent',
-        'referer', input_parameters->'referer'
-    ) as input_parameters
+    finished_at
 FROM processing_logs;
