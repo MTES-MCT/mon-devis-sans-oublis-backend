@@ -565,8 +565,8 @@ components:
           - Tableau de l´Ordre
           - Qualibois Eau
           - QualiPV 36
-          - Certificat Qualifelec RGE
           - Qualibois Air
+          - Certificat Qualifelec RGE
           - Ventilation +
           - Qualisol CESI
           - Chauffage +
@@ -608,8 +608,8 @@ components:
           examples:
           - Isolation par l'intérieur des murs ou rampants de toitures  ou plafonds
           - Chauffe-Eau Thermodynamique
-          - Fenêtres, volets, portes donnant sur l'extérieur
           - 'Pompe à chaleur : chauffage'
+          - Fenêtres, volets, portes donnant sur l'extérieur
           - Isolation des combles perdus
           - Isolation des murs par l'extérieur
           - Poêle ou insert bois

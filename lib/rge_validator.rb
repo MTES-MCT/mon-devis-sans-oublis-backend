@@ -48,7 +48,7 @@ module RgeValidator # rubocop:disable Metrics/ModuleLength
     raise ::NotImplemented, "Unknown Geste type #{unknown_geste_types}" if unknown_geste_types.any?
 
     [ademe_domain, mdso_geste_types]
-  end.freeze
+  end.sort.to_h.freeze
 
   ADEME_NOM_CERTIFICAT_TO_MDSO_GESTE_TYPE = {
     "QUALIBAT-RGE" => nil,
@@ -97,7 +97,7 @@ module RgeValidator # rubocop:disable Metrics/ModuleLength
     raise ::NotImplemented, "Unknown Geste type #{unknown_geste_types}" if unknown_geste_types.any?
 
     [ademe_certificate, mdso_geste_types]
-  end
+  end.sort.to_h.freeze
 
   def self.ademe_geste_types(domaine: nil, nom_certificat: nil)
     [
