@@ -16,6 +16,13 @@ module QuoteReader
 
     private
 
+    # According to prompts/qa.txt, the attributes should be cleaned
+    def clean_attributes(attributes)
+      attributes&.merge(
+        numero_devis: Array.wrap(attributes[:numero_devis]).map(&:to_s).presence
+      )&.compact.presence
+    end
+
     # rubocop:disable Metrics/AbcSize
     def llm_read_attributes(llm) # rubocop:disable Metrics/MethodLength
       llm_klass = "Llms::#{llm.capitalize}".constantize
@@ -31,7 +38,7 @@ module QuoteReader
         raise QuoteReader::LlmError, e
       end
 
-      @read_attributes = TrackingHash.new(llm.read_attributes)
+      @read_attributes = clean_attributes(TrackingHash.new(llm.read_attributes))
       @result = llm.result
 
       quote_file.end_processing_log(processing_log) if processing_log
