@@ -66,4 +66,18 @@ CREATE TABLE mdso_analytics.quote_error_edits (
 
 \copy mdso_analytics.quote_error_edits FROM './quote_error_edits.csv' WITH CSV HEADER;
 
+-- Création et import processing_logs
+CREATE TABLE mdso_analytics.processing_logs (
+    id UUID,
+    tags TEXT[],
+    processable_type VARCHAR(100),
+    processable_id UUID,
+    input_parameters JSONB,
+    output_result JSONB,
+    started_at TIMESTAMP,
+    finished_at TIMESTAMP
+);
+
+\copy mdso_analytics.processing_logs FROM './processing_logs.csv' WITH CSV HEADER;
+
 COMMIT;
