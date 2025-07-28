@@ -36,14 +36,15 @@ module QuoteReader
         return Pdf.new(content).extract_text unless force_ocr
       end
 
-      if force_ocr || QuoteFile.new(content_type:).ocrable?
+      ocr_to_use = ocr || DEFAULT_OCR if force_ocr || QuoteFile.new(content_type:).ocrable?
+      if ocr_to_use
         begin
-          ocr_instance = case ocr || DEFAULT_OCR
+          ocr_instance = case ocr_to_use
                          when "MdsoOcr"
                            Image::MdsoOcr.new(content, content_type, quote_file:) # Example
                          else
-                           klass = "QuoteReader::Image::#{ocr}".constantize
-                           raise NotImplementedError, "OCR #{ocr} is not implemented" unless defined?(klass)
+                           klass = "QuoteReader::Image::#{ocr_to_use}".constantize
+                           raise NotImplementedError, "OCR #{ocr_to_use} is not implemented" unless defined?(klass)
 
                            klass.new(content, content_type, quote_file:)
 
@@ -53,7 +54,7 @@ module QuoteReader
         ensure
           quote_file&.update!(
             force_ocr:,
-            ocr: ocr_instance&.ocr || ocr,
+            ocr: ocr_instance&.ocr || ocr_to_use,
             ocr_result: ocr_instance&.result
           )
         end
