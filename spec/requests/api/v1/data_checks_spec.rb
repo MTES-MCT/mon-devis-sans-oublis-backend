@@ -46,6 +46,29 @@ RSpec.describe "/api/v1/data_checks" do
       it "does not return error" do
         expect(json).not_to have_key("error_details")
       end
+
+      # Vérification du log de succès
+      it "creates a processing log for successful request" do
+        expect(ProcessingLog.count).to eq(1)
+
+        log = ProcessingLog.last
+        expect(log.processable_type).to be_nil
+        expect(log.tags).to include("rge_validation", "success")
+        expect(log.input_parameters["siret"]).to eq("52503410400014")
+        expect(log.input_parameters["rge"]).to eq("Q90513")
+        expect(log.input_parameters["date"]).to eq("2024-07-08")
+        expect(log.output_result["valid"]).to be true
+        expect(log.started_at).to be_present
+        expect(log.finished_at).to be_present
+      end
+
+      # Vérification des headers HTTP loggés
+      it "logs HTTP headers correctly" do
+        log = ProcessingLog.last
+        # User-Agent peut être nil dans les tests RSpec, c'est normal
+        expect(log.input_parameters).to have_key("user_agent")
+        expect(log.input_parameters).to have_key("referer")
+      end
     end
 
     context "with SIRET and Geste Type" do
@@ -53,6 +76,13 @@ RSpec.describe "/api/v1/data_checks" do
 
       it "returns results" do
         expect(json.dig("results", 0, "domaine")).to eq("Ventilation mécanique")
+      end
+
+      # Log avec geste_types
+      it "logs geste_types parameter correctly" do
+        log = ProcessingLog.last
+        expect(log.input_parameters["geste_types"]).to eq(["vmc_double_flux"])
+        expect(log.tags).to include("success")
       end
     end
 
@@ -72,6 +102,12 @@ RSpec.describe "/api/v1/data_checks" do
       it "returns results" do
         expect(json.dig("results", 0, "domaine")).to eq("Ventilation mécanique")
       end
+
+      # Log avec multiples geste_types
+      it "logs multiple geste_types correctly" do
+        log = ProcessingLog.last
+        expect(log.input_parameters["geste_types"]).to eq(%w[menuiserie_fenetre_toit vmc_double_flux])
+      end
     end
 
     context "with SIRET, RGE and unrelated Geste Types" do
@@ -80,6 +116,17 @@ RSpec.describe "/api/v1/data_checks" do
       it "returns a not found error" do
         expect(response).to have_http_status(:not_found)
       end
+
+      # Log d'erreur RGE manquant
+      it "creates a processing log for rge_manquant error" do
+        expect(ProcessingLog.count).to eq(1)
+
+        log = ProcessingLog.last
+        expect(log.processable_type).to be_nil
+        expect(log.tags).to include("rge_validation", "error")
+        expect(log.input_parameters["siret"]).to eq("52503410400014")
+        expect(log.output_result["error_code"]).to eq("rge_manquant")
+      end
     end
 
     context "with SIRET, RGE and unknown Geste Types" do
@@ -87,6 +134,17 @@ RSpec.describe "/api/v1/data_checks" do
 
       it "returns a bad request error" do
         expect(response).to have_http_status(:unprocessable_entity)
+      end
+
+      # Log d'erreur geste_type inconnu
+      it "creates a processing log for unknown geste_type error" do
+        expect(ProcessingLog.count).to eq(1)
+
+        log = ProcessingLog.last
+        expect(log.processable_type).to be_nil
+        expect(log.tags).to include("rge_validation", "error")
+        expect(log.input_parameters["geste_types"]).to eq(["abcd"])
+        expect(log.output_result["error_code"]).to eq("geste_type_inconnu")
       end
     end
 
@@ -108,6 +166,85 @@ RSpec.describe "/api/v1/data_checks" do
         expect(response).to have_http_status(:bad_request)
         expect(json.fetch("valid")).to be false
         expect(json.dig("error_details", 0, "code")).to eq("rge_hors_date")
+      end
+
+      # Log d'erreur de date
+      it "creates a processing log for date error" do
+        expect(ProcessingLog.count).to eq(1)
+
+        log = ProcessingLog.last
+        expect(log.processable_type).to be_nil
+        expect(log.tags).to include("rge_validation", "error")
+        expect(log.input_parameters["date"]).to eq("1990-10-01")
+        expect(log.output_result["error_code"]).to eq("rge_hors_date")
+      end
+    end
+
+    # Tests processing logs
+    context "logging behavior" do
+      let(:params) { { siret: "52503410400014", rge: "Q90513" } }
+
+      before do
+        # Vider les logs existants
+        ProcessingLog.destroy_all
+      end
+
+      it "creates exactly one log per request" do
+        expect { get api_v1_data_checks_rge_url, params: params }.to change(ProcessingLog, :count).by(1)
+      end
+
+      it "logs request timing" do
+        get api_v1_data_checks_rge_url, params: params
+
+        log = ProcessingLog.last
+        expect(log.started_at).to be <= log.finished_at
+        expect(log.finished_at - log.started_at).to be < 5.seconds
+      end
+
+      it "handles logging errors gracefully" do
+        # Simuler une erreur de logging
+        allow(ProcessingLog).to receive(:create!).and_raise(StandardError, "DB error")
+        allow(Rails.logger).to receive(:error)
+
+        expect { get api_v1_data_checks_rge_url, params: params }.not_to raise_error
+        expect(Rails.logger).to have_received(:error).with("Failed to log RGE request: DB error")
+      end
+    end
+
+    # Tests avec différents User-Agents
+    context "with different user agents" do
+      let(:params) { { siret: "52503410400014", rge: "Q90513" } }
+
+      before { ProcessingLog.destroy_all }
+
+      it "logs curl user agent" do
+        get api_v1_data_checks_rge_url, params: params, headers: { "User-Agent" => "curl/7.68.0" }
+
+        log = ProcessingLog.last
+        expect(log.input_parameters["user_agent"]).to eq("curl/7.68.0")
+      end
+
+      it "logs swagger user agent" do
+        get api_v1_data_checks_rge_url, params: params, headers: { "User-Agent" => "Swagger-UI/4.15.5" }
+
+        log = ProcessingLog.last
+        expect(log.input_parameters["user_agent"]).to eq("Swagger-UI/4.15.5")
+      end
+
+      it "logs browser user agent" do
+        user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+        get api_v1_data_checks_rge_url, params: params, headers: { "User-Agent" => user_agent }
+
+        log = ProcessingLog.last
+        expect(log.input_parameters["user_agent"]).to eq(user_agent)
+      end
+
+      it "logs referer when present" do
+        referer = "https://mon-devis-sans-oublis.beta.gouv.fr/verification-rge"
+        get api_v1_data_checks_rge_url, params: params, headers: { "Referer" => referer }
+
+        log = ProcessingLog.last
+        expect(log.input_parameters["referer"]).to eq(referer)
       end
     end
   end
