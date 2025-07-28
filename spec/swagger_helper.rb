@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 require "rails_helper"
+require "openssl"
 require "uri"
 
 ADEME_SWAGGER_URI = "https://data.ademe.fr/data-fair/api/v1/datasets/liste-des-entreprises-rge-2/api-docs.json"
-ademe_yaml = URI.open(ADEME_SWAGGER_URI).read # rubocop:disable Security/Open
+ademe_yaml = URI.open(ADEME_SWAGGER_URI, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE).read # rubocop:disable Security/Open
 ademe_swagger = YAML.safe_load(ademe_yaml, aliases: true)
 ademe_result_schema = ademe_swagger.dig("paths", "/lines", "get", "responses", "200", "content", "application/json",
                                         "schema", "properties", "results", "items", "properties")
