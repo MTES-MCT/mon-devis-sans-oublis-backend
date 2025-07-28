@@ -34,6 +34,7 @@ CSV_FILES=(
     "$WORK_DIR/quotes_cases.csv" 
     "$WORK_DIR/quote_check_feedbacks.csv" 
     "$WORK_DIR/quote_error_edits.csv"
+    "$WORK_DIR/processing_logs.csv"
 )
 
 # Fonction de nettoyage des fichiers CSV
@@ -121,7 +122,8 @@ SELECT
     (SELECT count(*) FROM mdso_analytics.quote_checks) +
     (SELECT count(*) FROM mdso_analytics.quote_check_feedbacks) +
     (SELECT count(*) FROM mdso_analytics.quotes_cases) +
-    (SELECT count(*) FROM mdso_analytics.quote_error_edits)
+    (SELECT count(*) FROM mdso_analytics.quote_error_edits) +
+    (SELECT count(*) FROM mdso_analytics.processing_logs)
 ;" | tr -d ' ' || echo "0")
 
 # Log de succès
@@ -144,5 +146,7 @@ UNION ALL
 SELECT 'quotes_cases' as table_name, count(*) as count FROM mdso_analytics.quotes_cases
 UNION ALL
 SELECT 'quote_error_edits' as table_name, count(*) as count FROM mdso_analytics.quote_error_edits
+UNION ALL
+SELECT 'processing_logs' as table_name, count(*) as count FROM mdso_analytics.processing_logs
 ORDER BY table_name;
 "

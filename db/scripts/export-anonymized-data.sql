@@ -11,3 +11,6 @@
 
 -- Export de quote_error_edits
 \copy (SELECT * FROM export_anonymized.quote_error_edits) TO './quote_error_edits.csv' WITH CSV HEADER;
+
+-- Export de processing_logs
+\copy (SELECT * FROM export_anonymized.processing_logs) TO './processing_logs.csv' WITH CSV HEADER;
