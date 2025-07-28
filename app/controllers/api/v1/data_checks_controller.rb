@@ -3,6 +3,7 @@
 module Api
   module V1
     # Controller to handle API key authentication
+    # rubocop:disable Metrics/ClassLength
     class DataChecksController < BaseController
       def geste_types # rubocop:disable Metrics/MethodLength
         geste_types = QuoteCheck::GESTE_TYPES
@@ -124,5 +125,6 @@ module Api
         }
       end
     end
+    # rubocop:enable Metrics/ClassLength
   end
 end
