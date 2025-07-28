@@ -24,7 +24,7 @@ module Api
       def rge # rubocop:disable Metrics/MethodLength
         started_at = Time.current
         source = detect_request_source
-        
+
         begin
           date = params[:date]
           siret = SiretValidator.validate_format!(params[:siret])
@@ -43,9 +43,8 @@ module Api
                       RgeValidator.valid?(date:, siret:, geste_types:)
                     end
           raise NotFoundError.new(nil, validator_error_code: "rge_manquant") unless results
-          
+
           log_rge_request(params, { results:, valid: true }, source, started_at, success: true)
-          
         rescue QuoteValidator::Base::ArgumentError => e
           log_rge_request(params, { error: e.message, error_code: e.error_code }, source, started_at, success: false)
           raise BadRequestError.new(e.message, validator_error_code: e.error_code)
@@ -70,23 +69,28 @@ module Api
       private
 
       def detect_request_source
-        request.headers['User-Agent'].to_s
+        request.headers["User-Agent"].to_s
       end
 
       def log_rge_request(params, result, source, started_at, success:)
         ProcessingLog.create!(
-          processable_type: 'RgeCheck',
-          tags: ['rge_validation', success ? 'success' : 'error'].compact,
+          processable_type: "RgeCheck",
+          tags: ["rge_validation", success ? "success" : "error"].compact,
           input_parameters: {
             siret: params[:siret],
             rge: params[:rge],
             date: params[:date],
             geste_types: params[:geste_types],
-            user_agent: request.headers['User-Agent'],
-            referer: request.headers['Referer'],
+            user_agent: request.headers["User-Agent"],
+            referer: request.headers["Referer"]
           },
           output_result: result,
           started_at: started_at,
           finished_at: Time.current
         )
-      rescue Stand
+      rescue StandardError => e
+        Rails.logger.error "Failed to log RGE request: #{e.message}"
+      end
+    end
+  end
+end
