@@ -153,16 +153,12 @@ RSpec.describe "/api/v1/data_checks" do
     context "when testing logging behavior" do
       let(:params) { { siret: "52503410400014", rge: "Q90513" } }
 
-      before do
-        # Vider les logs existants
-        ProcessingLog.destroy_all
-      end
-
       it "creates exactly one log per request" do
         expect { get api_v1_data_checks_rge_url, params: params }.to change(ProcessingLog, :count).by(1)
       end
 
       it "logs request timing" do
+        get api_v1_data_checks_rge_url, params: params
         expect(ProcessingLog.last.started_at).to be_present
       end
 
