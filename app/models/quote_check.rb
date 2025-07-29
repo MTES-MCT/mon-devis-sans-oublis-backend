@@ -22,6 +22,8 @@ class QuoteCheck < ApplicationRecord
   validates :started_at, presence: true
   validate :validation_errors_as_array, if: -> { validation_errors.present? || validation_error_details.present? }
 
+  validates_associated :case, if: -> { self.case.present? }
+
   delegate :filename, to: :file, allow_nil: true
 
   scope :default_order, -> { order(created_at: :desc) }

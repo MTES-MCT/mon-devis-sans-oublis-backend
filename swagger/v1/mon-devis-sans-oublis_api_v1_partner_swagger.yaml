@@ -257,7 +257,8 @@ paths:
                   nullable: true
                 case_id:
                   type: string
-                  description: Dossier de devis pour rénovation d’ampleur
+                  description: Dossier de devis pour rénovation d’ampleur, maximum
+                    20 devis par dossier
                   nullable: true
               required:
               - file
