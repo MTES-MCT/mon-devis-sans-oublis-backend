@@ -17,7 +17,6 @@ module ActiveAdmin
 
     # Call via "instance_exec(&processing_logs_tab(resource))"
     # rubocop:disable Metrics/AbcSize
-    # rubocop:disable Style/ItBlockParameter
     def processing_logs_tab(resource) # rubocop:disable Metrics/MethodLength
       return -> {} if resource.processing_logs.none?
 
@@ -26,24 +25,15 @@ module ActiveAdmin
         tab "Logs de traitement" do
           table_for resource.processing_logs.order(finished_at: :desc) do
             column :tags
-            column :started_at do
-              local_time(it.started_at, with_seconds: true)
-            end
-            column :finished_at do
-              local_time(it.finished_at, with_seconds: true)
-            end
+            column(:started_at) { local_time(it.started_at, with_seconds: true) }
+            column(:finished_at) { local_time(it.finished_at, with_seconds: true) }
             column "Durée (s)", :duration
-            column :input_parameters do
-              pre JSON.pretty_generate(it.input_parameters) if it.input_parameters.present?
-            end
-            column :output_result do
-              pre JSON.pretty_generate(it.output_result) if it.output_result.present?
-            end
+            column(:input_parameters) { pre JSON.pretty_generate(it.input_parameters) if it.input_parameters.present? }
+            column(:output_result) { pre JSON.pretty_generate(it.output_result) if it.output_result.present? }
           end
         end
       end
     end
-    # rubocop:enable Style/ItBlockParameter
     # rubocop:enable Metrics/AbcSize
   end
 end
