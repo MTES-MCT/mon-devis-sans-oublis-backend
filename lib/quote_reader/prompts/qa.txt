@@ -21,22 +21,22 @@ Voici les JSON que l'on souhaite récupérer :
 ```jsx
 {
 version: "2.1.2";
-mention_devis: boolean; 
-numero_devis : text; 
-pro_forme_juridique: text; 
+mention_devis: boolean;
+numero_devis : text;
+pro_forme_juridique: text;
 type_fichier: enum(devis, facture, autre); ("devis" pour les devis de rénovation énergétique, "facture" pour les factures de rénvoation énergétique, "autre" si tu ne détexte pas de poste de travaux de rénovation énergétique compris dans la liste gestes_pertinents)
 
 
-date_devis: date; 
+date_devis: date;
 
 validite: boolean;
 
-date_debut_chantier: date; 
+date_debut_chantier: date;
 delai_debut_chantier: text;
 
-date_pre_visite: date; 
+date_pre_visite: date;
 separation_prix_fourniture_pose: boolean; (Verifiez que le devis a bien une ligne distinct pour la pose, l'installation, ou la main d'œuvre)
-prix_total_ht: decimal; 
+prix_total_ht: decimal;
 prix_total_ttc: decimal;
 tva:[
     {taux_tva: decimal;
@@ -54,13 +54,13 @@ gestes : [{geste1},{geste2}...]
 ### chauffe-eau thermodynamique :
 
 ```jsx
-{type: 'chauffe_eau_thermo'; 
+{type: 'chauffe_eau_thermo';
 intitule: text;
-marque: text; 
+marque: text;
 reference: text; (Le modèle du chauffe-eau thermodynamique)
-volume: integer (en Litre); 
-ETAS: pourcentage; 
-profil_soutirage: enum(M,L,XL,XXL); 
+volume: integer (en Litre);
+ETAS: pourcentage;
+profil_soutirage: enum(M,L,XL,XXL);
 type_installation: enum(air exterieur, air extrait, air ambiant);
 COP: decimal;
 
@@ -70,16 +70,16 @@ COP: decimal;
 ### Chauffe-eau solaire individuel (CESI)
 
 ```jsx
-{type: 'chauffe_eau_solaire_individuel'; 
+{type: 'chauffe_eau_solaire_individuel';
 intitule: text;
-marque: text; 
-reference: text; 
-volume: integer (Litre); 
-ETAS: pourcentage; 
-profil_soutirage: enum(M,L,XL,XXL); 
-type_appoint: enum (electrique, autre); 
-surface_capteur: Decimal (m2); 
-classe_energetique_ballon: text; 
+marque: text;
+reference: text;
+volume: integer (Litre);
+ETAS: pourcentage;
+profil_soutirage: enum(M,L,XL,XXL);
+type_appoint: enum (electrique, autre);
+surface_capteur: decimal (m2);
+classe_energetique_ballon: text;
 fluide_capteur: enum(eau, eau glycolée, air);
 
 }
@@ -89,13 +89,13 @@ fluide_capteur: enum(eau, eau glycolée, air);
 
 ```jsx
 {type: enum(isolation_comble_perdu, isolation_rampants_toiture, isolation_toiture_terrasse, isolation_thermique_par_interieur_ITI, isolation_thermique_par_exterieur_ITE, isolation_plancher_bas);
-intitule: text; 
+intitule: text;
 marque_isolant: text;
 reference_isolant: text;
-surface_isolant: Decimal (m2); 
-epaisseur_isolant: Decimal (cm); 
-resistance_thermique: Decimal (m².K/W);
-norme_calcul_resistance: text; (une des normes NF elligible, comme par exemple : NF EN 12664); 
+surface_isolant: decimal (m2);
+epaisseur_isolant: decimal (cm);
+resistance_thermique: decimal (m².K/W);
+norme_calcul_resistance: text; (une des normes NF elligible, comme par exemple : NF EN 12664);
 numero_acermi: text; (dont le format est : XX/XX/XXX)
 
 }
@@ -104,8 +104,8 @@ numero_acermi: text; (dont le format est : XX/XX/XXX)
 Pour isolation_thermique_par_interieur_ITI et isolation_thermique_par_exterieur_ITE il faut rajouter : 
 
 ```jsx
-{presence_parement: boolean; 
-presence_protection: boolean; 
+{presence_parement: boolean;
+presence_protection: boolean;
 presence_fixation: boolean;}
 ```
 
@@ -128,17 +128,17 @@ type_isolation_toiture_terrasse: text;
 # Menuiseries
 
 ```jsx
-{type: enum(menuiserie_fenetre, menuiserie_fenetre_toit, menuiserie_porte, menuiserie_volet_isolant); 
+{type: enum(menuiserie_fenetre, menuiserie_fenetre_toit, menuiserie_porte, menuiserie_volet_isolant);
 intitule: text;
-marque: text; 
-reference: text; 
-type_menuiserie: enum(fenetre, porte_fenetre, porte, fenetre_de_toit, volet_isolant); 
-type_materiaux: enum (PVC, bois, aluminium); 
-type_vitrage: enum(simple,double, triple,...); 
-type_pose: enum(renovation,despose_totale); 
-localisation: text; 
-position_paroie: enum(nu_interieur, nu_exterieur, tunnel); 
-uw: decimal (W/m2.K); 
+marque: text;
+reference: text;
+type_menuiserie: enum(fenetre, porte_fenetre, porte, fenetre_de_toit, volet_isolant);
+type_materiaux: enum (PVC, bois, aluminium);
+type_vitrage: enum(simple,double, triple,...);
+type_pose: enum(renovation,despose_totale);
+localisation: text;
+position_paroie: enum(nu_interieur, nu_exterieur, tunnel);
+uw: decimal (W/m2.K);
 sw: decimal;
 
 }
@@ -161,20 +161,20 @@ dans le cadre d’un volet isolant
 ### poele à bois :
 
 ```jsx
-{type: 'poele_insert'; 
+{type: 'poele_insert';
 type_combustible: enum(bois, granules);
 intitule: text;
-marque: text; 
-reference: text; 
-puissance: Decimal **(kW);** 
+marque: text;
+reference: text;
+puissance: decimal **(kW);** 
 remplacement_chaudiere_condensation: boolean;
-ETAS: pourcentage **(ɳs)**; 
+ETAS: pourcentage **(ɳs)**;
 rendement_energetique: decimal;
 label_flamme_verte: boolean;
-emission_monoxyde_carbone: Integer (mg/Nm3) (emission de CO);
-emission_composés_organique: Integer (mgC/Nm3) (emission de COG);
-emission_particules: Integer (mg/Nm3); 
-emission_oxydes_azotes: Integer (mg/Nm3) (emission de Nox);
+emission_monoxyde_carbone: integer (mg/Nm3) (emission de CO);
+emission_composés_organique: integer (mgC/Nm3) (emission de COG);
+emission_particules: integer (mg/Nm3);
+emission_oxydes_azotes: integer (mg/Nm3) (emission de Nox);
 
 }
 ```
@@ -182,12 +182,12 @@ emission_oxydes_azotes: Integer (mg/Nm3) (emission de Nox);
 ### pompe à chaleur :
 
 ```jsx
-{type:enum(pac_air_eau, pac_eau_eau, pac_air_air, pac_hybride) ; 
+{type: enum(pac_air_eau, pac_eau_eau, pac_air_air, pac_hybride);
 intitule: text;
 remplacement_chaudiere_condensation: boolean;
-marque: text; 
-reference: text; 
-ETAS: Pourcentage; 
+marque: text;
+reference: text;
+ETAS: Pourcentage;
 puissance: decimal **(kW) (puissance minimaleque la PAC peut fournir en condition réelle);**
 regime_temperature: enum(basse, moyenne, haute);
 type_fluide_frigorigene: text;
@@ -201,25 +201,25 @@ puissance_nominale: decimal; **(kW) (puissance standardisée utilisée pour le d
 ### Chaudière biomasse
 
 ```jsx
-{type:'chaudiere_biomasse'; 
-intitule: text; 
+{type: 'chaudiere_biomasse';
+intitule: text;
 marque: text;
 reference: text;
 type_combustible: enum(buche,granule,copeaux,...);
-presence_note_dimensionnement: boolean; 
+presence_note_dimensionnement: boolean;
 type_chargement: enum(manuel,automatique);
-ETAS: pourcentage; 
+ETAS: pourcentage;
 puissance: decimal (kW);
 remplacement_chaudiere_condensation: boolean;
-label_flamme_verte: boolean; 
-emission_monoxyde_carbone: Integer (mg/Nm3) (emission de CO);
-emission_composés_organique: Integer (mgC/Nm3) (emission de COG);
-emission_particules: Integer (mg/Nm3); 
-emission_oxydes_azotes: Integer (mg/Nm3) (emission de Nox);
-type_silo: text (externeinterne, neuf/existant, textile/maconner); 
-contenance_silo: Decimal (La contenance peut être définie en litres (L), mètres cubes (m³) ou tonnes (T) );
-marque_regulateur: text; 
-reference_regulateur: text; 
+label_flamme_verte: boolean;
+emission_monoxyde_carbone: integer (mg/Nm3) (emission de CO);
+emission_composés_organique: integer (mgC/Nm3) (emission de COG);
+emission_particules: integer (mg/Nm3);
+emission_oxydes_azotes: integer (mg/Nm3) (emission de Nox);
+type_silo: text (externeinterne, neuf/existant, textile/maconner);
+contenance_silo: decimal (La contenance peut être définie en litres (L), mètres cubes (m³) ou tonnes (T) );
+marque_regulateur: text;
+reference_regulateur: text;
 classe_regulateur: text;
 
 }
@@ -229,20 +229,20 @@ classe_regulateur: text;
 ### systeme solaire combine
 
 ```jsx
-{type:'systeme_solaire_combine'; 
+{type: 'systeme_solaire_combine';
 intitule: text;
 remplacement_chaudiere_condensation: boolean;
-marque: text; 
-reference: text; 
-ETAS: Pourcentage; 
+marque: text;
+reference: text;
+ETAS: Pourcentage;
 puissance: decimal **(kW);**
-marque_capteurs: text; 
-reference_capteurs: text; 
-type_capteurs: text; 
-surface_captage: decimal (m2); 
-productivite_capteurs: decimal (W/m2); 
+marque_capteurs: text;
+reference_capteurs: text;
+type_capteurs: text;
+surface_captage: decimal (m2);
+productivite_capteurs: decimal (W/m2);
 volume_ballon: decimal (litre);
-profil_soutirage: enum(M,L,XL,XXL); 
+profil_soutirage: enum(M,L,XL,XXL);
 energie_appoint: (electricite, gaz,...);
 
 }
@@ -251,17 +251,17 @@ energie_appoint: (electricite, gaz,...);
 # Ventilation
 
 ```jsx
-{type: enum(vmc_simple_flux,vmc_double_flux); 
+{type: enum(vmc_simple_flux,vmc_double_flux);
 intitule: text;
 type_vmc: enum(VMC simple flux hygroréable de type A (Hygro A), VMC simple flux hygroréable de type B (hygro B), VMC double flux avec échangeur);
-marque_caisson: text; 
-reference_caisson: text; 
-nombre_bouches_extraction: integer; 
-marque_bouche_extraction: text; 
+marque_caisson: text;
+reference_caisson: text;
+nombre_bouches_extraction: integer;
+marque_bouche_extraction: text;
 nombre_bouche_extraction: integer;
-reference_bouche_extraction: text; 
-classe_caisson:text (de A+++ à G); 
-puissance_absobée_pondéréé_moteur: Decimal (W-th-C); 
+reference_bouche_extraction: text;
+classe_caisson:text (de A+++ à G);
+puissance_absobée_pondéréé_moteur: decimal (W-th-C);
 nombre_bouches_entree_dair: integer;
 emplacement_bouches_entree_dair: text;
 marque_bouches_entree_dair: text;
