@@ -53,35 +53,6 @@ fr:
         - CEE
         - Eco prêt à taux 0
         - Aide locale
-      gestes: # TODO: use QuoteInputMetadata::GESTE_TYPES_GROUPS
-        - group: "Chauffage"
-          values:
-            - Chaudière biomasse
-            - Chauffage solaire combiné
-            - Poêle/insert à bois/granulés
-            - Pompe à chaleur air / air
-            - Pompe à chaleur air / eau
-            - Pompe à chaleur géothermique
-        - group: Eau chaude sanitaire
-          values:
-            - Chauffe-eau solaire individuel
-            - Chauffe-eau thermodynamique (CET)
-        - group: Isolation
-          values:
-            - Isolation des murs par l'extérieur (ITE)
-            - Isolation des murs par l'intérieur (ITI)
-            - Isolation des planchers de combles perdus
-            - Isolation de la toiture en pente - plafond de combles
-            - Isolation de la toiture-terrasse
-            - Isolation des planchers bas
-        - group: Menuiserie
-          values:
-            - Remplacement des fenêtres ou porte-fenêtres
-            - Volet isolant
-        - group: Ventilation
-          values:
-            - Ventilation Mécanique Double-Flux
-            - Ventilation Mécanique Simple-Flux
     validation_error_detail_deletion_reasons:
       information_present: Élément bien présent dans le devis
       not_used: Client non concerné par cette remarque

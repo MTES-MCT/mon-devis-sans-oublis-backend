@@ -125,8 +125,8 @@ RSpec.configure do |config|
         },
         quote_check_metadata: {
           type: :object,
-          properties: I18n.t("quote_checks.metadata").to_h do |key, values|
-            enum = values.first.is_a?(Hash) ? values.flat_map { |it| it.fetch(:values) } : values
+          properties: QuoteCheck.metadata_values.to_h do |key, values|
+            enum = values.first.is_a?(Hash) ? values.flat_map { it.fetch(:values) } : values
 
             [key, {
               type: :array,
