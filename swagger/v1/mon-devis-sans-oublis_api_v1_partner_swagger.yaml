@@ -831,6 +831,7 @@ components:
             - Pompe à chaleur air / air
             - Pompe à chaleur air / eau
             - Pompe à chaleur géothermique
+            - Pompe à chaleur eau / eau
             - Chauffe-eau solaire individuel
             - Chauffe-eau thermodynamique (CET)
             - Isolation des murs par l'extérieur (ITE)
@@ -841,6 +842,8 @@ components:
             - Isolation des planchers bas
             - Remplacement des fenêtres ou porte-fenêtres
             - Volet isolant
+            - Menuiserie des fenêtres de toit
+            - Menuiserie des portes
             - Ventilation Mécanique Double-Flux
             - Ventilation Mécanique Simple-Flux
       description: hérité du QuotesCase à la création si vide

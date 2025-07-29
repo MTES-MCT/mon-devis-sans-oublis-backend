@@ -67,7 +67,9 @@ RSpec.describe "/api/v1/quote_checks" do
                                                 "group" => "Menuiserie",
                                                 "values" => [
                                                   "Remplacement des fenêtres ou porte-fenêtres",
-                                                  "Volet isolant"
+                                                  "Volet isolant",
+                                                  "Menuiserie des fenêtres de toit",
+                                                  "Menuiserie des portes"
                                                 ]
                                               })
     end

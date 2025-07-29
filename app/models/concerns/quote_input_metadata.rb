@@ -61,14 +61,21 @@ module QuoteInputMetadata # rubocop:disable Metrics/ModuleLength
 
   class_methods do
     def metadata_values_for(key)
-      key_values = I18n.t("quote_checks.metadata").with_indifferent_access.fetch(key)
+      key_values = metadata_values.with_indifferent_access.fetch(key)
       return key_values unless key_values.first.is_a?(Hash)
 
       key_values.flat_map { it.fetch(:values) }
     end
 
     def metadata_values
-      I18n.t("quote_checks.metadata").with_indifferent_access
+      I18n.t("quote_checks.metadata").merge(
+        "gestes" => QuoteCheck::GESTE_TYPES_GROUPS.map do |group, values|
+          {
+            group: group,
+            values: values.map { I18n.t("quote_checks.geste_type.title.#{it}") }
+          }
+        end
+      ).with_indifferent_access
     end
   end
 
