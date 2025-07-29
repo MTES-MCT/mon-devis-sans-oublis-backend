@@ -86,7 +86,8 @@ describe "Devis API" do
           },
           case_id: {
             type: :string,
-            description: "Dossier de devis pour rénovation d’ampleur",
+            description:
+              "Dossier de devis pour rénovation d’ampleur, maximum #{QuotesCase::MAX_QUOTE_CHECKS} devis par dossier",
             nullable: true
           }
         },

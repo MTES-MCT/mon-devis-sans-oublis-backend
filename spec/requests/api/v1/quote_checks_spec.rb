@@ -114,6 +114,19 @@ RSpec.describe "/api/v1/quote_checks" do
       it "reuses the renovation_type from case" do
         expect(QuoteCheck.find(json.fetch("id")).renovation_type).to eq(quotes_case.renovation_type)
       end
+
+      context "with many QuoteChecks" do # rubocop:disable RSpec/NestedGroups
+        before do
+          create_list(:quote_check, QuotesCase::MAX_QUOTE_CHECKS - 1, case: quotes_case)
+        end
+
+        it "returns error on too many QuoteChecks" do # rubocop:disable RSpec/MultipleExpectations
+          post api_v1_quote_checks_url, params: quote_check_params, headers: api_key_header
+
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(json.fetch("message").first).to match(/Case n'est pas valide/i)
+        end
+      end
     end
 
     context "with parent_id" do

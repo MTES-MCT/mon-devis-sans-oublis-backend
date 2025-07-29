@@ -46,7 +46,7 @@ RSpec.describe "/api/v1/quotes_cases" do
 
     context "with some QuoteChecks" do
       before do
-        create_list(:quote_check, 2, case_id: quotes_case.id)
+        create_list(:quote_check, 2, case: quotes_case)
         get api_v1_quotes_case_url(quotes_case), as: :json, headers: api_key_header
       end
 
