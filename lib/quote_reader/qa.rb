@@ -19,7 +19,7 @@ module QuoteReader
     # According to prompts/qa.txt, the attributes should be cleaned
     def clean_attributes(attributes)
       attributes&.merge(
-        numero_devis: Array.wrap(attributes[:numero_devis]).map(&:to_s).presence
+        numero_devis: Array.wrap(attributes[:numero_devis]).presence&.map(&:to_s)&.first
       )&.compact.presence
     end
 
