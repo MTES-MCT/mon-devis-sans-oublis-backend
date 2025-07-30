@@ -9,7 +9,7 @@ class QuoteChecksTimeoutJob < ScheduledCronJob
   def perform
     monitor_cron_job do
       quote_checks = QuoteCheck.pending.order(started_at: :asc)
-      return unless quote_checks.any?
+      next unless quote_checks.any?
 
       quote_checks.each { QuoteCheckTimeout.new(it).check }
     end
