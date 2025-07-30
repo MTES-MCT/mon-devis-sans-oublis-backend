@@ -20,7 +20,7 @@ AllCops:
 Style/Documentation:
   Enabled: true
   Exclude:
-    - 'app/config/application.rb'
+    - 'config/application.rb'
     - 'app/mailers/**/*.rb'
     - 'app/serializers/**/*.rb'
     - 'db/migrate/**/*.rb'
