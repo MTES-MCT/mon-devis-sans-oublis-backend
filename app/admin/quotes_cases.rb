@@ -19,6 +19,18 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
 
   config.sort_order = "created_at_desc"
 
+  controller do
+    # Overwrite "includes :quote_checks" to not load full File data
+    def scoped_collection
+      super.eager_load(quote_checks: :file)
+           .select(
+             *QuotesCase.column_names.map { "#{QuotesCase.table_name}.#{it}" },
+             *%w[id created_at file_id].map { "#{QuoteCheck.table_name}.#{it}" },
+             *%w[id filename].map { "#{QuoteFile.table_name}.#{it}" }
+           )
+    end
+  end
+
   index do
     id_column do
       link_to "Dossier #{it.id}", admin_quotes_case_path(it)
