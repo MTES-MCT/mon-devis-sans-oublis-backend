@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_30_165352) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_30_140054) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -198,10 +198,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_30_165352) do
     t.jsonb "validation_control_codes"
     t.index ["case_id"], name: "index_quote_checks_on_case_id"
     t.index ["file_id"], name: "index_quote_checks_on_file_id"
+    t.index ["finished_at"], name: "index_quote_checks_on_finished_at"
     t.index ["parent_id"], name: "index_quote_checks_on_parent_id"
+    t.index ["profile"], name: "index_quote_checks_on_profile"
+    t.index ["qa_result"], name: "index_quote_checks_on_qa_result"
     t.index ["reference"], name: "index_quote_checks_on_reference"
     t.index ["renovation_type"], name: "index_quote_checks_on_renovation_type"
     t.index ["source_name"], name: "index_quote_checks_on_source_name"
+    t.index ["started_at"], name: "index_quote_checks_on_started_at"
+    t.index ["validation_errors"], name: "index_quote_checks_on_validation_errors"
   end
 
   create_table "quote_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
