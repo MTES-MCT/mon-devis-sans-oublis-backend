@@ -11,5 +11,6 @@ if defined?(Sentry)
     config.traces_sample_rate = 0.5
 
     config.environment = ENV.fetch("SENTRY_ENVIRONMENT", Rails.application.config.app_env)
+    config.release = ENV.fetch("CONTAINER_VERSION", `git rev-parse HEAD`).strip
   end
 end
