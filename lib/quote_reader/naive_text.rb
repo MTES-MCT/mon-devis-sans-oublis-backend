@@ -156,9 +156,7 @@ module QuoteReader
     end
 
     def self.find_sirets(text)
-      text.scan(/\b(#{SIRET_REGEX})\b/i).flatten.filter_map do # rubocop:disable Style/ItBlockParameter
-        it&.strip
-      end.uniq
+      text.scan(/\b(#{SIRET_REGEX})\b/i).flatten.filter_map(&:strip).uniq
     end
 
     def self.find_telephones(text)

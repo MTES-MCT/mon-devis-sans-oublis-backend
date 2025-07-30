@@ -57,6 +57,36 @@ RSpec.describe Llms::Base, type: :service do
     end
   end
 
+  describe ".extract_jsx" do
+    let(:text) do
+      <<~TEXT
+        blabla
+        ```jsx
+        {
+          version: "2.0.2"
+        }
+        ```
+      TEXT
+    end
+
+    it "returns a hash of items" do
+      json = described_class.extract_jsx(text)
+      expect(JSON.parse(json)).to include("version" => "2.0.2")
+    end
+
+    context "with null result" do
+      let(:text) do
+        <<~TEXT
+          null
+        TEXT
+      end
+
+      it "returns nil" do
+        expect(described_class.extract_jsx(text)).to be_nil
+      end
+    end
+  end
+
   describe ".extract_markdown" do
     let(:text) do
       <<~TEXT

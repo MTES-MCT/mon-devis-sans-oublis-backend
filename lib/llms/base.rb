@@ -76,7 +76,9 @@ module Llms
     end
 
     def self.extract_jsx(text)
-      text[/(\{.+\})/im, 1] if text&.match?(/```jsx\n/i)
+      return unless text&.match?(/```jsx\n/i)
+
+      text[/(\{.+\})/im, 1]&.gsub(/(\w+):/, '"\1":')
     end
 
     def self.extract_markdown(text)
@@ -134,27 +136,26 @@ module Llms
         )
       else # :json
         content_jsx_result = self.class.extract_jsx(content)
-        if content_jsx_result
-          @read_attributes = eval(content_jsx_result.gsub(/: +null/i, ": nil")) # rubocop:disable Security/Eval
-        else
+        unless content_jsx_result
           content_json_result = self.class.extract_json(content)
           raise ResultError, "JSON content empty: #{content}" unless content_json_result
-
-          @read_attributes = begin
-            TrackingHash.nilify_empty_values(
-              JSON.parse(content_json_result, symbolize_names: true)
-            )
-          rescue JSON::ParserError => e
-            if e.message.include?("invalid ASCII") && !ignore_null_bytes # rubocop:disable Metrics/BlockNesting
-              return extract_result(self.class.remove_null_bytes(content), ignore_null_bytes: true)
-            end
-
-            raise ResultError, "Parsing JSON inside content: #{content_json_result}"
-          end
-          raise ResultError, "No attributes for JSON: #{content_json_result}" if @read_attributes.empty?
-
-          @read_attributes
         end
+
+        json_result = content_json_result || content_jsx_result
+        @read_attributes = begin
+          TrackingHash.nilify_empty_values(
+            JSON.parse(json_result, symbolize_names: true)
+          )
+        rescue JSON::ParserError => e
+          if e.message.include?("invalid ASCII") && !ignore_null_bytes
+            return extract_result(self.class.remove_null_bytes(content), ignore_null_bytes: true)
+          end
+
+          raise ResultError, "Parsing JSON inside content: #{json_result}"
+        end
+        raise ResultError, "No attributes for JSON: #{json_result}" if @read_attributes.empty?
+
+        @read_attributes
       end
     end
     # rubocop:enable Metrics/PerceivedComplexity

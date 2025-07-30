@@ -29,9 +29,7 @@ class ObjectWithValidationSerializer < BaseSerializer
   end
 
   def error_messages
-    validation_errors&.index_with do # rubocop:disable Style/ItBlockParameter
-      I18n.t("quote_validator.errors.#{it}")
-    end
+    validation_errors&.index_with { I18n.t("quote_validator.errors.#{it}") }
   end
 
   def validation_errors
