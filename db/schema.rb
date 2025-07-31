@@ -196,17 +196,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_30_140054) do
     t.string "reference"
     t.string "renovation_type", default: "geste", null: false
     t.jsonb "validation_control_codes"
+    t.index "\"left\"((qa_result)::text, 1)", name: "index_qa_result_not_null", where: "(qa_result IS NOT NULL)"
+    t.index "\"left\"((validation_errors)::text, 1)", name: "index_validation_errors_not_null", where: "(validation_errors IS NOT NULL)"
     t.index ["case_id"], name: "index_quote_checks_on_case_id"
     t.index ["file_id"], name: "index_quote_checks_on_file_id"
     t.index ["finished_at"], name: "index_quote_checks_on_finished_at"
     t.index ["parent_id"], name: "index_quote_checks_on_parent_id"
     t.index ["profile"], name: "index_quote_checks_on_profile"
-    t.index ["qa_result"], name: "index_quote_checks_on_qa_result"
     t.index ["reference"], name: "index_quote_checks_on_reference"
     t.index ["renovation_type"], name: "index_quote_checks_on_renovation_type"
     t.index ["source_name"], name: "index_quote_checks_on_source_name"
     t.index ["started_at"], name: "index_quote_checks_on_started_at"
-    t.index ["validation_errors"], name: "index_quote_checks_on_validation_errors"
   end
 
   create_table "quote_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
