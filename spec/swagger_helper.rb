@@ -61,6 +61,8 @@ RSpec.configure do |config|
       title: "#{Rails.application.config.application_name} API V1",
       version: "v1",
       description: <<~DESC
+        [Vidéo explicative de l'API](https://mon-devis-sans-oublis.notion.site/API-Partenaire-Mon-Devis-Sans-Oublis-24268d71969180419721c8a272dffc6a)
+
         **Général champs:**
         - les champs optionnels sont nullables voir peuvent ne pas être présents dans le payload (corps de la requête)
         - `id` : considérer comme un string (chaîne de caractères) unique
