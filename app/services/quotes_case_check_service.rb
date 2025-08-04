@@ -25,6 +25,8 @@ class QuotesCaseCheckService
 
   # Reset results but keep attributes
   def reset_check
+    reset_quotes_check!
+
     quotes_case.assign_attributes(
       finished_at: nil,
 
@@ -36,6 +38,31 @@ class QuotesCaseCheckService
   end
 
   private
+
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/PerceivedComplexity
+  def reset_quotes_check! # rubocop:disable Metrics/MethodLength
+    quotes_case.quote_checks.each do |quote_check|
+      validation_error_detail_id_to_remove = (quote_check.validation_error_details || []).filter_map do # rubocop:disable Style/ItBlockParameter
+        it.fetch("id") if it.fetch("category") == "case_incoherence"
+      end
+
+      quote_check.update!(
+        validation_controls_count: quote_check.validation_controls_count && quotes_case.validation_controls_count &&
+        (quote_check.validation_controls_count - quotes_case.validation_controls_count),
+        validation_control_codes: quote_check.validation_control_codes && quotes_case.validation_control_codes &&
+        (quote_check.validation_control_codes - quotes_case.validation_control_codes),
+        validation_error_details: quote_check.validation_error_details&.reject do # rubocop:disable Style/ItBlockParameter
+          validation_error_detail_id_to_remove.include?(it.fetch("id"))
+        end,
+        validation_error_edits: quote_check.validation_error_edits&.except(*validation_error_detail_id_to_remove)
+      )
+    end
+  end
+  # rubocop:enable Metrics/PerceivedComplexity
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/AbcSize
 
   # rubocop:disable Metrics/AbcSize
   def validate_quotes_case # rubocop:disable Metrics/MethodLength

@@ -5,6 +5,7 @@ class QuotesCase < ApplicationRecord
   include ProcessingLogs
   include QuoteInputMetadata
   include QuotesCaseBackoffice
+  include QuoteCheckEdits
   include QuotesCasePostCheckMetadata
 
   MAX_QUOTE_CHECKS = 20

@@ -12,7 +12,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
       as: :rails_postgresql_blob
 
   namespace :api do # rubocop:disable Metrics/BlockLength
-    namespace :v1 do
+    namespace :v1 do # rubocop:disable Metrics/BlockLength
       get "auth/check", to: "auth#check", as: :auth_check
 
       resources :profiles, only: %i[index]
@@ -24,7 +24,6 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
         get :siret
       end
 
-      resources :quotes_cases, only: %i[create show update]
       resources :quote_checks, only: %i[create show update] do
         collection do
           get :metadata
@@ -43,6 +42,23 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
           resources :feedbacks, only: %i[create], controller: "quote_check_feedbacks"
         end
       end
+
+      resources :quotes_cases, only: %i[create show update] do
+        collection do
+          get :error_detail_deletion_reasons,
+              to: "quotes_cases_validation_error_details#validation_error_detail_deletion_reasons"
+        end
+
+        resources :quotes_cases_validation_error_details,
+                  path: "error_details",
+                  as: :validation_error_details,
+                  only: %i[destroy update] do
+          member do
+            post "", action: :create
+          end
+        end
+      end
+
       resources :stats, only: %i[index]
     end
   end

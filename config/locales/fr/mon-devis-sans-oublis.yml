@@ -53,6 +53,6 @@ fr:
         - CEE
         - Eco prêt à taux 0
         - Aide locale
-    validation_error_detail_deletion_reasons:
-      information_present: Élément bien présent dans le devis
-      not_used: Client non concerné par cette remarque
+  validation_error_detail_deletion_reasons:
+    information_present: Élément bien présent dans le devis
+    not_used: Client non concerné par cette remarque

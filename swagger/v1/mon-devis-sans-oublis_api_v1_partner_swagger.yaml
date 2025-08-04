@@ -580,8 +580,8 @@ components:
           - CERTIBAT-RGE
           - AUDIT ENERGETIQUE BATIMENT
           - Certiforage module Sonde
-          - Certiforage module Nappe
           - Qualisol Collectif
+          - Certiforage module Nappe
           - RGE Etudes Audits énergétiques Batiments
           - CERTIFACT_EUSKADI_EKO
           - CERTIFACT_RLB_SQA
@@ -873,6 +873,9 @@ components:
       type: string
       description: code d'erreur de validation
     quote_check_error_deletion_reason_code:
+      type: string
+      description: code de raison de suppression d'erreur, remplaçant le message d'erreur
+    quotes_case_error_deletion_reason_code:
       type: string
       description: code de raison de suppression d'erreur, remplaçant le message d'erreur
     quote_check_error_type:

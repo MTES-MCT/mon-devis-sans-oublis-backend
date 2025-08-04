@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_30_140054) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_04_130434) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -240,6 +240,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_30_140054) do
     t.integer "validation_controls_count"
     t.jsonb "validation_control_codes"
     t.datetime "finished_at"
+    t.jsonb "validation_error_edits"
+    t.datetime "validation_error_edited_at"
     t.index ["reference"], name: "index_quotes_cases_on_reference"
     t.index ["renovation_type"], name: "index_quotes_cases_on_renovation_type"
     t.index ["source_name"], name: "index_quotes_cases_on_source_name"

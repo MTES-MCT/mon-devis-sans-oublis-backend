@@ -171,7 +171,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
                       deletion_reason = edit["reason"]
                       if deletion_reason
                         deletion_reason = I18n.t(
-                          "quote_checks.validation_error_detail_deletion_reasons.#{deletion_reason}",
+                          "validation_error_detail_deletion_reasons.#{deletion_reason}",
                           default: deletion_reason
                         )
                       end
@@ -213,7 +213,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
                       deletion_reason = edit["reason"]
                       if deletion_reason
                         deletion_reason = I18n.t(
-                          "quote_checks.validation_error_detail_deletion_reasons.#{deletion_reason}",
+                          "validation_error_detail_deletion_reasons.#{deletion_reason}",
                           default: deletion_reason
                         )
                       end
@@ -264,7 +264,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
                         deletion_reason = edit["reason"]
                         if deletion_reason # rubocop:disable Metrics/BlockNesting
                           deletion_reason = I18n.t(
-                            "quote_checks.validation_error_detail_deletion_reasons.#{deletion_reason}",
+                            "validation_error_detail_deletion_reasons.#{deletion_reason}",
                             default: deletion_reason
                           )
                         end

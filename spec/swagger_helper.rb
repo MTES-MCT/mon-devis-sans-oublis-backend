@@ -162,6 +162,10 @@ RSpec.configure do |config|
           type: :string,
           description: "code de raison de suppression d'erreur, remplaçant le message d'erreur"
         },
+        quotes_case_error_deletion_reason_code: {
+          type: :string,
+          description: "code de raison de suppression d'erreur, remplaçant le message d'erreur"
+        },
         quote_check_error_type: {
           type: :string,
           enum: QuoteValidator::Global.error_types.keys,
