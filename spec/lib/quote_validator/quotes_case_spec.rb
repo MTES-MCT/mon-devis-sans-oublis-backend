@@ -7,7 +7,12 @@ RSpec.describe QuoteValidator::QuotesCase, type: :service do
 
   let(:quotes_case) do
     create(:quotes_case).tap do |quotes_case|
-      create_list(:quote_check, 2, case: quotes_case)
+      create(:quote_check,
+             case: quotes_case,
+             read_attributes: { client_prenoms: "Marc", client_noms_de_famille: %w[Andrea Baptiste] })
+      create(:quote_check,
+             case: quotes_case,
+             read_attributes: { client_prenoms: "Jean", client_noms_de_famille: %w[Baptise Chloé] })
     end
   end
 
@@ -29,7 +34,7 @@ RSpec.describe QuoteValidator::QuotesCase, type: :service do
     before { validator.validate! }
 
     it "returns controls_count" do
-      expect(validator.controls_count).to eq(3)
+      expect(validator.controls_count).to eq(2)
     end
   end
 
@@ -57,23 +62,34 @@ RSpec.describe QuoteValidator::QuotesCase, type: :service do
     context "with symbolized and stringified keys" do
       let(:quotes_case) do
         create(:quotes_case).tap do |quotes_case|
-          create(:quote_check, case: quotes_case, read_attributes: { client_noms_de_famille: %w[Andrea Baptiste] })
-          create(:quote_check, case: quotes_case, read_attributes: { client_noms_de_famille: %w[Baptise Chloé] })
+          create(:quote_check,
+                 case: quotes_case,
+                 read_attributes: { "client_prenoms" => "Marc", client_noms_de_famille: %w[Andrea Baptiste] })
+          create(:quote_check,
+                 case: quotes_case,
+                 read_attributes: { client_prenoms: ["Jean"], "client_noms_de_famille" => %w[Baptise Chloé] })
         end
       end
 
       before { validator.validate! }
 
       it "stores errors" do
+        expect(validator.errors).to include(
+          "client_prenom_incoherent"
+        )
+      end
+
+      it "stores only errors" do
         expect(validator.errors).not_to include(
-          "client_nom_incoherent"
+          "client_nom_incoherent",
+          "client_adresse_incoherent"
         )
       end
 
       it "stores control codes" do
         expect(validator.control_codes).to include(
           "client_prenom_incoherent",
-          "client_adresse_incoherent"
+          "client_nom_incoherent"
         )
       end
     end
