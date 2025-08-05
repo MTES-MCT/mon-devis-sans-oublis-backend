@@ -26,8 +26,8 @@ RSpec.describe QuotesCaseCheckService, type: :service do
       end
 
       it "resets the check results" do # rubocop:disable RSpec/MultipleExpectations
-        expect(checked_quotes_case.validation_errors).to include("client_nom_incoherent")
-        expect(checked_quotes_case.validation_error_details.dig(0, "category")).to eq("case_incoherence")
+        expect(checked_quotes_case.validation_errors).to eq([])
+        expect(checked_quotes_case.validation_error_details).to eq([])
         expect(checked_quotes_case.validation_version).to eq("0.0.1")
       end
     end
