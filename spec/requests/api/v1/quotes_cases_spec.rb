@@ -68,9 +68,8 @@ RSpec.describe "/api/v1/quotes_cases" do
 
       it "returns the QuoteChecks with correct attributes" do
         expect(json.fetch("quote_checks").first.keys).to include(
-          "id",
-          "case_id",
-          "status"
+          "id", "case_id", "status",
+          "filename"
         )
       end
     end

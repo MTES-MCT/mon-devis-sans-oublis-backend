@@ -33,12 +33,13 @@ module Api
         ]
 
         @quotes_case ||= QuotesCase
-                         .eager_load(quote_checks: :feedbacks)
+                         .eager_load(quote_checks: %i[feedbacks file])
                          .select( # Avoid to load unnecessary heavy fields
                            *QuotesCase.column_names,
                            *(QuoteCheck.column_names - (hidable_quote_check_fields || [])).map do # rubocop:disable Style/ItBlockParameter
                              "#{QuoteCheck.table_name}.#{it} AS quote_check_#{it}"
-                           end
+                           end,
+                           %w[filename].map { "#{QuoteFile.table_name}.#{it}" }
                          )
                          .accessible_for_source(api_user)
                          .find(params[:id])
