@@ -29,6 +29,15 @@ class QuoteCheckSerializer < ObjectWithValidationSerializer
     sanitize(object.comment)
   end
 
+  def filename
+    # Avoid N+1 queries or reduce their sizes
+    if object.association(:file).loaded?
+      object.filename
+    elsif object.file_id.present?
+      QuoteFile.select(:filename).find_by(id: object.file_id)&.filename
+    end
+  end
+
   def gestes # rubocop:disable Metrics/MethodLength
     object.read_attributes&.fetch("gestes", nil)&.map&.with_index do |geste, geste_index| # rubocop:disable Style/SafeNavigationChainLength
       geste_id = QuoteValidator::Base.geste_index(object.id, geste_index)
