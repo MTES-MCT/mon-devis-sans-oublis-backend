@@ -3,7 +3,6 @@
 module Api
   module V1
     # Controller to handle API key authentication
-    # rubocop:disable Metrics/ClassLength
     class DataChecksController < BaseController
       def geste_types # rubocop:disable Metrics/MethodLength
         geste_types = QuoteCheck::GESTE_TYPES
@@ -27,45 +26,33 @@ module Api
         source = detect_request_source
         request_params = extract_rge_params
 
+        results = nil
         begin
-          results = nil
-
-          if request_params[:geste_types].any? { QuoteCheck::GESTE_TYPES.exclude?(it) }
-            raise UnprocessableEntityError.new(nil, validator_error_code: "geste_type_inconnu")
-          end
-
-          results = if request_params[:rge]
-                      RgeValidator.valid?(
-                        date: request_params[:date],
-                        siret: request_params[:siret],
-                        rge: request_params[:rge],
-                        geste_types: request_params[:geste_types]
-                      )
-                    else
-                      RgeValidator.valid?(
-                        date: request_params[:date],
-                        siret: request_params[:siret],
-                        geste_types: request_params[:geste_types]
-                      )
-                    end
-          raise NotFoundError.new(nil, validator_error_code: "rge_manquant") unless results
-
-          log_rge_request(request_params, { results:, valid: true }, source, started_at, success: true)
+          results = RgeValidator.valid?(
+            date: request_params[:date],
+            siret: request_params[:siret],
+            rge: request_params[:rge],
+            geste_types: request_params[:geste_types]
+          )
         rescue QuoteValidator::Base::ArgumentError => e
           log_rge_request(request_params, { error: e.message, error_code: e.error_code }, source, started_at,
                           success: false)
-          raise BadRequestError.new(e.message, validator_error_code: e.error_code)
-        rescue UnprocessableEntityError => e
-          log_rge_request(request_params, { error: e.message, error_code: "geste_type_inconnu" }, source, started_at,
-                          success: false)
-          raise
-        rescue NotFoundError => e
-          log_rge_request(request_params, { error: e.message, error_code: "rge_manquant" }, source, started_at,
-                          success: false)
-          raise
+          case e.error_code
+          when "geste_type_inconnu"
+            raise UnprocessableEntityError.new(e.message, validator_error_code: e.error_code)
+          else
+            raise BadRequestError.new(e.message, validator_error_code: e.error_code)
+          end
         end
 
-        render json: { results:, valid: true }.compact
+        valid = results.present? && results.any?
+        unless valid
+          log_rge_request(request_params, { error_code: "rge_manquant" }, source, started_at, success: false)
+          raise NotFoundError.new(nil, validator_error_code: "rge_manquant")
+        end
+
+        log_rge_request(request_params, { results:, valid: }, source, started_at, success: true)
+        render json: { results:, valid: }.compact
       end
       # rubocop:enable Metrics/AbcSize
 
@@ -125,6 +112,5 @@ module Api
         }
       end
     end
-    # rubocop:enable Metrics/ClassLength
   end
 end
