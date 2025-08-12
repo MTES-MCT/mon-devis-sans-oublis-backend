@@ -35,9 +35,13 @@ Rails.application.configure do
   # OCR will be auto-selected and retrieved via the class name and its class name method.
   config.ocrs_configured = [
     QuoteReader::Image::AlbertOcr,
-    QuoteReader::Image::MdsoOcrOlmOcr,
-    QuoteReader::Image::MdsoOcrNanonets,
+
+    # MDSO OCRs
+    QuoteReader::Image::MdsoOcrDotsOcr,
     QuoteReader::Image::MdsoOcrMarker,
+    QuoteReader::Image::MdsoOcrNanonets,
+    QuoteReader::Image::MdsoOcrOlmOcr,
+
     QuoteReader::Image::MistralOcr,
     QuoteReader::Image::Tesseract
   ].keep_if(&:configured?).map { it.name.split("::").last }
