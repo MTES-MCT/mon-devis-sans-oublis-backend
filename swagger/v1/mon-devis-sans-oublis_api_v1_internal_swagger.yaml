@@ -504,20 +504,19 @@ components:
           - Tableau de l´Ordre
           - Qualibois Eau
           - QualiPV 36
-          - Qualibois Air
           - Certificat Qualifelec RGE
+          - Qualibois Air
           - Ventilation +
           - Qualisol CESI
           - Chauffage +
           - QualiPV 500
           - Qualisol Combi
-          - CertiRénov RGE par CERQUAL Qualitel Certification
           - QualiPAC module CET
           - CERTIBAT-RGE
           - AUDIT ENERGETIQUE BATIMENT
           - Certiforage module Sonde
-          - Qualisol Collectif
           - Certiforage module Nappe
+          - Qualisol Collectif
           - RGE Etudes Audits énergétiques Batiments
           - CERTIFACT_EUSKADI_EKO
           - CERTIFACT_RLB_SQA
@@ -538,6 +537,7 @@ components:
           - CERTIFICAT_PLENETUDE
           - CERTIFICAT_P_ET_G_PLENETUDE
           - CERTIFICAT_SARL_DOMINIQUE_CALLIET
+          - CertiRénov RGE par CERQUAL Qualitel Certification
         domaine:
           title: Domaine de travaux
           type: string
@@ -568,12 +568,12 @@ components:
           - Etude solaire photovoltaïque
           - Etude forage géothermique
           - Etude bois énergie
-          - Projet complet de rénovation
           - Etude ACV
           - Etude solaire thermique
-          - Etude système technique bâtiment
           - Inconnu
           - Etude eclairage
+          - Etude système technique bâtiment
+          - Projet complet de rénovation
           - Etude enveloppe du bâtiment
           - Commisionnement
           - Non renseigné
@@ -604,12 +604,12 @@ components:
           - cnoa
           - qualifelec
           - Non renseigné
-          - cerqual
           - Inconnu
           - certibat
           - afnor
           - opqtecc
           - lne
+          - cerqual
         particulier:
           title: Travaille pour les particuliers
           type: boolean
@@ -686,15 +686,44 @@ components:
           description: Un nombre aléatoire associé à la ligne qui permet d'obtenir
             un tri aléatoire par exemple
           readOnly: true
+    api_error_light:
+      type: object
+      properties:
+        error:
+          type: string
+        error_details:
+          type: array
+          items:
+            "$ref": "#/components/schemas/quote_check_error_details_light"
+          description: liste des erreurs avec détails dans ordre à afficher
+          nullable: true
+        valid:
+          type: boolean
+          nullable: true
+        message:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
     api_error:
       type: object
       properties:
         error:
           type: string
+        error_details:
+          type: array
+          items:
+            "$ref": "#/components/schemas/quote_check_error_details"
+          description: liste des erreurs avec détails dans ordre à afficher
+          nullable: true
+        valid:
+          type: boolean
+          nullable: true
         message:
           type: array
           items:
             type: string
+      additionalProperties: false
     geste_type:
       type: string
       enum:
@@ -731,6 +760,7 @@ components:
           description: label de l'option à afficher
         value:
           type: string
+      additionalProperties: false
       description: Option type enum
     profile:
       type: string
@@ -784,6 +814,7 @@ components:
             - Menuiserie des portes
             - Ventilation Mécanique Double-Flux
             - Ventilation Mécanique Simple-Flux
+      additionalProperties: false
       description: hérité du QuotesCase à la création si vide
     quote_check_status:
       type: string
@@ -833,11 +864,15 @@ components:
             properties:
               code:
                 "$ref": "#/components/schemas/quote_check_error_code"
+            additionalProperties: false
+            required:
+            - code
           description: liste des erreurs avec détails dans ordre à afficher
           nullable: true
         valid:
           type: boolean
           nullable: true
+      additionalProperties: false
     data_check_rge_result:
       type: object
       properties:
@@ -848,6 +883,9 @@ components:
             properties:
               code:
                 "$ref": "#/components/schemas/quote_check_error_code"
+            additionalProperties: false
+            required:
+            - code
           description: liste des erreurs avec détails dans ordre à afficher
           nullable: true
         valid:
@@ -859,9 +897,20 @@ components:
             "$ref": "#/components/schemas/ademe_result_schema"
           description: liste des résultats correspondant à la requête
           nullable: true
+      additionalProperties: false
+    quote_check_error_details_light:
+      type: object
+      properties:
+        code:
+          "$ref": "#/components/schemas/quote_check_error_code"
+      additionalProperties: false
+      required:
+      - code
     quote_check_error_details:
       type: object
       properties:
+        code:
+          "$ref": "#/components/schemas/quote_check_error_code"
         id:
           type: string
           description: UUID unique
@@ -872,8 +921,6 @@ components:
           "$ref": "#/components/schemas/quote_check_error_category"
         type:
           "$ref": "#/components/schemas/quote_check_error_type"
-        code:
-          "$ref": "#/components/schemas/quote_check_error_code"
         title:
           type: string
         problem:
@@ -896,6 +943,7 @@ components:
         deleted:
           type: boolean
           nullable: true
+      additionalProperties: false
       required:
       - id
       - code
@@ -912,6 +960,7 @@ components:
         valid:
           type: boolean
           nullable: true
+      additionalProperties: false
       required:
       - id
       - intitule
@@ -947,6 +996,7 @@ components:
             forme_juridique:
               type: string
               nullable: true
+          additionalProperties: false
         noms:
           type: array
           nullable: true
@@ -977,6 +1027,13 @@ components:
           nullable: true
           items:
             type: string
+        type_fichier:
+          type: string
+          enum:
+          - devis
+          - facture
+          - autre
+          nullable: true
         version:
           type: string
         adresses:
@@ -1054,6 +1111,7 @@ components:
           nullable: true
           items:
             type: string
+      additionalProperties: false
     quote_check_read_attributes_extended_data:
       type: object
       nullable: true
@@ -1063,6 +1121,7 @@ components:
           items:
             "$ref": "#/components/schemas/ademe_result_schema"
           nullable: true
+      additionalProperties: false
     quote_check_qa_attributes:
       type: object
       nullable: true
@@ -1072,6 +1131,10 @@ components:
           nullable: true
           description: DEPRECATED, le fichier n'est pas un devis valide, unique propriété
             présente si true
+        rge_labels:
+          type: array
+          items:
+            type: string
         type_fichier:
           type: string
           enum:
@@ -1092,45 +1155,47 @@ components:
           type: string
           nullable: true
         date_devis:
-          type: date
           nullable: true
+          type: string
         validite:
           type: boolean
           nullable: true
         date_debut_chantier:
-          type: date
           nullable: true
+          type: string
         delai_debut_chantier:
-          type: date
           nullable: true
+          type: string
         date_pre_visite:
-          type: date
           nullable: true
+          type: string
         separation_prix_fourniture_pose:
           type: boolean
           nullable: true
           description: Vérifiez qu'il y a une ligne distincte pour la pose, l'installation
             ou la main d'œuvre
         prix_total_ht:
-          type: float
           nullable: true
+          type: number
         prix_total_ttc:
-          type: float
           nullable: true
+          type: number
         tva:
           type: array
           items:
             type: object
             properties:
               taux_tva:
-                type: float
                 nullable: true
+                type: number
               prix_ht_total:
-                type: float
                 nullable: true
+                type: number
               montant_tva_total:
-                type: float
                 nullable: true
+                type: number
+            additionalProperties: false
+      additionalProperties: false
     quote_check:
       type: object
       properties:
@@ -1222,8 +1287,10 @@ components:
             properties:
               extended_data:
                 "$ref": "#/components/schemas/quote_check_read_attributes_extended_data"
+            additionalProperties: false
         qa_attributes:
           "$ref": "#/components/schemas/quote_check_qa_attributes"
+      additionalProperties: false
       required:
       - id
       - status
@@ -1245,11 +1312,16 @@ components:
           type: integer
           nullable: true
           description: requis pour feedback global hors error detail
+        email:
+          type: string
+          nullable: true
+          description: pour feedback global hors error detail
         comment:
           type: string
           nullable: true
           description: requis pour feedback error detail
           maxLength: 1000
+      additionalProperties: false
       required:
       - quote_check_id
     quotes_case:
@@ -1310,6 +1382,7 @@ components:
         finished_at:
           type: datetime
           nullable: true
+      additionalProperties: false
       required:
       - id
     stats:
@@ -1318,13 +1391,13 @@ components:
         quote_checks_count:
           type: integer
         average_quote_check_errors_count:
-          type: float
           description: nombre moyen d'erreurs par analyse, arrondi au décimal supérieur
           nullable: true
+          type: number
         average_quote_check_cost:
-          type: float
           description: coût moyen d'une analyse en Euro (€), arrondi au centime supérieur
           nullable: true
+          type: number
         average_quote_check_processing_time:
           type: integer
           description: temps moyen de traitement d'une analyse en secondes, arrondi
@@ -1339,6 +1412,7 @@ components:
           type: integer
           description: nombre de visiteurs uniques dans le temps
           nullable: true
+      additionalProperties: false
       required:
       - quote_checks_count
       - average_quote_check_errors_count

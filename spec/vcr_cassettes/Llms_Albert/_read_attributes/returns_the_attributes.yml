@@ -1,0 +1,47 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://albert.api.etalab.gouv.fr/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"meta-llama/Llama-3.1-8B-Instruct","messages":[{"role":"system","content":"Retrouver
+        les informations au format JSON {\"siret\": \"SIRET entreprise\", \"nom_entreprise\":
+        \"Nom de l''entreprise\"}"},{"role":"user","content":"Entreprise RenovPlus
+        - 12345678900000"}]}'
+    headers:
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <ALBERT_API_KEY>
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - albert.api.etalab.gouv.fr
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.27.4
+      Date:
+      - Wed, 13 Aug 2025 10:32:34 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Vary:
+      - Accept-Encoding
+    body:
+      encoding: ASCII-8BIT
+      string: !binary |-
+        eyJpZCI6ImNoYXRjbXBsLTg2MWUyMDIzYTA0MDQ2ZTNiYThiZTA3NGZlOTQ4NjRhIiwib2JqZWN0IjoiY2hhdC5jb21wbGV0aW9uIiwiY3JlYXRlZCI6MTc1NTA4MTE1MSwibW9kZWwiOiJtZXRhLWxsYW1hL0xsYW1hLTMuMS04Qi1JbnN0cnVjdCIsImNob2ljZXMiOlt7ImluZGV4IjowLCJtZXNzYWdlIjp7InJvbGUiOiJhc3Npc3RhbnQiLCJjb250ZW50IjoiVm9pY2kgbGVzIGluZm9ybWF0aW9ucyBkZSBsJ2VudHJlcHJpc2UgUmVub3ZQbHVzIHNvdXMgZm9ybWUgZGUgSlNPTiA6XG5cbmBgYGpzb25cbntcbiAgXCJzaXJldFwiOiBcIjEyMzQ1Njc4OTAwMDAwXCIsXG4gIFwibm9tX2VudHJlcHJpc2VcIjogXCJSRU5PUGx1c1wiXG59XG5gYGBcblxuTm90ZXogcXVlIGonYWkgdXRpbGlzw6kgbGVzIGluZm9ybWF0aW9ucyBkaXNwb25pYmxlcyBwb3VyIHRyb3V2ZXIgbGUgbm9tIGRlIGwnZW50cmVwcmlzZSBsacOpIGF1IFNJUkVUIGZvdXJuaS4gQ2VwZW5kYW50LCBsZXMgaW5mb3JtYXRpb25zIHBldXZlbnQgdmFyaWVyIGVuIGZvbmN0aW9uIGRlcyBzb3VyY2VzIGV0IGRlIGxhIGRpc3BvbmliaWxpdMOpIGRlcyBkb25uw6llcy4gXG5cblNpIHZvdXMgc291aGFpdGV6IG9idGVuaXIgbGVzIGluZm9ybWF0aW9ucyBsZXMgcGx1cyDDoCBqb3VyLCB2b3VzIHBvdXZleiB2b3VzIHLDqWbDqXJlciDDoCBsYSBiYXNlIGRlIGRvbm7DqWVzIFNJUkVORSAoU3lzdMOobWUgZCdJbmZvcm1hdGlvbiBzdXIgbGVzIFLDqXBlcnRvaXJlcyBkZXMgRW50cmVwcmlzZXMgZXQgZGUgbGV1cnMgw4l0YWJsaXNzZW1lbnRzIE5hdGlvbmF1eCkgcXVpIGVzdCBnw6lyw6llIHBhciBsYSBEaXJlY3Rpb24gR8OpbsOpcmFsZSBkZXMgRW50cmVwcmlzZXMgKERHRSkgZHUgTWluaXN0w6hyZSBkZSBsJ8OJY29ub21pZSwgZGVzIEZpbmFuY2VzIGV0IGRlIGwnSW5kdXN0cmllLiIsInJlZnVzYWwiOm51bGwsImFubm90YXRpb25zIjpudWxsLCJhdWRpbyI6bnVsbCwiZnVuY3Rpb25fY2FsbCI6bnVsbCwidG9vbF9jYWxscyI6W10sInJlYXNvbmluZ19jb250ZW50IjpudWxsfSwibG9ncHJvYnMiOm51bGwsImZpbmlzaF9yZWFzb24iOiJzdG9wIiwic3RvcF9yZWFzb24iOm51bGx9XSwic2VydmljZV90aWVyIjpudWxsLCJzeXN0ZW1fZmluZ2VycHJpbnQiOm51bGwsInVzYWdlIjp7InByb21wdF90b2tlbnMiOjQwLCJjb21wbGV0aW9uX3Rva2VucyI6MTY3LCJ0b3RhbF90b2tlbnMiOjIwNywiY29zdCI6MC4wLCJjYXJib24iOnsia1doIjp7Im1pbiI6MC4wMDAzNzgxMTk4MTU1Mjg1MzQ3LCJtYXgiOjAuMDAwODgzNDg0NjQ3NTI4NTM0Nn0sImtnQ08yZXEiOnsibWluIjozLjg1MTgxMjc5MzI5ODkxMmUtMDUsIm1heCI6Ny45NjE1NjU5NDgzMzA5MTJlLTA1fX0sImRldGFpbHMiOlt7ImlkIjoiY2hhdGNtcGwtODYxZTIwMjNhMDQwNDZlM2JhOGJlMDc0ZmU5NDg2NGEiLCJtb2RlbCI6Im1ldGEtbGxhbWEvTGxhbWEtMy4xLThCLUluc3RydWN0IiwidXNhZ2UiOnsicHJvbXB0X3Rva2VucyI6NDAsImNvbXBsZXRpb25fdG9rZW5zIjoxNjcsInRvdGFsX3Rva2VucyI6MjA3LCJjb3N0IjowLjAsImNhcmJvbiI6eyJrV2giOnsibWluIjowLjAwMDM3ODExOTgxNTUyODUzNDcsIm1heCI6MC4wMDA4ODM0ODQ2NDc1Mjg1MzQ2fSwia2dDTzJlcSI6eyJtaW4iOjMuODUxODEyNzkzMjk4OTEyZS0wNSwibWF4Ijo3Ljk2MTU2NTk0ODMzMDkxMmUtMDV9fX19XX0sInByb21wdF9sb2dwcm9icyI6bnVsbCwia3ZfdHJhbnNmZXJfcGFyYW1zIjpudWxsfQ==
+  recorded_at: Wed, 13 Aug 2025 10:32:34 GMT
+recorded_with: VCR 6.3.1

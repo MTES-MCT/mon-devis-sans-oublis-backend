@@ -12,7 +12,7 @@ module Llms
 
     DEFAULT_MODEL = ENV.fetch("MISTRAL_MODEL", "mistral-large-latest")
 
-    def initialize(prompt, model: DEFAULT_MODEL, result_format: :json)
+    def initialize(prompt, json_schema: nil, model: DEFAULT_MODEL, result_format: :json)
       super
       @api_key = ENV.fetch("MISTRAL_API_KEY")
     end
@@ -48,6 +48,18 @@ module Llms
           { role: "user", content: text }
         ]
       }
+
+      if json_schema
+        # See https://docs.mistral.ai/capabilities/structured-output/structured_output_overview/
+        body[:response_format] = {
+          type: "json_schema",
+          json_schema: {
+            name: "result",
+            strict: true,
+            schema: json_schema
+          }
+        }
+      end
 
       http = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true)
       http.read_timeout = 120 # seconds

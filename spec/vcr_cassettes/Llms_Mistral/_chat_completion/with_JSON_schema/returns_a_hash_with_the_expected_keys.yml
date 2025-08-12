@@ -1,0 +1,228 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.mistral.ai/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"mistral-large-latest","messages":[{"role":"system","content":"Contexte
+        : Nous avons reçu un devis de rénovation énergétique d''un artisan pour un
+        particulier. Nous avons anonymisé son texte et nous souhaitons récupérer les
+        gestes de rénovation énergétique avec leurs critères techniques. Il peut y
+        avoir plusieurs gestes de travaux. \n\nRôle : Vous êtes un expert en lecture
+        de devis et vous devez récupérer les données structurées pour les intégrer
+        dans le JSON suivant\n\n\n# Liste des types de gestes pertinents\ngestes_pertinents
+        = [\n    \"pac_air_eau\", \"chauffe_eau_thermo\", \"chauffe_eau_solaire_individuel\",\n    \"isolation_comble_perdu\",
+        \"isolation_rampants_toiture\", \"isolation_toiture_terrasse\",\n    \"isolation_thermique_par_interieur_ITI\",
+        \"isolation_thermique_par_exterieur_ITE\",\n    \"isolation_plancher_bas\",
+        \"menuiserie_fenetre\", \"menuiserie_fenetre_toit\",\n    \"menuiserie_porte\",
+        \"menuiserie_volet_isolant\", \"poele_insert\", \"chaudiere_biomasse\",\n    \"systeme_solaire_combine\",
+        \"vmc_simple_flux\", \"vmc_double_flux\", \"pac_eau_eau\", \"pac_air_air\",
+        \"pac_hybride\"\n]\n\n\nVoici les JSON que l''on souhaite récupérer : \n\n#
+        JSON général\n\n```jsx\n{\nversion: \"2.1.2\";\nmention_devis: boolean;\nnumero_devis
+        : text;\npro_forme_juridique: text;\ntype_fichier: enum(devis, facture, autre);
+        (\"devis\" pour les devis de rénovation énergétique, \"facture\" pour les
+        factures de rénvoation énergétique, \"autre\" si tu ne détexte pas de poste
+        de travaux de rénovation énergétique compris dans la liste gestes_pertinents)\n\n\ndate_devis:
+        date;\n\nvalidite: boolean;\n\ndate_debut_chantier: date;\ndelai_debut_chantier:
+        text;\n\ndate_pre_visite: date;\nseparation_prix_fourniture_pose: boolean;
+        (Verifiez que le devis a bien une ligne distinct pour la pose, l''installation,
+        ou la main d''œuvre)\nprix_total_ht: decimal;\nprix_total_ttc: decimal;\ntva:[\n    {taux_tva:
+        decimal;\n    prix_ht_total: decimal;\n    montant_tva_total: decimal\n    },\n...];\ngestes
+        : [{geste1},{geste2}...]\n\n} \n```\n\n# Eau chaude sanitaire\n\n### chauffe-eau
+        thermodynamique :\n\n```jsx\n{type: ''chauffe_eau_thermo'';\nintitule: text;\nmarque:
+        text;\nreference: text; (Le modèle du chauffe-eau thermodynamique)\nvolume:
+        integer (en Litre);\nETAS: pourcentage;\nprofil_soutirage: enum(M,L,XL,XXL);\ntype_installation:
+        enum(air exterieur, air extrait, air ambiant);\nCOP: decimal;\n\n}\n```\n\n###
+        Chauffe-eau solaire individuel (CESI)\n\n```jsx\n{type: ''chauffe_eau_solaire_individuel'';\nintitule:
+        text;\nmarque: text;\nreference: text;\nvolume: integer (Litre);\nETAS: pourcentage;\nprofil_soutirage:
+        enum(M,L,XL,XXL);\ntype_appoint: enum (electrique, autre);\nsurface_capteur:
+        decimal (m2);\nclasse_energetique_ballon: text;\nfluide_capteur: enum(eau,
+        eau glycolée, air);\n\n}\n```\n\n# Isolation\n\n```jsx\n{type: enum(isolation_comble_perdu,
+        isolation_rampants_toiture, isolation_toiture_terrasse, isolation_thermique_par_interieur_ITI,
+        isolation_thermique_par_exterieur_ITE, isolation_plancher_bas);\nintitule:
+        text;\nmarque_isolant: text;\nreference_isolant: text;\nsurface_isolant: decimal
+        (m2);\nepaisseur_isolant: decimal (cm);\nresistance_thermique: decimal (m².K/W);\nnorme_calcul_resistance:
+        text; (une des normes NF elligible, comme par exemple : NF EN 12664);\nnumero_acermi:
+        text; (dont le format est : XX/XX/XXX)\n\n}\n```\n\nPour isolation_thermique_par_interieur_ITI
+        et isolation_thermique_par_exterieur_ITE il faut rajouter : \n\n```jsx\n{presence_parement:
+        boolean;\npresence_protection: boolean;\npresence_fixation: boolean;}\n```\n\nPour
+        isolation_plancher_bas, il faut rajouter: \n\n```jsx\n{localisation: text;\nemplacement:
+        enum(sous-face, par le dessus);\n}\n```\n\nPour isolation_toiture_terrasse,
+        il faut rajouter: \n\n```jsx\n{\ntype_isolation_toiture_terrasse: text;\n}\n```\n\n#
+        Menuiseries\n\n```jsx\n{type: enum(menuiserie_fenetre, menuiserie_fenetre_toit,
+        menuiserie_porte, menuiserie_volet_isolant);\nintitule: text;\nmarque: text;\nreference:
+        text;\ntype_menuiserie: enum(fenetre, porte_fenetre, porte, fenetre_de_toit,
+        volet_isolant);\ntype_materiaux: enum (PVC, bois, aluminium);\ntype_vitrage:
+        enum(simple,double, triple,...);\ntype_pose: enum(renovation,despose_totale);\nlocalisation:
+        text;\nposition_paroie: enum(nu_interieur, nu_exterieur, tunnel);\nuw: decimal
+        (W/m2.K);\nsw: decimal;\n\n}\n```\n\ndans le cadre d’une porte \n\n```jsx\n{ud:
+        W/m2.K} à la place du uw et sw\n```\n\ndans le cadre d’un volet isolant\n\n```jsx\n{deltaR:
+        m².K/W}\n```\n\n# Système chauffage\n\n### poele à bois :\n\n```jsx\n{type:
+        ''poele_insert'';\ntype_combustible: enum(bois, granules);\nintitule: text;\nmarque:
+        text;\nreference: text;\npuissance: decimal **(kW);** \nremplacement_chaudiere_condensation:
+        boolean;\nETAS: pourcentage **(ɳs)**;\nrendement_energetique: decimal;\nlabel_flamme_verte:
+        boolean;\nemission_monoxyde_carbone: integer (mg/Nm3) (emission de CO);\nemission_composés_organique:
+        integer (mgC/Nm3) (emission de COG);\nemission_particules: integer (mg/Nm3);\nemission_oxydes_azotes:
+        integer (mg/Nm3) (emission de Nox);\n\n}\n```\n\n### pompe à chaleur :\n\n```jsx\n{type:
+        enum(pac_air_eau, pac_eau_eau, pac_air_air, pac_hybride);\nintitule: text;\nremplacement_chaudiere_condensation:
+        boolean;\nmarque: text;\nreference: text;\nETAS: Pourcentage;\npuissance:
+        decimal **(kW) (puissance minimaleque la PAC peut fournir en condition réelle);**\nregime_temperature:
+        enum(basse, moyenne, haute);\ntype_fluide_frigorigene: text;\nCOP: decimal;\nSCOP:
+        decimal; ##Attention de ne pas confondre le COP et le SCOP !\npuissance_nominale:
+        decimal; **(kW) (puissance standardisée utilisée pour le dimensionnement et
+        la comparaison)**\n\n}\n```\n\n### Chaudière biomasse\n\n```jsx\n{type: ''chaudiere_biomasse'';\nintitule:
+        text;\nmarque: text;\nreference: text;\ntype_combustible: enum(buche,granule,copeaux,...);\npresence_note_dimensionnement:
+        boolean;\ntype_chargement: enum(manuel,automatique);\nETAS: pourcentage;\npuissance:
+        decimal (kW);\nremplacement_chaudiere_condensation: boolean;\nlabel_flamme_verte:
+        boolean;\nemission_monoxyde_carbone: integer (mg/Nm3) (emission de CO);\nemission_composés_organique:
+        integer (mgC/Nm3) (emission de COG);\nemission_particules: integer (mg/Nm3);\nemission_oxydes_azotes:
+        integer (mg/Nm3) (emission de Nox);\ntype_silo: text (externeinterne, neuf/existant,
+        textile/maconner);\ncontenance_silo: decimal (La contenance peut être définie
+        en litres (L), mètres cubes (m³) ou tonnes (T) );\nmarque_regulateur: text;\nreference_regulateur:
+        text;\nclasse_regulateur: text;\n\n}\n\n```\n\n### systeme solaire combine\n\n```jsx\n{type:
+        ''systeme_solaire_combine'';\nintitule: text;\nremplacement_chaudiere_condensation:
+        boolean;\nmarque: text;\nreference: text;\nETAS: Pourcentage;\npuissance:
+        decimal **(kW);**\nmarque_capteurs: text;\nreference_capteurs: text;\ntype_capteurs:
+        text;\nsurface_captage: decimal (m2);\nproductivite_capteurs: decimal (W/m2);\nvolume_ballon:
+        decimal (litre);\nprofil_soutirage: enum(M,L,XL,XXL);\nenergie_appoint: (electricite,
+        gaz,...);\n\n}\n```\n\n# Ventilation\n\n```jsx\n{type: enum(vmc_simple_flux,vmc_double_flux);\nintitule:
+        text;\ntype_vmc: enum(VMC simple flux hygroréable de type A (Hygro A), VMC
+        simple flux hygroréable de type B (hygro B), VMC double flux avec échangeur);\nmarque_caisson:
+        text;\nreference_caisson: text;\nnombre_bouches_extraction: integer;\nmarque_bouche_extraction:
+        text;\nnombre_bouche_extraction: integer;\nreference_bouche_extraction: text;\nclasse_caisson:text
+        (de A+++ à G);\npuissance_absobée_pondéréé_moteur: decimal (W-th-C);\nnombre_bouches_entree_dair:
+        integer;\nemplacement_bouches_entree_dair: text;\nmarque_bouches_entree_dair:
+        text;\nreference_bouches_entree_dair: text;\nnombre_bouches_soufflage: integer;\nemplacement_bouches_soufflage:
+        text;\nmarque_bouches_soufflage: text;\nreference_bouches_soufflage: text;\n}\n```\n\n\nattributs_complementaires
+        = \n{\nprix_ht: decimal; (prix hors taxe)\nprix_unitaire_ht: decimal;\ntaux_tva:
+        decimal; (il s''agit d''un pourcentage - attention sur certains devis, il
+        y a une liste à la fin du devis regroupant les différents taux de tva identifié
+        par un numéro utilisé sur les lignes du devis)\nprix_ttc: decimal; (prix toutes
+        taxes comprises)\nquantite: decimal; (quantité de matériaux installé selon
+        l''unité choisie)\nunite: text; (unité pouvant être m2, metre, nombre ...
+        permettant de savoir combien de matériaux sont installés)\nnumero_ligne: text
+        (Numéro ou identifiant de la ligne du devis, il se trouve très souvent en
+        première colonne du tableau)\n}\n\nInstructions :\n\n1. **Récupération des
+        Informations Générales** : Récupérez les informations générales du devis et
+        intégrez-les dans le JSON général.\n2. **Identification des gestes pertinents**
+        : Parcourez les lignes du devis et identifiez **uniquement** les gestes listés
+        dans gestes_pertinents. \n3. **Ajout des gestes pertinents** : Ajoutez uniquement
+        ces gestes pertinents au JSON général avec les informations spécifiques en
+        suivant les définitions des JSON fournis, puis complétez avec le json **attributs_complementaires**
+        qui doivent être directement inclus dans l''objet représnetant le geste de
+        travaux.\n4. **Ignorez absolument les lignes non pertinentes** : Si une ligne
+        du devis ne correspond pas à un gestes_pertinents, ignorez-la même si certains
+        attributs sont définis comme les attributs_complementaires**.\n5. **Ignorez
+        les lignes de main d''oeuvre**: S''il y a une ligne de fourniture et une ligne
+        d''installation/de pose pour le même matériel, n''incluez que la ligne de
+        fourniture au résultat final.\n6. **Vérification des sections et titres**
+        : Assurez-vous de ne pas mélanger les informations des différents gestes et
+        de bien identifier les sections et titres. Repérez les titres et sous-titres
+        dans le devis. Ils sont souvents utilisés pour regrouper les informations
+        par gestes et pour donner du contexte au geste (notamment la localisation
+        dans le logement).\n7. **Récupération des attributs** : Assurez-vous de toujours
+        récupérer les attributs de l''équipement lorsqu''ils sont mentionnés dans
+        le texte.\n8. **Laisser les attributs vides** = Laissez les attributs vides
+        s''ils ne sont pas clairement indiqués dans le texte. Ne les calculez ou déduisez
+        pas.\n9. **Utilisation des enums** : Lorsqu''un champ du JSON est un enum,
+        utilisez uniquement l''une des options possibles.\n10. **Utilisation de l''intitulé
+        de la ligne** : Utilisez l''intitulé de la ligne pour le champ **intitule**
+        du geste. Cela permet de conserver le contexte exact de la ligne du devis,
+        puis complétez avec des éléments de contexte comme le titre ou sous titre
+        de la section pour apporter de la précision lorsque l''on a plusieurs gestes
+        similaires, par exemple des fenêtres dans plusieurs pièces de la maison.\n11.
+        **Structure des tableaux** : La majorité du temps, les gestes sont inscrits
+        dans un tableau à plusieurs colonnes comme par exemple, identifiant / informations
+        techniques / Quantités / unitités / prix HT / Taux TVA / Montant TTC\n\n\n\nRéfléchissez
+        étape par étape.\n\n\nVous ne répondrez que par un objet JSON.\nNe fournissez
+        pas d’explications.\n\nAttention, assurez-vous de bien filtrer les lignes
+        pour ne pas retourner toutes les lignes du devis mais uniquement les gestes
+        pertinents ! \nvoici le texte du devis anonymise :\n"},{"role":"user","content":"1.1  dépose
+        et enlèvement d''une chaudière gaz hors condensation                             1,00  U        0,00           0,00\n  1.2  Pompe
+        à chaleur AIR/EAU - moyenne température - Atlantic Alféa Extensa A.I. 8 R32
+        -    1,00  U    8 765,00       8 765,00\n\n        6kW - classe énergétique
+        chauffage A+++ - efficacité énergétique saisonnière chauffage\n        avec
+        sonde extérieure 179 % - SCOP 4.5 - niveau sonore intérieur / extérieur :
+        32/38 dB\n"}],"response_format":{"type":"json_schema","json_schema":{"name":"result","strict":true,"schema":{"type":"object","nullable":true,"properties":{"bad_file":{"type":"boolean","nullable":true,"description":"DEPRECATED,
+        le fichier n''est pas un devis valide, unique propriété présente si true"},"type_fichier":{"type":"string","enum":["devis","facture","autre"],"nullable":true},"version":{"type":"string","nullable":true},"mention_devis":{"type":"boolean","nullable":true},"numero_devis":{"type":"string","nullable":true},"pro_forme_juridique":{"type":"string","nullable":true},"date_devis":{"nullable":true,"type":"string"},"validite":{"type":"boolean","nullable":true},"date_debut_chantier":{"nullable":true,"type":"string"},"delai_debut_chantier":{"nullable":true,"type":"string"},"date_pre_visite":{"nullable":true,"type":"string"},"separation_prix_fourniture_pose":{"type":"boolean","nullable":true,"description":"Vérifiez
+        qu''il y a une ligne distincte pour la pose, l''installation ou la main d''œuvre"},"prix_total_ht":{"nullable":true,"type":"number"},"prix_total_ttc":{"nullable":true,"type":"number"},"tva":{"type":"array","items":{"type":"object","properties":{"taux_tva":{"nullable":true,"type":"number"},"prix_ht_total":{"nullable":true,"type":"number"},"montant_tva_total":{"nullable":true,"type":"number"}},"additionalProperties":false}}},"additionalProperties":false}}}}'
+    headers:
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <MISTRAL_API_KEY>
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - api.mistral.ai
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Tue, 12 Aug 2025 16:18:46 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Mistral-Correlation-Id:
+      - '01989f13-923c-7d18-9087-8073fa162b60'
+      X-Kong-Request-Id:
+      - '01989f13-923c-7d18-9087-8073fa162b60'
+      X-Envoy-Upstream-Service-Time:
+      - '9839'
+      X-Ratelimit-Limit-Tokens-Minute:
+      - '2000000'
+      X-Ratelimit-Remaining-Tokens-Minute:
+      - '1996302'
+      X-Ratelimit-Limit-Tokens-Month:
+      - '10000000000'
+      X-Ratelimit-Remaining-Tokens-Month:
+      - '9997564897'
+      X-Ratelimit-Tokens-Query-Cost:
+      - '3698'
+      X-Ratelimit-Limit-Req-10-Second:
+      - '60'
+      X-Ratelimit-Remaining-Req-10-Second:
+      - '59'
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Kong-Upstream-Latency:
+      - '9840'
+      X-Kong-Proxy-Latency:
+      - '7'
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=vFIuZiys8LSrX9cWVGNqhV5o7TzTg_I3fWxHZOsVSnU-1755015526-1.0.1.1-APZbFJVFJmXMV6ZVLJl4sF1uns_e4xN7tH8VHpHgvXG9N1Me.cQD.Dbv3pIM2qyEln48eMZ_DrrNTRMM._HTwhWBRo7kFBFeRaJ8Bdn2YZ4;
+        path=/; expires=Tue, 12-Aug-25 16:48:46 GMT; domain=.mistral.ai; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=zkvFRRyqb1pVbkX.cKuhiUAhVYtR9iJ5lGJoLYjpnks-1755015526597-0.0.1.1-604800000;
+        path=/; domain=.mistral.ai; HttpOnly; Secure; SameSite=None
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 96e14a235adc039a-FRA
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: '{"id":"4d1c87ce29b54351a6943839e43b1e32","created":1755015516,"model":"mistral-large-latest","usage":{"prompt_tokens":3311,"total_tokens":3698,"completion_tokens":387},"object":"chat.completion","choices":[{"index":0,"finish_reason":"stop","message":{"role":"assistant","tool_calls":null,"content":"{\n  \"version\":
+        \"2.1.2\",\n  \"mention_devis\": true,\n  \"numero_devis\": \"\",\n  \"pro_forme_juridique\":
+        \"\",\n  \"date_devis\": \"\",\n  \"validite\": false,\n  \"date_debut_chantier\":
+        \"\",\n  \"delai_debut_chantier\": \"\",\n  \"date_pre_visite\": \"\",\n  \"separation_prix_fourniture_pose\":
+        false,\n  \"prix_total_ht\": 8765.00,\n  \"prix_total_ttc\": 8765.00,\n  \"tva\":
+        [\n    {\n      \"taux_tva\": 0.00,\n      \"prix_ht_total\": 8765.00,\n      \"montant_tva_total\":
+        0.00\n    }\n  ]\n    }\n                                                                                                                                                                                                  "}}]}'
+  recorded_at: Tue, 12 Aug 2025 16:18:46 GMT
+recorded_with: VCR 6.3.1

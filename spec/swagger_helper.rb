@@ -4,6 +4,8 @@ require "rails_helper"
 require "openssl"
 require "uri"
 
+TYPE_FICHIERS = %w[devis facture autre].freeze
+
 ADEME_SWAGGER_URI = "https://data.ademe.fr/data-fair/api/v1/datasets/liste-des-entreprises-rge-2/api-docs.json"
 ademe_yaml = URI.open(ADEME_SWAGGER_URI, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE).read # rubocop:disable Security/Open
 ademe_swagger = YAML.safe_load(ademe_yaml, aliases: true)
@@ -11,23 +13,63 @@ ademe_result_schema = ademe_swagger.dig("paths", "/lines", "get", "responses", "
                                         "schema", "properties", "results", "items", "properties")
                                    .transform_values! { it.except("x-cardinality") } # change without usefullness
 
+def date_type(options = {})
+  options.merge(
+    type: :string # because type: :date is not JSON Schema compliant
+    # format: "date" # not supported by Mistral
+  )
+end
+
+def float_type(options = {})
+  options.merge(
+    type: :number
+    # might use multipleOf: 0.01
+  )
+end
+
+def api_error_light(properties: {}) # rubocop:disable Metrics/MethodLength
+  {
+    type: :object,
+    properties: {
+      error: { type: :string },
+      error_details: {
+        type: :array,
+        items: { "$ref" => "#/components/schemas/quote_check_error_details_light" },
+        description: "liste des erreurs avec détails dans ordre à afficher",
+        nullable: true
+      },
+      valid: { type: :boolean, nullable: true },
+      message: {
+        type: :array,
+        items: { type: :string }
+      }
+    }.merge(properties),
+    additionalProperties: false
+  }
+end
+
+def quote_check_error_details_light(properties: {}, required: %w[code])
+  {
+    type: :object,
+    properties: { code: { "$ref" => "#/components/schemas/quote_check_error_code" } }.merge(properties),
+    additionalProperties: false,
+    required:
+  }
+end
+
 def data_check_result(items_schema = nil) # rubocop:disable Metrics/MethodLength
   schema = {
     type: :object,
     properties: {
       error_details: {
         type: :array,
-        items: {
-          type: :object,
-          properties: {
-            code: { "$ref" => "#/components/schemas/quote_check_error_code" }
-          }
-        },
+        items: quote_check_error_details_light,
         description: "liste des erreurs avec détails dans ordre à afficher",
         nullable: true
       },
       valid: { type: :boolean, nullable: true }
-    }
+    },
+    additionalProperties: false
   }
 
   if items_schema
@@ -92,16 +134,17 @@ RSpec.configure do |config|
           type: :object,
           properties: ademe_result_schema
         },
-        api_error: {
-          type: :object,
+        api_error_light:,
+        api_error: api_error_light(
           properties: {
-            error: { type: :string },
-            message: {
+            error_details: {
               type: :array,
-              items: { type: :string }
+              items: { "$ref" => "#/components/schemas/quote_check_error_details" },
+              description: "liste des erreurs avec détails dans ordre à afficher",
+              nullable: true
             }
           }
-        },
+        ),
         geste_type: {
           type: :string,
           enum: QuoteCheck::GESTE_TYPES
@@ -113,6 +156,7 @@ RSpec.configure do |config|
             label: { type: :string, description: "label de l'option à afficher" },
             value: { type: :string }
           },
+          additionalProperties: false,
           description: "Option type enum"
         },
         profile: {
@@ -135,6 +179,7 @@ RSpec.configure do |config|
               items: { type: :string, enum: }
             }]
           end,
+          additionalProperties: false,
           description: "hérité du QuotesCase à la création si vide"
         },
         quote_check_status: {
@@ -175,17 +220,13 @@ RSpec.configure do |config|
         },
         data_check_result: data_check_result,
         data_check_rge_result: data_check_result({ "$ref" => "#/components/schemas/ademe_result_schema" }),
-        quote_check_error_details: {
-          type: :object,
+        quote_check_error_details_light:,
+        quote_check_error_details: quote_check_error_details_light(
           properties: {
-            id: {
-              type: :string,
-              description: "UUID unique"
-            },
+            id: { type: :string, description: "UUID unique" },
             geste_id: { type: :string, nullable: true },
             category: { "$ref" => "#/components/schemas/quote_check_error_category" },
             type: { "$ref" => "#/components/schemas/quote_check_error_type" },
-            code: { "$ref" => "#/components/schemas/quote_check_error_code" },
             title: { type: :string },
             problem: { type: :string, description: "Réutilisez le title si vide" },
             solution: { type: :string, description: "peut-être vide" },
@@ -200,7 +241,7 @@ RSpec.configure do |config|
             deleted: { type: :boolean, nullable: true }
           },
           required: %w[id code]
-        },
+        ),
         quote_check_geste: {
           type: :object,
           properties: {
@@ -212,6 +253,7 @@ RSpec.configure do |config|
             },
             valid: { type: :boolean, nullable: true }
           },
+          additionalProperties: false,
           required: %w[id intitule]
         },
         quote_check_private_data_qa_attributes: {
@@ -255,9 +297,9 @@ RSpec.configure do |config|
                   type: :string,
                   nullable: true
                 }
-              }
+              },
+              additionalProperties: false
             },
-
             noms: {
               type: :array,
               nullable: true,
@@ -299,6 +341,11 @@ RSpec.configure do |config|
               items: {
                 type: :string
               }
+            },
+            type_fichier: {
+              type: :string,
+              enum: TYPE_FICHIERS,
+              nullable: true
             },
             version: {
               type: :string
@@ -408,8 +455,8 @@ RSpec.configure do |config|
                 type: :string
               }
             }
-
-          }
+          },
+          additionalProperties: false
         },
         quote_check_read_attributes_extended_data: {
           type: :object,
@@ -420,7 +467,8 @@ RSpec.configure do |config|
               items: { "$ref" => "#/components/schemas/ademe_result_schema" },
               nullable: true
             }
-          }
+          },
+          additionalProperties: false
         },
         quote_check_qa_attributes: {
           type: :object,
@@ -431,9 +479,15 @@ RSpec.configure do |config|
               nullable: true,
               description: "DEPRECATED, le fichier n'est pas un devis valide, unique propriété présente si true"
             },
+            rge_labels: {
+              type: :array,
+              items: {
+                type: :string
+              }
+            },
             type_fichier: {
               type: :string,
-              enum: %w[devis facture autre],
+              enum: TYPE_FICHIERS,
               nullable: true
             },
             version: {
@@ -452,60 +506,53 @@ RSpec.configure do |config|
               type: :string,
               nullable: true
             },
-            date_devis: {
-              type: :date,
+            date_devis: date_type(
               nullable: true
-            },
+            ),
             validite: {
               type: :boolean,
               nullable: true
             },
-            date_debut_chantier: {
-              type: :date,
+            date_debut_chantier: date_type(
               nullable: true
-            },
-            delai_debut_chantier: {
-              type: :date,
+            ),
+            delai_debut_chantier: date_type(
               nullable: true
-            },
-            date_pre_visite: {
-              type: :date,
+            ),
+            date_pre_visite: date_type(
               nullable: true
-            },
+            ),
             separation_prix_fourniture_pose: {
               type: :boolean,
               nullable: true,
               description: "Vérifiez qu'il y a une ligne distincte pour la pose, l'installation ou la main d'œuvre"
             },
-            prix_total_ht: {
-              type: :float,
+            prix_total_ht: float_type(
               nullable: true
-            },
-            prix_total_ttc: {
-              type: :float,
+            ),
+            prix_total_ttc: float_type(
               nullable: true
-            },
+            ),
             tva: {
               type: :array,
               items: {
                 type: :object,
                 properties: {
-                  taux_tva: {
-                    type: :float,
+                  taux_tva: float_type(
                     nullable: true
-                  },
-                  prix_ht_total: {
-                    type: :float,
+                  ),
+                  prix_ht_total: float_type(
                     nullable: true
-                  },
-                  montant_tva_total: {
-                    type: :float,
+                  ),
+                  montant_tva_total: float_type(
                     nullable: true
-                  }
-                }
+                  )
+                },
+                additionalProperties: false
               }
             }
-          }
+          },
+          additionalProperties: false
         },
         quote_check: {
           type: :object,
@@ -607,12 +654,14 @@ RSpec.configure do |config|
                   nullable: true,
                   properties: {
                     extended_data: { "$ref" => "#/components/schemas/quote_check_read_attributes_extended_data" }
-                  }
+                  },
+                  additionalProperties: false
                 }
               ]
             },
             qa_attributes: { "$ref" => "#/components/schemas/quote_check_qa_attributes" }
           },
+          additionalProperties: false,
           required: %w[id status profile]
         },
         quote_check_feedback: {
@@ -629,6 +678,7 @@ RSpec.configure do |config|
               description: "requis pour feedback error detail"
             },
             rating: { type: :integer, nullable: true, description: "requis pour feedback global hors error detail" },
+            email: { type: :string, nullable: true, description: "pour feedback global hors error detail" },
             comment: {
               type: :string,
               nullable: true,
@@ -638,6 +688,7 @@ RSpec.configure do |config|
               end&.options&.[](:maximum)
             }
           },
+          additionalProperties: false,
           required: %w[quote_check_id]
         },
         quotes_case: {
@@ -701,22 +752,21 @@ RSpec.configure do |config|
               nullable: true
             }
           },
+          additionalProperties: false,
           required: %w[id]
         },
         stats: {
           type: :object,
           properties: {
             quote_checks_count: { type: :integer },
-            average_quote_check_errors_count: {
-              type: :float,
+            average_quote_check_errors_count: float_type(
               description: "nombre moyen d'erreurs par analyse, arrondi au décimal supérieur",
               nullable: true
-            },
-            average_quote_check_cost: {
-              type: :float,
+            ),
+            average_quote_check_cost: float_type(
               description: "coût moyen d'une analyse en Euro (€), arrondi au centime supérieur",
               nullable: true
-            },
+            ),
             average_quote_check_processing_time: {
               type: :integer,
               description: "temps moyen de traitement d'une analyse en secondes, arrondi supérieur",
@@ -732,6 +782,7 @@ RSpec.configure do |config|
               description: "nombre de visiteurs uniques dans le temps", nullable: true
             }
           },
+          additionalProperties: false,
           required: %w[
             quote_checks_count
             average_quote_check_errors_count

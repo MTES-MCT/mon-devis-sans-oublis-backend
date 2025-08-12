@@ -1,0 +1,49 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://albert.api.etalab.gouv.fr/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"meta-llama/Llama-3.1-8B-Instruct","messages":[{"role":"system","content":"Retrouver
+        les informations au format JSON {\"siret\": \"SIRET entreprise\", \"nom_entreprise\":
+        \"Nom de l''entreprise\"}"},{"role":"user","content":"Entreprise RenovPlus
+        - 12345678900000"}],"response_format":{"type":"json_schema","json_schema":{"name":"result","strict":true,"schema":{"type":"object","nullable":true,"properties":{"pro":{"type":"object","properties":{"siret":{"type":"string","nullable":true},"adresse":{"type":"string","nullable":true},"capital":{"type":"string","nullable":true},"assurance":{"type":"string","nullable":true},"numero_tva":{"type":"string","nullable":true},"rge_labels":{"type":"array","items":{"type":"string"}},"raison_sociale":{"type":"string","nullable":true},"forme_juridique":{"type":"string","nullable":true}},"additionalProperties":false},"noms":{"type":"array","nullable":true,"items":{"type":"string"}},"rnes":{"type":"array","nullable":true,"items":{"type":"string"}},"uris":{"type":"array","nullable":true,"items":{"type":"string"}},"ibans":{"type":"array","nullable":true,"items":{"type":"string"}},"emails":{"type":"array","nullable":true,"items":{"type":"string"}},"sirets":{"type":"array","nullable":true,"items":{"type":"string"}},"version":{"type":"string"},"adresses":{"type":"array","nullable":true,"items":{"type":"string"}},"assurances":{"type":"array","nullable":true,"items":{"type":"string"}},"numero_rge":{"type":"array","nullable":true,"items":{"type":"string"}},"telephones":{"type":"array","nullable":true,"items":{"type":"string"}},"numero_rcss":{"type":"array","nullable":true,"items":{"type":"string"}},"numeros_tva":{"type":"array","nullable":true,"items":{"type":"string"}},"pro_adresses":{"type":"array","nullable":true,"items":{"type":"string"}},"capital_social":{"type":"array","nullable":true,"items":{"type":"string"}},"client_prenoms":{"type":"array","nullable":true,"items":{"type":"string"}},"client_adresses":{"type":"array","nullable":true,"items":{"type":"string"}},"client_civilite":{"type":"array","nullable":true,"items":{"type":"string"}},"raison_sociales":{"type":"array","nullable":true,"items":{"type":"string"}},"forme_juridiques":{"type":"array","nullable":true,"items":{"type":"string"}},"client_noms_de_famille":{"type":"array","nullable":true,"items":{"type":"string"}},"ville_immatriculation_rcss":{"type":"array","nullable":true,"items":{"type":"string"}}},"additionalProperties":false}}}}'
+    headers:
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <ALBERT_API_KEY>
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - albert.api.etalab.gouv.fr
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.27.4
+      Date:
+      - Tue, 12 Aug 2025 15:05:36 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Vary:
+      - Accept-Encoding
+    body:
+      encoding: ASCII-8BIT
+      string: '{"id":"chatcmpl-577750669e534d09bedf487185d4e062","object":"chat.completion","created":1755011135,"model":"meta-llama/Llama-3.1-8B-Instruct","choices":[{"index":0,"message":{"role":"assistant","content":"{\"sirets\":
+        [\"12345678900000\"], \"numeros_tva\": [\"12345678900000\"], \"raison_sociales\":
+        [\"RENOPLUS\"], \"forme_juridiques\": [\"SA\"], \"client_noms_de_famille\":
+        [\"LOUVEL\"], \"ville_immatriculation_rcss\": [\"Marseille\"]}","refusal":null,"annotations":null,"audio":null,"function_call":null,"tool_calls":[],"reasoning_content":null},"logprobs":null,"finish_reason":"stop","stop_reason":null}],"service_tier":null,"system_fingerprint":null,"usage":{"prompt_tokens":40,"completion_tokens":74,"total_tokens":114,"cost":0.0,"carbon":{"kWh":{"min":0.0002005865987644093,"max":0.0004789034627644093},"kgCO2eq":{"min":1.9987085750463733e-05,"max":4.2620508923103734e-05}},"details":[{"id":"chatcmpl-577750669e534d09bedf487185d4e062","model":"meta-llama/Llama-3.1-8B-Instruct","usage":{"prompt_tokens":40,"completion_tokens":74,"total_tokens":114,"cost":0.0,"carbon":{"kWh":{"min":0.0002005865987644093,"max":0.0004789034627644093},"kgCO2eq":{"min":1.9987085750463733e-05,"max":4.2620508923103734e-05}}}}]},"prompt_logprobs":null,"kv_transfer_params":null}'
+  recorded_at: Tue, 12 Aug 2025 15:05:36 GMT
+recorded_with: VCR 6.3.1
