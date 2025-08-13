@@ -93,7 +93,7 @@ describe "Data Checks API" do
       end
 
       response "400", "SIRET non valide" do
-        schema "$ref" => "#/components/schemas/api_error"
+        schema "$ref" => "#/components/schemas/api_error_light"
 
         let(:siret) { "12345678900000" } # wrong SIRET
         let(:rge) { "Q90513" } # valid RGE
@@ -104,7 +104,7 @@ describe "Data Checks API" do
       end
 
       response "400", "RGE non valide pour Date" do
-        schema "$ref" => "#/components/schemas/api_error"
+        schema "$ref" => "#/components/schemas/api_error_light"
 
         let(:siret) { "52503410400014" } # valid SIRET
         let(:rge) { "Q90513" } # valid RGE
@@ -115,7 +115,7 @@ describe "Data Checks API" do
       end
 
       response "404", "RGE non trouvé pour Date" do
-        schema "$ref" => "#/components/schemas/api_error"
+        schema "$ref" => "#/components/schemas/api_error_light"
 
         let(:siret) { "52503410400014" } # valid SIRET
         let(:rge) { nil }

@@ -8,6 +8,12 @@ module QuoteReader
 
     attr_reader :read_attributes, :result
 
+    def self.json_schema
+      path = Rails.root.join("swagger/v1/mon-devis-sans-oublis_api_v1_internal_swagger.yaml")
+      yml = YAML.safe_load_file(path)
+      yml.dig("components", "schemas").fetch("quote_check_qa_attributes")
+    end
+
     def read(llm: nil)
       return {} if text.blank?
 

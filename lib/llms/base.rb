@@ -6,12 +6,14 @@ module Llms
     class ResultError < StandardError; end
     class TimeoutError < ResultError; end
 
-    attr_reader :model, :prompt, :result_format
+    attr_reader :json_schema, :model, :prompt, :result_format
 
     RESULT_FORMATS = %i[numbered_list json].freeze
 
-    def initialize(prompt, model: nil, result_format: :json)
+    def initialize(prompt, json_schema: nil, model: nil, result_format: :json)
       @prompt = prompt
+
+      @json_schema = json_schema
       @model = model
 
       raise ArgumentError, "Invalid result format: #{result_format}" unless RESULT_FORMATS.include?(result_format)

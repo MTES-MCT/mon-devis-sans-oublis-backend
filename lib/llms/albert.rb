@@ -15,10 +15,10 @@ module Llms
 
     attr_reader :prompt, :read_attributes, :result
 
-    DEFAULT_MODEL = ENV.fetch("ALBERT_MODEL", "meta-llama/Meta-Llama-3.1-70B-Instruct")
+    DEFAULT_MODEL = ENV.fetch("ALBERT_MODEL", "meta-llama/Llama-3.1-8B-Instruct")
     HOST = "https://albert.api.etalab.gouv.fr/v1"
 
-    def initialize(prompt, model: DEFAULT_MODEL, result_format: :json)
+    def initialize(prompt, json_schema: nil, model: DEFAULT_MODEL, result_format: :json)
       super
       @api_key = ENV.fetch("ALBERT_API_KEY")
     end
@@ -35,7 +35,6 @@ module Llms
     # rubocop:disable Metrics/PerceivedComplexity
     # model:
     # - meta-llama/Meta-Llama-3.1-8B-Instruct
-    # - meta-llama/Meta-Llama-3.1-70B-Instruct
     # - AgentPublic/llama3-instruct-8b (default)
     # - AgentPublic/Llama-3.1-8B-Instruct
     def chat_completion(text, model: nil, model_fallback: true, model_type: "text-generation")
@@ -49,6 +48,18 @@ module Llms
           { role: "user", content: text }
         ]
       }
+
+      if json_schema
+        # See https://albert.api.etalab.gouv.fr/documentation#tag/Agents/operation/agents_completions_v1_agents_completions_post
+        body[:response_format] = {
+          type: "json_schema",
+          json_schema: {
+            name: "result",
+            strict: true,
+            schema: json_schema
+          }
+        }
+      end
 
       http = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true)
       http.read_timeout = 120 # seconds
