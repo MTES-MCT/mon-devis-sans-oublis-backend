@@ -260,87 +260,62 @@ RSpec.configure do |config|
           type: :object,
           nullable: true,
           properties: {
+            client: {
+              type: :object,
+              properties: {
+                adresse: { type: :string, nullable: true },
+                civilite: { type: :string, nullable: true },
+                nom: { type: :string, nullable: true },
+                prenom: { type: :string, nullable: true }
+              },
+              additionalProperties: false
+            },
             pro: {
               type: :object,
               properties: {
-                siret: {
-                  type: :string,
-                  nullable: true
-                },
-                adresse: {
-                  type: :string,
-                  nullable: true
-                },
-                capital: {
-                  type: :string,
-                  nullable: true
-                },
-                assurance: {
-                  type: :string,
-                  nullable: true
-                },
-                numero_tva: {
-                  type: :string,
-                  nullable: true
-                },
-                rge_labels: {
-                  type: :array,
-                  items: {
-                    type: :string
-                  }
-                },
-                raison_sociale: {
-                  type: :string,
-                  nullable: true
-                },
-                forme_juridique: {
-                  type: :string,
-                  nullable: true
-                }
+                adresse: { type: :string, nullable: true },
+                assurance: { type: :string, nullable: true },
+                capital: { type: :string, nullable: true },
+                forme_juridique: { type: :string, nullable: true },
+                numero_tva: { type: :string, nullable: true },
+                raison_sociale: { type: :string, nullable: true },
+                rcs: { type: :string, nullable: true },
+                rcs_ville: { type: :string, nullable: true },
+                rge_labels: { type: :array, items: { type: :string } },
+                rne: { type: :string, nullable: true },
+                siret: { type: :string, nullable: true }
               },
               additionalProperties: false
             },
             noms: {
               type: :array,
               nullable: true,
-              items: {
-                type: :string
-              }
+              items: { type: :string }
             },
             rnes: {
               type: :array,
               nullable: true,
-              items: {
-                type: :string
-              }
+              items: { type: :string }
             },
             uris: {
               type: :array,
               nullable: true,
-              items: {
-                type: :string
-              }
+              items: { type: :string }
             },
             ibans: {
               type: :array,
               nullable: true,
-              items: {
-                type: :string
-              }
+              items: { type: :string }
             },
             emails: {
               type: :array,
               nullable: true,
-              items: {
-                type: :string
-              }
+              items: { type: :string }
             },
             sirets: {
               type: :array,
               nullable: true,
-              items: {
-                type: :string
-              }
+              items: { type: :string }
             },
             type_fichier: {
               type: :string,
@@ -353,107 +328,92 @@ RSpec.configure do |config|
             adresses: {
               type: :array,
               nullable: true,
-              items: {
-                type: :string
-              }
+              items: { type: :string }
             },
             assurances: {
               type: :array,
               nullable: true,
-              items: {
-                type: :string
-              }
+              items: { type: :string }
             },
             numero_rge: {
               type: :array,
               nullable: true,
-              items: {
-                type: :string
-              }
+              items: { type: :string }
             },
             telephones: {
               type: :array,
               nullable: true,
-              items: {
-                type: :string
-              }
+              items: { type: :string }
             },
             numero_rcss: {
               type: :array,
               nullable: true,
-              items: {
-                type: :string
-              }
+              items: { type: :string }
+            },
+            rcs: {
+              type: :string,
+              nullable: true,
+              description: "numéro RCS de l'entreprise, si détecté"
+            },
+            rcs_ville: {
+              type: :string,
+              nullable: true,
+              description: "ville d'immatriculation RCS de l'entreprise, si détecté"
+            },
+            rne: {
+              type: :string,
+              nullable: true,
+              description: "numéro RNE de l'entreprise, si détecté"
             },
             numeros_tva: {
               type: :array,
               nullable: true,
-              items: {
-                type: :string
-              }
+              items: { type: :string }
             },
             pro_adresses: {
               type: :array,
               nullable: true,
-              items: {
-                type: :string
-              }
+              items: { type: :string }
             },
             capital_social: {
               type: :array,
               nullable: true,
-              items: {
-                type: :string
-              }
+              items: { type: :string }
             },
             client_prenoms: {
               type: :array,
               nullable: true,
-              items: {
-                type: :string
-              }
+              items: { type: :string }
             },
             client_adresses: {
               type: :array,
               nullable: true,
-              items: {
-                type: :string
-              }
+              items: { type: :string }
             },
             client_civilite: {
               type: :array,
               nullable: true,
-              items: {
-                type: :string
-              }
+              items: { type: :string }
             },
             raison_sociales: {
               type: :array,
               nullable: true,
-              items: {
-                type: :string
-              }
+              items: { type: :string }
             },
             forme_juridiques: {
               type: :array,
               nullable: true,
-              items: {
-                type: :string
-              }
+              items: { type: :string }
             },
             client_noms_de_famille: {
               type: :array,
               nullable: true,
-              items: {
-                type: :string
-              }
+              items: { type: :string }
             },
             ville_immatriculation_rcss: {
               type: :array,
               nullable: true,
-              items: {
-                type: :string
-              }
+              items: { type: :string }
             }
           },
           additionalProperties: false
@@ -481,9 +441,7 @@ RSpec.configure do |config|
             },
             rge_labels: {
               type: :array,
-              items: {
-                type: :string
-              }
+              items: { type: :string }
             },
             type_fichier: {
               type: :string,
@@ -550,6 +508,165 @@ RSpec.configure do |config|
                 },
                 additionalProperties: false
               }
+            },
+            gestes: {
+              type: :array,
+              items: {
+                type: :object,
+                properties: %w[
+                  classe_caisson
+                  classe_energetique_ballon
+                  classe_regulateur
+                  contenance_silo
+                  COP
+                  deltaR
+                  emission_composés_organique
+                  emission_monoxyde_carbone
+                  emission_oxydes_azotes
+                  emission_particules
+                  emplacement
+                  emplacement_bouches_entree_dair
+                  emplacement_bouches_soufflage
+                  energie_appoint
+                  epaisseur_isolant
+                  ETAS
+                  fluide_capteur
+                  intitule
+                  label_flamme_verte
+                  localisation
+                  marque
+                  marque_bouche_extraction
+                  marque_bouches_entree_dair
+                  marque_bouches_soufflage
+                  marque_caisson
+                  marque_capteurs
+                  marque_isolant
+                  marque_regulateur
+                  nombre_bouche_extraction
+                  nombre_bouches_entree_dair
+                  nombre_bouches_extraction
+                  nombre_bouches_soufflage
+                  norme_calcul_resistance
+                  numero_acermi
+                  numero_ligne
+                  position_paroie
+                  presence_fixation
+                  presence_note_dimensionnement
+                  presence_parement
+                  presence_protection
+                  prix_ht
+                  prix_ttc
+                  prix_unitaire_ht
+                  productivite_capteurs
+                  profil_soutirage
+                  puissance
+                  puissance_absobée_pondéréé_moteur
+                  puissance_nominale
+                  quantite
+                  reference
+                  reference_bouche_extraction
+                  reference_bouches_entree_dair
+                  reference_bouches_soufflage
+                  reference_caisson
+                  reference_capteurs
+                  reference_isolant
+                  reference_regulateur
+                  regime_temperature
+                  remplacement_chaudiere_condensation
+                  rendement_energetique
+                  resistance_thermique
+                  SCOP
+                  surface_captage
+                  surface_capteur
+                  surface_isolant
+                  sw
+                  taux_tva
+                  type
+                  type_appoint
+                  type_capteurs
+                  type_chargement
+                  type_combustible
+                  type_fluide_frigorigene
+                  type_installation
+                  type_isolation_toiture_terrasse
+                  type_materiaux
+                  type_menuiserie
+                  type_pose
+                  type_silo
+                  type_vitrage
+                  type_vmc
+                  ud
+                  unite
+                  uw
+                  volume
+                  volume_ballon
+                ].index_with do |_key| # TODO: make it dynamic according to Geste Type and fix type
+                  { type: :string, nullable: true, description: "peut-être un type autre que chaîne de caractères" }
+                end.merge(
+                  %w[
+                    label_flamme_verte
+                    mention_devis
+                    presence_fixation
+                    presence_note_dimensionnement
+                    presence_parement
+                    presence_protection
+                    remplacement_chaudiere_condensation
+                    separation_prix_fourniture_pose
+                    validite
+                  ].index_with do |_key|
+                    { type: :boolean, nullable: true }
+                  end
+                ).merge(
+                  %w[
+                    emission_composés_organique
+                    emission_monoxyde_carbone
+                    emission_oxydes_azotes
+                    emission_particules
+                    nombre_bouche_extraction
+                    nombre_bouches_entree_dair
+                    nombre_bouches_extraction
+                    nombre_bouches_soufflage
+                    volume
+                  ]
+                  .index_with do |_key|
+                    { type: :number, nullable: true }
+                  end
+                ).merge(
+                  %w[
+                    contenance_silo
+                    COP
+                    epaisseur_isolant
+                    montant_tva_total
+                    prix_ht
+                    prix_ht_total
+                    prix_total_ht
+                    prix_total_ttc
+                    prix_ttc
+                    prix_unitaire_ht
+                    productivite_capteurs
+                    puissance
+                    puissance_absobée_pondéréé_moteur
+                    puissance_nominale
+                    quantite
+                    rendement_energetique
+                    resistance_thermique
+                    SCOP
+                    surface_captage
+                    surface_capteur
+                    surface_isolant
+                    sw
+                    taux_tva
+                    uw
+                    volume_ballon
+                  ].index_with do |_key|
+                    float_type(nullable: true)
+                  end
+                ).merge(
+                  id: { type: :string, description: "UUID unique" }
+                ),
+                additionalProperties: false
+              },
+              additionalProperties: false
             }
           },
           additionalProperties: false
@@ -631,9 +748,7 @@ RSpec.configure do |config|
               },
               nullable: true
             },
-            started_at: {
-              type: :datetime
-            },
+            started_at: { type: :datetime },
             finished_at: {
               type: :datetime,
               nullable: true

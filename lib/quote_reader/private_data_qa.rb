@@ -32,7 +32,8 @@ module QuoteReader
         noms: Array.wrap(attributes[:noms]).map(&:to_s).presence,
         adresses: Array.wrap(attributes[:adresses]).map(&:to_s).presence,
         telephones: Array.wrap(attributes[:telephones]).map(&:to_s).presence,
-        raison_sociales: Array.wrap(attributes[:raison_sociales]).map(&:to_s).presence,
+        raison_sociales: Array.wrap(attributes[:raison_sociales] || attributes[:raisons_sociales]).map(&:to_s).presence,
+        raisons_sociales: nil, # cleaned up
         sirets: Array.wrap(attributes[:sirets]).map(&:to_s).presence,
         ville_immatriculation_rcss: Array.wrap(attributes[:ville_immatriculation_rcss]).map(&:to_s).presence,
         numero_rcss: Array.wrap(attributes[:numero_rcss]).map(&:to_s).presence,
@@ -55,22 +56,22 @@ module QuoteReader
       cleaned_attributes&.merge(
         client: {
           adresse: cleaned_attributes.dig(:client_adresses, 0),
+          civilite: cleaned_attributes.dig(:client_civilite, 0),
           nom: cleaned_attributes.dig(:client_noms_de_famille, 0),
-          prenom: cleaned_attributes.dig(:client_prenoms, 0),
-          civilite: cleaned_attributes.dig(:client_civilite, 0)
+          prenom: cleaned_attributes.dig(:client_prenoms, 0)
         }.compact.presence,
         pro: {
           adresse: cleaned_attributes.dig(:pro_adresses, 0),
-          numero_tva: cleaned_attributes.dig(:numeros_tva, 0)&.to_s,
-          raison_sociale: cleaned_attributes.dig(:raison_sociales, 0),
-          forme_juridique: cleaned_attributes.dig(:forme_juridiques, 0),
           assurance: cleaned_attributes.dig(:assurances, 0)&.to_s,
           capital: cleaned_attributes.dig(:capital_social, 0)&.to_s,
-          rge_labels: cleaned_attributes&.fetch(:numero_rge, [])&.map(&:to_s),
-          siret: cleaned_attributes.dig(:sirets, 0)&.to_s,
+          forme_juridique: cleaned_attributes.dig(:forme_juridiques, 0),
+          numero_tva: cleaned_attributes.dig(:numeros_tva, 0)&.to_s,
+          raison_sociale: cleaned_attributes.dig(:raison_sociales, 0),
           rcs: cleaned_attributes.dig(:numero_rcss, 0)&.to_s,
           rcs_ville: cleaned_attributes.dig(:ville_immatriculation_rcss, 0),
-          rne: cleaned_attributes.dig(:rnes, 0)&.to_s
+          rge_labels: cleaned_attributes&.fetch(:numero_rge, [])&.map(&:to_s),
+          rne: cleaned_attributes.dig(:rnes, 0)&.to_s,
+          siret: cleaned_attributes.dig(:sirets, 0)&.to_s
         }.compact.presence
       )&.compact.presence
     end
