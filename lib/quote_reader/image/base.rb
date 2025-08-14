@@ -9,7 +9,9 @@ module QuoteReader
     class Base
       class ReadError < QuoteReader::ReadError; end
       class ResultError < QuoteReader::ReadError; end
+      class NotImplementedError < ResultError; end
       class TimeoutError < ResultError; end
+      class UnauthorizedError < ResultError; end
 
       attr_reader :content, :content_type,
                   :quote_file,
