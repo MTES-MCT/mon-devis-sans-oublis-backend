@@ -18,10 +18,11 @@ module QuoteReader
       end
 
       # Using MDSO OCR
-      def extract_text_from_image(model: DEFAULT_MODEL)
-        @model = model if model
+      def extract_text_from_image(model: nil)
+        model_to_use = model || self.class::DEFAULT_MODEL
+        @model = model_to_use
 
-        content = mdso_ocr(model:)
+        content = mdso_ocr(model: model_to_use)
         raise ResultError, "Content empty" unless content
 
         @pages_text = @text = content
@@ -30,21 +31,29 @@ module QuoteReader
       end
 
       # rubocop:disable Metrics/AbcSize
-      def mdso_ocr(model: nil) # rubocop:disable Metrics/MethodLength
+      def mdso_ocr(model:) # rubocop:disable Metrics/MethodLength
         quote_file.start_processing_log("MdsoOcr", "MdsoOcr/Ocr") do
           io = StringIO.new(quote_file.content)
           file = Faraday::Multipart::FilePart.new(io, content_type, quote_file.filename)
           response = connection.post("ocr/#{model}", { file: file })
 
           @result = response.body
+          # puts "@@@ ocr/#{model} @result #{@result} response.status #{response.status}"
           case response.status
           when 401, 403
-            raise Llms::Albert::UnauthorizedError, result
+            raise UnauthorizedError, result
+          when 404
+            raise NotImplementedError, result
+          when 504
+            raise TimeoutError, result
           end
 
           raise ResultError, result if !result.is_a?(Hash) || !result.key?("text")
 
           result.fetch("text")
+        rescue ResultError => e
+          ErrorNotifier.notify(e)
+          raise
         end
       end
       # rubocop:enable Metrics/AbcSize
@@ -71,6 +80,9 @@ module QuoteReader
           f.response :json, content_type: /\bjson$/
           f.adapter Faraday.default_adapter
           f.headers["x-api-key"] = api_key
+
+          # Time in seconds to wait for response (read timeout)
+          f.options.timeout = QuoteValidator::Timeout::TIMEOUT_FOR_PROCESSING.seconds.to_i
         end
       end
     end
