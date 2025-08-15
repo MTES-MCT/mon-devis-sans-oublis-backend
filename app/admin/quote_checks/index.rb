@@ -22,6 +22,9 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
   config.sort_order = "created_at_desc"
 
   scope "tous", :all, default: true
+  scope "tous devis OCRable", :ocrable
+  scope "devis OCRable non OCRisé", :non_ocred
+  scope "devis OCRisé", :ocred
   scope "avec valeurs test", :with_expected_value
   scope "fichier en erreur", :with_file_error
   scope "mauvais fichier", :with_file_type_error

@@ -26,6 +26,11 @@ class QuoteCheck < ApplicationRecord
 
   delegate :filename, to: :file, allow_nil: true
 
+  OCRABLE_UNDER_CARACTERS_COUNT = 1000 # in production, there is a thereshold around 2000 and also 4000 length
+  scope :ocrable, -> { where(text: nil).or(where("length(text) < #{OCRABLE_UNDER_CARACTERS_COUNT}")) }
+  scope :non_ocred, -> { ocrable.joins(:file).where(file: QuoteFile.non_ocred) }
+  scope :ocred, -> { ocrable.joins(:file).where(file: QuoteFile.ocred) }
+
   scope :default_order, -> { order(created_at: :desc) }
   scope :with_file_error, -> { where("validation_error_details @> ?", [{ "category" => "file" }].to_json) }
   scope :with_file_type_error, -> { where("validation_error_details @> ?", [{ "code" => "file_type_error" }].to_json) }
