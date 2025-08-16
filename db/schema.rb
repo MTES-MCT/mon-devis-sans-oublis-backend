@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_04_130434) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_15_094500) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -222,6 +222,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_04_130434) do
     t.boolean "security_scan_good"
     t.boolean "force_ocr", default: false, null: false
     t.jsonb "ocr_result"
+    t.index "\"left\"((ocr_result)::text, 1)", name: "index_ocr_result_not_null", where: "(ocr_result IS NOT NULL)"
+    t.index ["content_type"], name: "index_quote_files_on_content_type"
+    t.index ["filename"], name: "index_quote_files_on_filename"
     t.index ["hexdigest", "filename"], name: "index_quote_files_on_hexdigest_and_filename", unique: true
     t.index ["ocr"], name: "index_quote_files_on_ocr"
   end

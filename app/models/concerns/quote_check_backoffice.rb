@@ -21,6 +21,10 @@ module QuoteCheckBackoffice
 
         quote_file_filename
 
+        ocrable
+        non_ocred
+        ocred
+
         with_edits
         with_expected_value
         with_feedback_email

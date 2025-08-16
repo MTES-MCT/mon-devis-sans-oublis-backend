@@ -4,6 +4,12 @@
 module QuoteFileOcr
   extend ActiveSupport::Concern
 
+  included do
+    scope :ocrable, -> { where("content_type LIKE ?", "image/%").or(where("content_type LIKE ?", "%pdf%")) }
+    scope :non_ocred, -> { where(ocr_result: nil) }
+    scope :ocred, -> { where.not(ocr_result: nil) }
+  end
+
   def ocr
     return unless ocrable? || !force_ocr
 
@@ -12,6 +18,7 @@ module QuoteFileOcr
 
   def ocrable?
     content_type&.start_with?("image/") ||
+      content_type&.include?("pdf") ||
       false
   end
 end
