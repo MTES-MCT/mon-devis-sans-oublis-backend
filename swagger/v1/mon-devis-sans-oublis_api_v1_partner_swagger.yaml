@@ -1355,9 +1355,9 @@ components:
                 nullable: true
                 type: number
               ETAS:
-                type: string
-                nullable: true
-                description: peut-être un type autre que chaîne de caractères
+                oneOf:
+                - type: string
+                - type: number
               fluide_capteur:
                 type: string
                 nullable: true
