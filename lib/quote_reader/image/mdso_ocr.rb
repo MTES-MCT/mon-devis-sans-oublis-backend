@@ -32,7 +32,7 @@ module QuoteReader
 
       # rubocop:disable Metrics/AbcSize
       def mdso_ocr(model:) # rubocop:disable Metrics/MethodLength
-        quote_file.start_processing_log("MdsoOcr", "MdsoOcr/Ocr",  "MdsoOcr/Ocr/#{model}") do
+        quote_file.start_processing_log("MdsoOcr", "MdsoOcr/Ocr", "MdsoOcr/Ocr/#{model}") do
           io = StringIO.new(quote_file.content)
           file = Faraday::Multipart::FilePart.new(io, content_type, quote_file.filename)
           response = connection.post("ocr/#{model}", { file: file })

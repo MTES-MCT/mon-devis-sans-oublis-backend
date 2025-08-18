@@ -17,7 +17,7 @@ module QuoteReader
                 :qa_attributes, :qa_result, :qa_version,
                 :read_attributes
 
-    DEFAULT_OCR = "AlbertOcr"
+    DEFAULT_OCR = ENV.fetch("MDSO_OCR", "MdsoOcrMarker")
     VERSION = "0.0.1"
 
     def initialize(content, content_type, quote_file: nil)
@@ -36,7 +36,7 @@ module QuoteReader
         return Pdf.new(content).extract_text unless force_ocr
       end
 
-      ocr_to_use = ocr || DEFAULT_OCR if force_ocr || QuoteFile.new(content_type:).ocrable?
+      ocr_to_use = ocr || DEFAULT_OCR if force_ocr || QuoteFile.new(content_type:).only_ocrable?
       if ocr_to_use
         begin
           ocr_instance = case ocr_to_use
