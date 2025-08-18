@@ -21,6 +21,14 @@ RSpec.describe "/api/v1/quote_checks" do
           ]
         }.to_json
       )
+    stub_request(:post, /MDSO_OCR_HOST/i)
+      .to_return(
+        status: 200,
+        headers: { "Content-Type" => "application/json" },
+        body: {
+          "text" => "text"
+        }.to_json
+      )
 
     stub_request(:post, /albert.+chat/i)
       .to_return(

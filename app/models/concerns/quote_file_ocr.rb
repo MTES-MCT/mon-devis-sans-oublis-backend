@@ -17,8 +17,12 @@ module QuoteFileOcr
   end
 
   def ocrable?
+    content_type&.include?("pdf") ||
+      only_ocrable?
+  end
+
+  def only_ocrable?
     content_type&.start_with?("image/") ||
-      content_type&.include?("pdf") ||
       false
   end
 end

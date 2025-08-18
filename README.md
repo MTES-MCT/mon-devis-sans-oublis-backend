@@ -78,6 +78,7 @@ cp .env.example .env.docker
 | `MDSO_API_KEY_FOR_PARTNER1`                     | Clé API pour PARTNER1            | `hash` via `rake secret`                           | Optionnel    |
 | `MDSO_API_KEY_FOR_PARTNER2`                     | Clé API pour PARTNER2            | `hash` via `rake secret`                           | Optionnel    |
 | `MDSO_API_PASSWORD`                     | Ancienne clé API pour frontend            | `hash` via `rake secret`                           | Optionnel    |
+| `MDSO_OCR`                     | Système d'OCR à utiliser par défaut            | `MdsoOcrMarker` ou voir `Rails.application.config.ocrs_configured` | Optionnel    |
 | `MDSO_OCR_API_KEY`                     | Clé API du système OCR MDSO            |                            | Optionnel    |
 | `MDSO_OCR_HOST`                     | Host du système OCR MDSO            |                            | Optionnel    |
 | `MDSO_OCR_MODEL`                     | Modèle du système OCR MDSO utilisé par défaut si disponible            |                            | Optionnel    |
