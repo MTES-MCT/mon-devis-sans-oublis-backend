@@ -32,13 +32,12 @@ module QuoteReader
 
       # rubocop:disable Metrics/AbcSize
       def mdso_ocr(model:) # rubocop:disable Metrics/MethodLength
-        quote_file.start_processing_log("MdsoOcr", "MdsoOcr/Ocr") do
+        quote_file.start_processing_log("MdsoOcr", "MdsoOcr/Ocr",  "MdsoOcr/Ocr/#{model}") do
           io = StringIO.new(quote_file.content)
           file = Faraday::Multipart::FilePart.new(io, content_type, quote_file.filename)
           response = connection.post("ocr/#{model}", { file: file })
 
           @result = response.body
-          # puts "@@@ ocr/#{model} @result #{@result} response.status #{response.status}"
           case response.status
           when 401, 403
             raise UnauthorizedError, result
