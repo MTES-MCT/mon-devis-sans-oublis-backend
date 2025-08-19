@@ -15,6 +15,22 @@ def print_table(headers, rows) # rubocop:disable Metrics/AbcSize
 end
 
 namespace :quote_checks do # rubocop:disable Metrics/BlockLength
+  desc "Caracters count of QuoteChecks"
+  task caracters_count: :environment do |_t, _args|
+    range_size = 500
+
+    total_caracters = QuoteCheck.group("LENGTH(text) / #{range_size}").count
+    puts "Caracters Count Range,Count"
+    sum = 0
+    total_caracters
+      .sort_by { |range, _count| range.nil? ? -1 : range * range_size } # Sort by range
+      .each do |range, count|
+        sum += count
+        puts "#{range.nil? ? -1 : range * range_size},#{sum}"
+      end
+    nil
+  end
+
   desc "Create a QuoteCheck against local file(s) or by diretory"
   task :create, [:file_path] => :environment do |_t, args|
     file_path = args[:file_path]
