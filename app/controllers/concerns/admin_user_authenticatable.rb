@@ -15,6 +15,8 @@ module AdminUserAuthenticatable
   protected
 
   def authenticate_admin_user!
+    return if Rails.env.development?
+
     redirect_to new_admin_user_session_path unless session[:admin_user]
   end
 
