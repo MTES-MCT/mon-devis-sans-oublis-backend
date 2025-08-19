@@ -91,7 +91,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
     end
 
     column "Gestes détectés" do
-      it.read_attributes&.dig("gestes")&.pluck("type")&.uniq&.join("\n")
+      it.read_attributes&.dig("gestes")&.pluck("type")&.uniq&.join("\n") # rubocop:disable Style/SafeNavigationChainLength
     end
 
     column "Aides demandées" do
