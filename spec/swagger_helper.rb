@@ -668,7 +668,8 @@ RSpec.configure do |config|
                       { type: :string },
                       { type: :number }
                     ]
-                  }
+                  },
+                  nullable: true
                 ),
                 additionalProperties: false
               },

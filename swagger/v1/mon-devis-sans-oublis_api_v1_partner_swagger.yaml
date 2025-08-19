@@ -1633,6 +1633,7 @@ components:
               id:
                 type: string
                 description: UUID unique
+              nullable: true
             additionalProperties: false
           additionalProperties: false
       additionalProperties: false
