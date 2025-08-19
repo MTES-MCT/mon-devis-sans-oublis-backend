@@ -26,10 +26,17 @@ class MdsoApi
 
   protected
 
+  # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/MethodLength
   def validate_response(path, method, data_hash, status_code = 200) # rubocop:disable Naming/PredicateMethod
     strict = true
-    schema = Committee::Drivers.load_from_file(schema_path, parser_options: { strict_reference_validation: strict })
+
+    schema = begin
+      Committee::Drivers.load_from_file(schema_path, parser_options: { strict_reference_validation: strict })
+    rescue NoMethodError => e
+      ErrorNotifier.set_context(:schema, { schema_path:, path:, method:, status_code:, data_hash: })
+      raise InvalidResponse.new(e.message, original_error: e)
+    end
 
     request_operation = schema.open_api.request_operation(method, path)
 
@@ -52,6 +59,7 @@ class MdsoApi
     true
   end
   # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/AbcSize
 
   private
 
