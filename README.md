@@ -85,6 +85,7 @@ cp .env.example .env.docker
 | `MDSO_SITE_PASSWORD`                     | Ancienne clé accès au Back Office            | `hash` via `rake secret`                           | Optionnel    |
 | `MISTRAL_API_KEY`                     |              | `longueClé`                            | Requis    |
 | `MISTRAL_MODEL`                     | Modèle Mistral utilisé par défaut si disponible            | `mistral-large-latest`                            | Optionnel    |
+| `OCRABLE_UNDER_CARACTERS_COUNT`                     | Limite de caractères en deça de laquelle on tente l'OCR automatiquement           |                            | Optionnel    |
 | `PROCONNECT_CLIENT_ID`                     |             | `hash`                            | Optionnel    |
 | `PROCONNECT_CLIENT_SECRET`                     |             | `hash`                            | Optionnel    |
 | `PROCONNECT_DOMAIN`                     |             | `https://auth.agentconnect.gouv.fr/api/v2`, `https://fca.integ01.dev-agentconnect.fr/api/v2`                            | Optionnel    |
