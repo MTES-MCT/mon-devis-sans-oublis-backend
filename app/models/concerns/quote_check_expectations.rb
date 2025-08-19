@@ -22,8 +22,10 @@ module QuoteCheckExpectations
   end
 
   def recheckable?
-    status != "pending" &&
-      (expected_validation_errors? ||
-        Rails.application.config.app_env != "production")
+    status != "pending" && (
+      expected_validation_errors? ||
+      Rails.application.config.app_env != "production" ||
+      ocrable?
+    )
   end
 end
