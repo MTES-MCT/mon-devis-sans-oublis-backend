@@ -26,7 +26,7 @@ RSpec.describe QuotesCaseSerializer do
     end
 
     it "includes quote_checks in descending order" do
-      expect(json["quote_checks"].map { it["id"] }).to eq [newer_check.id, older_check.id]
+      expect(json["quote_checks"].pluck("id")).to eq [newer_check.id, older_check.id]
     end
   end
 end
