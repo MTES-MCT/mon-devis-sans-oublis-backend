@@ -513,7 +513,7 @@ RSpec.configure do |config|
               type: :array,
               items: {
                 type: :object,
-                properties: %w[
+                properties: %i[
                   classe_caisson
                   classe_energetique_ballon
                   classe_regulateur
@@ -603,7 +603,7 @@ RSpec.configure do |config|
                 ].index_with do |_key| # TODO: make it dynamic according to Geste Type and fix type
                   { type: :string, nullable: true, description: "peut-être un type autre que chaîne de caractères" }
                 end.merge(
-                  %w[
+                  %i[
                     label_flamme_verte
                     mention_devis
                     presence_fixation
@@ -617,7 +617,7 @@ RSpec.configure do |config|
                     { type: :boolean, nullable: true }
                   end
                 ).merge(
-                  %w[
+                  %i[
                     emission_composés_organique
                     emission_monoxyde_carbone
                     emission_oxydes_azotes
@@ -632,7 +632,7 @@ RSpec.configure do |config|
                     { type: :number, nullable: true }
                   end
                 ).merge(
-                  %w[
+                  %i[
                     contenance_silo
                     COP
                     epaisseur_isolant
