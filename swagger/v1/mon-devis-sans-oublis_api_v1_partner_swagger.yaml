@@ -1320,9 +1320,10 @@ components:
                 nullable: true
                 type: number
               deltaR:
-                type: string
-                nullable: true
-                description: peut-être un type autre que chaîne de caractères
+                oneOf:
+                - type: 'null'
+                - type: string
+                - type: number
               emission_composés_organique:
                 type: number
                 nullable: true
@@ -1356,6 +1357,7 @@ components:
                 type: number
               ETAS:
                 oneOf:
+                - type: 'null'
                 - type: string
                 - type: number
               fluide_capteur:
@@ -1593,9 +1595,10 @@ components:
                 nullable: true
                 description: peut-être un type autre que chaîne de caractères
               ud:
-                type: string
-                nullable: true
-                description: peut-être un type autre que chaîne de caractères
+                oneOf:
+                - type: 'null'
+                - type: string
+                - type: number
               unite:
                 type: string
                 nullable: true
@@ -1633,7 +1636,6 @@ components:
               id:
                 type: string
                 description: UUID unique
-              nullable: true
             additionalProperties: false
           additionalProperties: false
       additionalProperties: false

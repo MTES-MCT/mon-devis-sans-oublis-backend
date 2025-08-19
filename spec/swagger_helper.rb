@@ -663,13 +663,28 @@ RSpec.configure do |config|
                   end
                 ).merge(
                   id: { type: :string, description: "UUID unique" },
+
+                  deltaR: {
+                    oneOf: [
+                      { type: :null },
+                      { type: :string },
+                      float_type
+                    ]
+                  },
                   ETAS: {
                     oneOf: [
+                      { type: :null },
                       { type: :string },
                       { type: :number }
                     ]
                   },
-                  nullable: true
+                  ud: {
+                    oneOf: [
+                      { type: :null },
+                      { type: :string },
+                      { type: :number }
+                    ]
+                  }
                 ),
                 additionalProperties: false
               },
