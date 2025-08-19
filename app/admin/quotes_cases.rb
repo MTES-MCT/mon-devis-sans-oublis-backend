@@ -25,8 +25,8 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
       super.eager_load(quote_checks: :file)
            .select(
              *QuotesCase.column_names.map { "#{QuotesCase.table_name}.#{it}" },
-             *%w[id created_at file_id].map { "#{QuoteCheck.table_name}.#{it}" },
-             *%w[id filename].map { "#{QuoteFile.table_name}.#{it}" }
+             *%w[created_at file_id].map { "#{QuoteCheck.table_name}.#{it}" },
+             *%w[filename].map { "#{QuoteFile.table_name}.#{it}" }
            )
     end
   end
@@ -41,7 +41,7 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
     end
     column "Source", :source_name
     column "Référence", :reference
-    column :created_at do
+    column :created_at, sortable: :created_at do
       local_time(it.created_at)
     end
 

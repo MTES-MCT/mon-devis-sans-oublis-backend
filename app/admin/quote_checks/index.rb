@@ -58,7 +58,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
       link_to "Devis #{it.id}", admin_quote_check_path(it)
     end
 
-    column "Nom de fichier" do
+    column "Nom de fichier", sortable: "quote_files.filename" do
       if it.file
         if it.file.security_scan_good == false
           "#{it.file.filename} (⚠ virus)"
@@ -72,7 +72,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
     column "Dossier", :case_id do |quote_check|
       link_to quote_check.case.id, admin_quotes_case_path(quote_check.case) if quote_check.case
     end
-    column "Date soumission" do
+    column "Date soumission", sortable: :started_at do
       local_time(it.started_at)
     end
 
@@ -113,7 +113,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
 
     column "Commentaire ?", &:commented?
 
-    column "Date édition" do
+    column "Date édition", sortable: :validation_error_edited_at do
       local_time(it.edited_at)
     end
 
@@ -123,7 +123,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
     column :force_ocr
     column :ocr
     column :qa_llm
-    column "Nb tokens" do
+    column "Nb tokens", sortable: :tokens_count do
       number_with_delimiter(it.tokens_count, delimiter: " ")
     end
     column "temps traitement" do
