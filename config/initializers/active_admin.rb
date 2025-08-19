@@ -110,9 +110,7 @@ ActiveAdmin.setup do |config|
   #
   # This setting changes the method which Active Admin calls
   # (within the application controller) to return the currently logged in user.
-  unless Rails.env.development?
-    config.current_user_method = :current_admin_user
-  end
+  config.current_user_method = :current_admin_user unless Rails.env.development?
 
   # == Logging Out
   #

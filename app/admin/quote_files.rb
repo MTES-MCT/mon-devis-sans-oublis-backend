@@ -36,7 +36,7 @@ ActiveAdmin.register QuoteFile do # rubocop:disable Metrics/BlockLength
   index do # rubocop:disable Metrics/BlockLength
     id_column
 
-    column :filename do
+    column :filename, sortable: :filename do
       if it.security_scan_good == false
         "#{it.filename} (⚠ virus)"
       else
@@ -52,7 +52,7 @@ ActiveAdmin.register QuoteFile do # rubocop:disable Metrics/BlockLength
         it.security_scan_good ? "Oui" : "Non"
       end
     end
-    column :created_at do
+    column :created_at, sortable: :created_at do
       local_time(it.created_at)
     end
 

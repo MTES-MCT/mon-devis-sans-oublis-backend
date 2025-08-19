@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.configure do |config|
-  config.after do |example|
+  config.after do |example| # rubocop:disable Lint/Output
     next if ENV["CI"]
 
     if example.exception
