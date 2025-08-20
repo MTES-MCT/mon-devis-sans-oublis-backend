@@ -50,7 +50,8 @@ module QuoteReader
         numerous_tva: nil, # cleaned up
         ibans: Array.wrap(attributes[:ibans]).map(&:to_s).presence,
         uris: Array.wrap(attributes[:uris]).map(&:to_s).presence,
-        client_noms_de_famille: Array.wrap(attributes[:client_noms_de_famille]).map(&:to_s).presence,
+        client_noms: nil, # cleaned up
+        client_noms_de_famille: Array.wrap(attributes[:client_noms_de_famille] || attributes[:client_noms]).map(&:to_s).presence,
         client_prenoms: Array.wrap(attributes[:client_prenoms]).map(&:to_s).presence,
         client_civilite: Array.wrap(attributes[:client_civilite]).map(&:to_s).presence,
         client_adresses: Array.wrap(attributes[:client_adresses]).map(&:to_s).presence,
