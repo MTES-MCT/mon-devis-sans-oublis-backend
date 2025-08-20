@@ -32,7 +32,12 @@ module QuoteReader
         noms: Array.wrap(attributes[:noms]).map(&:to_s).presence,
         adresses: Array.wrap(attributes[:adresses]).map(&:to_s).presence,
         telephones: Array.wrap(attributes[:telephones]).map(&:to_s).presence,
-        raison_sociales: Array.wrap(attributes[:raison_sociales] || attributes[:raisons_sociales]).map(&:to_s).presence,
+        raison_sociale: nil, # cleaned up
+        raison_sociales: Array.wrap(
+          attributes[:raison_sociales] ||
+          attributes[:raisons_sociales] ||
+          attributes[:raison_sociale]
+        ).map(&:to_s).presence,
         raisons_sociales: nil, # cleaned up
         sirets: Array.wrap(attributes[:sirets]).map(&:to_s).presence,
         ville_immatriculation_rcss: Array.wrap(attributes[:ville_immatriculation_rcss]).map(&:to_s).presence,
@@ -41,7 +46,8 @@ module QuoteReader
         assurances: Array.wrap(attributes[:assurances]).map(&:to_s).presence,
         numero_rge: Array.wrap(attributes[:numero_rge]).map(&:to_s).presence,
         emails: Array.wrap(attributes[:emails]).map(&:to_s).presence,
-        numeros_tva: Array.wrap(attributes[:numeros_tva]).map(&:to_s).presence,
+        numeros_tva: Array.wrap(attributes[:numeros_tva] || attributes[:numerous_tva]).map(&:to_s).presence,
+        numerous_tva: nil, # cleaned up
         ibans: Array.wrap(attributes[:ibans]).map(&:to_s).presence,
         uris: Array.wrap(attributes[:uris]).map(&:to_s).presence,
         client_noms_de_famille: Array.wrap(attributes[:client_noms_de_famille]).map(&:to_s).presence,
