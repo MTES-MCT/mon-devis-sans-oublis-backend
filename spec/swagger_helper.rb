@@ -421,7 +421,7 @@ RSpec.configure do |config|
           type: :object,
           properties: geste_properties.merge(
             id: { type: :string, description: "UUID unique" },
-            valid: { type: :boolean, nullable: true },
+            valid: { type: :boolean, nullable: true }
           ),
           additionalProperties: false,
           required: %w[id intitule]
