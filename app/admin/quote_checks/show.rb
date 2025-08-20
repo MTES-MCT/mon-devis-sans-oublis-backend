@@ -292,6 +292,30 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
           end
         end
 
+        siret = resource.read_attributes&.dig("pro", "siret").presence&.gsub(/[^0-9]/, "")
+        if siret
+          panel "Liens sources externes" do
+            content_tag(:ul) do
+              [
+                content_tag(:li) do
+                  link_to(
+                    "Historique RGE pour SIRET #{siret}",
+                    DataAdeme.new.historique_rge_uri(qs: "siret:#{siret}"),
+                    target: "_blank", rel: "noopener"
+                  )
+                end,
+                content_tag(:li) do
+                  link_to(
+                    "Recherche Pappers pour SIRET #{siret}",
+                    "https://www.pappers.fr/recherche?q=#{siret}",
+                    target: "_blank", rel: "noopener"
+                  )
+                end
+              ].join.html_safe # rubocop:disable Rails/OutputSafety
+            end
+          end
+        end
+
         panel "Administratifs (hors données ADEME)" do
           if (attributes = resource.read_attributes&.except("extended_data", "gestes"))
             attributes_table_for attributes do
