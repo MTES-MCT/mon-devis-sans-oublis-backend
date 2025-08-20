@@ -27,6 +27,181 @@ def float_type(options = {})
   )
 end
 
+def geste_properties # rubocop:disable Metrics/MethodLength
+  %i[
+    classe_caisson
+    classe_energetique_ballon
+    classe_regulateur
+    contenance_silo
+    COP
+    deltaR
+    emission_composés_organique
+    emission_monoxyde_carbone
+    emission_oxydes_azotes
+    emission_particules
+    emplacement
+    emplacement_bouches_entree_dair
+    emplacement_bouches_soufflage
+    energie_appoint
+    epaisseur_isolant
+    ETAS
+    fluide_capteur
+    intitule
+    label_flamme_verte
+    localisation
+    marque
+    marque_bouche_extraction
+    marque_bouches_entree_dair
+    marque_bouches_soufflage
+    marque_caisson
+    marque_capteurs
+    marque_isolant
+    marque_regulateur
+    nombre_bouche_extraction
+    nombre_bouches_entree_dair
+    nombre_bouches_extraction
+    nombre_bouches_soufflage
+    norme_calcul_resistance
+    numero_acermi
+    numero_ligne
+    position_paroie
+    presence_fixation
+    presence_note_dimensionnement
+    presence_parement
+    presence_protection
+    prix_ht
+    prix_ttc
+    prix_unitaire_ht
+    productivite_capteurs
+    profil_soutirage
+    puissance
+    puissance_absobée_pondéréé_moteur
+    puissance_nominale
+    quantite
+    reference
+    reference_bouche_extraction
+    reference_bouches_entree_dair
+    reference_bouches_soufflage
+    reference_caisson
+    reference_capteurs
+    reference_isolant
+    reference_regulateur
+    regime_temperature
+    remplacement_chaudiere_condensation
+    rendement_energetique
+    resistance_thermique
+    SCOP
+    surface_captage
+    surface_capteur
+    surface_isolant
+    sw
+    taux_tva
+    type
+    type_appoint
+    type_capteurs
+    type_chargement
+    type_combustible
+    type_fluide_frigorigene
+    type_installation
+    type_isolation_toiture_terrasse
+    type_materiaux
+    type_menuiserie
+    type_pose
+    type_silo
+    type_vitrage
+    type_vmc
+    ud
+    unite
+    uw
+    volume
+    volume_ballon
+  ].index_with do |_key| # TODO: make it dynamic according to Geste Type and fix type
+    { type: :string, nullable: true, description: "peut-être un type autre que chaîne de caractères" }
+  end.merge(
+    %i[
+      label_flamme_verte
+      mention_devis
+      presence_fixation
+      presence_note_dimensionnement
+      presence_parement
+      presence_protection
+      remplacement_chaudiere_condensation
+      separation_prix_fourniture_pose
+      validite
+    ].index_with do |_key|
+      { type: :boolean, nullable: true }
+    end
+  ).merge(
+    %i[
+      emission_composés_organique
+      emission_monoxyde_carbone
+      emission_oxydes_azotes
+      emission_particules
+      nombre_bouche_extraction
+      nombre_bouches_entree_dair
+      nombre_bouches_extraction
+      nombre_bouches_soufflage
+      volume
+    ]
+    .index_with do |_key|
+      { type: :number, nullable: true }
+    end
+  ).merge(
+    %i[
+      contenance_silo
+      COP
+      epaisseur_isolant
+      montant_tva_total
+      prix_ht
+      prix_ht_total
+      prix_total_ht
+      prix_total_ttc
+      prix_ttc
+      prix_unitaire_ht
+      productivite_capteurs
+      puissance
+      puissance_absobée_pondéréé_moteur
+      puissance_nominale
+      quantite
+      rendement_energetique
+      resistance_thermique
+      SCOP
+      surface_captage
+      surface_capteur
+      surface_isolant
+      sw
+      taux_tva
+      uw
+      volume_ballon
+    ].index_with do |_key|
+      float_type(nullable: true)
+    end
+  ).merge(
+    type: { "$ref" => "#/components/schemas/geste_type", nullable: true },
+    deltaR: {
+      oneOf: [
+        { type: :string },
+        float_type
+      ],
+      nullable: true
+    },
+    ETAS: {
+      oneOf: [
+        { type: :string },
+        float_type
+      ],
+      nullable: true
+    },
+    ud: {
+      oneOf: [
+        { type: :string },
+        float_type
+      ],
+      nullable: true
+    }
+  )
+end
+
 def api_error_light(properties: {}) # rubocop:disable Metrics/MethodLength
   {
     type: :object,
@@ -244,15 +419,10 @@ RSpec.configure do |config|
         ),
         quote_check_geste: {
           type: :object,
-          properties: {
-            id: { type: :string },
-            intitule: { type: :string },
-            type: {
-              "$ref" => "#/components/schemas/geste_type",
-              nullable: true
-            },
-            valid: { type: :boolean, nullable: true }
-          },
+          properties: geste_properties.merge(
+            id: { type: :string, description: "UUID unique" },
+            valid: { type: :boolean, nullable: true },
+          ),
           additionalProperties: false,
           required: %w[id intitule]
         },
@@ -513,182 +683,9 @@ RSpec.configure do |config|
               type: :array,
               items: {
                 type: :object,
-                properties: %i[
-                  classe_caisson
-                  classe_energetique_ballon
-                  classe_regulateur
-                  contenance_silo
-                  COP
-                  deltaR
-                  emission_composés_organique
-                  emission_monoxyde_carbone
-                  emission_oxydes_azotes
-                  emission_particules
-                  emplacement
-                  emplacement_bouches_entree_dair
-                  emplacement_bouches_soufflage
-                  energie_appoint
-                  epaisseur_isolant
-                  ETAS
-                  fluide_capteur
-                  intitule
-                  label_flamme_verte
-                  localisation
-                  marque
-                  marque_bouche_extraction
-                  marque_bouches_entree_dair
-                  marque_bouches_soufflage
-                  marque_caisson
-                  marque_capteurs
-                  marque_isolant
-                  marque_regulateur
-                  nombre_bouche_extraction
-                  nombre_bouches_entree_dair
-                  nombre_bouches_extraction
-                  nombre_bouches_soufflage
-                  norme_calcul_resistance
-                  numero_acermi
-                  numero_ligne
-                  position_paroie
-                  presence_fixation
-                  presence_note_dimensionnement
-                  presence_parement
-                  presence_protection
-                  prix_ht
-                  prix_ttc
-                  prix_unitaire_ht
-                  productivite_capteurs
-                  profil_soutirage
-                  puissance
-                  puissance_absobée_pondéréé_moteur
-                  puissance_nominale
-                  quantite
-                  reference
-                  reference_bouche_extraction
-                  reference_bouches_entree_dair
-                  reference_bouches_soufflage
-                  reference_caisson
-                  reference_capteurs
-                  reference_isolant
-                  reference_regulateur
-                  regime_temperature
-                  remplacement_chaudiere_condensation
-                  rendement_energetique
-                  resistance_thermique
-                  SCOP
-                  surface_captage
-                  surface_capteur
-                  surface_isolant
-                  sw
-                  taux_tva
-                  type
-                  type_appoint
-                  type_capteurs
-                  type_chargement
-                  type_combustible
-                  type_fluide_frigorigene
-                  type_installation
-                  type_isolation_toiture_terrasse
-                  type_materiaux
-                  type_menuiserie
-                  type_pose
-                  type_silo
-                  type_vitrage
-                  type_vmc
-                  ud
-                  unite
-                  uw
-                  volume
-                  volume_ballon
-                ].index_with do |_key| # TODO: make it dynamic according to Geste Type and fix type
-                  { type: :string, nullable: true, description: "peut-être un type autre que chaîne de caractères" }
-                end.merge(
-                  %i[
-                    label_flamme_verte
-                    mention_devis
-                    presence_fixation
-                    presence_note_dimensionnement
-                    presence_parement
-                    presence_protection
-                    remplacement_chaudiere_condensation
-                    separation_prix_fourniture_pose
-                    validite
-                  ].index_with do |_key|
-                    { type: :boolean, nullable: true }
-                  end
-                ).merge(
-                  %i[
-                    emission_composés_organique
-                    emission_monoxyde_carbone
-                    emission_oxydes_azotes
-                    emission_particules
-                    nombre_bouche_extraction
-                    nombre_bouches_entree_dair
-                    nombre_bouches_extraction
-                    nombre_bouches_soufflage
-                    volume
-                  ]
-                  .index_with do |_key|
-                    { type: :number, nullable: true }
-                  end
-                ).merge(
-                  %i[
-                    contenance_silo
-                    COP
-                    epaisseur_isolant
-                    montant_tva_total
-                    prix_ht
-                    prix_ht_total
-                    prix_total_ht
-                    prix_total_ttc
-                    prix_ttc
-                    prix_unitaire_ht
-                    productivite_capteurs
-                    puissance
-                    puissance_absobée_pondéréé_moteur
-                    puissance_nominale
-                    quantite
-                    rendement_energetique
-                    resistance_thermique
-                    SCOP
-                    surface_captage
-                    surface_capteur
-                    surface_isolant
-                    sw
-                    taux_tva
-                    uw
-                    volume_ballon
-                  ].index_with do |_key|
-                    float_type(nullable: true)
-                  end
-                ).merge(
-                  id: { type: :string, description: "UUID unique" },
-
-                  deltaR: {
-                    oneOf: [
-                      { type: :null },
-                      { type: :string },
-                      float_type
-                    ]
-                  },
-                  ETAS: {
-                    oneOf: [
-                      { type: :null },
-                      { type: :string },
-                      { type: :number }
-                    ]
-                  },
-                  ud: {
-                    oneOf: [
-                      { type: :null },
-                      { type: :string },
-                      { type: :number }
-                    ]
-                  }
-                ),
+                properties: geste_properties,
                 additionalProperties: false
-              },
-              additionalProperties: false
+              }
             }
           },
           additionalProperties: false

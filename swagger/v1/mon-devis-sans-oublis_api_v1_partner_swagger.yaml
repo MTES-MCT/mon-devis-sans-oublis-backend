@@ -1014,13 +1014,340 @@ components:
     quote_check_geste:
       type: object
       properties:
-        id:
+        classe_caisson:
           type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        classe_energetique_ballon:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        classe_regulateur:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        contenance_silo:
+          nullable: true
+          type: number
+        COP:
+          nullable: true
+          type: number
+        deltaR:
+          oneOf:
+          - type: string
+          - type: number
+          nullable: true
+        emission_composés_organique:
+          type: number
+          nullable: true
+        emission_monoxyde_carbone:
+          type: number
+          nullable: true
+        emission_oxydes_azotes:
+          type: number
+          nullable: true
+        emission_particules:
+          type: number
+          nullable: true
+        emplacement:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        emplacement_bouches_entree_dair:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        emplacement_bouches_soufflage:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        energie_appoint:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        epaisseur_isolant:
+          nullable: true
+          type: number
+        ETAS:
+          oneOf:
+          - type: string
+          - type: number
+          nullable: true
+        fluide_capteur:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
         intitule:
           type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        label_flamme_verte:
+          type: boolean
+          nullable: true
+        localisation:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        marque:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        marque_bouche_extraction:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        marque_bouches_entree_dair:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        marque_bouches_soufflage:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        marque_caisson:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        marque_capteurs:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        marque_isolant:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        marque_regulateur:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        nombre_bouche_extraction:
+          type: number
+          nullable: true
+        nombre_bouches_entree_dair:
+          type: number
+          nullable: true
+        nombre_bouches_extraction:
+          type: number
+          nullable: true
+        nombre_bouches_soufflage:
+          type: number
+          nullable: true
+        norme_calcul_resistance:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        numero_acermi:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        numero_ligne:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        position_paroie:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        presence_fixation:
+          type: boolean
+          nullable: true
+        presence_note_dimensionnement:
+          type: boolean
+          nullable: true
+        presence_parement:
+          type: boolean
+          nullable: true
+        presence_protection:
+          type: boolean
+          nullable: true
+        prix_ht:
+          nullable: true
+          type: number
+        prix_ttc:
+          nullable: true
+          type: number
+        prix_unitaire_ht:
+          nullable: true
+          type: number
+        productivite_capteurs:
+          nullable: true
+          type: number
+        profil_soutirage:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        puissance:
+          nullable: true
+          type: number
+        puissance_absobée_pondéréé_moteur:
+          nullable: true
+          type: number
+        puissance_nominale:
+          nullable: true
+          type: number
+        quantite:
+          nullable: true
+          type: number
+        reference:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        reference_bouche_extraction:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        reference_bouches_entree_dair:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        reference_bouches_soufflage:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        reference_caisson:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        reference_capteurs:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        reference_isolant:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        reference_regulateur:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        regime_temperature:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        remplacement_chaudiere_condensation:
+          type: boolean
+          nullable: true
+        rendement_energetique:
+          nullable: true
+          type: number
+        resistance_thermique:
+          nullable: true
+          type: number
+        SCOP:
+          nullable: true
+          type: number
+        surface_captage:
+          nullable: true
+          type: number
+        surface_capteur:
+          nullable: true
+          type: number
+        surface_isolant:
+          nullable: true
+          type: number
+        sw:
+          nullable: true
+          type: number
+        taux_tva:
+          nullable: true
+          type: number
         type:
           "$ref": "#/components/schemas/geste_type"
           nullable: true
+        type_appoint:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        type_capteurs:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        type_chargement:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        type_combustible:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        type_fluide_frigorigene:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        type_installation:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        type_isolation_toiture_terrasse:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        type_materiaux:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        type_menuiserie:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        type_pose:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        type_silo:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        type_vitrage:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        type_vmc:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        ud:
+          oneOf:
+          - type: string
+          - type: number
+          nullable: true
+        unite:
+          type: string
+          nullable: true
+          description: peut-être un type autre que chaîne de caractères
+        uw:
+          nullable: true
+          type: number
+        volume:
+          type: number
+          nullable: true
+        volume_ballon:
+          nullable: true
+          type: number
+        mention_devis:
+          type: boolean
+          nullable: true
+        separation_prix_fourniture_pose:
+          type: boolean
+          nullable: true
+        validite:
+          type: boolean
+          nullable: true
+        montant_tva_total:
+          nullable: true
+          type: number
+        prix_ht_total:
+          nullable: true
+          type: number
+        prix_total_ht:
+          nullable: true
+          type: number
+        prix_total_ttc:
+          nullable: true
+          type: number
+        id:
+          type: string
+          description: UUID unique
         valid:
           type: boolean
           nullable: true
@@ -1321,9 +1648,9 @@ components:
                 type: number
               deltaR:
                 oneOf:
-                - type: 'null'
                 - type: string
                 - type: number
+                nullable: true
               emission_composés_organique:
                 type: number
                 nullable: true
@@ -1357,9 +1684,9 @@ components:
                 type: number
               ETAS:
                 oneOf:
-                - type: 'null'
                 - type: string
                 - type: number
+                nullable: true
               fluide_capteur:
                 type: string
                 nullable: true
@@ -1539,9 +1866,8 @@ components:
                 nullable: true
                 type: number
               type:
-                type: string
+                "$ref": "#/components/schemas/geste_type"
                 nullable: true
-                description: peut-être un type autre que chaîne de caractères
               type_appoint:
                 type: string
                 nullable: true
@@ -1596,9 +1922,9 @@ components:
                 description: peut-être un type autre que chaîne de caractères
               ud:
                 oneOf:
-                - type: 'null'
                 - type: string
                 - type: number
+                nullable: true
               unite:
                 type: string
                 nullable: true
@@ -1633,11 +1959,7 @@ components:
               prix_total_ttc:
                 nullable: true
                 type: number
-              id:
-                type: string
-                description: UUID unique
             additionalProperties: false
-          additionalProperties: false
       additionalProperties: false
     quote_check:
       type: object
