@@ -195,7 +195,7 @@ module RgeValidator # rubocop:disable Metrics/ModuleLength
 
     begin
       Date.parse(date)
-    rescue ArgumentError
+    rescue Date::Error
       raise ArgumentError.new(nil, "date_format_erreur")
     end
   end

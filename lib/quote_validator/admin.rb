@@ -180,6 +180,8 @@ module QuoteValidator
       begin
         RgeValidator.valid?(siret:, rge:, date:)
       rescue QuoteValidator::Base::ArgumentError => e
+        ErrorNotifier.notify(e) if e.message == "date_format_erreur" # Manage new date type from LLMs
+
         add_error_if(
           e.error_code,
           true,
