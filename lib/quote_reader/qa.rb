@@ -23,16 +23,25 @@ module QuoteReader
     private
 
     # According to prompts/qa.txt, the attributes should be cleaned
+    # rubocop:disable Metrics/AbcSize
     # rubocop:disable Metrics/CyclomaticComplexity
     # rubocop:disable Metrics/PerceivedComplexity
     def clean_attributes(attributes)
       attributes&.merge(
-        numero_devis: Array.wrap(attributes[:numero_devis]).presence&.map(&:to_s)&.first,
+        numero_devis: Array.wrap(
+          attributes[:numero_devis] ||
+          attributes[:devis_nos] ||
+          attributes[:no_devis]
+        ).presence&.map(&:to_s)&.first,
+        devis_nos: nil, # cleaned up
+        no_devis: nil, # cleaned up
+
         type_fichier: Array.wrap(attributes[:type_fichier]).presence&.map(&:to_s)&.first
       )&.compact.presence
     end
     # rubocop:enable Metrics/PerceivedComplexity
     # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/AbcSize
 
     # rubocop:disable Metrics/AbcSize
     def llm_read_attributes(llm) # rubocop:disable Metrics/MethodLength
