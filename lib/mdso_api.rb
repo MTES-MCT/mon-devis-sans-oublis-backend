@@ -15,20 +15,26 @@ class MdsoApi
     raise ArgumentError, "Invalid schema path" unless File.exist?(schema_path)
   end
 
-  def validate_quote_check!(quote_check_hash)
+  def validate_quote_check!(quote_check_hash, additional_qa_properties: false)
     path = "/quote_checks"
     method = "post"
 
     data_hash = quote_check_hash
     status_code = 201
-    validate_response(path, method, data_hash, status_code)
+    validate_response(
+      path, method, data_hash, status_code,
+      additional_qa_properties:
+    )
   end
 
   protected
 
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/MethodLength
-  def validate_response(path, method, data_hash, status_code = 200) # rubocop:disable Naming/PredicateMethod
+  def validate_response( # rubocop:disable Naming/PredicateMethod
+    path, method, data_hash, status_code = 200,
+    additional_qa_properties: false
+  )
     strict = true
 
     schema = begin
@@ -53,7 +59,15 @@ class MdsoApi
         response_validate_options(strict, check_header, validator_options: validator_options)
       )
     rescue OpenAPIParser::OpenAPIError => e
-      raise InvalidResponse.new(e.message, original_error: e)
+      extended_error = InvalidResponse.new(e.message, original_error: e)
+
+      if additional_qa_properties &&
+         e.message.include?("does not define properties") &&
+         e.message.include?("qa_attributes")
+        ErrorNotifier.notify(extended_error)
+      else
+        raise extended_error
+      end
     end
 
     true

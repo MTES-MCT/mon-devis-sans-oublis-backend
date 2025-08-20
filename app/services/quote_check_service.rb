@@ -175,7 +175,8 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
     )
 
     MdsoApi.new.validate_quote_check!(
-      QuoteCheckSerializer.new(quote_check, full: true).as_json.transform_keys(&:to_s)
+      QuoteCheckSerializer.new(quote_check, full: true).as_json.transform_keys(&:to_s),
+      additional_qa_properties: true
     )
 
     quote_check
