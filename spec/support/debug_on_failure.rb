@@ -4,7 +4,8 @@ RSpec.configure do |config|
   config.after do |example|
     next if ENV["CI"]
 
-    if example.exception
+    exception = example.exception
+    if exception
       location = example.metadata[:location]
       file = example.metadata[:file_path]
 
