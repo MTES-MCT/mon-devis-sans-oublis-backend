@@ -33,5 +33,17 @@ RSpec.describe DataAdeme, type: :service do
           .to raise_error(described_class::ServiceUnavailableError)
       end
     end
+
+    context "with multiple pages" do
+      let(:data) { described_class.new.historique_rge(qs: "siret:81176617900014") }
+
+      it "returns all results across multiple pages", :vcr do
+        expect(data.fetch("results").size).to be > 15
+      end
+
+      it "has fetch all the pages without next", :vcr do
+        expect(data.fetch("next")).to be_nil
+      end
+    end
   end
 end
