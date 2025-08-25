@@ -43,10 +43,12 @@ module QuoteReader
         raison_sociales: Array.wrap(
           attributes[:raison_sociales] ||
           attributes[:raisons_sociales] ||
+          attributes[:reason_sociales] ||
           attributes[:raison_sociale]
         ).map(&:to_s).presence,
         raison_sociale: nil, # cleaned up
         raisons_sociales: nil, # cleaned up
+        reason_sociales: nil, # cleaned up
 
         sirets: Array.wrap(attributes[:sirets] || attributes[:pro_sirets]).map(&:to_s).presence,
         pro_sirets: nil, # cleaned up
