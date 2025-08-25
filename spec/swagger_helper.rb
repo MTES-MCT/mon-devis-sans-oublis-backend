@@ -192,6 +192,13 @@ def geste_properties # rubocop:disable Metrics/MethodLength
       ],
       nullable: true
     },
+    numero_acermi: {
+      oneOf: [
+        { type: :string },
+        { type: :array, items: { type: :string } }
+      ],
+      nullable: true
+    },
     ud: {
       oneOf: [
         { type: :string },

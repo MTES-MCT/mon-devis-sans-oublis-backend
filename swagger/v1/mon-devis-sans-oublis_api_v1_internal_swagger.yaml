@@ -1073,9 +1073,12 @@ components:
           nullable: true
           description: peut-être un type autre que chaîne de caractères
         numero_acermi:
-          type: string
+          oneOf:
+          - type: string
+          - type: array
+            items:
+              type: string
           nullable: true
-          description: peut-être un type autre que chaîne de caractères
         numero_ligne:
           type: string
           nullable: true
@@ -1687,9 +1690,12 @@ components:
                 nullable: true
                 description: peut-être un type autre que chaîne de caractères
               numero_acermi:
-                type: string
+                oneOf:
+                - type: string
+                - type: array
+                  items:
+                    type: string
                 nullable: true
-                description: peut-être un type autre que chaîne de caractères
               numero_ligne:
                 type: string
                 nullable: true
