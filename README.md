@@ -205,6 +205,21 @@ Les fichiers devis sont traités par le `QuoteChecksController` qui les envoient
 - `QuoteReader` lisant le devis brut puis extractant les information du devis de manière naïve en se basant sur le texte du PDF et via solutions LLM avec croisement de données d'annuaires publiques de la rénovation
 - puis ces attributs de devis sont vérifier par le `QuoteValdiator` qui controlle un ensemble de règles et renvoit les erreurs correspondantes
 
+### Processus de validation
+
+- pour chaque document
+  - la validation des informations administratives : présence, valeur et cohérence (SIRET / RGE si indiqué)
+  - la validation des caractéristiques techniques des gestes : présence, valeur et cohérence
+    - seul le SIRET est utilisé pour chercher un certificat RGE correspondant au type de geste
+- pour un dossier : validation de la cohérence des informations entre les documents lorsque présentes
+
+#### Forcer un devis à valide
+
+```
+quote_check_id = "76c35e1c-4d8d-479d-a62a-4f36511a5041"
+QuoteCheck.find(quote_check_id).update!(validation_errors: nil, validation_error_edits: nil)
+```
+
 ### Traitement des images via OCR
 
 Différentes briques sont mises à contribution et encore en évaluation via le projet dédié [mon-devis-sans-oublis-backend-ocr](https://github.com/MTES-MCT/mon-devis-sans-oublis-backend-ocr)
@@ -255,13 +270,6 @@ private_extended_attributes = TrackingHash.deep_merge_if_absent(
 
 # From quote_reader.read(file_text:)
 anonymised_text = QuoteReader::Anonymiser.new(file_text).anonymised_text(private_extended_attributes)
-```
-
-#### Forcer un devis à valide
-
-```
-quote_check_id = "76c35e1c-4d8d-479d-a62a-4f36511a5041"
-QuoteCheck.find(quote_check_id).update!(validation_errors: nil, validation_error_edits: nil)
 ```
 
 ## API
