@@ -6,7 +6,12 @@ ActiveAdmin.register QuoteCheck do
     quote_check = QuoteCheck.find(params[:id])
 
     if quote_check.recheckable?
-      QuoteCheckCheckJob.perform_later(quote_check.id)
+      if ActiveModel::Type::Boolean.new.cast(params[:process_synchronously])
+        QuoteCheckCheckJob.new.perform(quote_check.id)
+      else
+        QuoteCheckCheckJob.perform_later(quote_check.id)
+      end
+
       flash[:success] = "Le devis est en cours de retraitement."
     else
       flash[:error] = "Le devis ne peut pas être retraité."
