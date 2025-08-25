@@ -132,8 +132,8 @@ module RgeValidator # rubocop:disable Metrics/ModuleLength
   # rubocop:disable Metrics/PerceivedComplexity
   # rubocop:disable Style/ItBlockParameter
   def self.rge_qualifications(rge: nil, siret: nil, date: nil, geste_types: nil) # rubocop:disable Metrics/MethodLength
-    qs = "siret:#{siret}" if siret.present?
-    qs ||= "rge:#{rge}" if rge.present?
+    qs = "siret:#{SiretValidator.validate_format!(siret)}" if siret.present?
+    qs ||= "rge:#{validate_format!(rge)}" if rge.present?
     rge_qualifications = filter_rge_qualifications(
       DataAdeme.new.historique_rge(qs:).fetch("results")
     )

@@ -120,5 +120,25 @@ RSpec.describe QuoteValidator::Works::Global, type: :service do
         expect(validator.errors).to include("geste_rge_hors_date")
       end
     end
+
+    context "with invalid RGE but another good" do
+      let(:attributes) do
+        build(:quote_check_qa_attributes,
+              pro: {
+                siret: "504327404 00035",
+                rge_labels: ["E-E178489"]
+              },
+              gestes: [
+                { type: "pac_air_eau" },
+                { type: "chauffe_eau_thermo" }
+              ])
+      end
+
+      before { validator.validate! }
+
+      it "does not return RGE errors" do
+        expect(validator.errors).not_to include("geste_rge_non_correspondant")
+      end
+    end
   end
 end
