@@ -38,7 +38,11 @@ module QuoteReader
         noms_utilisateur: nil, # cleaned up
 
         adresses: Array.wrap(attributes[:adresses]).map(&:to_s).presence,
-        telephones: Array.wrap(attributes[:telephones]).map(&:to_s).presence,
+        telephones: Array.wrap(
+          attributes[:telephones] ||
+          attributes[:telephone]
+        ).map(&:to_s).presence,
+        telephone: nil, # cleaned up
 
         raison_sociales: Array.wrap(
           attributes[:raison_sociales] ||
@@ -70,7 +74,12 @@ module QuoteReader
         numerous_tva: nil, # cleaned up
         numerros_tva: nil, # cleaned up
 
-        ibans: Array.wrap(attributes[:ibans]).map(&:to_s).presence,
+        ibans: Array.wrap(
+          attributes[:ibans] ||
+          attributes[:iban]
+        ).map(&:to_s).presence,
+        iban: nil, # cleaned up
+
         uris: Array.wrap(attributes[:uris]).map(&:to_s).presence,
 
         client_noms: nil, # cleaned up
