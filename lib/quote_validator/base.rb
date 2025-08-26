@@ -141,6 +141,13 @@ module QuoteValidator
         ErrorNotifier.notify(e)
       end
 
+      rge_link_uri = RgeValidator.rge_link if code.to_s.include?("rge")
+      solution ||= I18n.t("quote_validator.errors.#{code}_infos_html",
+                          default: nil,
+                          rge_link: rge_link_uri && ApplicationController.helpers.link_to(rge_link_uri,
+                                                                                          rge_link_uri)) ||
+                   I18n.t("quote_validator.errors.#{code}_infos", default: nil)
+
       error_details << TrackingHash.nilify_empty_values(
         {
           id: [object_id_str, geste_id, error_details.count + 1].compact.join("-"),
@@ -150,7 +157,7 @@ module QuoteValidator
           category:, type:,
           title: (title || I18n.t("quote_validator.errors.#{code}"))&.strip,
           problem:,
-          solution: (solution || I18n.t("quote_validator.errors.#{code}_infos", default: nil))&.strip,
+          solution: solution&.strip,
           provided_value:
         },
         compact: true

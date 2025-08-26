@@ -136,15 +136,24 @@ RSpec.describe QuoteValidator::Works::Global, type: :service do
 
       before { validator.validate! }
 
-      it "does not return RGE errors" do # @@@
+      it "does not return RGE errors" do
         expect(validator.errors).not_to include("geste_rge_non_correspondant")
       end
 
-      it "adds error for existing RGE to mention" do # rubocop:disable RSpec/MultipleExpectations
+      it "adds error for existing RGE to mention" do
         expect(validator.errors).to include("geste_rge_non_mentionne")
+      end
+
+      it "mentions the existing RGE" do
         expect(
-          validator.error_details.detect { it[:code] == "geste_rge_non_mentionne" }[:solution]
+          validator.error_details.detect { it[:code] == "geste_rge_non_mentionne" }.fetch(:solution)
         ).to include("E-E178489")
+      end
+
+      it "includes a link to the RGE tool" do
+        expect(
+          validator.error_details.detect { it[:code] == "geste_rge_non_mentionne" }.fetch(:solution)
+        ).to include(%r{href="[^"]+/rge})
       end
     end
   end

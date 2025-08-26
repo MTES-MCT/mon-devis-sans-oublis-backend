@@ -46,15 +46,19 @@ fr:
       rcs_manquant: "Le N° RCS et ville d'immatriculation (pour les sociétés) ou le N° RNE est manquant"
       rcs_ville_manquant: "La ville d'immatriculation de la structure effectuant les travaux est manquante."
       pro_adresse_manquant: "L'adresse du siège social est manquante"
-      rge_manquant: "Le numéro de certification RGE du professionnel est manquant"
-      rge_manquant_infos: "Pour obtenir des aides, le professionel doit avoir le label RGE du geste en question. Merci de préciser le numéro de certification."
-      rge_format_erreur: "Le numéro de certification RGE n'a pas le bon format"
-      rge_non_correspondant: "Le numéro de certification RGE du professionnel ne correspond pas au SIRET de l'établissement"
-      rge_hors_date: "Le numéro de certification RGE du professionnel est hors date"
       pro_assurance_manquant: "Assurance professionnelle souscrite manquante"
       pro_assurance_manquant_infos: "Assurance professionnelle souscrite avec le N° de la police d'assurance, le type (décennale, biennale ...), les coordonnées de l'assureur ou du garant et la couverture géographique du contrat ou de la garantie."
-      rge_siret_manquant: "RGE ou SIRET manquant pour recherche"
       geste_type_inconnu: "Le type de geste indiqué n'est pas reconnu"
+
+      rge_manquant: "Le numéro de certification RGE du professionnel est manquant"
+      rge_manquant_infos_html: "Pour obtenir des aides, le professionel doit avoir le label RGE du geste en question. Merci de préciser le numéro de certification. Vous pouvez utiliser notre outil de vérification RGE pour retrouver les habilitations sur %{rge_link}."
+      rge_non_correspondant: "Le numéro de certification RGE du professionnel ne correspond pas au SIRET de l'établissement."
+      rge_non_correspondant_infos_html: "Vous pouvez utiliser notre outil de vérification RGE pour retrouver les habilitations sur %{rge_link}."
+      rge_hors_date: "Le numéro de certification RGE du professionnel est hors date"
+      rge_hors_date_infos_html: "Vous pouvez utiliser notre outil de vérification RGE pour le retrouver sur %{rge_link}."
+      
+      rge_siret_manquant: "RGE ou SIRET manquant pour recherche"
+      rge_format_erreur: "Le numéro de certification RGE n'a pas le bon format"
 
       # Information du client : 
       client_prenom_manquant: "Le prénom du client est manquant"
@@ -70,9 +74,11 @@ fr:
       # Prix / TVA : 
       geste_prix_inhabituel: "Le prix du geste est hors de la fourchette de prix recommandée"
       geste_rge_non_correspondant: "La structure n'est pas habilitée à réaliser ce geste"
+      geste_rge_non_correspondant_infos_html: "Vous pouvez utiliser notre outil de vérification RGE pour retrouver les habilitations sur %{rge_link}."
       geste_rge_non_mentionne: "Le numéro RGE n'est pas mentionné sur le devis"
-      geste_rge_non_mentionne_infos: "La structure est bien habilitée, mais le numéro RGE pour ce geste (%{rge}) n'est pas mentionné sur le devis."
+      geste_rge_non_mentionne_infos_html: "La structure est bien habilitée, mais le numéro RGE pour ce geste (%{rge}) n'est pas mentionné sur le devis. Vous pouvez utiliser notre outil de vérification RGE pour le retrouver sur %{rge_link}."
       geste_rge_hors_date: "Le numéro de certification RGE du professionnel est hors date"
+      geste_rge_hors_date_infos_html: "Vous pouvez utiliser notre outil de vérification RGE pour le retrouver sur %{rge_link}."
       separation_fourniture_pose_manquant: "La séparation fourniture et pose est manquante"
       separation_fourniture_pose_manquant_infos: "Il est obligatoire de bien séparer la fourniture et la pose du matériel en indiquant clairement les prix associés."
       prix_total_ttc_manquant: "Le prix total TTC du devis est manquant"
