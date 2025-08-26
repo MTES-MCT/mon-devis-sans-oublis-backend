@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# skip loading if gem not present
+return unless Gem.loaded_specs.key?("rtesseract")
+
 require "mini_magick"
 require "rtesseract"
 require "stringio"

@@ -73,7 +73,7 @@ gem "fuzzy-string-match", require: false
 gem "mime-types", require: false
 gem "mini_magick", require: false
 gem "pdf-reader", require: false
-gem "rtesseract", require: false
+# gem "rtesseract", require: false
 gem "ruby_llm", require: false
 
 # Efficiency
