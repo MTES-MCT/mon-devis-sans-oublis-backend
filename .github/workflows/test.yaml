@@ -25,7 +25,10 @@ jobs:
           path: /tmp/rails-template.tar
           key: ${{ github.sha }}-rails-template
       - run: docker load --input /tmp/rails-template.tar
-      - run: docker run --rm rails-template:latest bundle exec bundle-audit check --update
+      - run: |
+          docker run \
+            --rm rails-template \
+            bash -c "bundle exec bundle-audit check --update"
   security-audit:
     name: "Security: Brakeman audit"
     runs-on: ubuntu-latest
@@ -37,7 +40,11 @@ jobs:
           path: /tmp/rails-template.tar
           key: ${{ github.sha }}-rails-template
       - run: docker load --input /tmp/rails-template.tar
-      - run: docker run -e DATABASE_URL="${{ env.DATABASE_URL }}" --rm rails-template:latest bundle exec brakeman -q -w2
+      - run: |
+          docker run \
+            -e DATABASE_URL="${{ env.DATABASE_URL }}" \
+            --rm rails-template \
+            bash -c "bundle exec brakeman -q -w2"
   lint:
     name: "Linting: Rubocop"
     runs-on: ubuntu-latest
@@ -49,7 +56,11 @@ jobs:
           path: /tmp/rails-template.tar
           key: ${{ github.sha }}-rails-template
       - run: docker load --input /tmp/rails-template.tar
-      - run: docker run -e DATABASE_URL="${{ env.DATABASE_URL }}" --rm rails-template:latest bundle exec rubocop
+      - run: |
+          docker run \
+            -e DATABASE_URL="${{ env.DATABASE_URL }}" \
+            --rm rails-template \
+            bash -c "bundle exec rubocop"
   unit-tests:
     name: "Unit tests: RSpec"
     runs-on: ubuntu-latest
@@ -84,8 +95,10 @@ jobs:
             -e MDSO_API_KEY_FOR_MDSO=mdso \
             -e MDSO_OCR_API_KEY=MDSO_OCR_API_KEY \
             -e MDSO_OCR_HOST=http://MDSO_OCR_HOST \
+            -e RAILS_ENV=test \
             -v /var/run/docker.sock:/var/run/docker.sock \
-            --rm rails-template bash -c "bin/rails db:environment:set RAILS_ENV=test && bundle exec rspec"
+            --rm rails-template \
+            bash -c "bundle exec rspec"
   code-quality:
     name: "Code Quality: RubyCritic"
     runs-on: ubuntu-latest
@@ -97,4 +110,7 @@ jobs:
           path: /tmp/rails-template.tar
           key: ${{ github.sha }}-rails-template
       - run: docker load --input /tmp/rails-template.tar
-      - run: docker run --rm rails-template:latest bundle exec rubycritic --no-browser --format console --minimum-score ${{ env.RUBYCRITIC_THRESHOLD }}
+      - run: |
+          docker run \
+            --rm rails-template \
+            bash -c "bundle exec rubycritic --no-browser --format console --minimum-score ${{ env.RUBYCRITIC_THRESHOLD }}"

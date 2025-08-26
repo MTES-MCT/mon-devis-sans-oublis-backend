@@ -50,7 +50,10 @@ namespace :quote_checks do # rubocop:disable Metrics/BlockLength
       filename = File.basename(file_path)
 
       quote_check = QuoteCheckService.new(
-        file, filename, "artisan"
+        file, filename,
+        "artisan",
+        "geste",
+        source_name: "mdso_bo"
       ).check
 
       puts JSON.pretty_generate(quote_check.attributes)
@@ -100,9 +103,15 @@ namespace :quote_checks do # rubocop:disable Metrics/BlockLength
         quote_check_service = QuoteCheckService.new(
           tempfile, source_quote_file.filename,
           source_quote_check.profile,
+          source_quote_check.renovation_type,
           content_type: source_quote_file.content_type,
+          file_text: source_quote_check.file_text,
+          file_markdown: source_quote_check.file_markdown,
           metadata: source_quote_check.metadata,
-          parent_id: nil # can not reuse it
+          case_id: nil, # can not reuse it,
+          parent_id: nil, # can not reuse it,
+          reference: nil, # can not reuse it,
+          source_name: "mdso_bo"
         )
         new_quote_check = quote_check_service.quote_check
         new_quote_check = QuoteCheckCheckJob.new.perform(new_quote_check.id)
@@ -156,5 +165,12 @@ namespace :quote_checks do # rubocop:disable Metrics/BlockLength
 
     QuoteCheckCheckJob.perform_later(args[:quote_check_id])
     puts "QuoteCheckCheckJob enqueued for ID: #{args[:quote_check_id]}"
+  end
+
+  desc "QuoteCheck with incoherent validation errors / controls counts"
+  task incoherent_validation_countss: :environment do |_t, _args|
+    # it.validation_errors&.count
+    # validation_controls_count
+    QuoteCheck
   end
 end
