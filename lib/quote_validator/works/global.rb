@@ -22,8 +22,12 @@ module QuoteValidator
         @pro ||= quote[:pro] ||= TrackingHash.new
       end
 
-      def rge
-        Array.wrap(pro[:rge_labels]&.presence).first
+      def rge_labels
+        @rge_labels ||= Array.wrap(pro[:rge_labels]&.presence).filter_map do |rge|
+          RgeValidator.validate_format!(rge)
+        rescue RgeValidator::ArgumentError
+          nil
+        end.uniq
       end
 
       def siret
@@ -202,11 +206,14 @@ module QuoteValidator
       # Validate the RGE geste type matching only if the pro has a RGE label
       # (SIRET correspondance and date are already managed in global RGE check)
       # rubocop:disable Metrics/AbcSize
+      # rubocop:disable Metrics/CyclomaticComplexity
+      # rubocop:disable Metrics/PerceivedComplexity
       def validate_rge_geste(geste) # rubocop:disable Metrics/MethodLength
         geste_type = geste[:type].to_s
         return unless geste_types_with_certification.include?(geste_type)
 
-        geste_type_has_rge = qualifications_per_geste_type.key?(geste_type)
+        qualifications_for_geste_type = qualifications_per_geste_type[geste_type]
+        geste_type_has_rge = qualifications_for_geste_type&.any? || false
         add_error_if(
           "geste_rge_non_correspondant",
           !geste_type_has_rge,
@@ -217,12 +224,26 @@ module QuoteValidator
         )
         return unless geste_type_has_rge
 
+        other_rges = rge_labels - qualifications_for_geste_type.map { RgeValidator.id_to_rge(it.fetch("_id")) }.uniq
+        code = "geste_rge_non_mentionne"
+        add_error_if(
+          code,
+          qualifications_for_geste_type.none? do |qualification|
+            RgeValidator.rge_for_id?(rge_labels, qualification.fetch("_id"))
+          end,
+          geste: geste,
+          provided_value: "#{geste_type} #{rge_labels}",
+          solution: I18n.t("quote_validator.errors.#{code}_infos", rge: other_rges.first, default: nil)&.strip,
+          category: "gestes",
+          type: "warning"
+        )
+
         formatted_date = RgeValidator.validate_date!(date) if date.present?
         return unless formatted_date
 
         add_error_if(
           "geste_rge_hors_date",
-          qualifications_per_geste_type[geste_type].none? do |qualification|
+          qualifications_for_geste_type.none? do |qualification|
             formatted_date.between?(
               Date.parse(qualification.fetch("date_debut")),
               Date.parse(qualification.fetch("date_fin"))
@@ -234,6 +255,8 @@ module QuoteValidator
           type: "warning"
         )
       end
+      # rubocop:enable Metrics/PerceivedComplexity
+      # rubocop:enable Metrics/CyclomaticComplexity
       # rubocop:enable Metrics/AbcSize
     end
   end
