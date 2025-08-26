@@ -69,7 +69,7 @@ fr:
 
       # Prix / TVA : 
       geste_prix_inhabituel: "Le prix du geste est hors de la fourchette de prix recommandée"
-      geste_rge_non_correspondant: "Le numéro de certification RGE n'est pas habilité à réaliser ce geste"
+      geste_rge_non_correspondant: "La structure n'est pas habilitée à réaliser ce geste"
       geste_rge_hors_date: "Le numéro de certification RGE du professionnel est hors date"
       separation_fourniture_pose_manquant: "La séparation fourniture et pose est manquante"
       separation_fourniture_pose_manquant_infos: "Il est obligatoire de bien séparer la fourniture et la pose du matériel en indiquant clairement les prix associés."
