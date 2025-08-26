@@ -127,6 +127,19 @@ module RgeValidator # rubocop:disable Metrics/ModuleLength
     ).flatten.compact.uniq.sort
   end
 
+  # @param rge [String, Array<String>] RGE number(s) to check
+  # @param id [String] ADEME RGE ID to check against
+  def self.rge_for_id?(rge, id)
+    return false if rge.blank? || id.blank?
+    return id_to_rge(id) == rge[/#{RGE_NUMBER_REGEX}\z/] if rge.is_a?(String)
+
+    Array.wrap(rge).any? { rge_for_id?(it, id) }
+  end
+
+  def self.id_to_rge(id)
+    id[/(#{RGE_NUMBER_REGEX})-/, 1] if id.present?
+  end
+
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/CyclomaticComplexity
   # rubocop:disable Metrics/PerceivedComplexity
@@ -139,9 +152,7 @@ module RgeValidator # rubocop:disable Metrics/ModuleLength
     )
 
     if rge.present?
-      rge_qualifications = rge_qualifications.select do
-        it.fetch("_id")[/(#{RGE_NUMBER_REGEX})-/, 1] == rge[/#{RGE_NUMBER_REGEX}\z/]
-      end
+      rge_qualifications = rge_qualifications.select { rge_for_id?(rge, it.fetch("_id")) }
       raise ArgumentError.new(nil, "rge_non_correspondant") unless rge_qualifications.any?
     end
 
