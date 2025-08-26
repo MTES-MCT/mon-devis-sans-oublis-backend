@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "uri"
+
 # Check RGE
 module RgeValidator # rubocop:disable Metrics/ModuleLength
   class ArgumentError < QuoteValidator::Base::ArgumentError; end
@@ -134,6 +136,10 @@ module RgeValidator # rubocop:disable Metrics/ModuleLength
     return id_to_rge(id) == rge[/#{RGE_NUMBER_REGEX}\z/] if rge.is_a?(String)
 
     Array.wrap(rge).any? { rge_for_id?(it, id) }
+  end
+
+  def self.rge_link
+    URI.join(ENV.fetch("FRONTEND_APPLICATION_HOST", nil), "rge").to_s
   end
 
   def self.id_to_rge(id)

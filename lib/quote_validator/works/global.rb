@@ -226,6 +226,7 @@ module QuoteValidator
 
         other_rges = rge_labels - qualifications_for_geste_type.map { RgeValidator.id_to_rge(it.fetch("_id")) }.uniq
         code = "geste_rge_non_mentionne"
+        rge_link_uri = RgeValidator.rge_link
         add_error_if(
           code,
           qualifications_for_geste_type.none? do |qualification|
@@ -233,7 +234,12 @@ module QuoteValidator
           end,
           geste: geste,
           provided_value: "#{geste_type} #{rge_labels}",
-          solution: I18n.t("quote_validator.errors.#{code}_infos", rge: other_rges.first, default: nil)&.strip,
+          solution: I18n.t(
+            "quote_validator.errors.#{code}_infos_html",
+            default: nil,
+            rge: other_rges.first,
+            rge_link: rge_link_uri && ApplicationController.helpers.link_to(rge_link_uri, rge_link_uri)
+          )&.strip,
           category: "gestes",
           type: "warning"
         )
