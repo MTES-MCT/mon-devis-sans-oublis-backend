@@ -44,7 +44,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
                          []
                        end
 
-      super.eager_load(:file, :feedbacks)
+      super.left_joins(:file, :feedbacks)
            .select(
              *(QuoteCheck.column_names - (hidable_fields || [])).map { "#{QuoteCheck.table_name}.#{it}" },
              *(QuoteFile.column_names - %w[id data imagified_pages]).map { "#{QuoteFile.table_name}.#{it}" },
