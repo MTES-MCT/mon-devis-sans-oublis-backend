@@ -33,7 +33,7 @@ module Api
         ]
 
         @quotes_case ||= QuotesCase
-                         .eager_load(quote_checks: %i[feedbacks file])
+                         .left_joins(quote_checks: %i[feedbacks file])
                          .select( # Avoid to load unnecessary heavy fields
                            *QuotesCase.column_names,
                            *(QuoteCheck.column_names - (hidable_quote_check_fields || [])).map do # rubocop:disable Style/ItBlockParameter

@@ -22,7 +22,7 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
   controller do
     # Overwrite "includes :quote_checks" to not load full File data
     def scoped_collection
-      super.eager_load(quote_checks: :file)
+      super.left_joins(quote_checks: :file)
            .select(
              *QuotesCase.column_names.map { "#{QuotesCase.table_name}.#{it}" },
              *%w[created_at file_id].map { "#{QuoteCheck.table_name}.#{it}" },
