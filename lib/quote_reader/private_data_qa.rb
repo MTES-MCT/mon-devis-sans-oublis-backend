@@ -58,7 +58,13 @@ module QuoteReader
         pro_sirets: nil, # cleaned up
 
         ville_immatriculation_rcss: Array.wrap(attributes[:ville_immatriculation_rcss]).map(&:to_s).presence,
-        numero_rcss: Array.wrap(attributes[:numero_rcss]).map(&:to_s).presence,
+
+        numero_rcss: Array.wrap(
+          attributes[:numero_rcss] ||
+          attributes[:numeros_rcss]
+        ).map(&:to_s).presence,
+        numeros_rcss: nil, # cleaned up
+
         rnes: Array.wrap(attributes[:rnes]).map(&:to_s).presence,
         assurances: Array.wrap(attributes[:assurances]).map(&:to_s).presence,
         numero_rge: Array.wrap(attributes[:numero_rge]).map(&:to_s).presence,
