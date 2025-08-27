@@ -48,6 +48,7 @@ jobs:
           ALBERT_API_KEY: ${{ secrets.ALBERT_API_KEY }}
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
           TEST_SOURCE_DATABASE_URL: ${{ secrets.TEST_SOURCE_DATABASE_URL }}
+          RAILS_ENV: test
         run: |
           mkdir -p log
           echo "❌ FAILED to run the Fiability test, no results available." > log/fiability_test_results.txt
@@ -55,14 +56,21 @@ jobs:
             --network="host" \
             -e ALBERT_MODEL="${{ env.ALBERT_MODEL }}" \
             -e ALBERT_API_KEY="${{ env.ALBERT_API_KEY }}" \
+            -e APP_ENV="${{ env.APP_ENV || 'test' }}" \
+            -e APPLICATION_HOST="${{ env.APPLICATION_HOST || 'http://localhost:3000' }}" \
             -e DATABASE_URL="${{ env.DATABASE_URL }}" \
             -e FIABILITY_THRESHOLD="${{ env.FIABILITY_THRESHOLD }}" \
+            -e FRONTEND_APPLICATION_HOST="${{ env.FRONTEND_APPLICATION_HOST || 'http://localhost:3001' }}" \
+            -e GOOD_JOB_PASSWORD="${{ secrets.GOOD_JOB_PASSWORD || 'test' }}" \
+            -e GOOD_JOB_USERNAME="${{ secrets.GOOD_JOB_USERNAME || 'test' }}" \
             -e MISTRAL_MODEL="${{ env.MISTRAL_MODEL }}" \
             -e MISTRAL_API_KEY="${{ env.MISTRAL_API_KEY }}" \
+            -e RAILS_ENV="${{ env.RAILS_ENV }}" \
             -e SILENT_MIGRATION="true" \
             -e TEST_SOURCE_DATABASE_URL="${{ env.TEST_SOURCE_DATABASE_URL }}" \
             -v /var/run/docker.sock:/var/run/docker.sock \
-            --rm rails-template bash -c "bin/rails db:environment:set RAILS_ENV=test && bundle exec rake quote_checks:fiability" | tee log/fiability_test_results.txt
+            --rm rails-template \
+            bash -c "bundle exec rake quote_checks:fiability" | tee log/fiability_test_results.txt
           if grep -q "❌ FAILED" log/fiability_test_results.txt; then
             exit 1
           fi

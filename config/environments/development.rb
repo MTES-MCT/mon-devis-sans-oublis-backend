@@ -72,7 +72,7 @@ Rails.application.configure do # rubocop:disable Metrics/BlockLength
   # config.action_cable.disable_request_forgery_protection = true
   config.hosts << "host.docker.internal"
 
-  config.web_console.permissions = "127.0.0.1"
+  config.web_console.permissions = "127.0.0.1" if defined?(WebConsole)
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
