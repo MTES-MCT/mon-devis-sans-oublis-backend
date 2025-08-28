@@ -54,7 +54,10 @@ module QuoteReader
         raisons_sociales: nil, # cleaned up
         reason_sociales: nil, # cleaned up
 
-        sirets: Array.wrap(attributes[:sirets] || attributes[:pro_sirets]).map(&:to_s).presence,
+        sirets: Array.wrap(
+          attributes[:sirets] ||
+          attributes[:pro_sirets]
+        ).map(&:to_s).presence,
         pro_sirets: nil, # cleaned up
 
         ville_immatriculation_rcss: Array.wrap(attributes[:ville_immatriculation_rcss]).map(&:to_s).presence,
@@ -98,7 +101,7 @@ module QuoteReader
         client_civilite: Array.wrap(attributes[:client_civilite]).map(&:to_s).presence,
         client_adresses: Array.wrap(attributes[:client_adresses]).map(&:to_s).presence,
         pro_adresses: Array.wrap(attributes[:pro_adresses]).map(&:to_s).presence,
-        
+
         forme_juridiques: Array.wrap(
           attributes[:forme_juridiques] ||
           attributes[:formes_juridiques]
