@@ -17,11 +17,14 @@ class ExtendedData
 
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/CyclomaticComplexity
-  # rubocop:disable Metrics/MethodLength
-  def data_from_sirets(sirets)
-    results = sirets.flat_map do |siret|
-      DataAdeme.new.historique_rge(qs: "siret:#{siret}").fetch("results")
-    end
+  # rubocop:disable Metrics/PerceivedComplexity
+  def data_from_sirets(sirets) # rubocop:disable Metrics/MethodLength
+    results = sirets.filter_map do |siret|
+      SiretValidator.validate_format!(siret)
+    rescue SiretValidator::ArgumentError
+      nil
+    end # rubocop:disable Style/MultilineBlockChain
+                    .flat_map { DataAdeme.new.historique_rge(qs: "siret:#{it}").fetch("results") }
 
     {
       extended_data: {
@@ -36,7 +39,7 @@ class ExtendedData
       uris: results.pluck("site_internet").uniq.filter(&:presence)
     }
   end
-  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/PerceivedComplexity
   # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/AbcSize
 
