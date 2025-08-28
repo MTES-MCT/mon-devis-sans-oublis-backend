@@ -13,7 +13,7 @@ RSpec.describe "/api/v1/data_checks" do
     end
 
     it "returns a complete response" do
-      expect(json.fetch("data")).to include(*QuoteCheck::GESTE_TYPES)
+      expect(json.fetch("data")).to include(*GesteTypes::VALUES)
     end
 
     it "includes labels" do

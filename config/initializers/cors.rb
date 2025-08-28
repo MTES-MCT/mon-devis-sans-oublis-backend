@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "../../lib/uri_extended"
+require_relative "../../lib/tools/uri_extended"
 
 frontend_origins = [
   if Rails.env.production?

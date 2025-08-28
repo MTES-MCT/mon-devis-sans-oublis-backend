@@ -367,7 +367,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
       end
 
       tab "4. Texte Anonymisé" do
-        pre resource.anonymised_text
+        pre resource.anonymized_text
       end
 
       tab "5. Attributs via par #{resource.qa_llm}" do

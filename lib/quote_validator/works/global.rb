@@ -37,7 +37,7 @@ module QuoteValidator
       def qualifications_per_geste_type # rubocop:disable Metrics/MethodLength
         @qualifications_per_geste_type ||= RgeValidator.rge_qualifications(siret:)
                                                        .each_with_object({}) do |qualification, hash|
-          geste_types = RgeValidator.ademe_geste_types(
+          geste_types = MdsoAdemeMapping.ademe_geste_types(
             nom_certificat: qualification.fetch("nom_certificat"),
             domaine: qualification.fetch("domaine")
           ).compact.uniq
@@ -50,11 +50,11 @@ module QuoteValidator
           hash
         end
       rescue QuoteValidator::Base::ArgumentError
-        @qualifications_per_geste_type = []
+        @qualifications_per_geste_type = {}
       end
 
       def geste_types_with_certification
-        @geste_types_with_certification ||= RgeValidator.geste_types_with_certification
+        @geste_types_with_certification ||= MdsoAdemeMapping.geste_types_with_certification
       end
 
       # doit valider les critères techniques associés aux gestes présents dans le devis
@@ -165,7 +165,7 @@ module QuoteValidator
 
       def validate_prix_geste(geste) # rubocop:disable Metrics/MethodLength
         geste_type = geste[:type].to_s
-        return unless QuoteCheck::GESTE_TYPES.include?(geste_type)
+        return unless GesteTypes::VALUES.include?(geste_type)
 
         # Valider qu'on a le prix HT sur chaque geste et son taux de TVA
         # {

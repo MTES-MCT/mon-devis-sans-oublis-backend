@@ -37,7 +37,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
     def scoped_collection # rubocop:disable Metrics/MethodLength
       hidable_fields = if params[:action] == "index"
                          %w[
-                           text anonymised_text
+                           text anonymized_text
                            file_text file_markdown
                          ]
                        else

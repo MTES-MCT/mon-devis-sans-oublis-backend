@@ -143,7 +143,7 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
                 type: "error")
     ensure
       text = quote_reader.text
-      anonymised_text = quote_reader.anonymised_text
+      anonymized_text = quote_reader.anonymized_text
 
       if Llms::Base.include_null_bytes?(text)
         ErrorNotifier.notify(
@@ -158,7 +158,7 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
       # Avoid null bytes inside text field to not break PostgreSQL
       # TODO: Better fix null bytes at chore to not have them
       text: Llms::Base.remove_null_bytes(text),
-      anonymised_text: Llms::Base.remove_null_bytes(anonymised_text),
+      anonymized_text: Llms::Base.remove_null_bytes(anonymized_text),
 
       naive_attributes: quote_reader.naive_attributes,
       naive_version: quote_reader.naive_version,

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "uri_extended"
+require_relative "../lib/tools/uri_extended"
 
 require "llms/albert"
 require "llms/mistral"
