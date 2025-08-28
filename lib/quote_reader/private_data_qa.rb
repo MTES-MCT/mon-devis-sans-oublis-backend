@@ -98,7 +98,13 @@ module QuoteReader
         client_civilite: Array.wrap(attributes[:client_civilite]).map(&:to_s).presence,
         client_adresses: Array.wrap(attributes[:client_adresses]).map(&:to_s).presence,
         pro_adresses: Array.wrap(attributes[:pro_adresses]).map(&:to_s).presence,
-        forme_juridiques: Array.wrap(attributes[:forme_juridiques]).map(&:to_s).presence,
+        
+        forme_juridiques: Array.wrap(
+          attributes[:forme_juridiques] ||
+          attributes[:formes_juridiques]
+        ).map(&:to_s).presence,
+        formes_juridiques: nil, # cleaned up
+
         capital_social: Array.wrap(attributes[:capital_social]).map(&:to_s).presence
       )&.compact.presence
 
