@@ -63,7 +63,7 @@ module Api
       def quote_check
         @quote_check ||= QuoteCheck
                          .select(*(QuoteCheck.column_names - %w[
-                           text anonymised_text
+                           text anonymized_text
                            file_text file_markdown
                          ]))
                          .eager_load(:file)

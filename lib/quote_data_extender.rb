@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# attributes = { sirets: ['50432740400035'] }; ExtendedData.new(attributes).extended_attributes
+# attributes = { sirets: ['50432740400035'] }; QuoteDataExtender.new(attributes).extended_attributes
 # Add data from other sources
-class ExtendedData
+class QuoteDataExtender
   attr_accessor :attributes
 
   def initialize(attributes)

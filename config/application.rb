@@ -41,8 +41,13 @@ module MesDevisSansOublis
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
-    config.autoload_paths << Rails.root.join("lib")
-    config.eager_load_paths << Rails.root.join("lib")
+    # Rails.autoloaders.main.push_dir(Rails.root.join("lib"), namespace: nil)
+    loader = Rails.autoloaders.main
+    # 1) Load lib/ as a whole as usual
+    loader.push_dir Rails.root.join("lib")
+    # 2) Make these subfolders FLAT (no namespace from folder names)
+    loader.collapse Rails.root.join("lib/tools")
+    loader.collapse Rails.root.join("lib/data_sources")
 
     # Don't generate system test files.
     config.generators.system_tests = nil

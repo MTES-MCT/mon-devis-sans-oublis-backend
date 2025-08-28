@@ -11,7 +11,7 @@ module QuoteReader
                 :ocr,
                 :text,
                 :shrinked_text,
-                :anonymised_text,
+                :anonymized_text,
                 :naive_attributes, :naive_version,
                 :private_data_qa_attributes, :private_data_qa_result, :private_data_qa_version,
                 :qa_attributes, :qa_result, :qa_version,
@@ -100,11 +100,11 @@ module QuoteReader
 
       private_extended_attributes = TrackingHash.deep_merge_if_absent(
         private_attributes,
-        ExtendedData.new(private_attributes).extended_attributes
+        QuoteDataExtender.new(private_attributes).extended_attributes
       )
-      @anonymised_text = Anonymiser.new(shrinked_text).anonymised_text(private_extended_attributes)
+      @anonymized_text = Anonymizer.new(shrinked_text).anonymized_text(private_extended_attributes)
 
-      qa_reader = Qa.new(anonymised_text, quote_file:)
+      qa_reader = Qa.new(anonymized_text, quote_file:)
       begin
         @qa_attributes = qa_reader.read(llm: qa_llm) || {}
       ensure

@@ -28,7 +28,7 @@ module Api
 
       def quotes_case # rubocop:disable Metrics/MethodLength
         hidable_quote_check_fields = %w[
-          text anonymised_text
+          text anonymized_text
           file_text file_markdown
         ]
 

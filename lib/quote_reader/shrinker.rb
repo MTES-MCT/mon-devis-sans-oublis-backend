@@ -5,13 +5,16 @@ module QuoteReader
   class Shrinker
     class NotImplementedError < ::NotImplementedError; end
 
-    FIELDS_TO_SHRINKED = %i[
+    DEFAULT_FIELDS_TO_SHRINKED = %i[
       powered_by
       terms
     ].freeze
 
-    def initialize(raw_text)
+    attr_reader :fields_to_shrink
+
+    def initialize(raw_text, fields_to_shrink = DEFAULT_FIELDS_TO_SHRINKED)
       @raw_text = raw_text
+      @fields_to_shrink = fields_to_shrink
     end
 
     def shrinked_text(attributes = nil)
@@ -21,7 +24,7 @@ module QuoteReader
         powered_by: QuoteReader::NaiveText.find_powered_by(@raw_text),
         terms: QuoteReader::NaiveText.find_terms(@raw_text)
       }
-      Anonymiser.replace_text_from_attributes(attributes, FIELDS_TO_SHRINKED, @raw_text)
+      Anonymizer.replace_text_from_attributes(attributes, fields_to_shrink, @raw_text)
     end
   end
 end

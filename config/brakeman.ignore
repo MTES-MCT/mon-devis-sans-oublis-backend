@@ -3,11 +3,11 @@
     {
       "warning_type": "SSL Verification Bypass",
       "warning_code": 71,
-      "fingerprint": "1710320a252cd41c3088d590f6831b0b1b738aac88006ce007638a00ad40e816",
+      "fingerprint": "e53a1f1153cfb2918c06d85a133180805bd5c4e5533daa4d97410eb9b6b76320",
       "check_name": "SSLVerify",
       "message": "SSL certificate verification was bypassed",
-      "file": "lib/sirene_api.rb",
-      "line": 9,
+      "file": "lib/data_sources/sirene_api.rb",
+      "line": 10,
       "link": "https://brakemanscanner.org/docs/warning_types/ssl_verification_bypass/",
       "code": "Net::HTTP.start(\"www.sirene.fr\", 443, :use_ssl => true, :verify_mode => (OpenSSL::SSL::VERIFY_NONE))",
       "render_path": null,
@@ -24,6 +24,5 @@
       "note": ""
     }
   ],
-  "updated": "2025-06-02 15:36:54 +0200",
-  "brakeman_version": "6.2.2"
+  "brakeman_version": "7.1.0"
 }

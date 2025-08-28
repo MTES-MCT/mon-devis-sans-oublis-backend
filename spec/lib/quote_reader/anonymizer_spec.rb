@@ -2,9 +2,9 @@
 
 require "rails_helper"
 
-RSpec.describe QuoteReader::Anonymiser, type: :service do
-  describe "#anonymised_text" do
-    subject(:anonymised_text) { described_class.new(raw_text).anonymised_text(attributes) }
+RSpec.describe QuoteReader::Anonymizer, type: :service do
+  describe "#anonymized_text" do
+    subject(:anonymized_text) { described_class.new(raw_text).anonymized_text(attributes) }
 
     let(:attributes) do
       build(:quote_check_qa_attributes,
@@ -22,8 +22,8 @@ RSpec.describe QuoteReader::Anonymiser, type: :service do
         "Devis\nNumero de devis : 1234\n\nClient\nNom : Doe\nPrenom : John\n1234,tel 0123456789 0123456788"
       end
 
-      it "anonymises the text" do
-        expect(anonymised_text).to eq(
+      it "anonymizes the text" do
+        expect(anonymized_text).to eq(
           "Devis\nNumero de devis : 1234\n\nClient\nNom : NOM\nPrenom : PRENOM\n1234,tel TELEPHONE TELEPHONE"
         )
       end
@@ -40,8 +40,8 @@ RSpec.describe QuoteReader::Anonymiser, type: :service do
                 })
         end
 
-        it "anonymises the text" do
-          expect(anonymised_text).to eq(
+        it "anonymizes the text" do
+          expect(anonymized_text).to eq(
             "Devis\nNumero de devis : 1234\n\nClient\nNom : NOM\nPrenom : PRENOM\n1234,tel TELEPHONE 0123456788"
           )
         end
@@ -52,7 +52,7 @@ RSpec.describe QuoteReader::Anonymiser, type: :service do
       let(:raw_text) { "" }
 
       it "returns empty" do
-        expect(anonymised_text).to eq("")
+        expect(anonymized_text).to eq("")
       end
     end
   end

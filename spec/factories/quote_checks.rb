@@ -23,7 +23,7 @@ FactoryBot.define do
           - Installation Chauffe-eau
         TEXT
       end
-      anonymised_text do
+      anonymized_text do
         <<~TEXT
           Mon Devis contenu
           SIRET SIRETSIRETSIRE

@@ -2,10 +2,10 @@
 
 module QuoteReader
   # Anonymise Quote text
-  class Anonymiser
+  class Anonymizer
     class NotImplementedError < ::NotImplementedError; end
 
-    FIELDS_TO_ANONYMISE = [
+    DEFAULT_FIELDS_TO_ANONYMIZE = [
       :adresses, :emails, :ibans, :assurances, :rge_labels, :noms, :numero_rge,
       :capital_social, :numeros_tva, :raison_sociales, :rcss, :numero_rcss, :rnes, :sirets, :telephones, :uris,
       :client_noms_de_famille, :client_prenoms, :pro_noms,
@@ -17,15 +17,18 @@ module QuoteReader
       ] }
     ].freeze
 
-    def initialize(raw_text)
+    attr_reader :fields_to_anonymize
+
+    def initialize(raw_text, fields_to_anonymize = DEFAULT_FIELDS_TO_ANONYMIZE)
       @raw_text = raw_text
+      @fields_to_anonymize = fields_to_anonymize
     end
 
-    def anonymised_text(attributes = nil)
+    def anonymized_text(attributes = nil)
       return nil if @raw_text.nil?
       return @raw_text if attributes.nil?
 
-      self.class.replace_text_from_attributes(attributes, FIELDS_TO_ANONYMISE, @raw_text)
+      self.class.replace_text_from_attributes(attributes, fields_to_anonymize, @raw_text)
     end
 
     # rubocop:disable Metrics/AbcSize
@@ -41,9 +44,9 @@ module QuoteReader
 
         values = Array.wrap(attributes.fetch(fields_or_field)).compact.filter(&:presence)
 
-        tmp_anonymised_text = text
+        tmp_anonymized_text = text
         values.each do |value|
-          tmp_anonymised_text = tmp_anonymised_text&.gsub(
+          tmp_anonymized_text = tmp_anonymized_text&.gsub(
             /#{Regexp.escape(value.to_s)}/i,
             fields_or_field.to_s.singularize.upcase
           )
@@ -53,15 +56,15 @@ module QuoteReader
           )
           raise extended_exception
         end
-        return tmp_anonymised_text
+        return tmp_anonymized_text
       end
 
       if fields_or_field.is_a?(Array)
-        tmp_anonymised_text = text
+        tmp_anonymized_text = text
         fields_or_field.each do |field|
-          tmp_anonymised_text = replace_text_from_attributes(attributes, field, tmp_anonymised_text)
+          tmp_anonymized_text = replace_text_from_attributes(attributes, field, tmp_anonymized_text)
         end
-        return tmp_anonymised_text
+        return tmp_anonymized_text
       end
 
       if fields_or_field.is_a?(Hash)

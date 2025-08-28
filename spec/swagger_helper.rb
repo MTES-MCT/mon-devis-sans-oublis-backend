@@ -4,9 +4,11 @@ require "rails_helper"
 require "openssl"
 require "uri"
 
+require_relative "../lib/geste_types"
+
 TYPE_FICHIERS = %w[devis facture autre].freeze
 
-ADEME_SWAGGER_URI = "https://data.ademe.fr/data-fair/api/v1/datasets/liste-des-entreprises-rge-2/api-docs.json"
+ADEME_SWAGGER_URI = DataAdeme.rge_openapi_uri
 ademe_yaml = URI.open(ADEME_SWAGGER_URI, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE).read # rubocop:disable Security/Open
 ademe_swagger = YAML.safe_load(ademe_yaml, aliases: true)
 ademe_result_schema = ademe_swagger.dig("paths", "/lines", "get", "responses", "200", "content", "application/json",
@@ -329,7 +331,7 @@ RSpec.configure do |config|
         ),
         geste_type: {
           type: :string,
-          enum: QuoteCheck::GESTE_TYPES
+          enum: GesteTypes::VALUES
         },
         option: {
           type: :object,

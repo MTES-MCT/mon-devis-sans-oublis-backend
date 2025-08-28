@@ -62,7 +62,7 @@ RSpec.describe QuoteCheckService, type: :service do
     it "returns the completed quote check" do # rubocop:disable RSpec/ExampleLength
       expect(quote_check).to be_a(QuoteCheck)
       expect(quote_check.text).to be_a(String)
-      expect(quote_check.anonymised_text).to be_a(String)
+      expect(quote_check.anonymized_text).to be_a(String)
       expect(quote_check.read_attributes).to be_a(Hash)
       expect(quote_check.quote_valid?).to be_in([true, false])
       expect(quote_check.validation_errors).to include(*%w[

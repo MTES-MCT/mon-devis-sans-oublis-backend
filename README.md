@@ -265,11 +265,11 @@ quote_reader = QuoteReader::Global.new(
 private_attributes = quote_check.private_data_qa_attributes || {}
 private_extended_attributes = TrackingHash.deep_merge_if_absent(
   private_attributes,
-  ExtendedData.new(private_attributes).extended_attributes
+  QuoteDataExtender.new(private_attributes).extended_attributes
 )
 
 # From quote_reader.read(file_text:)
-anonymised_text = QuoteReader::Anonymiser.new(file_text).anonymised_text(private_extended_attributes)
+anonymized_text = QuoteReader::Anonymizer.new(file_text).anonymized_text(private_extended_attributes)
 ```
 
 ## API
