@@ -44,10 +44,11 @@ module QuoteValidator
         next unless self.class.gestes_prices_ranges.key?(geste_type)
 
         quantite = geste[:quantite]&.to_f
+        backup_price = geste[:prix_ht] || geste[:prix_total_ht]
         price = case geste_type
                 when "isolation_comble_perdu", "geste_unite_m2"
                   geste[:prix_unitaire_ht] ||
-                  ((geste[:prix_ht] || geste[:prix_total_ht]) / [quantite&.to_f, 1].compact.max)
+                  (backup_price && (backup_price / [quantite&.to_f, 1].compact.max))
                 else
                   geste[:prix_total_ht]
                 end
