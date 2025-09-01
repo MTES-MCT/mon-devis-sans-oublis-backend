@@ -14,7 +14,7 @@ RUN apt-get update && apt-get upgrade -y && \
         cmake pkg-config \
         libpq-dev libyaml-dev \
         nodejs npm && \
-    xargs -a /app/Aptfile apt-get install --no-install-recommends -y && \
+    grep -vE '^\s*#' /app/Aptfile | xargs -r apt-get install --no-install-recommends -y && \
         rm -rf /var/lib/apt/lists/*
 
 # 🛠️ Fix ImageMagick Security Policy for PDFs

@@ -1,8 +1,15 @@
+# ClamAV for virus scanning
 clamav
 clamav-daemon
+
+# Rails image processing
 ghostscript
 imagemagick
-libtesseract-dev
+
+# gives pdftoppm for PDF to images
 poppler-utils
-tesseract-ocr
-tesseract-ocr-fra
+
+# tesseract
+# libtesseract-dev
+# tesseract-ocr
+# tesseract-ocr-fra
