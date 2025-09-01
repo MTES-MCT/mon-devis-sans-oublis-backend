@@ -11,6 +11,9 @@ class QuoteCheck < ApplicationRecord
   include QuoteInputMetadata
 
   alias_attribute :anonymized_text, :anonymised_text # TODO: Remove after SQL field renaming
+  alias_attribute :works_data_qa_result, :qa_result # TODO: Remove after SQL field renaming
+  alias_attribute :works_data_qa_attributes, :qa_attributes # TODO: Remove after SQL field renaming
+  alias_attribute :works_data_qa_version, :qa_version # TODO: Remove after SQL field renaming
 
   belongs_to :file, class_name: "QuoteFile"
   belongs_to :case, class_name: "QuotesCase", optional: true

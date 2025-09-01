@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.describe QuoteValidator::Works::Chauffage, type: :service do
   subject(:validator) { described_class.new(attributes) }
 
-  let(:attributes) { build(:quote_check_qa_attributes) }
+  let(:attributes) { build(:quote_check_works_data_qa_attributes) }
 
   describe "#validate_pac" do
     let(:geste) do

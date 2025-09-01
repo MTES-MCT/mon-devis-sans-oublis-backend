@@ -155,7 +155,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
                 include_blank: false,
                 selected: f.object&.qa_llm ||
                           Rails.application.config.llms_configured.detect { # rubocop:disable Style/BlockDelimiters
-                            it.match(/#{QuoteReader::Qa::DEFAULT_LLM}/i)
+                            it.match(/#{QuoteReader::WorksDataQa::DEFAULT_LLM}/i)
                           } ||
                           Rails.application.config.llms_configured.first
         # rubocop:enable Style/ItBlockParameter

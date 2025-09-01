@@ -2,7 +2,7 @@
 
 # Following the prompt and related Swagger Schema
 FactoryBot.define do
-  factory :quote_check_qa_attributes, class: Hash do
+  factory :quote_check_works_data_qa_attributes, class: Hash do
     skip_create
     initialize_with do
       {

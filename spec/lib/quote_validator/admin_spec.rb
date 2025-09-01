@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.describe QuoteValidator::Admin, type: :service do
   subject(:validator) { described_class.new(attributes) }
 
-  let(:attributes) { build(:quote_check_qa_attributes) }
+  let(:attributes) { build(:quote_check_works_data_qa_attributes) }
 
   describe "#control_codes" do
     before { validator.validate! }
@@ -46,7 +46,7 @@ RSpec.describe QuoteValidator::Admin, type: :service do
 
     context "with symbolized and stringified keys" do
       let(:attributes) do
-        build(:quote_check_qa_attributes,
+        build(:quote_check_works_data_qa_attributes,
               client: {
                 nom: "DOE",
                 prenom: "JANE"

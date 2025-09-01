@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe QuoteReader::Qa, type: :service do
+RSpec.describe QuoteReader::WorksDataQa, type: :service do
   describe ".json_schema" do
     subject(:json_schema) { described_class.json_schema }
 

@@ -167,9 +167,9 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
       private_data_qa_result: quote_reader.private_data_qa_result,
       private_data_qa_version: quote_reader.private_data_qa_version,
 
-      qa_attributes: quote_reader.qa_attributes,
-      qa_result: quote_reader.qa_result,
-      qa_version: quote_reader.qa_version,
+      works_data_qa_attributes: quote_reader.works_data_qa_attributes,
+      works_data_qa_result: quote_reader.works_data_qa_result,
+      works_data_qa_version: quote_reader.works_data_qa_version,
 
       read_attributes: quote_reader.read_attributes
     )
