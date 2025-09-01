@@ -6,7 +6,7 @@ RSpec.describe QuoteValidator::Works::Global, type: :service do
   subject(:validator) { described_class.new(attributes) }
 
   let(:attributes) do
-    build(:quote_check_qa_attributes,
+    build(:quote_check_works_data_qa_attributes,
           gestes: [
             { type: "chauffe_eau_thermo" },
             { type: "isolation_comble_perdu" }
@@ -52,7 +52,7 @@ RSpec.describe QuoteValidator::Works::Global, type: :service do
 
     context "with symbolized and stringified keys" do
       let(:attributes) do
-        build(:quote_check_qa_attributes,
+        build(:quote_check_works_data_qa_attributes,
               "gestes" => [
                 { type: "chauffe_eau_thermo" },
                 { "type" => "isolation_comble_perdu" }
@@ -83,7 +83,7 @@ RSpec.describe QuoteValidator::Works::Global, type: :service do
 
     context "with valid RGE but wrong geste types" do
       let(:attributes) do
-        build(:quote_check_qa_attributes,
+        build(:quote_check_works_data_qa_attributes,
               pro: {
                 rge_labels: ["Q90513"],
                 siret: "52503410400014"
@@ -103,7 +103,7 @@ RSpec.describe QuoteValidator::Works::Global, type: :service do
 
     context "with valid but deprecated RGE and matching geste types" do
       let(:attributes) do
-        build(:quote_check_qa_attributes,
+        build(:quote_check_works_data_qa_attributes,
               date_devis: "2018-10-01",
               pro: {
                 rge_labels: ["Q90513"],
@@ -123,7 +123,7 @@ RSpec.describe QuoteValidator::Works::Global, type: :service do
 
     context "with invalid RGE but another good" do
       let(:attributes) do
-        build(:quote_check_qa_attributes,
+        build(:quote_check_works_data_qa_attributes,
               pro: {
                 siret: "504327404 00035",
                 rge_labels: ["E-E178489"]

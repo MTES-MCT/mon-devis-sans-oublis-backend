@@ -7,7 +7,7 @@ RSpec.describe QuoteReader::Anonymizer, type: :service do
     subject(:anonymized_text) { described_class.new(raw_text).anonymized_text(attributes) }
 
     let(:attributes) do
-      build(:quote_check_qa_attributes,
+      build(:quote_check_works_data_qa_attributes,
             {
               client: {
                 nom: "Doe",
@@ -30,7 +30,7 @@ RSpec.describe QuoteReader::Anonymizer, type: :service do
 
       context "with empty values" do # rubocop:disable RSpec/NestedGroups
         let(:attributes) do
-          build(:quote_check_qa_attributes,
+          build(:quote_check_works_data_qa_attributes,
                 {
                   client: {
                     nom: "Doe",

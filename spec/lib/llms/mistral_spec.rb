@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.describe Llms::Mistral, type: :service do
   subject(:mistral) { described_class.new(prompt, json_schema:, model:) }
 
-  let(:prompt) { Rails.root.join("lib/quote_reader/prompts/qa.txt").read }
+  let(:prompt) { Rails.root.join("lib/quote_reader/prompts/works_data.txt").read }
   let(:model) { described_class::DEFAULT_MODEL } # Default
   let(:json_schema) { nil } # Default
 
@@ -32,7 +32,7 @@ RSpec.describe Llms::Mistral, type: :service do
     subject(:read_attributes) { mistral.chat_completion(text) }
 
     context "with JSON schema" do
-      let(:json_schema) { QuoteReader::Qa.json_schema }
+      let(:json_schema) { QuoteReader::WorksDataQa.json_schema }
 
       it "returns a hash with the expected keys", :vcr do
         expect(read_attributes.dig(:tva, -1)).to include(

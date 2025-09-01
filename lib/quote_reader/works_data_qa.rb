@@ -2,8 +2,8 @@
 
 module QuoteReader
   # Read Quote text to extract Quote attributes by asking questions via LLM prompt online services
-  class Qa < Text
-    DEFAULT_LLM = ENV.fetch("QA_DEFAULT_LLM", "mistral")
+  class WorksDataQa < Text
+    DEFAULT_LLM = ENV.fetch("WORKS_DATA_QA_DEFAULT_LLM", ENV.fetch("QA_DEFAULT_LLM", "mistral"))
     VERSION = "0.0.1"
 
     attr_reader :read_attributes, :result
@@ -22,7 +22,7 @@ module QuoteReader
 
     private
 
-    # According to prompts/qa.txt, the attributes should be cleaned
+    # According to prompts/works_data.txt, the attributes should be cleaned
     # rubocop:disable Metrics/AbcSize
     # rubocop:disable Metrics/CyclomaticComplexity
     # rubocop:disable Metrics/PerceivedComplexity
@@ -68,7 +68,7 @@ module QuoteReader
     # rubocop:enable Metrics/AbcSize
 
     def prompt
-      Rails.root.join("lib/quote_reader/prompts/qa.txt").read
+      Rails.root.join("lib/quote_reader/prompts/works_data.txt").read
     end
   end
 end
