@@ -575,9 +575,10 @@ components:
           - Chauffage +
           - QualiPV 500
           - Qualisol Combi
+          - CertiRénov RGE par CERQUAL Qualitel Certification
           - QualiPAC module CET
-          - CERTIBAT-RGE
           - AUDIT ENERGETIQUE BATIMENT
+          - CERTIBAT-RGE
           - Certiforage module Sonde
           - Certiforage module Nappe
           - Qualisol Collectif
@@ -601,7 +602,6 @@ components:
           - CERTIFICAT_PLENETUDE
           - CERTIFICAT_P_ET_G_PLENETUDE
           - CERTIFICAT_SARL_DOMINIQUE_CALLIET
-          - CertiRénov RGE par CERQUAL Qualitel Certification
         domaine:
           title: Domaine de travaux
           type: string
@@ -632,12 +632,12 @@ components:
           - Etude solaire photovoltaïque
           - Etude forage géothermique
           - Etude bois énergie
+          - Projet complet de rénovation
           - Etude ACV
           - Etude solaire thermique
           - Inconnu
           - Etude eclairage
           - Etude système technique bâtiment
-          - Projet complet de rénovation
           - Etude enveloppe du bâtiment
           - Commisionnement
           - Non renseigné
@@ -669,11 +669,11 @@ components:
           - qualifelec
           - Non renseigné
           - Inconnu
-          - certibat
+          - cerqual
           - afnor
+          - certibat
           - opqtecc
           - lne
-          - cerqual
         particulier:
           title: Travaille pour les particuliers
           type: boolean
