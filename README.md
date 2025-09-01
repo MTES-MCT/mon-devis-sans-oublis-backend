@@ -151,7 +151,7 @@ sequenceDiagram
     participant Albert OCR as API Albert AI OCR LLM
     participant MDSO OCR
     participant Mistral LLM as API Mistral AI LLM
-    participant Tesseract as Tesseract OCR
+    participant ~~Tesseract as Tesseract OCR~~
 
     participant BO as Back Office MDSO
 
@@ -224,9 +224,9 @@ QuoteCheck.find(quote_check_id).update!(validation_errors: nil, validation_error
 
 Différentes briques sont mises à contribution et encore en évaluation via le projet dédié [mon-devis-sans-oublis-backend-ocr](https://github.com/MTES-MCT/mon-devis-sans-oublis-backend-ocr)
 
-- pour la reconnaissance des images et lire leur contenu via OCR
-  - Surya (Python)
-  - tesseract (natif)
+- pour la reconnaissance des images et lire leur contenu via OCR dans ce projet
+  - ~~Surya (Python)~~
+  - ~~tesseract (natif)~~
 - pour transformer les PDF en images
   - librairie Poppler `pdftoppm` (natif)
   - la gem MiniMagick (IM) `mini_magick` avec ImageMagick 6.9 (comme sur Scalingo) (natif)
