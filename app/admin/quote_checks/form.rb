@@ -7,7 +7,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
                 :parent_id,
                 :reference, :profile, :renovation_type,
                 :aides, :gestes, # Virtual attributes
-                :ocr, :qa_llm, # Check params
+                :ocr, :works_data_qa_llm, # Check params
                 :process_synchronously
 
   controller do # rubocop:disable Metrics/BlockLength
@@ -45,7 +45,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
         job_kwargs = {
           force_ocr: ActiveModel::Type::Boolean.new.cast(new_quote_check_params[:force_ocr]),
           ocr: new_quote_check_params[:ocr],
-          qa_llm: new_quote_check_params[:qa_llm]
+          qa_llm: new_quote_check_params[:works_data_qa_llm]
         }
         if ActiveModel::Type::Boolean.new.cast(new_quote_check_params[:process_synchronously])
           QuoteCheckCheckJob.new.perform(*job_args, **job_kwargs)
@@ -88,7 +88,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
         :file, :case_id, :parent_id,
         :reference, :profile, :renovation_type,
         :file_text, :file_markdown,
-        :force_ocr, :ocr, :qa_llm, # Check params
+        :force_ocr, :ocr, :works_data_qa_llm, # Check params
         :process_synchronously, # Back Office params
         aides: [], gestes: [] # Virtual attributes
       )
@@ -149,11 +149,11 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
                           } ||
                           Rails.application.config.ocrs_configured.first
 
-        f.input :qa_llm,
+        f.input :works_data_qa_llm,
                 as: :select,
                 collection: Rails.application.config.llms_configured,
                 include_blank: false,
-                selected: f.object&.qa_llm ||
+                selected: f.object&.works_data_qa_llm ||
                           Rails.application.config.llms_configured.detect { # rubocop:disable Style/BlockDelimiters
                             it.match(/#{QuoteReader::WorksDataQa::DEFAULT_LLM}/i)
                           } ||

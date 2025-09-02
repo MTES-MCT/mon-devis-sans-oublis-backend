@@ -13,7 +13,7 @@ class QuoteCheckCheckJob < ApplicationJob
 
     force_ocr = quote_check.force_ocr if force_ocr.nil?
     ocr ||= quote_check.ocr
-    qa_llm ||= quote_check.qa_llm
+    qa_llm ||= quote_check.works_data_qa_llm
 
     validation = QuoteCheckService.new(quote_check)
     updated_quote_check = validation.check(force_ocr:, ocr:, qa_llm:)
