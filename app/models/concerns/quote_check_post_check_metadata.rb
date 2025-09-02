@@ -9,7 +9,7 @@ module QuoteCheckPostCheckMetadata
     delegate :ocr, to: :file, allow_nil: true
     delegate :ocrable?, to: :file, allow_nil: true
 
-    attr_writer :force_ocr, :ocr, :qa_llm
+    attr_writer :force_ocr, :ocr, :works_data_qa_llm
 
     STATUSES = %w[pending valid invalid].freeze # rubocop:disable Lint/ConstantDefinitionInBlock
 
@@ -58,10 +58,11 @@ module QuoteCheckPostCheckMetadata
     finished_at - started_at
   end
 
-  def qa_llm
-    @qa_llm ||= read_attribute(:qa_llm) ||
-                Llms::Base.llm_from_result(qa_result)
+  def works_data_qa_llm
+    @works_data_qa_llm ||= self[:qa_llm] ||
+                           Llms::Base.llm_from_result(qa_result)
   end
+  alias qa_llm works_data_qa_llm
 
   # valid? is already used by the framework
   def quote_valid?

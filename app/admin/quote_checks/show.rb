@@ -35,7 +35,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
           row :renovation_type, label: "Type de rénovation"
           row :force_ocr
           row :ocr
-          row :qa_llm
+          row :works_data_qa_llm
           row :file_text
           row :file_markdown
           row :tokens_count, "Nombre de tokens" do
@@ -119,7 +119,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
                 content_tag(:td, "4.") + content_tag(:td, "Texte Anonymisé")
               end,
               content_tag(:tr) do
-                content_tag(:td, "5.") + content_tag(:td, "Attributs via par #{resource.qa_llm}")
+                content_tag(:td, "5.") + content_tag(:td, "Attributs via par #{resource.works_data_qa_llm}")
               end,
               content_tag(:tr) do
                 content_tag(:td, "6.") + content_tag(:td, "Retour API pour frontend")
@@ -370,11 +370,11 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
         pre resource.anonymized_text
       end
 
-      tab "5. Attributs via par #{resource.qa_llm}" do
-        pre JSON.pretty_generate(resource.qa_attributes)
+      tab "5. Attributs via par #{resource.works_data_qa_llm}" do
+        pre JSON.pretty_generate(resource.works_data_qa_attributes)
 
         h1 "Résultat technique brut"
-        pre JSON.pretty_generate(resource.qa_result)
+        pre JSON.pretty_generate(resource.works_data_qa_result)
       end
 
       tab "6. Retour API pour frontend" do
