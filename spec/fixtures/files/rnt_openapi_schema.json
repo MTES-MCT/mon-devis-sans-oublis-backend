@@ -1,0 +1,381 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "schema OpenAPI",
+    "version": "V0.0.3",
+    "description": "Version V0.0.3 - 2025-08-27 : intégration des pac eau-eau, sol-eau et du brasseur d'air",
+    "x-release-date": "2025-08-27"
+  },
+  "paths": {},
+  "components": {
+    "schemas": {
+      "t_adresse": {
+        "type": "object",
+        "properties": {
+          "adresse_brut": {
+            "type": "string",
+            "description": "libéllé l'adresse postale du bien saisi par le diagnostiqueur sans le code postal ni la commune (FORMAT ATTENDU : Numéro de l’adresse dans la voie + Indice de répétition associé au numéro (par exemple bis, a…) + Nom de la voie en minuscules accentuées)"
+          },
+          "code_postal_brut": {
+            "type": "string",
+            "description": "code postal de l'adresse brute saisie par le diagnostiqueur"
+          },
+          "nom_commune_brut": {
+            "type": "string",
+            "description": "nom de commune brute saisie par le diagnostiqueur"
+          },
+          "label_brut": {
+            "type": "string",
+            "description": "libellé complet de l'adresse postale du bien saisi par le diagnostiqueur (FORMAT ATTENDU : Numéro de l’adresse dans la voie + Indice de répétition associé au numéro (par exemple bis, a…) + Nom de la voie en minuscules accentuées + Code postal du bureau de distribution de la voie + Nom officiel de la commune actuelle"
+          },
+          "label_brut_avec_complement": {
+            "type": "string",
+            "description": "libellé complet d'adresse complète qui est l'adresse postale du bien précédé par l'ensemble des compléments d'adresses nécessaires à la bonne localisation du bien saisi par le diagnostiqueur (FORMAT ATTENDU : Compléments d'adresses + Numéro de l’adresse dans la voie + Indice de répétition associé au numéro (par exemple bis, a…) + Nom de la voie en minuscules accentuées + Code postal du bureau de distribution de la voie + Nom officiel de la commune actuelle)"
+          },
+          "statut_geocodage_ban": {
+            "x-appinfo": {
+              "adresse_geocodee_ban": "adresse géocodée ban à l'adresse",
+              "adresse_non_geocodee_ban": "adresse non géocodée ban"
+            },
+            "type": "string",
+            "enum": [
+              "adresse_geocodee_ban",
+              "adresse_non_geocodee_ban"
+            ],
+            "description": "statut de l'appareillement à la BAN de l'adresse"
+          },
+          "ban_id": {
+            "type": "string",
+            "nullable": true,
+            "description": "clé d'intéropérabilité de la BAN referençant l'adresse. (id dans l'API adresse d'etalab). Attention Il ne s'agit pas de l'identifiant BAN stable (banId)"
+          },
+          "ban_id_ban_adresse": {
+            "type": "string",
+            "nullable": true,
+            "description": "identifant BAN stable officiel de l'adresse. Le nom du champs est celui du format BAL 1.4 ( https://aitf-sig-topo.github.io/voies-adresses/files/AITF_SIG_Topo_Format_Base_Adresse_Locale_v1.4.pdf ) (ce champs s'appelle banId dans l'API adresse d'etalab)"
+          },
+          "compl_nom_residence": {
+            "type": "string",
+            "nullable": true,
+            "description": "complement d'adresses : nom de la residence"
+          },
+          "compl_ref_batiment": {
+            "type": "string",
+            "nullable": true,
+            "description": "complement d'adresse : référence du bâtiment ( ex. A,B ,1,2,3,4)"
+          },
+          "compl_etage_appartement": {
+            "type": "string",
+            "nullable": true,
+            "description": "complement d'adresses : etage du logement (cas de l'appartement) sous format entier 0 =RDC"
+          },
+          "compl_ref_cage_escalier": {
+            "type": "string",
+            "nullable": true,
+            "description": "complement d'adresses : reference de cage d'escalire>"
+          },
+          "compl_ref_logement": {
+            "type": "string",
+            "nullable": true,
+            "description": "complement d'adresses : reference du logement dans le bâtiment (appartement ex. 10, A13, 3eme gauche)"
+          }
+        },
+        "required": [
+          "adresse_brut",
+          "code_postal_brut",
+          "nom_commune_brut",
+          "label_brut",
+          "label_brut_avec_complement",
+          "statut_geocodage_ban",
+          "ban_id",
+          "ban_id_ban_adresse",
+          "compl_nom_residence",
+          "compl_ref_batiment",
+          "compl_etage_appartement",
+          "compl_ref_cage_escalier",
+          "compl_ref_logement"
+        ]
+      },
+      "rnt": {
+        "type": "object",
+        "properties": {
+          "projet_travaux": {
+            "type": "object",
+            "properties": {
+              "donnees_contextuelles": {
+                "$ref": "#/components/schemas/donnees_contextuelles"
+              },
+              "travaux_collection": {
+                "type": "object",
+                "properties": {
+                  "travaux": {
+                    "type": "object",
+                    "properties": {
+                      "lot_travaux": {
+                        "x-appinfo": {
+                          "mur": "murs",
+                          "plancher_bas": "planchers bas",
+                          "plancher_haut": "toiture/plafond",
+                          "menuiserie": "menuiserie (portes et fenêtres)",
+                          "systeme": "système (chauffage, ecs, clim)",
+                          "systeme_ventilation": "système de ventilation",
+                          "photovoltaique": "solaire photovoltaïque",
+                          "autre": "autre"
+                        },
+                        "type": "string",
+                        "enum": [
+                          "mur",
+                          "plancher_bas",
+                          "plancher_haut",
+                          "menuiserie",
+                          "systeme",
+                          "systeme_ventilation",
+                          "photovoltaique",
+                          "autre"
+                        ],
+                        "description": "lot concerné par les travaux"
+                      },
+                      "type_travaux": {
+                        "x-appinfo": {
+                          "isolation_mur_ite": "isolation murs en ite",
+                          "isolation_mur_iti": "isolation murs en iti",
+                          "isolation_sous_rampants": "isolation sous rampants (combles aménagés)",
+                          "isolation_combles_non_amenages": "isolation des combles non aménagés",
+                          "isolation_toiture_terrasse": "isolation toiture terrasse",
+                          "isolation_planchers_bas": "isolation planchers bas",
+                          "fenetre_porte_fenetre": "installation fenêtres ou portes fenêtres",
+                          "vmc_simple_flux": "installation vmc simple flux",
+                          "vmc_double_flux": "installation vmc double flux",
+                          "pac_geothermique": "installation pac géothermique",
+                          "pac_sol_eau": "installation pac sol/eau",
+                          "pac_eau_eau": "installation pac eau/eau",
+                          "pac_air_eau": "installation pac air/eau",
+                          "pac_air_air": "installation pac air/air (climatiseur inclu)",
+                          "chaudiere_gaz": "installation chaudière à gaz",
+                          "chaudiere_biomasse": "installation chaudière à biomasse",
+                          "poele_insert_bois_granules": "installation poêle/insert à bois/granulés",
+                          "radiateur_electrique": "installation radiateur électrique",
+                          "radiateur_hydraulique": "installation radiateur hydraulique",
+                          "plancher_plafond_chauffant_hydraulique": "installation plancher/plafond chauffant hydraulique",
+                          "chauffe_eau_thermodynamique": "installation chauffe-eau thermodynamique",
+                          "ballon_ecs_effet_joule": "installation ballon d'ecs à effet joule",
+                          "dispositif_solaire_thermique": "installation panneaux solaire thermique",
+                          "dispositif_solaire_photovoltaique": "installation panneaux solaire photovoltaïque",
+                          "porte_entree": "installation de porte d’entrée isolante",
+                          "fermeture_isolante": "installation de volets isolants",
+                          "protection_solaire": "installation de protections solaires des fenêtres",
+                          "double_fenetre": "installation de double fenêtre",
+                          "fenetre_toiture": "installation de fenêtre de toit",
+                          "raccordement_reseau_chaleur": "raccordement à un réseau de chaleur",
+                          "chauffe_bain_individuel": "chauffe-bain individuel",
+                          "brasseur_air": "installation de brasseurs d’air fixes",
+                          "chauffe_eau_solaire": "installation chauffe-eau solaire",
+                          "systeme_solaire_combine": "installation sytème solaire combiné",
+                          "ventilation_hybride_hygroreglable": "installation ventilation hybride hygroreglable"
+                        },
+                        "type": "string",
+                        "enum": [
+                          "isolation_mur_ite",
+                          "isolation_mur_iti",
+                          "isolation_sous_rampants",
+                          "isolation_combles_non_amenages",
+                          "isolation_toiture_terrasse",
+                          "isolation_planchers_bas",
+                          "fenetre_porte_fenetre",
+                          "vmc_simple_flux",
+                          "vmc_double_flux",
+                          "pac_geothermique",
+                          "pac_sol_eau",
+                          "pac_eau_eau",
+                          "pac_air_eau",
+                          "pac_air_air",
+                          "chaudiere_gaz",
+                          "chaudiere_biomasse",
+                          "poele_insert_bois_granules",
+                          "radiateur_electrique",
+                          "radiateur_hydraulique",
+                          "plancher_plafond_chauffant_hydraulique",
+                          "chauffe_eau_thermodynamique",
+                          "ballon_ecs_effet_joule",
+                          "dispositif_solaire_thermique",
+                          "dispositif_solaire_photovoltaique",
+                          "porte_entree",
+                          "fermeture_isolante",
+                          "protection_solaire",
+                          "double_fenetre",
+                          "fenetre_toiture",
+                          "raccordement_reseau_chaleur",
+                          "chauffe_bain_individuel",
+                          "brasseur_air",
+                          "chauffe_eau_solaire",
+                          "systeme_solaire_combine",
+                          "ventilation_hybride_hygroreglable"
+                        ],
+                        "description": "type de travaux proposé par l'auditeur"
+                      },
+                      "usage_systeme": {
+                        "x-appinfo": {
+                          "chauffage": "chauffage",
+                          "ecs": "eau chaude sanitaire",
+                          "refroidissement": "refroidissement",
+                          "chauffage_ecs": "chauffage + ecs",
+                          "chauffage_refroidissement": "chauffage + refroidissement",
+                          "refroidissement_ecs": "refroidissement + ecs",
+                          "chauffage_ecs_refroidissement": "chauffage + ecs + refroidissement"
+                        },
+                        "type": "string",
+                        "enum": [
+                          "chauffage",
+                          "ecs",
+                          "refroidissement",
+                          "chauffage_ecs",
+                          "chauffage_refroidissement",
+                          "refroidissement_ecs",
+                          "chauffage_ecs_refroidissement"
+                        ],
+                        "nullable": true,
+                        "description": "usage(s) du système (chauffage, ecs, clim)"
+                      },
+                      "reference_travaux": {
+                        "type": "string",
+                        "description": "reference projet de l'objet (cette référence permet de faire d'éventuels liens entre objets). La codification et utilisation des références peut différer entre logiciels"
+                      },
+                      "cout": {
+                        "type": "number",
+                        "nullable": true,
+                        "description": "coût des travaux correspondants (unité : €TTC)"
+                      },
+                      "caracteristiques_travaux": {
+                        "oneOf": []
+                      }
+                    },
+                    "required": [
+                      "lot_travaux",
+                      "type_travaux",
+                      "usage_systeme",
+                      "reference_travaux",
+                      "cout",
+                      "caracteristiques_travaux"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "donnees_contextuelles": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "x-appinfo": {
+              "0.1": "version de développement",
+              "0.2": "version de développement avec la plupart des travaux",
+              "0.3": "version de développement mise-à-jour sur les pac et sur les critères des aides"
+            },
+            "type": "string",
+            "enum": [
+              "0.1",
+              "0.2",
+              "0.3"
+            ],
+            "description": "version du RNT. Cenuméro de version permet de tracer les évolutions de modèle de données et de contrôle de validation mis en place sur le RNT. Chaque nouvelle version induit un certain nombre de changements substantiels. Certaines données ne sont disponible ou obligatoires qu'à partir d'une certaine version"
+          },
+          "geolocalisation": {
+            "type": "object",
+            "properties": {
+              "numero_fiscal_local": {
+                "type": "string",
+                "nullable": true,
+                "description": "numero fiscal du logement (12 caractères). Cette information peut être récupérée sur la plateforme gérer mes biens immobiliers du site particulier des impots."
+              },
+              "id_batiment_rnb_collection": {
+                "type": "object",
+                "properties": {
+                  "id_batiment_rnb": {
+                    "type": "string",
+                    "description": "identifiant batiment du Référentiel National des Bâtiments (RNB) à venir sur les bâtiments en France (https://beta.gouv.fr/startups/bat-id.html)"
+                  }
+                }
+              },
+              "adresse": {
+                "type": "string",
+                "nullable": true,
+                "description": "adresse du bien"
+              }
+            },
+            "required": [
+              "numero_fiscal_local",
+              "id_batiment_rnb_collection",
+              "adresse"
+            ]
+          },
+          "numero_projet": {
+            "type": "string",
+            "nullable": true,
+            "description": "numéro du projet de travaux"
+          },
+          "contexte": {
+            "x-appinfo": {
+              "audit": "audit",
+              "devis": "devis",
+              "facture": "facture"
+            },
+            "type": "string",
+            "enum": [
+              "audit",
+              "devis",
+              "facture"
+            ],
+            "description": "choix du contexte dans lequel les travaux sont proposés (audit, devis …)"
+          },
+          "usage_batiment": {
+            "x-appinfo": {
+              "maison_individuelle": "maison individuelle",
+              "immeuble": "immeuble",
+              "appartement_chauffage_individuel": "appartement avec chauffage individuel",
+              "appartement_chauffage_collectif": "appartement avec chauffage collectif"
+            },
+            "type": "string",
+            "enum": [
+              "maison_individuelle",
+              "immeuble",
+              "appartement_chauffage_individuel",
+              "appartement_chauffage_collectif"
+            ],
+            "description": "choix de l'usage, du type de bati (maison, appartement, immeuble ...)"
+          },
+          "aide_financiere_collection": {
+            "type": "object",
+            "properties": {
+              "aide_financiere": {
+                "x-appinfo": {
+                  "cee": "cee",
+                  "mpr_geste": "mpr par geste",
+                  "mpr_ampleur": "mpr rénovation d'ampleur",
+                  "eco_ptz": "éco-ptz"
+                },
+                "type": "string",
+                "enum": [
+                  "cee",
+                  "mpr_geste",
+                  "mpr_ampleur",
+                  "eco_ptz"
+                ],
+                "description": "aide financière visée"
+              }
+            }
+          }
+        },
+        "required": [
+          "version",
+          "geolocalisation",
+          "numero_projet",
+          "contexte",
+          "usage_batiment",
+          "aide_financiere_collection"
+        ]
+      }
+    }
+  }
+}
