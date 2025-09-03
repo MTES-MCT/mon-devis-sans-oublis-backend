@@ -133,7 +133,6 @@ composants DSFR](https://github.com/betagouv/dsfr-view-components)
 - Sentry pour monitorer et être alerté en cas d'erreur ;
 - Matomo pour mesurer et comprendre l'usage via des analytics ;
 - RSpec comme framework de tests ;
-- Rswag comme outil de documentation au format Swagger/ OpenAPI de l'API à travers des tests ;
 - Rubocop (RSpec et Rails) pour le linting ;
 - Docker pour avoir un environnement de développement ;
 - ClamAV pour scanner les fichiers déposés.
@@ -278,6 +277,14 @@ anonymized_text = QuoteReader::Anonymizer.new(file_text).anonymized_text(private
 - protéger via authentification HTTP Basic avec Bearer hashé
 - voir fichier de documentation de l'API  au format OpenAPI Swagger et interface bac à sable interractif sur `/api-docs`
 - regénération et mise à jour de la documentation à partir des spécifications tests via `make doc`
+
+### API Documentation
+
+Nous utilisons Rswag en Ruby pour générer la documentation de notre API MDSO au format OpenAPI.
+
+Elle est disponible dans le dossier `swagger`, avec une version interne à MDSO et une pour les partenaires avec accès API Key.
+
+La documentation se met à jour via la commande `bundle exec rake rswag:specs:swaggerize PATTERN="spec/**/*_doc_spec.rb"` qui fait appelle au schéma des types situé dans `spec/swagger_helper.rb` et avec les tests `spec/requests/*+doc_spec.rb`.
 
 ### API Accès
 
