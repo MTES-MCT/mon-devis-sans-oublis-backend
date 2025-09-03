@@ -76,19 +76,18 @@ class XsdToOpenApi
     complex_type_name = complex_type_node.name.sub("xs:", "")
 
     # TODO: Manage xs:attribute
-    complex_type_node.xpath("./xs:complexType|./xs:element", "xs" => @xs).each do |el|
+    complex_type_node.xpath("./xs:complexType|./xs:element|./xs:choice/xs:element", "xs" => @xs).each do |el|
       property_name = el["name"] || el["ref"]
       property = parse_element_or_complex(el)
       properties[property_name] = property if property_name
     end
 
-    if complex_type_node.element_children.first.name.sub("xs:", "") == "choice"
-      return { "oneOf" => properties.values }
-    end
+    return { "oneOf" => properties.values } if complex_type_node.element_children.first.name.sub("xs:", "") == "choice"
 
     props = {
       "type" => "object",
-      "properties" => properties
+      "properties" => properties,
+      "additionalProperties" => false # For LLM
     }.merge(props)
 
     case complex_type_name
@@ -101,6 +100,15 @@ class XsdToOpenApi
     end
 
     props
+  end
+
+  def complex_type?(node_name)
+    case node_name&.gsub("xs:", "")
+    when "complexType", "sequence", "all", "choice"
+      true
+    else
+      false
+    end
   end
 
   def parse_element_or_complex(node)
@@ -129,17 +137,14 @@ class XsdToOpenApi
       end
     end
 
-    case node.name.gsub("xs:", "")
-    when "complexType"
+    if complex_type?(node.name)
       return parse_complex_type(node, name:, props:)
-    else
-      raise NotImplementedError, "Node type '#{node.name}' not implemented" if node.name != "element"
+    elsif node.name != "element"
+      raise NotImplementedError, "Node type '#{node.name}' not implemented"
     end
 
     children = node.element_children.reject { it.name.gsub("xs:", "") == "annotation" }
-    if children.size == 1 && children.first.name.gsub("xs:", "") == "complexType"
-      return parse_complex_type(children.first, name:, props:)
-    end
+    return parse_complex_type(children.first, name:, props:) if children.size == 1 && complex_type?(children.first.name)
 
     # TODO: minOccurs="0" / maxOccurs="unbounded"
     # TODO: ref like <xs:element ref="donnees_contextuelles"/>
@@ -149,7 +154,7 @@ class XsdToOpenApi
 
     if simple_type
       base = simple_type["base"]&.sub("xs:", "") || "string"
-      enums = simple_type.xpath("./xs:enumeration", "xs" => @xs).map { it["value"] }
+      enums = simple_type.xpath("./xs:enumeration", "xs" => @xs).map { it["value"] } # rubocop:disable Rails/Pluck
       props["type"] = map_type(base)
       props["enum"] = enums if enums.any?
     elsif !ref
