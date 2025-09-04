@@ -13,12 +13,18 @@ module Llms
     def initialize(prompt, json_schema: nil, model: nil, result_format: :json)
       @prompt = prompt
 
-      @json_schema = json_schema
+      raise NotImplementedError, "JSON Schema with $ref are not supported" if json_schema&.to_json&.include?("$ref")
+
+      @json_schema = JsonOpenapi.make_schema_refs_inline!(json_schema) if json_schema
       @model = model
 
       raise ArgumentError, "Invalid result format: #{result_format}" unless RESULT_FORMATS.include?(result_format)
 
       @result_format = result_format
+    end
+
+    def compacted_schema
+      JsonOpenapi.compact_schema(json_schema)
     end
 
     def self.clean_value(text)
@@ -74,7 +80,9 @@ module Llms
     # rubocop:enable Metrics/AbcSize
 
     def self.extract_json(text)
-      text[/(\{.+\})/im, 1]&.gsub(/"version": ([\d\.]+)/, '"version": "\1"') # TODO: Remove version temporary fix
+      (
+        text[/```json.?+(\{.+\})/im, 1] || text[/(\{.+\})/im, 1]
+      )&.gsub(/"version": ([\d\.]+)/, '"version": "\1"') # TODO: Remove version temporary fix
     end
 
     def self.extract_jsx(text)

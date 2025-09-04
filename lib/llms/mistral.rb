@@ -11,6 +11,7 @@ module Llms
     attr_reader :prompt, :read_attributes, :result
 
     DEFAULT_MODEL = ENV.fetch("MISTRAL_MODEL", "mistral-large-latest")
+    MAX_SCHEMA_SIZE = 15_000 # characters # rails  error "invalid_request_json_schema" with "code" => "3300"
 
     def initialize(prompt, json_schema: nil, model: DEFAULT_MODEL, result_format: :json)
       super
@@ -36,6 +37,7 @@ module Llms
     # rubocop:disable Metrics/AbcSize
     # rubocop:disable Metrics/MethodLength
     def chat_completion(text, model: @model)
+      # TODO: Use ruby_llm
       uri = URI("https://api.mistral.ai/v1/chat/completions")
       headers = {
         "Content-Type" => "application/json",
@@ -56,7 +58,7 @@ module Llms
           json_schema: {
             name: "result",
             strict: true,
-            schema: json_schema
+            schema: compacted_schema
           }
         }
       end
@@ -64,7 +66,7 @@ module Llms
       http = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true)
       http.read_timeout = 120 # seconds
       request = Net::HTTP::Post.new(uri, headers)
-      request.body = body.to_json
+      request.body = body.to_json # doing compact JSON
       response = http.request(request)
       raise TimeoutError if response.code == "504"
 

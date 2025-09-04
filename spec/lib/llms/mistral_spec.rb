@@ -41,6 +41,23 @@ RSpec.describe Llms::Mistral, type: :service do
       end
     end
 
+    context "with RNT JSON schema" do
+      let(:json_schema) do
+        json = JSON.parse(
+          Rails.root.join("spec/fixtures/files/rnt_openapi_schema.json").read
+        )
+
+        json.dig("components", "schemas", "rnt") || # TODO: What about t_adresse type outside of rnt?
+          json # .dig("$defs", "rnt") # @@@ TODO donnees_contextuelles &.merge(json.dig("$defs", "rnt"))
+      end
+
+      it "returns a hash with the expected keys" do # , :vcr do @@@ TODO
+        expect(read_attributes.dig(:tva, -1)).to include(
+          prix_ht_total: 8765.0
+        )
+      end
+    end
+
     it "returns a successful complete response", :vcr do
       expect(read_attributes.dig(:gestes, -1)).to include(
         type: "pac_air_eau",

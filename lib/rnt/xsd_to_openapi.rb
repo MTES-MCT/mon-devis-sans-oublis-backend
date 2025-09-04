@@ -7,7 +7,7 @@ require "json"
 require "pry"
 
 # Simple XSD to OpenAPI YAML converter
-class XsdToOpenApi
+class XsdToOpenApi # rubocop:disable Metrics/ClassLength
   OPENAPI_VERSION = "3.0.1"
 
   def initialize(xsd_path)
@@ -29,7 +29,7 @@ class XsdToOpenApi
 
   private
 
-  def schema_props
+  def schema_props # rubocop:disable Metrics/MethodLength
     doc_node = @schema.at_xpath("//xs:annotation/xs:documentation", "xs" => @xs)
     doc_text = doc_node&.text&.strip
 
@@ -38,11 +38,11 @@ class XsdToOpenApi
     description = doc_text || "Generated from XSD"
 
     info = {
-      "title" => File.basename(
-        @xsd.at_xpath("//xs:schema", "xs" => @xs)["targetNamespace"] ||
+      "title" => "#{File.basename(
+        @xsd.at_xpath('//xs:schema', 'xs' => @xs)['targetNamespace'] ||
           File.basename(@xsd_path, File.extname(@xsd_path)) ||
-          "Schema"
-      ) + " OpenAPI",
+          'Schema'
+      )} OpenAPI",
       "version" => version,
       "description" => description,
       "x-release-date" => date
@@ -64,7 +64,10 @@ class XsdToOpenApi
            .each { @components[it["name"]] = parse_element_or_complex(it) }
   end
 
-  def parse_complex_type(node, props: {}, name: nil)
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/PerceivedComplexity
+  def parse_complex_type(node, props: {}, name: nil) # rubocop:disable Metrics/MethodLength
     properties = {}
 
     name = node["name"] || name
@@ -101,6 +104,9 @@ class XsdToOpenApi
 
     props
   end
+  # rubocop:enable Metrics/PerceivedComplexity
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/AbcSize
 
   def complex_type?(node_name)
     case node_name&.gsub("xs:", "")
@@ -111,7 +117,10 @@ class XsdToOpenApi
     end
   end
 
-  def parse_element_or_complex(node)
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/PerceivedComplexity
+  def parse_element_or_complex(node) # rubocop:disable Metrics/MethodLength
     puts "Parsing node: #{node.name} #{node['name'] || node['ref']}" # rubocop:disable Rails/Output
 
     props = {}
@@ -181,14 +190,16 @@ class XsdToOpenApi
     #   prop["minLength"] = min.to_i if min
     #   prop["maxLength"] = max.to_i if max
   end
+  # rubocop:enable Metrics/PerceivedComplexity
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/AbcSize
 
   def map_type(xsd_type)
     case xsd_type
     when "boolean" then "boolean"
-    when "date" then "string"
+    when "date", "string" then "string"
     when "double" then "number"
     when "int", "integer" then "integer"
-    when "string" then "string"
     else
       raise NotImplementedError, "Type mapping for '#{xsd_type}' not implemented"
     end
@@ -196,8 +207,9 @@ class XsdToOpenApi
 end
 
 if __FILE__ == $PROGRAM_NAME
-  openapi_yaml = XsdToOpenApi.new(ARGV[0] || "schema.xsd").to_yaml
-  File.write(ARGV[1] || "schema_openapi.yaml", YAML.dump(openapi_yaml))
-  File.write("schema_openapi.json", JSON.pretty_generate(openapi_yaml))
+  dir = File.dirname(__FILE__)
+  openapi_yaml = XsdToOpenApi.new(ARGV[0] || File.expand_path("schema.xsd", dir)).to_yaml
+  File.write(ARGV[1] || File.expand_path("schema_openapi.yaml", dir), YAML.dump(openapi_yaml))
+  File.write(File.expand_path("schema_openapi.json", dir), JSON.pretty_generate(openapi_yaml))
   puts YAML.dump(openapi_yaml) # rubocop:disable Rails/Output
 end
