@@ -5,9 +5,12 @@ module QuoteCheckPostCheckMetadata
   extend ActiveSupport::Concern
 
   included do
+    # OCR settings delegated to the QuoteFile
     delegate :force_ocr, to: :file, allow_nil: true
     delegate :ocr, to: :file, allow_nil: true
     delegate :ocrable?, to: :file, allow_nil: true
+    delegate :ocred?, to: :file, allow_nil: true
+    delegate :only_ocrable?, to: :file, allow_nil: true
 
     attr_writer :force_ocr, :ocr, :works_data_qa_llm
 
