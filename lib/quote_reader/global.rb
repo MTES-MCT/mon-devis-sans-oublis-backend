@@ -104,12 +104,12 @@ module QuoteReader
       )
       @anonymized_text = Anonymizer.new(shrinked_text).anonymized_text(private_extended_attributes)
 
-      qa_reader = Qa.new(anonymized_text, quote_file:)
+      works_data_qa_reader = WorksDataQa.new(anonymized_text, quote_file:)
       begin
-        @qa_attributes = qa_reader.read(llm: qa_llm) || {}
+        @qa_attributes = works_data_qa_reader.read(llm: qa_llm) || {}
       ensure
-        @qa_result = qa_reader.result
-        @qa_version = qa_reader.version
+        @qa_result = works_data_qa_reader.result
+        @qa_version = works_data_qa_reader.version
       end
 
       @read_attributes = TrackingHash.nilify_empty_values(
