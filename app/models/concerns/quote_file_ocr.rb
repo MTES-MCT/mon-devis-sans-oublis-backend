@@ -21,6 +21,10 @@ module QuoteFileOcr
       only_ocrable?
   end
 
+  def ocred?
+    ocr_result.present?
+  end
+
   def only_ocrable?
     content_type&.start_with?("image/") ||
       false

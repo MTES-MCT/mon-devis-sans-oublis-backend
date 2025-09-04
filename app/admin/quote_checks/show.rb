@@ -351,7 +351,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
         end
       end
 
-      tab "1. Texte brut#{" (via #{resource.ocr})" if resource.ocrable?}" do
+      tab "1. Texte brut (via #{resource.ocred? ? resource.ocr : 'PDF natif'})" do
         pre resource.text
       end
 

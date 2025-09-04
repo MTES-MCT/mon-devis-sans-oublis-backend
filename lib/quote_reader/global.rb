@@ -14,8 +14,13 @@ module QuoteReader
                 :anonymized_text,
                 :naive_attributes, :naive_version,
                 :private_data_qa_attributes, :private_data_qa_result, :private_data_qa_version,
-                :qa_attributes, :qa_result, :qa_version,
+                :works_data_qa_attributes, :works_data_qa_result, :works_data_qa_version,
                 :read_attributes
+
+    # DEPRECATED
+    alias qa_attributes works_data_qa_attributes
+    alias qa_result works_data_qa_result
+    alias qa_version works_data_qa_version
 
     DEFAULT_OCR = ENV.fetch("MDSO_OCR", "MdsoOcrMarker")
     VERSION = "0.0.1"
@@ -106,10 +111,10 @@ module QuoteReader
 
       works_data_qa_reader = WorksDataQa.new(anonymized_text, quote_file:)
       begin
-        @qa_attributes = works_data_qa_reader.read(llm: qa_llm) || {}
+        @works_data_qa_attributes = works_data_qa_reader.read(llm: qa_llm) || {}
       ensure
-        @qa_result = works_data_qa_reader.result
-        @qa_version = works_data_qa_reader.version
+        @works_data_qa_result = works_data_qa_reader.result
+        @works_data_qa_version = works_data_qa_reader.version
       end
 
       @read_attributes = TrackingHash.nilify_empty_values(
