@@ -74,13 +74,15 @@ module Api
         api_user || request.headers["User-Agent"]&.to_s
       end
 
-      def extract_rge_params
+      def extract_rge_params # rubocop:disable Metrics/AbcSize
         {
           date: params[:date],
-          siret: SiretValidator.validate_format!(params[:siret]),
+          siret: params[:siret].present? ? SiretValidator.validate_format!(params[:siret]) : nil,
           rge: params[:rge].present? ? RgeValidator.validate_format!(params[:rge]) : nil,
           geste_types: Array.wrap((params[:geste_types].presence || "").split(","))
         }
+      rescue QuoteValidator::Base::ArgumentError => e
+        raise BadRequestError.new(e.message, validator_error_code: e.error_code)
       end
 
       def log_rge_request(request_params, result, _source, started_at, success:)
