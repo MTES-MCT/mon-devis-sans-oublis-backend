@@ -157,6 +157,10 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
       end
 
       tab "Attributs détectés" do # rubocop:disable Metrics/BlockLength
+        next unless resource.read_attributes &&
+                    resource.validation_error_details &&
+                    resource.validation_error_edits
+
         file_errors = resource.validation_error_details&.select { |error| error["category"] == "file" }
         if file_errors&.any?
           panel "Fichier" do # rubocop:disable Metrics/BlockLength
@@ -352,18 +356,20 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
       end
 
       tab "1. Texte brut (via #{resource.ocred? ? resource.ocr : 'PDF natif'})" do
-        pre resource.text
+        pre resource.text if resource.text
       end
 
       tab "2. Données privées via méthode naïve hors ligne" do
-        pre JSON.pretty_generate(resource.naive_attributes)
+        pre JSON.pretty_generate(resource.naive_attributes) if resource.naive_attributes
       end
 
       tab "3. Données privées et Attributs via par #{resource.private_data_qa_llm}" do
-        pre JSON.pretty_generate(resource.private_data_qa_attributes)
+        pre JSON.pretty_generate(resource.private_data_qa_attributes) if resource.private_data_qa_attributes
 
-        h1 "Résultat technique brut"
-        pre JSON.pretty_generate(resource.private_data_qa_result)
+        if resource.private_data_qa_result
+          h1 "Résultat technique brut"
+          pre JSON.pretty_generate(resource.private_data_qa_result)
+        end
       end
 
       tab "4. Texte Anonymisé" do
@@ -371,10 +377,10 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
       end
 
       tab "5. Attributs via par #{resource.works_data_qa_llm}" do
-        pre JSON.pretty_generate(resource.works_data_qa_attributes)
+        pre JSON.pretty_generate(resource.works_data_qa_attributes) if resource.works_data_qa_attributes
 
         h1 "Résultat technique brut"
-        pre JSON.pretty_generate(resource.works_data_qa_result)
+        pre JSON.pretty_generate(resource.works_data_qa_result) if resource.works_data_qa_result
       end
 
       tab "6. Retour API pour frontend" do

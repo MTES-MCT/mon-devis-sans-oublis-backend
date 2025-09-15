@@ -2,7 +2,7 @@
 
 # Tools to handle JSON OpenAPI schemas.
 module JsonOpenapi
-  def compact_schema(schema)
+  def self.compact_schema(schema)
     case schema
     when Hash
       schema.except("description", "title", "examples", "x-enum-labels", "x-release-date", "x-appinfo", "info",
@@ -15,7 +15,7 @@ module JsonOpenapi
     end
   end
 
-  def make_schema_refs_inline!(schema)
+  def self.make_schema_refs_inline!(schema)
     # TODO: adapt to autodetect refs and replace them
     if (donnees_contextuelles = schema.dig("components", "schemas", "donnees_contextuelles"))
       donnees_contextuelles_parent_ref = schema.dig("components", "schemas", "rnt", "properties", "projet_travaux",
