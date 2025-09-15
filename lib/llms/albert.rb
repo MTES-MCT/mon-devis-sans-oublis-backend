@@ -2,6 +2,7 @@
 
 require "json"
 require "net/http"
+require "ruby_llm"
 require "uri"
 
 require_relative "base"
@@ -15,7 +16,7 @@ module Llms
 
     attr_reader :prompt, :read_attributes, :result
 
-    DEFAULT_MODEL = ENV.fetch("ALBERT_MODEL", "meta-llama/Llama-3.1-8B-Instruct")
+    DEFAULT_MODEL = ENV.fetch("ALBERT_MODEL", "albert-large")
     HOST = "https://albert.api.etalab.gouv.fr/v1"
 
     def initialize(prompt, json_schema: nil, model: DEFAULT_MODEL, result_format: :json)
@@ -27,67 +28,55 @@ module Llms
       ENV.key?("ALBERT_API_KEY")
     end
 
-    # API Docs: https://docs.mistral.ai/api/#tag/chat/operation/chat_completion_v1_chat_completions_post
     # TODO: Better client
     # rubocop:disable Metrics/AbcSize
     # rubocop:disable Metrics/CyclomaticComplexity
-    # rubocop:disable Metrics/MethodLength
     # rubocop:disable Metrics/PerceivedComplexity
     # model:
     # - meta-llama/Meta-Llama-3.1-8B-Instruct
     # - AgentPublic/llama3-instruct-8b (default)
     # - AgentPublic/Llama-3.1-8B-Instruct
-    def chat_completion(text, model: nil, model_fallback: true, model_type: "text-generation")
+    def chat_completion(text, model: nil, model_fallback: true, model_type: "text-generation") # rubocop:disable Metrics/MethodLength
       @model = model if model
 
-      uri = URI("#{HOST}/chat/completions")
-      body = {
+      chat = albert_context.chat(
         model: @model,
-        messages: [
-          { role: "system", content: prompt },
-          { role: "user", content: text }
-        ]
-      }
+        provider: :openai, # Albert API is compatible with OpenAI API and mandatory for custom host context
+        assume_model_exists: true
+      )
+      chat.with_instructions(prompt)
 
-      if json_schema
-        # See https://albert.api.etalab.gouv.fr/documentation#tag/Agents/operation/agents_completions_v1_agents_completions_post
-        body[:response_format] = {
-          type: "json_schema",
-          json_schema: {
-            name: "result",
-            strict: true,
-            schema: json_schema
-          }
-        }
+      ruby_llm_message = nil
+      begin
+        ruby_llm_message = json_schema ? chat.with_schema(json_schema).ask(text) : chat.ask(text)
+      rescue RubyLLM::Error => e
+        response = e.response
+
+        # Auto switch model if not found
+        if response.status == 404 && model_fallback
+          backup_model = (self.class.sort_models(
+            models.filter { it.fetch("type") == model_type }
+                  .map { it.fetch("id") }
+          ) - [model].compact).first
+          return chat_completion(text, model: backup_model) if backup_model
+        end
+
+        raise ResultError, "Error: #{response.code} - #{response.message}"
       end
+      response = ruby_llm_message.raw
 
-      http = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true)
-      http.read_timeout = 120 # seconds
-      request = Net::HTTP::Post.new(uri, headers)
-      request.body = body.to_json
-      response = http.request(request)
-      raise TimeoutError if response.code == "504"
+      @result = response.body
+      # content = result.dig("choices", 0, "message", "content")
+      content = ruby_llm_message.content
+      raise ResultError, "Content empty" if content.blank?
 
-      # Auto switch model if not found
-      if response.code == "404" && model_fallback
-        backup_model = (self.class.sort_models(
-          models.filter { it.fetch("type") == model_type }
-                .map { it.fetch("id") }
-        ) - [model].compact).first
-        return chat_completion(text, model: backup_model) if backup_model
-      end
-      raise ResultError, "Error: #{response.code} - #{response.message}" unless response.is_a?(Net::HTTPSuccess)
-
-      @result = JSON.parse(response.body)
-      content = result.dig("choices", 0, "message", "content")
-      raise ResultError, "Content empty" unless content
+      return TrackingHash.nilify_empty_values(content.deep_symbolize_keys) if json_schema
 
       extract_result(content)
     rescue Net::ReadTimeout => e
       raise TimeoutError, e
     end
     # rubocop:enable Metrics/PerceivedComplexity
-    # rubocop:enable Metrics/MethodLength
     # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/AbcSize
 
@@ -120,6 +109,15 @@ module Llms
     end
 
     private
+
+    def albert_context
+      @albert_context ||= RubyLLM.context do |config|
+        config.openai_use_system_role = true # Use 'system' role instead of 'developer' for instructions messages
+        config.openai_api_key = @api_key
+        config.openai_api_base = HOST
+        config.request_timeout = 120
+      end
+    end
 
     def headers
       {

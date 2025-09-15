@@ -24,6 +24,7 @@ module Llms
     # rubocop:disable Metrics/AbcSize
     # rubocop:disable Metrics/MethodLength
     def chat_completion(text, model: "llama3.2")
+      # TODO: Use ruby_llm
       messages = [
         { role: "system", content: prompt },
         { role: "user", content: text }

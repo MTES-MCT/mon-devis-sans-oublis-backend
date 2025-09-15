@@ -74,7 +74,6 @@ gem "mime-types", require: false
 gem "mini_magick", require: false
 gem "pdf-reader", require: false
 # gem "rtesseract", require: false
-gem "ruby_llm", require: false
 
 # Efficiency
 gem "concurrent-ruby", require: false
@@ -85,6 +84,7 @@ gem "parallel", require: false
 gem "csv" # Since Ruby > 3.4.0
 gem "faraday"
 gem "langchainrb", ">= 0.19" # Framework around LLMs
+gem "ruby_llm", require: false
 
 gem "ostruct" # Since Ruby > 3.4.0
 gem "rack-cors" # TODO: use built-in Rails 8+ https://www.bigbinary.com/blog/rails-8-rate-limiting-api

@@ -61,7 +61,7 @@ namespace :quote_checks do # rubocop:disable Metrics/BlockLength
     end
   end
 
-  desc "Run Fiability checks on flagged QuoteChecks"
+  desc "Run Fiability checks on flagged QuoteChecks in database with expecting results"
   task fiability: :environment do |_t, _args| # rubocop:disable Metrics/BlockLength
     # Anonymous temporary classes linked to test source database
     class QuoteFileToTest < QuoteFile # rubocop:disable Lint/ConstantDefinitionInBlock

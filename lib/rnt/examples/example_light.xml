@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rnt hashkey="string" id="string" version="string">
+    <projet_travaux>
+        <donnees_contextuelles>
+            <version>0.3</version>
+            <contexte>devis</contexte>
+            <usage_batiment>appartement_chauffage_individuel</usage_batiment>
+            <aide_financiere_collection>
+                <aide_financiere>mpr_geste</aide_financiere>
+                <aide_financiere>mpr_ampleur</aide_financiere>
+            </aide_financiere_collection>
+        </donnees_contextuelles>
+        <travaux_collection>
+            <travaux>
+                <lot_travaux>autre</lot_travaux>
+                <type_travaux>pac_air_eau</type_travaux>
+                <usage_systeme>chauffage</usage_systeme>
+                <reference_travaux></reference_travaux>
+            </travaux>
+        </travaux_collection>
+    </projet_travaux>
+</rnt>

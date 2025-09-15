@@ -1,0 +1,766 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://albert.api.etalab.gouv.fr/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"albert-large","messages":[{"role":"system","content":"Retrouver
+        les informations au format JSON {\"siret\": \"SIRET entreprise\", \"nom_entreprise\":
+        \"Nom de l''entreprise\"}"},{"role":"user","content":"Entreprise RenovPlus
+        - 12345678900000"}],"stream":false,"response_format":{"type":"json_schema","json_schema":{"name":"response","schema":{"type":"object","properties":{"projet_travaux":{"type":"object","properties":{"donnees_contextuelles":{"type":"object","properties":{"version":{"x-appinfo":{"0.1":"version
+        de développement","0.2":"version de développement avec la plupart des travaux","0.3":"version
+        de développement mise-à-jour sur les pac et sur les critères des aides"},"type":"string","enum":["0.1","0.2","0.3"],"description":"version
+        du RNT. Cenuméro de version permet de tracer les évolutions de modèle de données
+        et de contrôle de validation mis en place sur le RNT. Chaque nouvelle version
+        induit un certain nombre de changements substantiels. Certaines données ne
+        sont disponible ou obligatoires qu''à partir d''une certaine version"},"geolocalisation":{"type":"object","properties":{"numero_fiscal_local":{"type":"string","nullable":true,"description":"numero
+        fiscal du logement (12 caractères). Cette information peut être récupérée
+        sur la plateforme gérer mes biens immobiliers du site particulier des impots."},"id_batiment_rnb_collection":{"type":"object","properties":{"id_batiment_rnb":{"type":"string","description":"identifiant
+        batiment du Référentiel National des Bâtiments (RNB) à venir sur les bâtiments
+        en France (https://beta.gouv.fr/startups/bat-id.html)"}},"additionalProperties":false},"adresse":{"type":"string","nullable":true,"description":"adresse
+        du bien"}},"additionalProperties":false,"required":["numero_fiscal_local","id_batiment_rnb_collection","adresse"]},"numero_projet":{"type":"string","nullable":true,"description":"numéro
+        du projet de travaux"},"contexte":{"x-appinfo":{"audit":"audit","devis":"devis","facture":"facture"},"type":"string","enum":["audit","devis","facture"],"description":"choix
+        du contexte dans lequel les travaux sont proposés (audit, devis …)"},"usage_batiment":{"x-appinfo":{"maison_individuelle":"maison
+        individuelle","immeuble":"immeuble","appartement_chauffage_individuel":"appartement
+        avec chauffage individuel","appartement_chauffage_collectif":"appartement
+        avec chauffage collectif"},"type":"string","enum":["maison_individuelle","immeuble","appartement_chauffage_individuel","appartement_chauffage_collectif"],"description":"choix
+        de l''usage, du type de bati (maison, appartement, immeuble ...)"},"aide_financiere_collection":{"type":"object","properties":{"aide_financiere":{"x-appinfo":{"cee":"cee","mpr_geste":"mpr
+        par geste","mpr_ampleur":"mpr rénovation d''ampleur","eco_ptz":"éco-ptz"},"type":"string","enum":["cee","mpr_geste","mpr_ampleur","eco_ptz"],"description":"aide
+        financière visée"}},"additionalProperties":false}},"additionalProperties":false,"required":["version","geolocalisation","numero_projet","contexte","usage_batiment","aide_financiere_collection"]},"travaux_collection":{"type":"object","properties":{"travaux":{"type":"object","properties":{"lot_travaux":{"x-appinfo":{"mur":"murs","plancher_bas":"planchers
+        bas","plancher_haut":"toiture/plafond","menuiserie":"menuiserie (portes et
+        fenêtres)","systeme":"système (chauffage, ecs, clim)","systeme_ventilation":"système
+        de ventilation","photovoltaique":"solaire photovoltaïque","autre":"autre"},"type":"string","enum":["mur","plancher_bas","plancher_haut","menuiserie","systeme","systeme_ventilation","photovoltaique","autre"],"description":"lot
+        concerné par les travaux"},"type_travaux":{"x-appinfo":{"isolation_mur_ite":"isolation
+        murs en ite","isolation_mur_iti":"isolation murs en iti","isolation_sous_rampants":"isolation
+        sous rampants (combles aménagés)","isolation_combles_non_amenages":"isolation
+        des combles non aménagés","isolation_toiture_terrasse":"isolation toiture
+        terrasse","isolation_planchers_bas":"isolation planchers bas","fenetre_porte_fenetre":"installation
+        fenêtres ou portes fenêtres","vmc_simple_flux":"installation vmc simple flux","vmc_double_flux":"installation
+        vmc double flux","pac_geothermique":"installation pac géothermique","pac_sol_eau":"installation
+        pac sol/eau","pac_eau_eau":"installation pac eau/eau","pac_air_eau":"installation
+        pac air/eau","pac_air_air":"installation pac air/air (climatiseur inclu)","chaudiere_gaz":"installation
+        chaudière à gaz","chaudiere_biomasse":"installation chaudière à biomasse","poele_insert_bois_granules":"installation
+        poêle/insert à bois/granulés","radiateur_electrique":"installation radiateur
+        électrique","radiateur_hydraulique":"installation radiateur hydraulique","plancher_plafond_chauffant_hydraulique":"installation
+        plancher/plafond chauffant hydraulique","chauffe_eau_thermodynamique":"installation
+        chauffe-eau thermodynamique","ballon_ecs_effet_joule":"installation ballon
+        d''ecs à effet joule","dispositif_solaire_thermique":"installation panneaux
+        solaire thermique","dispositif_solaire_photovoltaique":"installation panneaux
+        solaire photovoltaïque","porte_entree":"installation de porte d’entrée isolante","fermeture_isolante":"installation
+        de volets isolants","protection_solaire":"installation de protections solaires
+        des fenêtres","double_fenetre":"installation de double fenêtre","fenetre_toiture":"installation
+        de fenêtre de toit","raccordement_reseau_chaleur":"raccordement à un réseau
+        de chaleur","chauffe_bain_individuel":"chauffe-bain individuel","brasseur_air":"installation
+        de brasseurs d’air fixes","chauffe_eau_solaire":"installation chauffe-eau
+        solaire","systeme_solaire_combine":"installation sytème solaire combiné","ventilation_hybride_hygroreglable":"installation
+        ventilation hybride hygroreglable"},"type":"string","enum":["isolation_mur_ite","isolation_mur_iti","isolation_sous_rampants","isolation_combles_non_amenages","isolation_toiture_terrasse","isolation_planchers_bas","fenetre_porte_fenetre","vmc_simple_flux","vmc_double_flux","pac_geothermique","pac_sol_eau","pac_eau_eau","pac_air_eau","pac_air_air","chaudiere_gaz","chaudiere_biomasse","poele_insert_bois_granules","radiateur_electrique","radiateur_hydraulique","plancher_plafond_chauffant_hydraulique","chauffe_eau_thermodynamique","ballon_ecs_effet_joule","dispositif_solaire_thermique","dispositif_solaire_photovoltaique","porte_entree","fermeture_isolante","protection_solaire","double_fenetre","fenetre_toiture","raccordement_reseau_chaleur","chauffe_bain_individuel","brasseur_air","chauffe_eau_solaire","systeme_solaire_combine","ventilation_hybride_hygroreglable"],"description":"type
+        de travaux proposé par l''auditeur"},"usage_systeme":{"x-appinfo":{"chauffage":"chauffage","ecs":"eau
+        chaude sanitaire","refroidissement":"refroidissement","chauffage_ecs":"chauffage
+        + ecs","chauffage_refroidissement":"chauffage + refroidissement","refroidissement_ecs":"refroidissement
+        + ecs","chauffage_ecs_refroidissement":"chauffage + ecs + refroidissement"},"type":"string","enum":["chauffage","ecs","refroidissement","chauffage_ecs","chauffage_refroidissement","refroidissement_ecs","chauffage_ecs_refroidissement"],"nullable":true,"description":"usage(s)
+        du système (chauffage, ecs, clim)"},"reference_travaux":{"type":"string","description":"reference
+        projet de l''objet (cette référence permet de faire d''éventuels liens entre
+        objets). La codification et utilisation des références peut différer entre
+        logiciels"},"cout":{"type":"number","nullable":true,"description":"coût des
+        travaux correspondants (unité : €TTC)"},"caracteristiques_travaux":{"oneOf":[{"type":"object","properties":{"resistance_isolant":{"type":"number","description":"resistance
+        de l''isolant (unité : m2.K/W)"},"norme_resistance":{"x-appinfo":{"nf_en_12664":"nf
+        en 12664 : mesure par méthodes de la plaque chaude gardée et fluxmétrique
+        - produits secs et humides de moyenne et basse résistance thermique","nf_en_12667":"nf
+        en 12667 : mesure par méthodes de la plaque chaude gardée et fluxmétrique
+        - produits de haute et moyenne résistance thermique","nf_en_12939":"nf en
+        12939 : mesure par la méthode de la plaque chaude gardée","nf_en_iso_22097":"nf
+        en iso 22097 : évaluation pour des produits d''isolation réfléchissants"},"type":"string","enum":["nf_en_12664","nf_en_12667","nf_en_12939","nf_en_iso_22097"],"description":"norme
+        qui a été utilisée pour le calcul de la résistance de l''isolant"},"surface_isolant":{"type":"number","description":"surface
+        d''isolant posé (unité : m²)"},"epaisseur_isolant":{"type":"number","nullable":true,"description":"épaisseur
+        d''isolant posé (unité : cm)"},"materiau_isolant":{"x-appinfo":{"laine_de_verre":"laine
+        de verre","laine_de_roche":"laine de roche","verre_cellulaire":"verre cellulaire","polystirene_expanse_pse":"polystirene
+        expanse pse","polystirene_extrude_psx":"polystirene extrude psx","polyurethane_pu":"polyurethane
+        pu","mousse_phenolique":"mousse phénolique","panneau_sous_vide_piv":"panneau
+        sous vide piv","aerogel":"aerogel","peinture_isolante_reflechissante":"peinture
+        isolante reflechissante","brique_monomur_terre_cuite":"brique monomur terre
+        cuite","bloc_monomur_pierre":"bloc monomur pierre","bloc_monomur_argile_expanse":"bloc
+        monomur argile expanse","beton_cellulaire":"beton cellulaire","liege":"liege","fibre_de_bois":"fibre
+        de bois","chanvre":"chanvre","lin":"lin","laine_de_mouton":"laine de mouton","ouate_de_cellulose":"ouate
+        de cellulose","autres_fibres_vegetales":"autres fibres vegetales","paille":"paille","torchis":"torchis","toiture_vegetalisee":"toiture
+        vegetalisee","mousse_de_polyurethane":"mousse de polyurethane","isolant_mince_reflechissant":"isolant
+        mince reflechissant","autre":"autre"},"type":"string","enum":["laine_de_verre","laine_de_roche","verre_cellulaire","polystirene_expanse_pse","polystirene_extrude_psx","polyurethane_pu","mousse_phenolique","panneau_sous_vide_piv","aerogel","peinture_isolante_reflechissante","brique_monomur_terre_cuite","bloc_monomur_pierre","bloc_monomur_argile_expanse","beton_cellulaire","liege","fibre_de_bois","chanvre","lin","laine_de_mouton","ouate_de_cellulose","autres_fibres_vegetales","paille","torchis","toiture_vegetalisee","mousse_de_polyurethane","isolant_mince_reflechissant","autre"],"description":"type
+        de matériau isolant"},"materiau_isolant_complement":{"type":"string","nullable":true,"description":"précisez
+        le type de matériau isolant si vous avez sélectionné \"autre\" dans enum_materiau_isolant_id"},"marque_produit":{"type":"string","nullable":true,"description":"marque
+        du produit"},"reference_produit":{"type":"string","nullable":true,"description":"reference
+        du produit"},"fixation_isolant":{"x-appinfo":{"ossature_continue_z":"ossature
+        continue - profilés en z verticaux","ossature_continue_horizontaux":"ossature
+        continue - profilés en z horizontaux","ossature_continue_croises":"ossature
+        continue - profilés en z croisés","clips_acier_galvanise":"systèmes de clips
+        - clips en acier galvanisé","clips_acier_inoxydable":"systèmes de clips -
+        clips en acier inoxydable","clips_aluminium_t":"systèmes de clips - clips
+        en t en aluminium","clips_bris_thermique":"systèmes de clips - clips en acier
+        galvanisé avec bris thermique","clips_fibre_verre":"systèmes de clips - clips
+        en fibre de verre","vis_traversant_isolant":"vis longue traversant l''isolant","attaches_maconnerie":"attaches
+        à maçonnerie","autre":"autre"},"type":"string","enum":["ossature_continue_z","ossature_continue_horizontaux","ossature_continue_croises","clips_acier_galvanise","clips_acier_inoxydable","clips_aluminium_t","clips_bris_thermique","clips_fibre_verre","vis_traversant_isolant","attaches_maconnerie","autre"],"description":"type
+        de fixation utilisé pour l''isolation"},"fixation_isolant_complement":{"type":"string","nullable":true,"description":"précisez
+        le type de fixation isolant si vous avez sélectionné \"autre\" dans enum_fixation_isolant_id"},"protection_isolant":{"type":"string","nullable":true,"description":"dispositif
+        de protection contre les dégradations extérieures"}},"additionalProperties":false,"required":["resistance_isolant","norme_resistance","surface_isolant","epaisseur_isolant","materiau_isolant","materiau_isolant_complement","marque_produit","reference_produit","fixation_isolant","fixation_isolant_complement","protection_isolant"]},{"type":"object","properties":{"resistance_isolant":{"type":"number","description":"resistance
+        de l''isolant (unité : m2.K/W)"},"surface_isolant":{"type":"number","description":"surface
+        d''isolant posé (unité : m²)"},"fixation_isolant":{"x-appinfo":{"ossature_continue_z":"ossature
+        continue - profilés en z verticaux","ossature_continue_horizontaux":"ossature
+        continue - profilés en z horizontaux","ossature_continue_croises":"ossature
+        continue - profilés en z croisés","clips_acier_galvanise":"systèmes de clips
+        - clips en acier galvanisé","clips_acier_inoxydable":"systèmes de clips -
+        clips en acier inoxydable","clips_aluminium_t":"systèmes de clips - clips
+        en t en aluminium","clips_bris_thermique":"systèmes de clips - clips en acier
+        galvanisé avec bris thermique","clips_fibre_verre":"systèmes de clips - clips
+        en fibre de verre","vis_traversant_isolant":"vis longue traversant l''isolant","attaches_maconnerie":"attaches
+        à maçonnerie","autre":"autre"},"type":"string","enum":["ossature_continue_z","ossature_continue_horizontaux","ossature_continue_croises","clips_acier_galvanise","clips_acier_inoxydable","clips_aluminium_t","clips_bris_thermique","clips_fibre_verre","vis_traversant_isolant","attaches_maconnerie","autre"],"description":"type
+        de fixation utilisé pour l''isolation"},"materiau_isolant":{"x-appinfo":{"laine_de_verre":"laine
+        de verre","laine_de_roche":"laine de roche","verre_cellulaire":"verre cellulaire","polystirene_expanse_pse":"polystirene
+        expanse pse","polystirene_extrude_psx":"polystirene extrude psx","polyurethane_pu":"polyurethane
+        pu","mousse_phenolique":"mousse phénolique","panneau_sous_vide_piv":"panneau
+        sous vide piv","aerogel":"aerogel","peinture_isolante_reflechissante":"peinture
+        isolante reflechissante","brique_monomur_terre_cuite":"brique monomur terre
+        cuite","bloc_monomur_pierre":"bloc monomur pierre","bloc_monomur_argile_expanse":"bloc
+        monomur argile expanse","beton_cellulaire":"beton cellulaire","liege":"liege","fibre_de_bois":"fibre
+        de bois","chanvre":"chanvre","lin":"lin","laine_de_mouton":"laine de mouton","ouate_de_cellulose":"ouate
+        de cellulose","autres_fibres_vegetales":"autres fibres vegetales","paille":"paille","torchis":"torchis","toiture_vegetalisee":"toiture
+        vegetalisee","mousse_de_polyurethane":"mousse de polyurethane","isolant_mince_reflechissant":"isolant
+        mince reflechissant","autre":"autre"},"type":"string","enum":["laine_de_verre","laine_de_roche","verre_cellulaire","polystirene_expanse_pse","polystirene_extrude_psx","polyurethane_pu","mousse_phenolique","panneau_sous_vide_piv","aerogel","peinture_isolante_reflechissante","brique_monomur_terre_cuite","bloc_monomur_pierre","bloc_monomur_argile_expanse","beton_cellulaire","liege","fibre_de_bois","chanvre","lin","laine_de_mouton","ouate_de_cellulose","autres_fibres_vegetales","paille","torchis","toiture_vegetalisee","mousse_de_polyurethane","isolant_mince_reflechissant","autre"],"description":"type
+        de matériau isolant"},"norme_resistance":{"x-appinfo":{"nf_en_12664":"nf en
+        12664 : mesure par méthodes de la plaque chaude gardée et fluxmétrique - produits
+        secs et humides de moyenne et basse résistance thermique","nf_en_12667":"nf
+        en 12667 : mesure par méthodes de la plaque chaude gardée et fluxmétrique
+        - produits de haute et moyenne résistance thermique","nf_en_12939":"nf en
+        12939 : mesure par la méthode de la plaque chaude gardée","nf_en_iso_22097":"nf
+        en iso 22097 : évaluation pour des produits d''isolation réfléchissants"},"type":"string","enum":["nf_en_12664","nf_en_12667","nf_en_12939","nf_en_iso_22097"],"description":"norme
+        qui a été utilisée pour le calcul de la résistance de l''isolant"},"epaisseur_isolant":{"type":"number","nullable":true,"description":"épaisseur
+        d''isolant posé (unité : cm)"},"fixation_isolant_complement":{"type":"string","nullable":true,"description":"précisez
+        le type de fixation isolant si vous avez sélectionné \"autre\" dans enum_fixation_isolant_id"},"materiau_isolant_complement":{"type":"string","nullable":true,"description":"précisez
+        le type de matériau isolant si vous avez sélectionné \"autre\" dans enum_materiau_isolant_id"},"protection_isolant":{"type":"string","nullable":true,"description":"dispositif
+        de protection contre les dégradations extérieures"},"reference_produit":{"type":"string","nullable":true,"description":"reference
+        du produit"},"marque_produit":{"type":"string","nullable":true,"description":"nom
+        de la marque du produit"}},"additionalProperties":false,"required":["resistance_isolant","surface_isolant","fixation_isolant","materiau_isolant","norme_resistance","epaisseur_isolant","fixation_isolant_complement","materiau_isolant_complement","protection_isolant","reference_produit","marque_produit"]},{"type":"object","properties":{"resistance_isolant":{"type":"number","description":"resistance
+        de l''isolant (unité : m2.K/W)"},"surface_isolant":{"type":"number","description":"surface
+        d''isolant posé (unité : m²)"},"fixation_isolant":{"x-appinfo":{"ossature_continue_z":"ossature
+        continue - profilés en z verticaux","ossature_continue_horizontaux":"ossature
+        continue - profilés en z horizontaux","ossature_continue_croises":"ossature
+        continue - profilés en z croisés","clips_acier_galvanise":"systèmes de clips
+        - clips en acier galvanisé","clips_acier_inoxydable":"systèmes de clips -
+        clips en acier inoxydable","clips_aluminium_t":"systèmes de clips - clips
+        en t en aluminium","clips_bris_thermique":"systèmes de clips - clips en acier
+        galvanisé avec bris thermique","clips_fibre_verre":"systèmes de clips - clips
+        en fibre de verre","vis_traversant_isolant":"vis longue traversant l''isolant","attaches_maconnerie":"attaches
+        à maçonnerie","autre":"autre"},"type":"string","enum":["ossature_continue_z","ossature_continue_horizontaux","ossature_continue_croises","clips_acier_galvanise","clips_acier_inoxydable","clips_aluminium_t","clips_bris_thermique","clips_fibre_verre","vis_traversant_isolant","attaches_maconnerie","autre"],"description":"type
+        de fixation utilisé pour l''isolation"},"materiau_isolant":{"x-appinfo":{"laine_de_verre":"laine
+        de verre","laine_de_roche":"laine de roche","verre_cellulaire":"verre cellulaire","polystirene_expanse_pse":"polystirene
+        expanse pse","polystirene_extrude_psx":"polystirene extrude psx","polyurethane_pu":"polyurethane
+        pu","mousse_phenolique":"mousse phénolique","panneau_sous_vide_piv":"panneau
+        sous vide piv","aerogel":"aerogel","peinture_isolante_reflechissante":"peinture
+        isolante reflechissante","brique_monomur_terre_cuite":"brique monomur terre
+        cuite","bloc_monomur_pierre":"bloc monomur pierre","bloc_monomur_argile_expanse":"bloc
+        monomur argile expanse","beton_cellulaire":"beton cellulaire","liege":"liege","fibre_de_bois":"fibre
+        de bois","chanvre":"chanvre","lin":"lin","laine_de_mouton":"laine de mouton","ouate_de_cellulose":"ouate
+        de cellulose","autres_fibres_vegetales":"autres fibres vegetales","paille":"paille","torchis":"torchis","toiture_vegetalisee":"toiture
+        vegetalisee","mousse_de_polyurethane":"mousse de polyurethane","isolant_mince_reflechissant":"isolant
+        mince reflechissant","autre":"autre"},"type":"string","enum":["laine_de_verre","laine_de_roche","verre_cellulaire","polystirene_expanse_pse","polystirene_extrude_psx","polyurethane_pu","mousse_phenolique","panneau_sous_vide_piv","aerogel","peinture_isolante_reflechissante","brique_monomur_terre_cuite","bloc_monomur_pierre","bloc_monomur_argile_expanse","beton_cellulaire","liege","fibre_de_bois","chanvre","lin","laine_de_mouton","ouate_de_cellulose","autres_fibres_vegetales","paille","torchis","toiture_vegetalisee","mousse_de_polyurethane","isolant_mince_reflechissant","autre"],"description":"type
+        de matériau isolant"},"norme_resistance":{"x-appinfo":{"nf_en_12664":"nf en
+        12664 : mesure par méthodes de la plaque chaude gardée et fluxmétrique - produits
+        secs et humides de moyenne et basse résistance thermique","nf_en_12667":"nf
+        en 12667 : mesure par méthodes de la plaque chaude gardée et fluxmétrique
+        - produits de haute et moyenne résistance thermique","nf_en_12939":"nf en
+        12939 : mesure par la méthode de la plaque chaude gardée","nf_en_iso_22097":"nf
+        en iso 22097 : évaluation pour des produits d''isolation réfléchissants"},"type":"string","enum":["nf_en_12664","nf_en_12667","nf_en_12939","nf_en_iso_22097"],"description":"norme
+        qui a été utilisée pour le calcul de la résistance de l''isolant"},"epaisseur_isolant":{"type":"number","nullable":true,"description":"épaisseur
+        d''isolant posé (unité : cm)"},"fixation_isolant_complement":{"type":"string","nullable":true,"description":"précisez
+        le type de fixation isolant si vous avez sélectionné \"autre\" dans enum_fixation_isolant_id"},"materiau_isolant_complement":{"type":"string","nullable":true,"description":"précisez
+        le type de matériau isolant si vous avez sélectionné \"autre\" dans enum_materiau_isolant_id"},"protection_isolant":{"type":"string","nullable":true,"description":"dispositif
+        de protection contre les dégradations extérieures"},"amenagements_complements":{"x-appinfo":{"coffrage":"coffrage","ecran_protection_conduits":"écran
+        de protection autour des conduits de fumées","ecran_protection_eclairage_encastres":"écran
+        de protection autour des dispositifs d''éclairage encastrés","rehausse_rigide_trappe_acces":"rehausse
+        rigide au-dessus de la trappe d’accès"},"type":"string","enum":["coffrage","ecran_protection_conduits","ecran_protection_eclairage_encastres","rehausse_rigide_trappe_acces"],"nullable":true,"description":"aménagements
+        nécessaires complémentaires"},"traitement_humidite":{"x-appinfo":{"pare_vapeur_protection_humidite":"pare-vapeur
+        nécessaire à la protection des matériaux d''isolation thermique","autre_dispositif_protection_humidite":"autre
+        dispositif nécessaire à la protection des matériaux d''isolation thermique"},"type":"string","enum":["pare_vapeur_protection_humidite","autre_dispositif_protection_humidite"],"nullable":true,"description":"pare-vapeur
+        ou tout autre dispositif équivalent pour protéger contre les transferts d''humidité"},"marque_produit":{"type":"string","nullable":true,"description":"nom
+        de la marque du produit"},"reference_produit":{"type":"string","nullable":true,"description":"reference
+        du produit"}},"additionalProperties":false,"required":["resistance_isolant","surface_isolant","fixation_isolant","materiau_isolant","norme_resistance","epaisseur_isolant","fixation_isolant_complement","materiau_isolant_complement","protection_isolant","amenagements_complements","traitement_humidite","marque_produit","reference_produit"]},{"type":"object","properties":{"resistance_isolant":{"type":"number","nullable":true,"description":"resistance
+        de l''isolant (unité : m2.K/W)"},"surface_isolant":{"type":"number","nullable":true,"description":"surface
+        d''isolant posé (unité : m²)"},"fixation_isolant":{"x-appinfo":{"ossature_continue_z":"ossature
+        continue - profilés en z verticaux","ossature_continue_horizontaux":"ossature
+        continue - profilés en z horizontaux","ossature_continue_croises":"ossature
+        continue - profilés en z croisés","clips_acier_galvanise":"systèmes de clips
+        - clips en acier galvanisé","clips_acier_inoxydable":"systèmes de clips -
+        clips en acier inoxydable","clips_aluminium_t":"systèmes de clips - clips
+        en t en aluminium","clips_bris_thermique":"systèmes de clips - clips en acier
+        galvanisé avec bris thermique","clips_fibre_verre":"systèmes de clips - clips
+        en fibre de verre","vis_traversant_isolant":"vis longue traversant l''isolant","attaches_maconnerie":"attaches
+        à maçonnerie","autre":"autre"},"type":"string","enum":["ossature_continue_z","ossature_continue_horizontaux","ossature_continue_croises","clips_acier_galvanise","clips_acier_inoxydable","clips_aluminium_t","clips_bris_thermique","clips_fibre_verre","vis_traversant_isolant","attaches_maconnerie","autre"],"nullable":true,"description":"type
+        de fixation utilisé pour l''isolation"},"materiau_isolant":{"x-appinfo":{"laine_de_verre":"laine
+        de verre","laine_de_roche":"laine de roche","verre_cellulaire":"verre cellulaire","polystirene_expanse_pse":"polystirene
+        expanse pse","polystirene_extrude_psx":"polystirene extrude psx","polyurethane_pu":"polyurethane
+        pu","mousse_phenolique":"mousse phénolique","panneau_sous_vide_piv":"panneau
+        sous vide piv","aerogel":"aerogel","peinture_isolante_reflechissante":"peinture
+        isolante reflechissante","brique_monomur_terre_cuite":"brique monomur terre
+        cuite","bloc_monomur_pierre":"bloc monomur pierre","bloc_monomur_argile_expanse":"bloc
+        monomur argile expanse","beton_cellulaire":"beton cellulaire","liege":"liege","fibre_de_bois":"fibre
+        de bois","chanvre":"chanvre","lin":"lin","laine_de_mouton":"laine de mouton","ouate_de_cellulose":"ouate
+        de cellulose","autres_fibres_vegetales":"autres fibres vegetales","paille":"paille","torchis":"torchis","toiture_vegetalisee":"toiture
+        vegetalisee","mousse_de_polyurethane":"mousse de polyurethane","isolant_mince_reflechissant":"isolant
+        mince reflechissant","autre":"autre"},"type":"string","enum":["laine_de_verre","laine_de_roche","verre_cellulaire","polystirene_expanse_pse","polystirene_extrude_psx","polyurethane_pu","mousse_phenolique","panneau_sous_vide_piv","aerogel","peinture_isolante_reflechissante","brique_monomur_terre_cuite","bloc_monomur_pierre","bloc_monomur_argile_expanse","beton_cellulaire","liege","fibre_de_bois","chanvre","lin","laine_de_mouton","ouate_de_cellulose","autres_fibres_vegetales","paille","torchis","toiture_vegetalisee","mousse_de_polyurethane","isolant_mince_reflechissant","autre"],"nullable":true,"description":"type
+        de matériau isolant"},"norme_resistance":{"x-appinfo":{"nf_en_12664":"nf en
+        12664 : mesure par méthodes de la plaque chaude gardée et fluxmétrique - produits
+        secs et humides de moyenne et basse résistance thermique","nf_en_12667":"nf
+        en 12667 : mesure par méthodes de la plaque chaude gardée et fluxmétrique
+        - produits de haute et moyenne résistance thermique","nf_en_12939":"nf en
+        12939 : mesure par la méthode de la plaque chaude gardée","nf_en_iso_22097":"nf
+        en iso 22097 : évaluation pour des produits d''isolation réfléchissants"},"type":"string","enum":["nf_en_12664","nf_en_12667","nf_en_12939","nf_en_iso_22097"],"nullable":true,"description":"norme
+        qui a été utilisée pour le calcul de la résistance de l''isolant"},"epaisseur_isolant":{"type":"number","nullable":true,"description":"épaisseur
+        d''isolant posé (unité : cm)"},"fixation_isolant_complement":{"type":"string","nullable":true,"description":"précisez
+        le type de fixation isolant si vous avez sélectionné \"autre\" dans enum_fixation_isolant_id"},"materiau_isolant_complement":{"type":"string","nullable":true,"description":"précisez
+        le type de matériau isolant si vous avez sélectionné \"autre\" dans enum_materiau_isolant_id"},"protection_isolant":{"type":"string","nullable":true,"description":"dispositif
+        de protection contre les dégradations extérieures"},"marque_produit":{"type":"string","nullable":true,"description":"nom
+        de la marque du produit"},"reference_produit":{"type":"string","nullable":true,"description":"reference
+        du produit"},"amenagements_complements":{"x-appinfo":{"coffrage":"coffrage","ecran_protection_conduits":"écran
+        de protection autour des conduits de fumées","ecran_protection_eclairage_encastres":"écran
+        de protection autour des dispositifs d''éclairage encastrés","rehausse_rigide_trappe_acces":"rehausse
+        rigide au-dessus de la trappe d’accès"},"type":"string","enum":["coffrage","ecran_protection_conduits","ecran_protection_eclairage_encastres","rehausse_rigide_trappe_acces"],"nullable":true,"description":"aménagements
+        nécessaires complémentaires"},"traitement_humidite":{"x-appinfo":{"pare_vapeur_protection_humidite":"pare-vapeur
+        nécessaire à la protection des matériaux d''isolation thermique","autre_dispositif_protection_humidite":"autre
+        dispositif nécessaire à la protection des matériaux d''isolation thermique"},"type":"string","enum":["pare_vapeur_protection_humidite","autre_dispositif_protection_humidite"],"nullable":true,"description":"pare-vapeur
+        ou tout autre dispositif équivalent pour protéger contre les transferts d''humidité"}},"additionalProperties":false,"required":["resistance_isolant","surface_isolant","fixation_isolant","materiau_isolant","norme_resistance","epaisseur_isolant","fixation_isolant_complement","materiau_isolant_complement","protection_isolant","marque_produit","reference_produit","amenagements_complements","traitement_humidite"]},{"type":"object","properties":{"resistance_isolant":{"type":"number","description":"resistance
+        de l''isolant (unité : m2.K/W)"},"surface_isolant":{"type":"number","description":"surface
+        d''isolant posé (unité : m²)"},"fixation_isolant":{"x-appinfo":{"ossature_continue_z":"ossature
+        continue - profilés en z verticaux","ossature_continue_horizontaux":"ossature
+        continue - profilés en z horizontaux","ossature_continue_croises":"ossature
+        continue - profilés en z croisés","clips_acier_galvanise":"systèmes de clips
+        - clips en acier galvanisé","clips_acier_inoxydable":"systèmes de clips -
+        clips en acier inoxydable","clips_aluminium_t":"systèmes de clips - clips
+        en t en aluminium","clips_bris_thermique":"systèmes de clips - clips en acier
+        galvanisé avec bris thermique","clips_fibre_verre":"systèmes de clips - clips
+        en fibre de verre","vis_traversant_isolant":"vis longue traversant l''isolant","attaches_maconnerie":"attaches
+        à maçonnerie","autre":"autre"},"type":"string","enum":["ossature_continue_z","ossature_continue_horizontaux","ossature_continue_croises","clips_acier_galvanise","clips_acier_inoxydable","clips_aluminium_t","clips_bris_thermique","clips_fibre_verre","vis_traversant_isolant","attaches_maconnerie","autre"],"description":"type
+        de fixation utilisé pour l''isolation"},"materiau_isolant":{"x-appinfo":{"laine_de_verre":"laine
+        de verre","laine_de_roche":"laine de roche","verre_cellulaire":"verre cellulaire","polystirene_expanse_pse":"polystirene
+        expanse pse","polystirene_extrude_psx":"polystirene extrude psx","polyurethane_pu":"polyurethane
+        pu","mousse_phenolique":"mousse phénolique","panneau_sous_vide_piv":"panneau
+        sous vide piv","aerogel":"aerogel","peinture_isolante_reflechissante":"peinture
+        isolante reflechissante","brique_monomur_terre_cuite":"brique monomur terre
+        cuite","bloc_monomur_pierre":"bloc monomur pierre","bloc_monomur_argile_expanse":"bloc
+        monomur argile expanse","beton_cellulaire":"beton cellulaire","liege":"liege","fibre_de_bois":"fibre
+        de bois","chanvre":"chanvre","lin":"lin","laine_de_mouton":"laine de mouton","ouate_de_cellulose":"ouate
+        de cellulose","autres_fibres_vegetales":"autres fibres vegetales","paille":"paille","torchis":"torchis","toiture_vegetalisee":"toiture
+        vegetalisee","mousse_de_polyurethane":"mousse de polyurethane","isolant_mince_reflechissant":"isolant
+        mince reflechissant","autre":"autre"},"type":"string","enum":["laine_de_verre","laine_de_roche","verre_cellulaire","polystirene_expanse_pse","polystirene_extrude_psx","polyurethane_pu","mousse_phenolique","panneau_sous_vide_piv","aerogel","peinture_isolante_reflechissante","brique_monomur_terre_cuite","bloc_monomur_pierre","bloc_monomur_argile_expanse","beton_cellulaire","liege","fibre_de_bois","chanvre","lin","laine_de_mouton","ouate_de_cellulose","autres_fibres_vegetales","paille","torchis","toiture_vegetalisee","mousse_de_polyurethane","isolant_mince_reflechissant","autre"],"description":"type
+        de matériau isolant"},"norme_resistance":{"x-appinfo":{"nf_en_12664":"nf en
+        12664 : mesure par méthodes de la plaque chaude gardée et fluxmétrique - produits
+        secs et humides de moyenne et basse résistance thermique","nf_en_12667":"nf
+        en 12667 : mesure par méthodes de la plaque chaude gardée et fluxmétrique
+        - produits de haute et moyenne résistance thermique","nf_en_12939":"nf en
+        12939 : mesure par la méthode de la plaque chaude gardée","nf_en_iso_22097":"nf
+        en iso 22097 : évaluation pour des produits d''isolation réfléchissants"},"type":"string","enum":["nf_en_12664","nf_en_12667","nf_en_12939","nf_en_iso_22097"],"description":"norme
+        qui a été utilisée pour le calcul de la résistance de l''isolant"},"epaisseur_isolant":{"type":"number","nullable":true,"description":"épaisseur
+        d''isolant posé (unité : cm)"},"fixation_isolant_complement":{"type":"string","nullable":true,"description":"précisez
+        le type de fixation isolant si vous avez sélectionné \"autre\" dans enum_fixation_isolant_id"},"materiau_isolant_complement":{"type":"string","nullable":true,"description":"précisez
+        le type de matériau isolant si vous avez sélectionné \"autre\" dans enum_materiau_isolant_id"},"protection_isolant":{"type":"string","nullable":true,"description":"dispositif
+        de protection contre les dégradations extérieures"},"reference_produit":{"type":"string","nullable":true,"description":"reference
+        du produit"},"marque_produit":{"type":"string","nullable":true,"description":"nom
+        de la marque du produit"}},"additionalProperties":false,"required":["resistance_isolant","surface_isolant","fixation_isolant","materiau_isolant","norme_resistance","epaisseur_isolant","fixation_isolant_complement","materiau_isolant_complement","protection_isolant","reference_produit","marque_produit"]},{"type":"object","properties":{"resistance_isolant":{"type":"number","description":"resistance
+        de l''isolant (unité : m2.K/W)"},"surface_isolant":{"type":"number","description":"surface
+        d''isolant posé (unité : m²)"},"fixation_isolant":{"x-appinfo":{"ossature_continue_z":"ossature
+        continue - profilés en z verticaux","ossature_continue_horizontaux":"ossature
+        continue - profilés en z horizontaux","ossature_continue_croises":"ossature
+        continue - profilés en z croisés","clips_acier_galvanise":"systèmes de clips
+        - clips en acier galvanisé","clips_acier_inoxydable":"systèmes de clips -
+        clips en acier inoxydable","clips_aluminium_t":"systèmes de clips - clips
+        en t en aluminium","clips_bris_thermique":"systèmes de clips - clips en acier
+        galvanisé avec bris thermique","clips_fibre_verre":"systèmes de clips - clips
+        en fibre de verre","vis_traversant_isolant":"vis longue traversant l''isolant","attaches_maconnerie":"attaches
+        à maçonnerie","autre":"autre"},"type":"string","enum":["ossature_continue_z","ossature_continue_horizontaux","ossature_continue_croises","clips_acier_galvanise","clips_acier_inoxydable","clips_aluminium_t","clips_bris_thermique","clips_fibre_verre","vis_traversant_isolant","attaches_maconnerie","autre"],"description":"type
+        de fixation utilisé pour l''isolation"},"materiau_isolant":{"x-appinfo":{"laine_de_verre":"laine
+        de verre","laine_de_roche":"laine de roche","verre_cellulaire":"verre cellulaire","polystirene_expanse_pse":"polystirene
+        expanse pse","polystirene_extrude_psx":"polystirene extrude psx","polyurethane_pu":"polyurethane
+        pu","mousse_phenolique":"mousse phénolique","panneau_sous_vide_piv":"panneau
+        sous vide piv","aerogel":"aerogel","peinture_isolante_reflechissante":"peinture
+        isolante reflechissante","brique_monomur_terre_cuite":"brique monomur terre
+        cuite","bloc_monomur_pierre":"bloc monomur pierre","bloc_monomur_argile_expanse":"bloc
+        monomur argile expanse","beton_cellulaire":"beton cellulaire","liege":"liege","fibre_de_bois":"fibre
+        de bois","chanvre":"chanvre","lin":"lin","laine_de_mouton":"laine de mouton","ouate_de_cellulose":"ouate
+        de cellulose","autres_fibres_vegetales":"autres fibres vegetales","paille":"paille","torchis":"torchis","toiture_vegetalisee":"toiture
+        vegetalisee","mousse_de_polyurethane":"mousse de polyurethane","isolant_mince_reflechissant":"isolant
+        mince reflechissant","autre":"autre"},"type":"string","enum":["laine_de_verre","laine_de_roche","verre_cellulaire","polystirene_expanse_pse","polystirene_extrude_psx","polyurethane_pu","mousse_phenolique","panneau_sous_vide_piv","aerogel","peinture_isolante_reflechissante","brique_monomur_terre_cuite","bloc_monomur_pierre","bloc_monomur_argile_expanse","beton_cellulaire","liege","fibre_de_bois","chanvre","lin","laine_de_mouton","ouate_de_cellulose","autres_fibres_vegetales","paille","torchis","toiture_vegetalisee","mousse_de_polyurethane","isolant_mince_reflechissant","autre"],"description":"type
+        de matériau isolant"},"norme_resistance":{"x-appinfo":{"nf_en_12664":"nf en
+        12664 : mesure par méthodes de la plaque chaude gardée et fluxmétrique - produits
+        secs et humides de moyenne et basse résistance thermique","nf_en_12667":"nf
+        en 12667 : mesure par méthodes de la plaque chaude gardée et fluxmétrique
+        - produits de haute et moyenne résistance thermique","nf_en_12939":"nf en
+        12939 : mesure par la méthode de la plaque chaude gardée","nf_en_iso_22097":"nf
+        en iso 22097 : évaluation pour des produits d''isolation réfléchissants"},"type":"string","enum":["nf_en_12664","nf_en_12667","nf_en_12939","nf_en_iso_22097"],"description":"norme
+        qui a été utilisée pour le calcul de la résistance de l''isolant"},"epaisseur_isolant":{"type":"number","nullable":true,"description":"épaisseur
+        d''isolant posé (unité : cm)"},"fixation_isolant_complement":{"type":"string","nullable":true,"description":"précisez
+        le type de fixation isolant si vous avez sélectionné \"autre\" dans enum_fixation_isolant_id"},"materiau_isolant_complement":{"type":"string","nullable":true,"description":"précisez
+        le type de matériau isolant si vous avez sélectionné \"autre\" dans enum_materiau_isolant_id"},"protection_isolant":{"type":"string","nullable":true,"description":"dispositif
+        de protection contre les dégradations extérieures"},"reference_produit":{"type":"string","nullable":true,"description":"reference
+        du produit"},"amenagements_complements":{"x-appinfo":{"coffrage":"coffrage","ecran_protection_conduits":"écran
+        de protection autour des conduits de fumées","ecran_protection_eclairage_encastres":"écran
+        de protection autour des dispositifs d''éclairage encastrés","rehausse_rigide_trappe_acces":"rehausse
+        rigide au-dessus de la trappe d’accès"},"type":"string","enum":["coffrage","ecran_protection_conduits","ecran_protection_eclairage_encastres","rehausse_rigide_trappe_acces"],"nullable":true,"description":"aménagements
+        nécessaires complémentaires"},"traitement_humidite":{"x-appinfo":{"pare_vapeur_protection_humidite":"pare-vapeur
+        nécessaire à la protection des matériaux d''isolation thermique","autre_dispositif_protection_humidite":"autre
+        dispositif nécessaire à la protection des matériaux d''isolation thermique"},"type":"string","enum":["pare_vapeur_protection_humidite","autre_dispositif_protection_humidite"],"nullable":true,"description":"pare-vapeur
+        ou tout autre dispositif équivalent pour protéger contre les transferts d''humidité"},"marque_produit":{"type":"string","nullable":true,"description":"nom
+        de la marque du produit"}},"additionalProperties":false,"required":["resistance_isolant","surface_isolant","fixation_isolant","materiau_isolant","norme_resistance","epaisseur_isolant","fixation_isolant_complement","materiau_isolant_complement","protection_isolant","reference_produit","amenagements_complements","traitement_humidite","marque_produit"]},{"type":"object","properties":{"efficacite_saisonniere":{"type":"number","description":"efficacité
+        énergétique saisonnière (unité : %)"},"classe_regulateur":{"x-appinfo":{"i":"i","ii":"ii","iii":"iii","iv":"iv","v":"v","vi":"vi","vii":"vii","viii":"viii"},"type":"string","enum":["i","ii","iii","iv","v","vi","vii","viii"],"description":"classe
+        de performance du régulateur selon le règlement européen"},"note_technique":{"type":"string","description":"présence
+        d''une note technique indiquant les caractéristiques de dimensionnement du
+        générateur 0 : non 1 : oui"},"calorifugeage":{"type":"string","nullable":true,"description":"présence
+        de calorifugeage pour les réseaux de distribution d''eau 0 : non 1 : oui"},"taux_couverture":{"type":"number","nullable":true,"description":"si
+        PAC eau-eau collective, taux de couverture de la PAC par rapport aux besoins
+        de chauffage (unité : sans unite)"},"type_emetteur":{"x-appinfo":{"plancher_chauffant":"plancher
+        chauffant","plafond_chauffant":"plafond chauffant","mur_chauffant":"mur chauffant","autre":"autre"},"type":"string","enum":["plancher_chauffant","plafond_chauffant","mur_chauffant","autre"],"nullable":true,"description":"type
+        d''émetteur"},"niveau_temperature_emetteur":{"x-appinfo":{"basse_temperature":"basse
+        température","moyenne_temperature":"moyenne température","haute_temperature":"haute
+        température"},"type":"string","enum":["basse_temperature","moyenne_temperature","haute_temperature"],"nullable":true,"description":"niveau
+        de température des émetteurs (basse, moyenne, haute)"},"marque_pac":{"type":"string","nullable":true,"description":"nom
+        de la marque de la PAC"},"reference_pac":{"type":"string","nullable":true,"description":"reference
+        de la PAC"},"marque_regulateur":{"type":"string","nullable":true,"description":"nom
+        de la marque du régulateur"},"reference_regulateur":{"type":"string","description":"reference
+        du régulateur"},"puissance":{"type":"number","nullable":true,"description":"si
+        PAC eau-eau collective, puissance nominale du générateur (unité : kW)"},"surface_chauffee":{"type":"number","nullable":true,"description":"surface
+        chauffée par la PAC installée (unité : m²)"},"type_installation":{"x-appinfo":{"installation_collective":"installation
+        collective où plusieurs logements sont desservis par le système","installation_individuelle":"installation
+        individuelle où un seul logement est desservi par le système"},"type":"string","enum":["installation_collective","installation_individuelle"],"nullable":true,"description":"type
+        d''installation (collective ou individuelle)"},"exclusion_ecs_uniquement":{"type":"string","nullable":true,"description":"si
+        PAC eau-eau collective, exclusion des appareils couvrant l''ECS uniquement
+        0 : non 1 : oui"}},"additionalProperties":false,"required":["efficacite_saisonniere","classe_regulateur","note_technique","calorifugeage","taux_couverture","type_emetteur","niveau_temperature_emetteur","marque_pac","reference_pac","marque_regulateur","reference_regulateur","puissance","surface_chauffee","type_installation","exclusion_ecs_uniquement"]},{"type":"object","properties":{"efficacite_saisonniere":{"type":"number","description":"efficacité
+        énergétique saisonnière (unité : %)"},"classe_regulateur":{"x-appinfo":{"i":"i","ii":"ii","iii":"iii","iv":"iv","v":"v","vi":"vi","vii":"vii","viii":"viii"},"type":"string","enum":["i","ii","iii","iv","v","vi","vii","viii"],"description":"classe
+        de performance du régulateur selon le règlement européen"},"note_technique":{"type":"string","description":"présence
+        d''une note technique indiquant les caractéristiques de dimensionnement du
+        générateur 0 : non 1 : oui"},"calorifugeage":{"type":"string","nullable":true,"description":"présence
+        de calorifugeage pour les réseaux de distribution d''eau 0 : non 1 : oui"},"taux_couverture":{"type":"number","nullable":true,"description":"si
+        PAC eau-eau collective, taux de couverture de la PAC par rapport aux besoins
+        de chauffage (unité : sans unite)"},"type_emetteur":{"x-appinfo":{"plancher_chauffant":"plancher
+        chauffant","plafond_chauffant":"plafond chauffant","mur_chauffant":"mur chauffant","autre":"autre"},"type":"string","enum":["plancher_chauffant","plafond_chauffant","mur_chauffant","autre"],"nullable":true,"description":"type
+        d''émetteur"},"niveau_temperature_emetteur":{"x-appinfo":{"basse_temperature":"basse
+        température","moyenne_temperature":"moyenne température","haute_temperature":"haute
+        température"},"type":"string","enum":["basse_temperature","moyenne_temperature","haute_temperature"],"nullable":true,"description":"niveau
+        de température des émetteurs (basse, moyenne, haute)"},"marque_pac":{"type":"string","nullable":true,"description":"nom
+        de la marque de la PAC"},"reference_pac":{"type":"string","nullable":true,"description":"reference
+        de la PAC"},"marque_regulateur":{"type":"string","nullable":true,"description":"nom
+        de la marque du régulateur"},"reference_regulateur":{"type":"string","description":"reference
+        du régulateur"},"puissance":{"type":"number","nullable":true,"description":"si
+        PAC eau-eau collective, puissance nominale du générateur (unité : kW)"},"surface_chauffee":{"type":"number","nullable":true,"description":"surface
+        chauffée par la PAC installée (unité : m²)"},"type_installation":{"x-appinfo":{"installation_collective":"installation
+        collective où plusieurs logements sont desservis par le système","installation_individuelle":"installation
+        individuelle où un seul logement est desservi par le système"},"type":"string","enum":["installation_collective","installation_individuelle"],"nullable":true,"description":"type
+        d''installation (collective ou individuelle)"},"exclusion_ecs_uniquement":{"type":"string","nullable":true,"description":"si
+        PAC eau-eau collective, exclusion des appareils couvrant l''ECS uniquement
+        0 : non 1 : oui"}},"additionalProperties":false,"required":["efficacite_saisonniere","classe_regulateur","note_technique","calorifugeage","taux_couverture","type_emetteur","niveau_temperature_emetteur","marque_pac","reference_pac","marque_regulateur","reference_regulateur","puissance","surface_chauffee","type_installation","exclusion_ecs_uniquement"]},{"type":"object","properties":{"efficacite_saisonniere":{"type":"number","nullable":true,"description":"efficacité
+        énergétique saisonnière (unité : sans unite)"},"classe_regulateur":{"x-appinfo":{"i":"i","ii":"ii","iii":"iii","iv":"iv","v":"v","vi":"vi","vii":"vii","viii":"viii"},"type":"string","enum":["i","ii","iii","iv","v","vi","vii","viii"],"nullable":true,"description":"classe
+        de performance du régulateur selon le règlement européen."},"note_technique":{"type":"string","nullable":true,"description":"présence
+        d''une note technique indiquant les caractéristiques de dimensionnement du
+        générateur 0 : non 1 : oui"},"calorifugeage":{"type":"string","nullable":true,"description":"présence
+        de calorifugeage pour les réseaux de distribution d''eau 0 : non 1 : oui"},"dispositif_reglage_equilibrage":{"type":"string","nullable":true,"description":"présence
+        d''un dispositif permettant l''équilibrage hydraulique 0 : non 1 : oui"},"taux_couverture":{"type":"number","nullable":true,"description":"taux
+        de couverture de la PAC par rapport aux besoins de chauffage (unité : sans
+        unite)"},"type_emetteur":{"x-appinfo":{"plancher_chauffant":"plancher chauffant","plafond_chauffant":"plafond
+        chauffant","mur_chauffant":"mur chauffant","autre":"autre"},"type":"string","enum":["plancher_chauffant","plafond_chauffant","mur_chauffant","autre"],"nullable":true,"description":"type
+        d''émetteur"},"niveau_temperature_emetteur":{"x-appinfo":{"basse_temperature":"basse
+        température","moyenne_temperature":"moyenne température","haute_temperature":"haute
+        température"},"type":"string","enum":["basse_temperature","moyenne_temperature","haute_temperature"],"nullable":true,"description":"niveau
+        de température des émetteurs"},"intensite_demarrage":{"type":"number","nullable":true,"description":"courant
+        électrique nécessaire au démarrage de la PAC (unité : A)"},"marque_pac":{"type":"string","nullable":true,"description":"nom
+        de la marque de la PAC"},"reference_pac":{"type":"string","nullable":true,"description":"reference
+        de la PAC"},"marque_regulateur":{"type":"string","nullable":true,"description":"nom
+        de la marque du régulateur"},"reference_regulateur":{"type":"string","nullable":true,"description":"reference
+        du régulateur"},"puissance":{"type":"number","nullable":true,"description":"puissance
+        nominale du générateur (unité : kW)"},"reference_travaux_appoint":{"type":"string","nullable":true,"description":"reference
+        projet de l''objet travaux correspondant au système d''appoint"},"systeme_appoint_pac":{"x-appinfo":{"pac_air_air":"pac
+        air/air","pac_air_eau":"pac air/eau","pac_eau_eau":"pac eau/eau","pac_geothermique":"pac
+        géothermique","poele_insert_foyer_ferme_cuisiniere_en_majorite_bois":"poêle/insert/foyer
+        fermé/cuisinière (en majorité bois)","poele_fioul_gpl_charbon":"poêle fioul/gpl/charbon","chaudiere_bois":"chaudière
+        bois","chaudiere_fioul":"chaudière fioul","chaudiere_gaz_classique":"chaudière
+        gaz classique","chaudiere_gaz_basse_temperature":"chaudière gaz basse température","chaudiere_gaz_a_condensation":"chaudière
+        gaz à condensation","generateurs_electriques_a_effet_joule_convecteurs_radiateurs_panneaux_rayonnants":"générateurs
+        électriques à effet joule (convecteurs/radiateurs/panneaux rayonnants)","chaudiere_electrique":"chaudière
+        électrique","reseau_de_chaleur":"réseau de chaleur","chaudiere_charbon":"chaudière
+        charbon","chaudiere_gpl_propane_butane":"chaudière gpl/propane/butane","autre":"autre"},"type":"string","enum":["pac_air_air","pac_air_eau","pac_eau_eau","pac_geothermique","poele_insert_foyer_ferme_cuisiniere_en_majorite_bois","poele_fioul_gpl_charbon","chaudiere_bois","chaudiere_fioul","chaudiere_gaz_classique","chaudiere_gaz_basse_temperature","chaudiere_gaz_a_condensation","generateurs_electriques_a_effet_joule_convecteurs_radiateurs_panneaux_rayonnants","chaudiere_electrique","reseau_de_chaleur","chaudiere_charbon","chaudiere_gpl_propane_butane","autre"],"nullable":true,"description":"type
+        de système d''appoint"},"systeme_appoint_complement":{"type":"string","nullable":true,"description":"précisez
+        le type de système d''appoint si vous avez sélectionné \"autre\" dans enum_systeme_appoint_pac_id"},"cop":{"type":"number","nullable":true,"description":"coefficient
+        de performance COP = nombre de kWh produits par la PAC / nombre de kWh consommés
+        par la PAC (unité : sans unite)"},"surface_chauffee":{"type":"number","nullable":true,"description":"Surface
+        chauffée par la pompe à chaleur (unité : m²)"},"type_installation":{"x-appinfo":{"installation_collective":"installation
+        collective où plusieurs logements sont desservis par le système","installation_individuelle":"installation
+        individuelle où un seul logement est desservi par le système"},"type":"string","enum":["installation_collective","installation_individuelle"],"description":"type
+        d''installation (collective ou individuelle)"},"exclusion_ecs_uniquement":{"type":"string","nullable":true,"description":"si
+        PAC collective, exclusion des appareils couvrant l''ECS uniquement 0 : non
+        1 : oui"},"exclusion_pac_basse_temperature":{"type":"string","nullable":true,"description":"si
+        PAC hybride, fonctionnement à moyenne ou haute température 0 : non 1 : oui"}},"additionalProperties":false,"required":["efficacite_saisonniere","classe_regulateur","note_technique","calorifugeage","dispositif_reglage_equilibrage","taux_couverture","type_emetteur","niveau_temperature_emetteur","intensite_demarrage","marque_pac","reference_pac","marque_regulateur","reference_regulateur","puissance","reference_travaux_appoint","systeme_appoint_pac","systeme_appoint_complement","cop","surface_chauffee","type_installation","exclusion_ecs_uniquement","exclusion_pac_basse_temperature"]},{"type":"object","properties":{"surface_chauffee":{"type":"number","nullable":true,"description":"surface
+        chauffée par la PAC installée (unité : m²)"},"scop":{"type":"number","nullable":true,"description":"coefficient
+        de performance saisonnier (SCOP) (unité : sans unite)"},"norme_coefficient_performance":{"x-appinfo":{"reglement_europeen_206_2012":"règlement
+        européen n°206/2012 du 6 mars 2012 : mesure du coefficient de performance","autre":"autre
+        norme"},"type":"string","enum":["reglement_europeen_206_2012","autre"],"nullable":true,"description":"norme
+        qui a été utilisée pour la mesure du coefficient de performance"},"puissance":{"type":"number","nullable":true,"description":"puissance
+        nominale de la PAC (unité : kW)"},"marque_pac":{"type":"string","nullable":true,"description":"nom
+        de la marque de la PAC"},"reference_pac":{"type":"string","nullable":true,"description":"reference
+        de la PAC"}},"additionalProperties":false,"required":["surface_chauffee","scop","norme_coefficient_performance","puissance","marque_pac","reference_pac"]},{"type":"object","properties":{"type_cet":{"x-appinfo":{"air_extrait":"installation
+        sur air extrait","autres_installations":"autres type d''installations"},"type":"string","enum":["air_extrait","autres_installations"],"nullable":true,"description":"type
+        d''installation (sur air extrait, autres types d''installations)"},"cop":{"type":"number","nullable":true,"description":"coefficient
+        de performance COP (unité : sans unite)"},"norme_cop_cet":{"x-appinfo":{"en_16147":"en
+        16147 : mesure du coefficient de performance","autre":"autre norme"},"type":"string","enum":["en_16147","autre"],"nullable":true,"description":"norme
+        qui a été utilisée pour la mesure du coefficient de performance du Chauffe
+        eau thermodynamique"},"efficacite_saisonniere":{"type":"number","nullable":true,"description":"efficacité
+        énergétique saisonnière (unité : %)"},"marque_equipement":{"type":"string","nullable":true,"description":"nom
+        de la marque de l''équipement"},"reference_equipement":{"type":"string","nullable":true,"description":"référence
+        de l''équipement"}},"additionalProperties":false,"required":["type_cet","cop","norme_cop_cet","efficacite_saisonniere","marque_equipement","reference_equipement"]},{"type":"object","properties":{"volume_stockage":{"type":"number","description":"volume
+        de stockage du ballon d''ECS (unité : L)"},"norme_dispositif_regulation":{"x-appinfo":{"nf_en_iso_52120_1":"nf
+        en iso 52120-1 : dispositif de régulation répondant à la classe a","autre":"autre
+        norme"},"type":"string","enum":["nf_en_iso_52120_1","autre"],"nullable":true,"description":"norme
+        qui a été utilisée pour qualifier le dispositif de régulation répondant à
+        la classe A"},"sonde_de_mesure":{"type":"string","nullable":true,"description":"présence
+        d''une sonde qui mesure la température de stockage de l’eau dans le chauffe-eau
+        0 : non 1 : oui"},"service_analyse_donnes":{"type":"string","nullable":true,"description":"présence
+        d''un service d’analyse de données du chauffe-eau 0 : non 1 : oui"},"equipement_pilotage":{"type":"string","nullable":true,"description":"présence
+        d''un équipement de pilotage du chauffe-eau 0 : non 1 : oui"},"indication_surconsommation":{"type":"string","nullable":true,"description":"présence
+        d''un moyen de mesure ou d’estimation de la consommation d’eau chaude 0 :
+        non 1 : oui"},"marque_systeme":{"type":"string","description":"nom de la marque
+        du système"},"reference_systeme":{"type":"string","description":"reference
+        du système"}},"additionalProperties":false,"required":["volume_stockage","norme_dispositif_regulation","sonde_de_mesure","service_analyse_donnes","equipement_pilotage","indication_surconsommation","marque_systeme","reference_systeme"]},{"type":"object","properties":{"type_vmc_double_flux":{"x-appinfo":{"vmc_df_auto":"double
+        flux autoréglable","vmc_df_hygro":"double flux modulée hygroréglable"},"type":"string","enum":["vmc_df_auto","vmc_df_hygro"],"description":"type
+        de VMC double flux (autoréglable, modulée hygroréglable)"},"type_installation":{"x-appinfo":{"installation_collective":"installation
+        collective où plusieurs logements sont desservis par le système","installation_individuelle":"installation
+        individuelle où un seul logement est desservi par le système"},"type":"string","enum":["installation_collective","installation_individuelle"],"description":"type
+        d''installation (collective ou individuelle)"},"nombre_logements":{"type":"number","nullable":true,"description":"si
+        installation collective : nombre de logements desservis (unité : sans unite)"},"classe_energetique_vmc":{"x-appinfo":{"a+":"a+","a":"a","b":"b","c":"c","d":"d","e":"e","f":"f","g":"g"},"type":"string","enum":["a+","a","b","c","d","e","f","g"],"nullable":true,"description":"si
+        installation individuelle : classe énergétique du système de ventilation selon
+        le règlement européen (UE) n° 1254/2014"},"efficacite_thermique_coll":{"type":"number","nullable":true,"description":"si
+        installation collective : efficacité thermique de l’échangeur de chaleur (unité
+        : sans unite)"},"surface_habitable":{"type":"number","nullable":true,"description":"si
+        installation individuelle : surface habitable (unité : m²)"},"efficacite_thermique_ind":{"type":"number","nullable":true,"description":"si
+        installation individuelle : rapport de température de la centrale double flux
+        (efficacité thermique) (unité : sans unite)"},"norme_rapport_temperature":{"x-appinfo":{"nf_en_13141_7":"nf
+        en 13141-7 : mesure du rapport de température de la centrale double flux","autre":"autre
+        norme"},"type":"string","enum":["nf_en_13141_7","autre"],"description":"norme
+        qui a été utilisée pour la mesure du rapport de température de la centrale
+        double flux"},"norme_echangeur_chaleur":{"x-appinfo":{"nf_en_308":"nf en 308
+        : mesure de l''efficacité thermique de l''échangeur de chaleur","autre":"autre
+        norme"},"type":"string","enum":["nf_en_308","autre"],"nullable":true,"description":"norme
+        qui a été utilisée pour la mesure de l''efficacité thermique de l''échangeur
+        de chaleur"},"certification_vmc":{"x-appinfo":{"nf_205":"nf 205 (individuel
+        uniquement)","aahe":"aahe (collectif uniquement)","aare":"aare (collectif
+        uniquement)"},"type":"string","enum":["nf_205","aahe","aare"],"nullable":true,"description":"certification
+        (ind : NF 205, coll : AAHE ou AARE)"},"puissance_electrique_absorbee_caisson":{"type":"number","nullable":true,"description":"si
+        installation individuelle : puissance électrique absorbée pondérée du caisson
+        (unité : WThC/(m3 /h))"},"avis_technique_cstb":{"type":"string","nullable":true,"description":"si
+        installation individuelle modulée hygroréglable : référence de l''avis technique
+        CSTB"},"date_avis_technique_cstb":{"type":"string","nullable":true,"description":"si
+        installation individuelle modulée hygroréglable : date de l''avis technique
+        CSTB"},"presence_systeme":{"type":"string","description":"présence d''un caisson,
+        d''un échangeur de chaleur, de gaines, de bouches d’insufflation et d’extraction
+        ou hygroréglables 0 : non 1 : oui"},"marque_caisson":{"type":"string","description":"nom
+        de la marque du caisson"},"reference_caisson":{"type":"string","description":"reference
+        du caisson"},"marque_bouches_insufflation_extraction":{"type":"string","description":"nom
+        de la marque des bouches d’insufflation et d’extraction"},"reference_bouches_insufflation_extraction":{"type":"string","description":"référence
+        des bouches d’insufflation et d’extraction"}},"additionalProperties":false,"required":["type_vmc_double_flux","type_installation","nombre_logements","classe_energetique_vmc","efficacite_thermique_coll","surface_habitable","efficacite_thermique_ind","norme_rapport_temperature","norme_echangeur_chaleur","certification_vmc","puissance_electrique_absorbee_caisson","avis_technique_cstb","date_avis_technique_cstb","presence_systeme","marque_caisson","reference_caisson","marque_bouches_insufflation_extraction","reference_bouches_insufflation_extraction"]},{"type":"object","properties":{"nombre_fenetres":{"type":"number","nullable":true,"description":"nombre
+        de fenêtres ou portes-fenêtres (unité : sans unite)"},"uw":{"type":"number","nullable":true,"description":"Uw
+        de la baie (unité : W/m²·K)"},"sw":{"type":"number","nullable":true,"description":"Sw
+        (facteur solaire) de la baie (unité : Sw)"},"norme_transmission_solaire":{"x-appinfo":{"nf_p_50_777":"nf
+        p 50-777 : mesure du facteur de transmission solaire des fenêtres","autre":"autre
+        norme"},"type":"string","enum":["nf_p_50_777","autre"],"nullable":true,"description":"norme
+        qui a été utilisée pour le calcul de la transmission solaire"},"norme_transmission_thermique":{"x-appinfo":{"nf_en_14351_1+a2":"nf
+        en 14351-1+a2 : mesure du facteur de transmission thermique des fenêtres","autre":"autre
+        norme"},"type":"string","enum":["nf_en_14351_1+a2","autre"],"nullable":true,"description":"norme
+        qui a été utilisée pour le calcul de la transmission thermique"},"surface":{"type":"number","nullable":true,"description":"surface
+        totale de fenêtres ou portes-fenêtres posées (unité : m²)"},"marque_produit":{"type":"string","nullable":true,"description":"nom
+        de la marque du produit"},"reference_produit":{"type":"string","nullable":true,"description":"reference
+        du produit"},"remplacement_du_dormant_existant":{"type":"string","nullable":true,"description":"remplacement
+        du dormant obligatoire 0 : non 1 : oui"}},"additionalProperties":false,"required":["nombre_fenetres","uw","sw","norme_transmission_solaire","norme_transmission_thermique","surface","marque_produit","reference_produit","remplacement_du_dormant_existant"]},{"type":"object","properties":{"presence_appoint":{"type":"string","description":"le
+        chauffe-eau-solaire comprend un système d''appoint 0 : non 1 : oui"},"surface_capteurs":{"type":"number","description":"surface
+        hors-tout totale de capteurs solaires vitrés thermiques installés (unité :
+        m²)"},"certification_capteurs_solaires":{"x-appinfo":{"cstbat":"certification
+        cstbat","solarkeymark":"certification solarkeymark","certification_equivalente":"certification
+        équivalente à cstbat ou solarkeymark","certification_qb":"certification qb"},"type":"string","enum":["cstbat","solarkeymark","certification_equivalente","certification_qb"],"description":"certification
+        CSTBat ou SolarKeymark ou équivalente"},"exclusion_capteurs_hybrides":{"type":"string","nullable":true,"description":"exclusion
+        de capteurs de type hybrides 0 : non 1 : oui"},"nombre_ballons":{"type":"number","nullable":true,"description":"nombre
+        de ballons d’eau chaude solaires installés"},"capacite_stockage":{"type":"number","description":"capacité
+        de stockage de chaque ballon d''eau chaude solaire (unité : L)"},"classe_energetique_ballons":{"type":"string","description":"si
+        capacité de stockage du ballon inférieure à 500L : classe d''efficacité énergétique
+        du ballon d''eau chaude solaire est à minima C"},"efficacite_energetique_chauffage_eau":{"type":"number","description":"efficacité
+        énergétique pour le chauffage de l''eau (unité : sans unite)"},"norme_efficacite_energetique":{"type":"string","description":"norme
+        qui a été utilisée pour le calcul de l''efficacité énergétique du chauffage
+        de l''eau (règlement (UE) n° 814/2013 du 2 août 2013)"},"profil_soutirage":{"x-appinfo":{"m":"m","l":"l","xl":"xl","xxl":"xxl","3xl":"3xl"},"type":"string","enum":["m","l","xl","xxl","3xl"],"description":"profil
+        de soutirage déclaré M, L, XL ou XXL"},"nature_appoint":{"x-appinfo":{"electrique_joule":"électrique
+        à effet joule","autre":"autre"},"type":"string","enum":["electrique_joule","autre"],"description":"nature
+        de l’appoint du chauffe-eau solaire (électrique à effet Joule ou autre)"},"nature_fluide_capteurs_solaires":{"x-appinfo":{"eau":"fluide
+        à eau","eau_glycolee":"fluide à eau glycolée"},"type":"string","enum":["eau","eau_glycolee"],"nullable":true,"description":"nature
+        du fluide circulant dans les capteurs solaires (eau ou eau glycolée)"},"marque_equipement":{"type":"string","description":"nom
+        de la marque de l''équipement"},"reference_equipement":{"type":"string","description":"référence
+        de l''équipement"},"etude_dimensionnement":{"type":"string","nullable":true,"description":"si
+        chauffe-eau solaire collectif, l''étude de dimensionnement de l''installation
+        0 : non 1 : oui"},"besoin_ecs":{"type":"number","nullable":true,"description":"si
+        chauffe-eau solaire collectif, besoin annuel en eau chaude sanitaire (unité
+        : kWh/an)"},"couverture_energie_solaire":{"type":"number","nullable":true,"description":"si
+        chauffe-eau solaire collectif, taux de couverture par l''énergie solaire du
+        chauffe-eau solaire colelctif (unité : %)"},"production_solaire_utile":{"type":"number","nullable":true,"description":"si
+        chauffe-eau solaire collectif, la production solaire utile (unité : kWh/an)"}},"additionalProperties":false,"required":["presence_appoint","surface_capteurs","certification_capteurs_solaires","exclusion_capteurs_hybrides","nombre_ballons","capacite_stockage","classe_energetique_ballons","efficacite_energetique_chauffage_eau","norme_efficacite_energetique","profil_soutirage","nature_appoint","nature_fluide_capteurs_solaires","marque_equipement","reference_equipement","etude_dimensionnement","besoin_ecs","couverture_energie_solaire","production_solaire_utile"]},{"type":"object","properties":{"presence_appoint":{"type":"string","description":"Le
+        système solaire combiné comprend un appoint (n''est pas composé uniquement
+        de la partie solaire) 0 : non 1 : oui"},"presence_ballon_stockage":{"type":"string","description":"présence
+        d''un ballon de stockage solaire 0 : non 1 : oui"},"presence_regulateur_temperature":{"type":"string","nullable":true,"description":"présence
+        d''un régulateur de température 0 : non 1 : oui"},"nature_fluide_capteurs_solaires":{"x-appinfo":{"eau":"fluide
+        à eau","eau_glycolee":"fluide à eau glycolée"},"type":"string","enum":["eau","eau_glycolee"],"description":"type
+        capteurs solaires thermiques vitrés (à circulation d’eau ou d’eau glycolée)"},"surface_capteurs":{"type":"number","description":"surface
+        hors-tout totale de capteurs solaires vitrés thermiques installés (unité :
+        m²)"},"puissance_capteurs":{"type":"number","nullable":true,"description":"puissance
+        des capteurs (unité : W/m²)"},"norme_puissance_capteur":{"x-appinfo":{"iso_9807":"iso
+        9807 : mesure de la puissance des capteurs","autre":"autre norme"},"type":"string","enum":["iso_9807","autre"],"nullable":true,"description":"norme
+        qui a été utilisée pour la mesure de la puissance des capteurs"},"certification_capteurs_solaires":{"x-appinfo":{"cstbat":"certification
+        cstbat","solarkeymark":"certification solarkeymark","certification_equivalente":"certification
+        équivalente à cstbat ou solarkeymark","certification_qb":"certification qb"},"type":"string","enum":["cstbat","solarkeymark","certification_equivalente","certification_qb"],"description":"certification
+        QB ou SolarKeymark ou équivalente"},"exclusion_capteurs_hybrides":{"type":"string","nullable":true,"description":"exclusion
+        de capteurs de type hybrides 0 : non 1 : oui"},"efficacite_energetique_chauffage":{"type":"number","description":"efficacité
+        énergétique chauffage (unité : sans unite)"},"norme_efficacite_energetique_chauffage":{"type":"string","description":"norme
+        qui a été utilisée pour le calcul de l''efficacité énergétique du chauffage
+        (règlement (UE) n° 813/2013 du 2 août 2013)"},"nombre_ballons":{"type":"number","description":"nombre
+        de ballons d’eau chaude solaires installés"},"capacite_stockage_ballons":{"type":"number","description":"capacité
+        de stockage de chaque ballon d''eau chaude solaire (unité : L)"},"classe_energetique_ballons":{"type":"string","description":"si
+        capacité de stockage du ballon inférieure à 500L : classe d''efficacité énergétique
+        du ballon d''eau chaude solaire"},"efficacite_energetique_appoint":{"type":"number","description":"efficacité
+        énergétique de l''appoint (unité : sans unite)"},"profil_soutirage":{"x-appinfo":{"m":"m","l":"l","xl":"xl","xxl":"xxl","3xl":"3xl"},"type":"string","enum":["m","l","xl","xxl","3xl"],"nullable":true,"description":"si
+        production d''eau chaude sanitaire uniquement : profil de soutirage déclaré
+        M, L, XL ou XXL"},"nature_appoint":{"x-appinfo":{"electrique_joule":"électrique
+        à effet joule","combustible":"combustible"},"type":"string","enum":["electrique_joule","combustible"],"description":"nature
+        de l’appoint du dispositif solaire thermique (électrique à effet Joule ou
+        combustible)"},"nature_fluide":{"type":"string","description":"nature du fluide
+        circulant dans les capteurs solaires (eau ou eau glycolée)"},"marque_equipement":{"type":"string","description":"nom
+        de la marque de l''équipement"},"reference_equipement":{"type":"string","description":"référence
+        de l''équipement"}},"additionalProperties":false,"required":["presence_appoint","presence_ballon_stockage","presence_regulateur_temperature","nature_fluide_capteurs_solaires","surface_capteurs","puissance_capteurs","norme_puissance_capteur","certification_capteurs_solaires","exclusion_capteurs_hybrides","efficacite_energetique_chauffage","norme_efficacite_energetique_chauffage","nombre_ballons","capacite_stockage_ballons","classe_energetique_ballons","efficacite_energetique_appoint","profil_soutirage","nature_appoint","nature_fluide","marque_equipement","reference_equipement"]},{"type":"object","properties":{"nombre_fenetres":{"type":"number","nullable":true,"description":"nombre
+        de doubles fenêtres (unité : sans unite)"},"uw":{"type":"number","nullable":true,"description":"Uw
+        de la baie (unité : W/(m².K))"},"sw":{"type":"number","nullable":true,"description":"Sw
+        (facteur solaire) de la baie (unité : Sw)"},"norme_transmission_solaire":{"x-appinfo":{"nf_p_50_777":"nf
+        p 50-777 : mesure du facteur de transmission solaire des fenêtres","autre":"autre
+        norme"},"type":"string","enum":["nf_p_50_777","autre"],"nullable":true,"description":"norme
+        qui a été utilisée pour le calcul de la transmission solaire"},"norme_transmission_thermique":{"x-appinfo":{"nf_en_14351_1+a2":"nf
+        en 14351-1+a2 : mesure du facteur de transmission thermique des fenêtres","autre":"autre
+        norme"},"type":"string","enum":["nf_en_14351_1+a2","autre"],"nullable":true,"description":"norme
+        qui a été utilisée pour le calcul de la transmission thermique"},"surface":{"type":"number","nullable":true,"description":"Surface
+        totale de doubles fenêtres (unité : m²)"},"marque_produit":{"type":"string","nullable":true,"description":"nom
+        de la marque du produit"},"reference_produit":{"type":"string","nullable":true,"description":"reference
+        du produit"}},"additionalProperties":false,"required":["nombre_fenetres","uw","sw","norme_transmission_solaire","norme_transmission_thermique","surface","marque_produit","reference_produit"]},{"type":"object","properties":{"surface_fermetures":{"type":"number","description":"surface
+        de fermetures isolantes posée (unité : m²)"},"nombre_fermetures":{"type":"number","description":"nombre
+        de fermetures isolantes posées (unité : sans unite)"},"resistance_thermique":{"type":"number","description":"résistance
+        thermique additionnelle (unité : m².K/W)"},"marque_fermetures":{"type":"string","description":"marque
+        des fermetures isolantes"},"reference_fermetures":{"type":"string","description":"référence
+        des fermetures isolantes"}},"additionalProperties":false,"required":["surface_fermetures","nombre_fermetures","resistance_thermique","marque_fermetures","reference_fermetures"]},{"type":"object","properties":{"nombre_fenetres":{"type":"number","nullable":true,"description":"nombre
+        de fenêtres de toiture (unité : sans unite)"},"uw":{"type":"number","nullable":true,"description":"Uw
+        de la baie (unité : W/m²·K)"},"sw":{"type":"number","nullable":true,"description":"Sw
+        (facteur solaire) de la baie (unité : Sw)"},"norme_transmission_solaire":{"x-appinfo":{"nf_p_50_777":"nf
+        p 50-777 : mesure du facteur de transmission solaire des fenêtres","autre":"autre
+        norme"},"type":"string","enum":["nf_p_50_777","autre"],"nullable":true,"description":"norme
+        qui a été utilisée pour le calcul de la transmission solaire"},"norme_transmission_thermique":{"x-appinfo":{"nf_en_14351_1+a2":"nf
+        en 14351-1+a2 : mesure du facteur de transmission thermique des fenêtres","autre":"autre
+        norme"},"type":"string","enum":["nf_en_14351_1+a2","autre"],"nullable":true,"description":"norme
+        qui a été utilisée pour le calcul de la transmission thermique"},"surface":{"type":"number","nullable":true,"description":"surface
+        totale de fenêtres de toiture (unité : m²)"},"marque_produit":{"type":"string","nullable":true,"description":"nom
+        de la marque du produit"},"reference_produit":{"type":"string","nullable":true,"description":"reference
+        du produit"},"remplacement_du_dormant_existant":{"type":"string","nullable":true,"description":"remplacement
+        du dormant obligatoire 0 : non 1 : oui"}},"additionalProperties":false,"required":["nombre_fenetres","uw","sw","norme_transmission_solaire","norme_transmission_thermique","surface","marque_produit","reference_produit","remplacement_du_dormant_existant"]},{"type":"object","properties":{"surface_habitable":{"type":"number","nullable":true,"description":"si
+        maison individuelle : surface habitable (unité : m²)"},"type_chauffe_bain":{"x-appinfo":{"flux_haut_rendement":"à
+        flux forcé à haut rendement","flux_condensation":"à flux forcé à condensation","combustion_atmospherique_haut_rendement":"à
+        combustion atmosphérique à haut rendement"},"type":"string","enum":["flux_haut_rendement","flux_condensation","combustion_atmospherique_haut_rendement"],"nullable":true,"description":"type
+        de chauffe-bain"},"rendement_chauffe_bain_haut_rendement":{"type":"number","nullable":true,"description":"si
+        chauffe-bain à haut rendement : rendement PCI au débit calorifique nominal
+        (unité : sans unite)"},"rendement_chauffe_bain_condensation":{"type":"number","nullable":true,"description":"si
+        chauffe-bain à condensation : rendement PCI au débit calorifique nominal (unité
+        : sans unite)"},"norme_rendement_debit":{"x-appinfo":{"nf_en_26":"nf en 26
+        : calcul du rendement du débit calorifique nominal","autre":"autre norme"},"type":"string","enum":["nf_en_26","autre"],"nullable":true,"description":"norme
+        qui a été utilisée pour le calcul du rendement du débit calorifique nominal"},"type_combustible":{"type":"string","nullable":true,"description":"présence
+        d''un combustible gazeux 0 : non 1 : oui"},"nombre_chauffe_bain":{"type":"number","nullable":true,"description":"si
+        logements collectifs : nombre d''appatements équipés d''un chauffe bain individuel
+        (unité : sans unite)"}},"additionalProperties":false,"required":["surface_habitable","type_chauffe_bain","rendement_chauffe_bain_haut_rendement","rendement_chauffe_bain_condensation","norme_rendement_debit","type_combustible","nombre_chauffe_bain"]},{"type":"object","properties":{"type_poele_insert":{"x-appinfo":{"poele":"poêle","foyer_ferme":"foyer
+        fermé","inserts_cheminees_interieures":"inserts de cheminées intérieures"},"type":"string","enum":["poele","foyer_ferme","inserts_cheminees_interieures"],"description":"type
+        d''appareil (poêle, foyer fermé, inserts de cheminées intérieures)"},"type_biomasse":{"x-appinfo":{"buches_de_bois":"bûches
+        de bois","copeaux_de_bois":"lcopeaux de bois","bois_comprime_granules":"bois
+        comprimé sous forme de granulés","bois_comprime_briquettes":"bois comprimé
+        sous forme de briquettes","bois_comprim_sciure":"bois comprimé sous forme
+        de sciure de bois"},"type":"string","enum":["buches_de_bois","copeaux_de_bois","bois_comprime_granules","bois_comprime_briquettes","bois_comprim_sciure"],"description":"type
+        de biomasse utilisée"},"efficacite_saisonniere":{"type":"number","description":"efficacité
+        énergétique saisonnière (unité : %)"},"norme_efficacite_poele_insert":{"x-appinfo":{"nf_en_13240":"nf
+        en 13240 : pour les poêles","nf_en_14785":"nf en 14785 : pour les poêles","nf_en_15250":"nf
+        en 15250 : pour les poêles","nf_en_13229":"nf en 13229 : pour les inserts
+        de cheminées intérieues","nf_en_12815":"nf en 12815 : pour les cuisinières
+        utilisées comme mode de chauffage"},"type":"string","enum":["nf_en_13240","nf_en_14785","nf_en_15250","nf_en_13229","nf_en_12815"],"description":"norme
+        de mesure de l''efficacité énergétique saisonnière"},"emission_particules":{"type":"number","nullable":true,"description":"émissions
+        saisonnières de particules (unité : mg/Nm3)"},"emission_monoxyde_carbone":{"type":"number","nullable":true,"description":"émissions
+        saisonnières de monoxyde de carbone (CO) (unité : mg/Nm3)"},"emission_oxydes_azote":{"type":"number","nullable":true,"description":"émissions
+        saisonnières d''oxydes d''azote (NOx) (unité : mg/Nm3)"},"emission_organiques_gazeux":{"type":"number","nullable":true,"description":"émissions
+        saisonnières de composés organiques gazeux (unité : mg/Nm3)"},"label_flamme_verte":{"type":"string","nullable":true,"description":"présence
+        du label Flamme Verte 0 : non 1 : oui"},"marque_equipement":{"type":"string","description":"nom
+        de la marque de l''équipement"},"reference_equipement":{"type":"string","description":"reference
+        de l''équipement"}},"additionalProperties":false,"required":["type_poele_insert","type_biomasse","efficacite_saisonniere","norme_efficacite_poele_insert","emission_particules","emission_monoxyde_carbone","emission_oxydes_azote","emission_organiques_gazeux","label_flamme_verte","marque_equipement","reference_equipement"]},{"type":"object","properties":{"type_vmc_simple_flux":{"x-appinfo":{"vmc_sf_auto":"mécanique
+        simple flux auto réglable","vmc_sf_hygro_a":"mécanique simple flux hygroréglable
+        type a","vmc_sf_hygro_b":"mécanique simple flux hygroréglable type b"},"type":"string","enum":["vmc_sf_auto","vmc_sf_hygro_a","vmc_sf_hygro_b"],"nullable":true,"description":"type
+        de VMC simple flux (auto, hygro, basse pression ...)"},"type_installation":{"x-appinfo":{"installation_collective":"installation
+        collective où plusieurs logements sont desservis par le système","installation_individuelle":"installation
+        individuelle où un seul logement est desservi par le système"},"type":"string","enum":["installation_collective","installation_individuelle"],"nullable":true,"description":"type
+        d''installation (collective ou individuelle)"},"type_bouches":{"x-appinfo":{"type_a":"type
+        a : seules les bouches d’extraction sont hygroréglables","type_b":"type b
+        : les bouches d’extraction et les entrées d’air sont hygroréglables"},"type":"string","enum":["type_a","type_b"],"nullable":true,"description":"type
+        de bouches"},"puissance_electrique_absorbee_caisson":{"type":"number","nullable":true,"description":"puissance
+        électrique absorbée pondérée du caisson basse consommation (unité : WThC/(m3
+        /h))"},"surface_habitable":{"type":"number","nullable":true,"description":"si
+        installation individuelle : surface habitable (unité : m²)"},"type_caisson":{"x-appinfo":{"standard":"caisson
+        standard","basse_consommation":"caisson basse consommation","basse_pression":"caisson
+        basse pression"},"type":"string","enum":["standard","basse_consommation","basse_pression"],"nullable":true,"description":"si
+        installation collective : type de caisson (standard, basse consommation, basse
+        pression)"},"nombre_logements":{"type":"integer","nullable":true,"description":"si
+        installation collective : nombre de logements desservis (unité : sans unite)"},"avis_technique_cstb":{"type":"string","nullable":true,"description":"référence
+        de l''avis technique CSTB 0 : non 1 : oui"},"presence_systeme":{"type":"string","nullable":true,"description":"présence
+        d''un caisson, de gaines, d''entrées d''air et de bouches d''extraction 0
+        : non 1 : oui"},"marque_bouches_insufflation_extraction":{"type":"string","nullable":true,"description":"nom
+        de la marque des bouches d’insufflation et d’extraction"},"reference_bouches_insufflation_extraction":{"type":"string","nullable":true,"description":"référence
+        des bouches d’insufflation et d’extraction"},"marque_entrees_air":{"type":"string","nullable":true,"description":"Marque
+        des bouches d''entrées d’air"},"reference_entrees_air":{"type":"string","nullable":true,"description":"Référence
+        des bouches d''entrées d’air"},"marque_caisson":{"type":"string","nullable":true,"description":"nom
+        de la marque du caisson"},"reference_caisson":{"type":"string","nullable":true,"description":"reference
+        du caisson"}},"additionalProperties":false,"required":["type_vmc_simple_flux","type_installation","type_bouches","puissance_electrique_absorbee_caisson","surface_habitable","type_caisson","nombre_logements","avis_technique_cstb","presence_systeme","marque_bouches_insufflation_extraction","reference_bouches_insufflation_extraction","marque_entrees_air","reference_entrees_air","marque_caisson","reference_caisson"]},{"type":"object","properties":{"type_biomasse":{"x-appinfo":{"buches_de_bois":"bûches
+        de bois","copeaux_de_bois":"lcopeaux de bois","bois_comprime_granules":"bois
+        comprimé sous forme de granulés","bois_comprime_briquettes":"bois comprimé
+        sous forme de briquettes","bois_comprim_sciure":"bois comprimé sous forme
+        de sciure de bois"},"type":"string","enum":["buches_de_bois","copeaux_de_bois","bois_comprime_granules","bois_comprime_briquettes","bois_comprim_sciure"],"description":"type
+        de biomasse utilisée"},"type_chargement":{"x-appinfo":{"manuel":"chargement
+        manuel","automatique":"chargement automatique"},"type":"string","enum":["manuel","automatique"],"description":"type
+        de chargement de la chaudière (manuel, automatique)"},"type_installation":{"x-appinfo":{"installation_collective":"installation
+        collective où plusieurs logements sont desservis par le système","installation_individuelle":"installation
+        individuelle où un seul logement est desservi par le système"},"type":"string","enum":["installation_collective","installation_individuelle"],"nullable":true,"description":"type
+        d''installation (collective ou individuelle)"},"efficacite_saisonniere":{"type":"number","description":"efficacité
+        énergétique saisonnière (unité : %)"},"norme_efficacite_chaudiere_bio":{"x-appinfo":{"reglement_europeen_2015_1189":"règlement
+        européen n°2015/1189 du 28 avril 2015 : calcul de l’efficacité énergétique
+        saisonnière","autre":"autre norme"},"type":"string","enum":["reglement_europeen_2015_1189","autre"],"description":"norme
+        qui a été utilisée pour le calcul de l’efficacité énergétique saisonnière"},"puissance_thermique":{"type":"number","description":"si
+        chaudière individuelle, puissance thermique nominale (unité : kW)"},"presence_silo":{"type":"string","description":"si
+        chaudière à alimentation automatique, présence d’un silo d’au moins 225 litres
+        0 : non 1 : oui"},"presence_ballon_tampon":{"type":"string","nullable":true,"description":"si
+        chaudière à alimentation manuelle, présence d’un ballon tampon 0 : non 1 :
+        oui"},"emission_particules":{"type":"number","nullable":true,"description":"émissions
+        saisonnières de particules (unité : mg/Nm3)"},"emission_monoxyde_carbone":{"type":"number","nullable":true,"description":"émissions
+        saisonnières de monoxyde de carbone (CO) (unité : mg/Nm3)"},"emission_oxydes_azote":{"type":"number","nullable":true,"description":"émissions
+        saisonnières d''oxydes d''azote (NOx) (unité : mg/Nm3)"},"emission_organiques_gazeux":{"type":"number","nullable":true,"description":"émissions
+        saisonnières de composés organiques gazeux (unité : mg/Nm3)"},"norme_valeur_concentration":{"x-appinfo":{"reglement_europeen_2015_1189":"règlement
+        européen 2015/1189 du 28 avril 2015 : mesure des valeurs en concentration","autre":"autre
+        norme"},"type":"string","enum":["reglement_europeen_2015_1189","autre"],"description":"norme
+        qui a été utilisée pour la mesure des valeurs en concentration"},"norme_classe_regulateur":{"x-appinfo":{"reglement_europeen_2014_c207_02":"règlement
+        européen 2014/c207/02 : détermination de la classe de performance du régulateur","autre":"autre
+        norme"},"type":"string","enum":["reglement_europeen_2014_c207_02","autre"],"description":"norme
+        qui a été utilisée pour la détermination de la classe de performance du régulateur"},"note_technique":{"type":"string","description":"présence
+        d''une note technique indiquant les caractéristiques de dimensionnement du
+        générateur 0 : non 1 : oui"},"label_flamme_verte_7":{"type":"string","nullable":true,"description":"présence
+        du label Flamme Verte 7* 0 : non 1 : oui"},"marque_chaudiere":{"type":"string","description":"nom
+        de la marque de la chaudière"},"reference_chaudiere":{"type":"string","description":"reference
+        de la chaudière"},"nombre_appartement":{"type":"number","nullable":true,"description":"si
+        chaudière collective : nombre d’appartements chauffés (unité : sans unite)"},"surface_chauffee":{"type":"number","nullable":true,"description":"si
+        chaudière collective: surface chauffée (unité : m²)"},"efficacite_energetique_saisonniere":{"type":"number","description":"si
+        chaudière collective dont la puissance thermique est ≤ 500 kW, efficacité
+        énergétique saisonnière (unité : %)"},"rendement_pci":{"type":"number","description":"si
+        chaudière collective dont la puissance thermique est > 500 kW, rendement PCI
+        (unité : %)"},"quantite_chaleur":{"type":"number","description":"si chaudière
+        collective, quantité nette de chaleur produite (unité : GWh/an)"}},"additionalProperties":false,"required":["type_biomasse","type_chargement","type_installation","efficacite_saisonniere","norme_efficacite_chaudiere_bio","puissance_thermique","presence_silo","presence_ballon_tampon","emission_particules","emission_monoxyde_carbone","emission_oxydes_azote","emission_organiques_gazeux","norme_valeur_concentration","norme_classe_regulateur","note_technique","label_flamme_verte_7","marque_chaudiere","reference_chaudiere","nombre_appartement","surface_chauffee","efficacite_energetique_saisonniere","rendement_pci","quantite_chaleur"]},{"type":"object","properties":{"premier_raccordement":{"type":"string","nullable":true,"description":"le
+        bâtiment n’a jamais été raccordé à un réseau de chaleur ces cinq dernières
+        années 0 : non 1 : oui"},"nombre_appartement":{"type":"number","nullable":true,"description":"si
+        logement collectif : nombre d’appartements raccordés (unité : sans unite)"},"surface_habitable":{"type":"number","nullable":true,"description":"si
+        maison individuelle : surface habitable (unité : m²)"},"presence_contrat_fourniture_chaleur":{"type":"string","nullable":true,"description":"présence
+        du contrat de fourniture de chaleur entre le bénéficiaire de l’opération et
+        le gestionnaire du réseau 0 : non 1 : oui"},"nom_reseau":{"type":"string","description":"nom
+        du réseau (quartiers ou villes desservis)"}},"additionalProperties":false,"required":["premier_raccordement","nombre_appartement","surface_habitable","presence_contrat_fourniture_chaleur","nom_reseau"]},{"type":"object","properties":{"amplitude_emetteur_electrique":{"type":"number","nullable":true,"description":"amplitude
+        de l''émetteur électrique (unité : K)"},"derive_emetteur_electrique":{"type":"number","nullable":true,"description":"dérive
+        de l''émetteur électrique (unité : K)"},"detection_ouverture_fenetre":{"type":"string","nullable":true,"description":"détection
+        automatique et intégrée à l’appareil de l’ouverture d’une fenêtre 0 : non
+        1 : oui"},"detection_absence":{"type":"string","nullable":true,"description":"détection
+        automatique d’absence 0 : non 1 : oui"},"indication_surconsommation":{"type":"string","nullable":true,"description":"indication
+        de surconsommation par information visuelle 0 : non 1 : oui"},"nombre_emetteurs":{"type":"number","nullable":true,"description":"nombre
+        d’émetteurs électriques installés (unité : sans unite)"},"marque_emetteur":{"type":"string","nullable":true,"description":"nom
+        de la marque de l''émetteur"},"reference_emetteur":{"type":"string","nullable":true,"description":"reference
+        de l''émetteur"}},"additionalProperties":false,"required":["amplitude_emetteur_electrique","derive_emetteur_electrique","detection_ouverture_fenetre","detection_absence","indication_surconsommation","nombre_emetteurs","marque_emetteur","reference_emetteur"]},{"type":"object","properties":{"type_bouches":{"x-appinfo":{"type_a":"type
+        a : seules les bouches d’extraction sont hygroréglables","type_b":"type b
+        : les bouches d’extraction et les entrées d’air sont hygroréglables"},"type":"string","enum":["type_a","type_b"],"nullable":true,"description":"type
+        de bouches"},"nombre_appartements":{"type":"integer","nullable":true,"description":"nombre
+        d''appartements (unité : sans unite)"},"avis_technique_cstb":{"type":"string","nullable":true,"description":"référence
+        de l''avis technique CSTB"},"type_extracteur":{"x-appinfo":{"standard":"extracteur
+        standard","basse_consommation":"extracteur basse consommation"},"type":"string","enum":["standard","basse_consommation"],"nullable":true,"description":"type
+        d''extracteur (standard, basse consommation)"},"puissance_extracteur":{"type":"number","nullable":true,"description":"puissance
+        de l''extracteur (unité : Wh/m3)"},"marque_extracteur":{"type":"string","nullable":true,"description":"nom
+        de la marque de l''extracteur"},"reference_extracteur":{"type":"string","nullable":true,"description":"reference
+        de l''extrateur"},"presence_systeme":{"type":"string","nullable":true,"description":"présence
+        d''un extracteur, d''entrées d''air et de bouches d''extraction 0 : non 1
+        : oui"},"marque_bouches_extraction":{"type":"string","nullable":true,"description":"nom
+        de la marque des bouches d’extraction"},"reference_bouches_extraction":{"type":"string","nullable":true,"description":"référence
+        des bouches d’extraction"},"marque_entrees_air":{"type":"string","nullable":true,"description":"marque
+        des bouches d''entrées d’air"},"reference_entrees_air":{"type":"string","nullable":true,"description":"référence
+        des bouches d''entrées d’air"}},"additionalProperties":false,"required":["type_bouches","nombre_appartements","avis_technique_cstb","type_extracteur","puissance_extracteur","marque_extracteur","reference_extracteur","presence_systeme","marque_bouches_extraction","reference_bouches_extraction","marque_entrees_air","reference_entrees_air"]},{"type":"object","properties":{"presence_chauffage_central":{"type":"string","nullable":true,"description":"logement
+        chauffé par un système de chauffage central 0 : non 1 : oui"},"dimensionnement_radiateurs":{"type":"number","nullable":true,"description":"dimensionnement
+        des radiateurs (unité : K)"},"norme_dimensionnement_radiateur":{"x-appinfo":{"en_443":"en
+        443 : dimensionnement des radiateurs","autre":"autre norme"},"type":"string","enum":["en_443","autre"],"nullable":true,"description":"norme
+        qui a été utilisée pour le dimensionnement des radiateurs"},"nombre_radiateurs":{"type":"number","nullable":true,"description":"nombre
+        de radiateurs basse température mis en place (unité : sans unite)"},"marque_radiateurs":{"type":"string","nullable":true,"description":"nom
+        de la marque des radiateurs"},"reference_radiateurs":{"type":"string","nullable":true,"description":"reference
+        des radiateurs"}},"additionalProperties":false,"required":["presence_chauffage_central","dimensionnement_radiateurs","norme_dimensionnement_radiateur","nombre_radiateurs","marque_radiateurs","reference_radiateurs"]},{"type":"object","properties":{"surface_chauffee":{"type":"number","nullable":true,"description":"Surface
+        de bâtiment chauffée par le plancher chauffant hydraulique à basse température
+        (unité : m²)"},"temperature_eau":{"type":"number","nullable":true,"description":"température
+        de l’eau dans le réseau (unité : °C)"},"dispositif_regulation":{"type":"string","nullable":true,"description":"dispositif
+        de régulation de la température de l’eau commandé par une sonde 0 : non 1
+        : oui"},"marque_plancher_chauffant":{"type":"string","nullable":true,"description":"nom
+        de la marque du plancher chauffant"},"reference_plancher_chauffant":{"type":"string","nullable":true,"description":"reference
+        du plancher chauffant"}},"additionalProperties":false,"required":["surface_chauffee","temperature_eau","dispositif_regulation","marque_plancher_chauffant","reference_plancher_chauffant"]},{"type":"object","properties":{"presence_appoint":{"type":"string","description":"le
+        système solairecomprend un système d''appoint 0 : non 1 : oui"},"presence_emetteurs_basse_temperature":{"type":"string","nullable":true,"description":"présence
+        d''émetteurs de chauffage central de type basse température 0 : non 1 : oui"},"productivite_capteurs_photovoltaiques":{"type":"number","nullable":true,"description":"productivité
+        des capteurs photovoltaïques (unité : W/m²)"},"surface_capteurs":{"type":"number","description":"surface
+        des capteurs solaires installés (unité : m²)"},"presence_ballon":{"type":"string","description":"présence
+        d''un ou plusieurs ballon(s) d''eau chaude solaire(s) 0 : non 1 : oui"},"capacite_stockage_ballon":{"type":"number","description":"capacité
+        de stockage du ou des ballons solaires (unité : L)"},"certification_capteurs_solaires":{"x-appinfo":{"cstbat":"certification
+        cstbat","solarkeymark":"certification solarkeymark","certification_equivalente":"certification
+        équivalente à cstbat ou solarkeymark","certification_qb":"certification qb"},"type":"string","enum":["cstbat","solarkeymark","certification_equivalente","certification_qb"],"description":"certification
+        CSTBat ou SolarKeymark ou équivalente"},"exclusion_capteurs_hybrides":{"type":"string","nullable":true,"description":"exclusion
+        de capteurs de type hybrides 0 : non 1 : oui"},"marque_produit":{"type":"string","description":"nom
+        de la marque du produit"},"reference_produit":{"type":"string","description":"référence
+        du produit"}},"additionalProperties":false,"required":["presence_appoint","presence_emetteurs_basse_temperature","productivite_capteurs_photovoltaiques","surface_capteurs","presence_ballon","capacite_stockage_ballon","certification_capteurs_solaires","exclusion_capteurs_hybrides","marque_produit","reference_produit"]},{"type":"object","properties":{"diametre":{"type":"number","nullable":true,"description":"diamètre
+        du brasseur (unité : m)"},"nombre_vitesse":{"type":"number","nullable":true,"description":"nombre
+        de vitesse de fonctionnement (unité : sans unite)"},"niveau_sonore_vitesse_max":{"type":"number","nullable":true,"description":"Niveau
+        sonore à la vitesse de fonctionnement maximale (unité : dB)"},"niveau_sonore_vitesse_min":{"type":"number","nullable":true,"description":"Niveau
+        sonore à la vitesse de fonctionnement minimale (unité : dB)"},"efficacite_energetique_vitesse_max":{"type":"number","nullable":true,"description":"rapport
+        entre le débit d''air et la puissance à la vitesse maximale (unité : m3/Wh)"}},"additionalProperties":false,"required":["diametre","nombre_vitesse","niveau_sonore_vitesse_max","niveau_sonore_vitesse_min","efficacite_energetique_vitesse_max"]}]}},"additionalProperties":false,"required":["lot_travaux","type_travaux","usage_systeme","reference_travaux","cout","caracteristiques_travaux"]}},"additionalProperties":false}},"additionalProperties":false}},"additionalProperties":false},"strict":true}}}'
+    headers:
+      User-Agent:
+      - Faraday v2.13.4
+      Authorization:
+      - Bearer <ALBERT_API_KEY>
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.27.4
+      Date:
+      - Wed, 10 Sep 2025 18:40:57 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Vary:
+      - Accept-Encoding
+    body:
+      encoding: ASCII-8BIT
+      string: '{"id":"chatcmpl-9ef54d86d579463c9649e50bf0c6afad","object":"chat.completion","created":1757529652,"model":"mistralai/Mistral-Small-3.2-24B-Instruct-2506","choices":[{"index":0,"message":{"role":"assistant","content":"{\n  \"projet_travaux\":
+        {\n    \"travaux_collection\": {\n      \"travaux\": {\n        \"lot_travaux\":
+        \"mur\",\n        \"type_travaux\": \"brasseur_air\",\n        \"usage_systeme\":
+        \"chauffage\",\n        \"reference_travaux\": \"REF-123-456\",\n        \"cout\":
+        10000\n      ,\n      \"caracteristiques_travaux\": {\n        \"diametre\":
+        7,\n        \"nombre_vitesse\": 3\n      ,\n      \"niveau_sonore_vitesse_max\":
+        49,\n      \"niveau_sonore_vitesse_min\": 38\n      ,\n      \"efficacite_energetique_vitesse_max\":
+        26.18\n      }\n    }\n  }\n}\n}","refusal":null,"annotations":null,"audio":null,"function_call":null,"tool_calls":[],"reasoning_content":null},"logprobs":null,"finish_reason":"stop","stop_reason":null}],"service_tier":null,"system_fingerprint":null,"usage":{"prompt_tokens":40,"completion_tokens":163,"total_tokens":203,"cost":0.0,"carbon":{"kWh":{"min":0.0008102575840757338,"max":0.001305856912075734},"kgCO2eq":{"min":8.077738001923786e-05,"max":0.00012108075637051787}},"details":[{"id":"chatcmpl-9ef54d86d579463c9649e50bf0c6afad","model":"mistralai/Mistral-Small-3.2-24B-Instruct-2506","usage":{"prompt_tokens":40,"completion_tokens":163,"total_tokens":203,"cost":0.0,"carbon":{"kWh":{"min":0.0008102575840757338,"max":0.001305856912075734},"kgCO2eq":{"min":8.077738001923786e-05,"max":0.00012108075637051787}}}}]},"prompt_logprobs":null,"kv_transfer_params":null}'
+  recorded_at: Wed, 10 Sep 2025 18:40:57 GMT
+recorded_with: VCR 6.3.1

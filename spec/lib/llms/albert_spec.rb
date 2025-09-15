@@ -26,6 +26,24 @@ RSpec.describe Llms::Albert, type: :service do
       end
     end
 
+    context "with RNT JSON schema" do
+      let(:json_schema) do
+        JsonOpenapi.make_schema_refs_inline!(
+          JSON.parse(
+            Rails.root.join("spec/fixtures/files/rnt_openapi_schema.json").read
+          )
+        ).dig("components", "schemas", "rnt")
+      end
+
+      it "returns a hash with the expected keys", :vcr do
+        expect(read_attributes.dig(
+                 :projet_travaux, :travaux_collection, :travaux
+               )).to include(
+                 lot_travaux: "mur"
+               )
+      end
+    end
+
     context "when model is not found" do
       let(:model) { "my_brain" }
 
