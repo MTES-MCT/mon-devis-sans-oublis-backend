@@ -6,6 +6,12 @@ ActiveAdmin.register QuoteCheck do
     link_to "Re-vérifier à nouveau", recheck_admin_quote_check_path(resource), method: :post if resource.recheckable?
   end
 
+  action_item :rnt, only: :show do
+    if resource.anonymized_text.present?
+      link_to "Lancer une analyse via le RNT", rnt_admin_quote_check_path(resource), method: :post
+    end
+  end
+
   if Rails.env.development?
     action_item :recheck_synchronously, only: :show do
       if resource.recheckable?

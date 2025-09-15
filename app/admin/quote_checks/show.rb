@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "nokogiri"
+
 ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
   show do # rubocop:disable Metrics/BlockLength
     columns do # rubocop:disable Metrics/BlockLength
@@ -127,6 +129,36 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
             ].join.html_safe # rubocop:disable Rails/OutputSafety
           end
         end
+
+        if (rnt = Kredis.json("rnt:#{resource.id}").value)
+          panel "RNT" do
+            content_tag(:table) do
+              [
+                content_tag(:tr) do
+                  content_tag(:td, "1. QuoteCheck en JSON via schéma RNT") +
+                    content_tag(
+                      :td,
+                      content_tag(:pre, JSON.pretty_generate(rnt.fetch("quote_check_rnt_json")))
+                    )
+                end,
+                content_tag(:tr) do
+                  content_tag(:td, "2. QuoteCheck en XML envoyé au RNT") +
+                    content_tag(
+                      :td,
+                      content_tag(:pre, Nokogiri::XML(rnt.fetch("quote_check_rnt_xml")).to_xml(indent: 2))
+                    )
+                end,
+                content_tag(:tr) do
+                  content_tag(:td, "3. Réponse via validation du RNT") +
+                    content_tag(
+                      :td,
+                      content_tag(:pre, JSON.pretty_generate(rnt.fetch("rnt_validation_response")))
+                    )
+                end
+              ].join.html_safe # rubocop:disable Rails/OutputSafety
+            end
+          end
+        end
       end
     end
 
@@ -157,8 +189,8 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
       end
 
       tab "Attributs détectés" do # rubocop:disable Metrics/BlockLength
-        next unless resource.read_attributes &&
-                    resource.validation_error_details &&
+        next unless resource.read_attributes ||
+                    resource.validation_error_details ||
                     resource.validation_error_edits
 
         file_errors = resource.validation_error_details&.select { |error| error["category"] == "file" }

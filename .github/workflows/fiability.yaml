@@ -11,6 +11,7 @@ env:
   DATABASE_URL: postgres://postgres:dummy@localhost:5432/test
   FIABILITY_THRESHOLD: ${{ vars.FIABILITY_THRESHOLD || '0.6' }}
   MISTRAL_MODEL: ${{ vars.MISTRAL_MODEL || 'mistral-large-latest' }}
+  REDIS_URL: redis://redis:6379/1
 
 permissions: {}
 
@@ -66,6 +67,7 @@ jobs:
             -e MISTRAL_MODEL="${{ env.MISTRAL_MODEL }}" \
             -e MISTRAL_API_KEY="${{ env.MISTRAL_API_KEY }}" \
             -e RAILS_ENV="${{ env.RAILS_ENV }}" \
+            -e REDIS_URL="${{ env.REDIS_URL }}" \
             -e SILENT_MIGRATION="true" \
             -e TEST_SOURCE_DATABASE_URL="${{ env.TEST_SOURCE_DATABASE_URL }}" \
             -v /var/run/docker.sock:/var/run/docker.sock \

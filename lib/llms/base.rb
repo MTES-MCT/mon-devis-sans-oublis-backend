@@ -8,7 +8,7 @@ module Llms
 
     attr_reader :json_schema, :model, :prompt, :result_format
 
-    RESULT_FORMATS = %i[numbered_list json].freeze
+    RESULT_FORMATS = %i[numbered_list json xml].freeze
 
     def initialize(prompt, json_schema: nil, model: nil, result_format: :json)
       @prompt = prompt
@@ -40,6 +40,22 @@ module Llms
 
     def self.configured?
       raise NotImplementedError
+    end
+
+    def self.extract_json(text)
+      (
+        text[/```json.?+(\{.+\})/im, 1] || text[/(\{.+\})/im, 1]
+      )&.gsub(/"version": ([\d\.]+)/, '"version": "\1"') # TODO: Remove version temporary fix
+    end
+
+    def self.extract_jsx(text)
+      return unless text&.match?(/```jsx\n/i)
+
+      text[/(\{.+\})/im, 1]&.gsub(/(\w+):/, '"\1":')
+    end
+
+    def self.extract_markdown(text)
+      text[/```markdown(.+)```/im, 1]&.strip if text&.match?(/```markdown\n/i)
     end
 
     # rubocop:disable Metrics/AbcSize
@@ -79,20 +95,10 @@ module Llms
     # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/AbcSize
 
-    def self.extract_json(text)
-      (
-        text[/```json.?+(\{.+\})/im, 1] || text[/(\{.+\})/im, 1]
-      )&.gsub(/"version": ([\d\.]+)/, '"version": "\1"') # TODO: Remove version temporary fix
-    end
+    def self.extract_xml(text)
+      return text[/```xml(.+)```/im, 1]&.strip if text&.match?(/```xml\n/i)
 
-    def self.extract_jsx(text)
-      return unless text&.match?(/```jsx\n/i)
-
-      text[/(\{.+\})/im, 1]&.gsub(/(\w+):/, '"\1":')
-    end
-
-    def self.extract_markdown(text)
-      text[/```markdown(.+)```/im, 1]&.strip if text&.match?(/```markdown\n/i)
+      text[%r{<\?xml.+</.+>}im, 0]&.strip
     end
 
     def self.include_null_bytes?(text)
@@ -144,6 +150,8 @@ module Llms
         @read_attributes = TrackingHash.nilify_empty_values(
           self.class.extract_numbered_list(content).to_h { [it.fetch(:label), it.fetch(:value)] }
         )
+      when :xml
+        self.class.extract_xml(content)
       else # :json
         content_jsx_result = self.class.extract_jsx(content)
         unless content_jsx_result
