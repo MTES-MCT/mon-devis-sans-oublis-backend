@@ -52,3 +52,8 @@ node_modules
 *.CSV
 **/*.csv
 **/*.CSV
+
+# Claude
+.claude
+.claude*
+CLAUDE.md
