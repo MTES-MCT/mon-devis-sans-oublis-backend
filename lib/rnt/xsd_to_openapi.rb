@@ -7,7 +7,7 @@ require "json"
 require "pry"
 
 # Simple XSD to OpenAPI YAML converter
-class XsdToOpenApi # rubocop:disable Metrics/ClassLength
+class XsdToOpenapi # rubocop:disable Metrics/ClassLength
   OPENAPI_VERSION = "3.0.1"
 
   def initialize(xsd_path)
@@ -208,7 +208,7 @@ end
 
 if __FILE__ == $PROGRAM_NAME
   dir = File.dirname(__FILE__)
-  openapi_yaml = XsdToOpenApi.new(ARGV[0] || File.expand_path("schema.xsd", dir)).to_yaml
+  openapi_yaml = XsdToOpenapi.new(ARGV[0] || File.expand_path("schema.xsd", dir)).to_yaml
   File.write(ARGV[1] || File.expand_path("schema_openapi.yaml", dir), YAML.dump(openapi_yaml))
   File.write(File.expand_path("schema_openapi.json", dir), JSON.pretty_generate(openapi_yaml))
   puts YAML.dump(openapi_yaml) # rubocop:disable Rails/Output
