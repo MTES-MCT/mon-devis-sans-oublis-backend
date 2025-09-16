@@ -381,6 +381,10 @@ GEM
       activerecord
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
+    kredis (1.8.0)
+      activemodel (>= 6.0.0)
+      activesupport (>= 6.0.0)
+      redis (>= 4.2, < 6)
     langchainrb (0.19.5)
       baran (~> 0.1.9)
       csv
@@ -584,6 +588,10 @@ GEM
     rdoc (6.14.2)
       erb
       psych (>= 4.0.0)
+    redis (5.4.1)
+      redis-client (>= 0.22.0)
+    redis-client (0.25.3)
+      connection_pool
     reek (6.5.0)
       dry-schema (~> 1.13)
       logger (~> 1.6)
@@ -836,6 +844,7 @@ DEPENDENCIES
   guard-rspec
   importmap-rails
   jbuilder
+  kredis
   langchainrb (>= 0.19)
   licensed
   memory_profiler
@@ -854,6 +863,7 @@ DEPENDENCIES
   rails-erd
   rails_best_practices
   rails_stats
+  redis
   rspec
   rspec-rails
   rswag-api
@@ -1018,6 +1028,7 @@ CHECKSUMS
   kaminari-actionview (1.2.2) sha256=1330f6fc8b59a4a4ef6a549ff8a224797289ebf7a3a503e8c1652535287cc909
   kaminari-activerecord (1.2.2) sha256=0dd3a67bab356a356f36b3b7236bcb81cef313095365befe8e98057dd2472430
   kaminari-core (1.2.2) sha256=3bd26fec7370645af40ca73b9426a448d09b8a8ba7afa9ba3c3e0d39cdbb83ff
+  kredis (1.8.0) sha256=34b72a0bc242d7aaea98e82b6a5a8c293a27e1b26f2c729a8d4e1e1409886150
   langchainrb (0.19.5) sha256=85eb3ae30df99da82065563b3ed1650d633fa6eceaadc6af90047b5793e30579
   language_server-protocol (3.17.0.5) sha256=fd1e39a51a28bf3eec959379985a72e296e9f9acfce46f6a79d31ca8760803cc
   launchy (3.1.1) sha256=72b847b5cc961589dde2c395af0108c86ff0119f42d4648d25b5440ebb10059e
@@ -1098,6 +1109,8 @@ CHECKSUMS
   rb-fsevent (0.11.2) sha256=43900b972e7301d6570f64b850a5aa67833ee7d87b458ee92805d56b7318aefe
   rb-inotify (0.11.1) sha256=a0a700441239b0ff18eb65e3866236cd78613d6b9f78fea1f9ac47a85e47be6e
   rdoc (6.14.2) sha256=9fdd44df130f856ae70cc9a264dfd659b9b40de369b16581f4ab746e42439226
+  redis (5.4.1) sha256=b5e675b57ad22b15c9bcc765d5ac26f60b675408af916d31527af9bd5a81faae
+  redis-client (0.25.3) sha256=bff579db68dd7c59be8f9575a5825d8fb2a23944438f6e5e7e57e7ffddd34e50
   reek (6.5.0) sha256=d26d3a492773b2bbc228888067a21afe33ac07954a17dbd64cdeae42c4c69be1
   regexp_parser (2.11.2) sha256=5e5e9c1485ffd8de53ab1d2807affd81f617f72967dfc64fc75a69e2cbf0ff98
   reline (0.6.2) sha256=1dad26a6008872d59c8e05244b119347c9f2ddaf4a53dce97856cd5f30a02846

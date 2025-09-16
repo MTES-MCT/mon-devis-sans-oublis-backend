@@ -50,7 +50,11 @@ module QuoteReader
 
       processing_log = quote_file.start_processing_log("Qa", "Qa/#{llm_klass.name}") if quote_file
 
-      llm = llm_klass.new(prompt)
+      llm = llm_klass.new(
+        prompt,
+        # json_schema: self.class.json_schema, # We lost quality and missed many data with schema enabled.
+        result_format: :json
+      )
       begin
         llm.chat_completion(text)
       rescue Llms::Base::TimeoutError, llm_klass::ResultError => e
