@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
 require "nokogiri"
-require "yaml"
-
 require "json"
-require "pry"
+require "yaml"
 
 # Simple XSD to OpenAPI YAML converter
 class XsdToOpenapi # rubocop:disable Metrics/ClassLength
