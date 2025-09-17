@@ -115,7 +115,7 @@ module Llms
         config.openai_use_system_role = true # Use 'system' role instead of 'developer' for instructions messages
         config.openai_api_key = @api_key
         config.openai_api_base = HOST
-        config.read_timeout = 120 # seconds
+        config.request_timeout = 120 # seconds
       end
     end
 
