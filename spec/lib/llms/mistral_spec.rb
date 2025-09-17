@@ -43,15 +43,16 @@ RSpec.describe Llms::Mistral, type: :service do
 
     context "with RNT JSON schema" do
       let(:json_schema) do
-        json = JSON.parse(
-          Rails.root.join("spec/fixtures/files/rnt_openapi_schema.json").read
-        )
-
-        json.dig("components", "schemas", "rnt") || # TODO: What about t_adresse type outside of rnt?
-          json # .dig("$defs", "rnt") # @@@ TODO donnees_contextuelles &.merge(json.dig("$defs", "rnt"))
+        JsonOpenapi.make_schema_refs_inline!(
+          JSON.parse(
+            Rails.root.join("spec/fixtures/files/rnt_openapi_schema.json").read
+          )
+        ).dig("components", "schemas", "rnt")
       end
 
-      it "returns a hash with the expected keys" do # , :vcr do @@@ TODO
+      it "returns a hash with the expected keys", :vcr do
+        skip "Mistral can not handle the size of this schema"
+
         expect(read_attributes.dig(:tva, -1)).to include(
           prix_ht_total: 8765.0
         )
