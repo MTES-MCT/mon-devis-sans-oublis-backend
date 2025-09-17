@@ -61,7 +61,7 @@ module Llms
           return chat_completion(text, model: backup_model) if backup_model
         end
 
-        raise ResultError, "Error: #{response.code} - #{response.message}"
+        raise ResultError, "Error: #{response.status} - #{response.body}"
       end
       response = ruby_llm_message.raw
 
@@ -115,7 +115,7 @@ module Llms
         config.openai_use_system_role = true # Use 'system' role instead of 'developer' for instructions messages
         config.openai_api_key = @api_key
         config.openai_api_base = HOST
-        config.request_timeout = 120
+        config.read_timeout = 120 # seconds
       end
     end
 
