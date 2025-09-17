@@ -4,9 +4,9 @@ require "nokogiri"
 
 # Interact with the RNT (Référentiel National des Travaux) data Schema locally.
 class RntSchema
-  OPENAPI_PATH = Rails.root.join("lib/rnt/mdd_V0.0.3.json").to_s
+  OPENAPI_PATH = Rails.root.join("lib/rnt/mdd_v0.0.3.json").to_s
   VERSION = "0.3"
-  XSD_PATH = Rails.root.join("lib/rnt/mdd_V0.0.3.xsd").to_s
+  XSD_PATH = Rails.root.join("lib/rnt/mdd_v0.0.3.xsd").to_s
 
   # Validate an XML file against an XSD schema.
   def self.valid?(xml_path, xsd_path = XSD_PATH) # rubocop:disable Metrics/MethodLength
