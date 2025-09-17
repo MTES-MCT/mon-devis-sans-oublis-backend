@@ -87,6 +87,7 @@ gem "langchainrb", ">= 0.19" # Framework around LLMs
 gem "ruby_llm", require: false
 
 gem "ostruct" # Since Ruby > 3.4.0
+gem "rack-attack" # Rate limiting
 gem "rack-cors" # TODO: use built-in Rails 8+ https://www.bigbinary.com/blog/rails-8-rate-limiting-api
 
 # Back Office
