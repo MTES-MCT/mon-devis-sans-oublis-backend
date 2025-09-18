@@ -72,7 +72,6 @@ module Rack
     SUSPICIOUS_SUFFIX_PATHS = %w[
       .7z
       .cgi
-      .html
       .ini
       .jar
       .php
