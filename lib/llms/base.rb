@@ -33,7 +33,7 @@ module Llms
           &.gsub(/^[\W\s]+$/i, "")
           &.gsub(/^\**\s*/i, "")
           &.gsub(/^Aucune?s?(?:\s+.+\s+)?(?: *mention(?:née?)?s?)?\.?(?:\s*.+)?$/i, "")
-          &.gsub(/\(?(?:Non (?:disponibles?|mention(?:née?)?s?|spécifiée?s?)\.?|Aucune?s? .+ n'est mentionnée?s?\.?|Inconnue?s? \(pas de [^\)]+\))\)?\.?/i, "") # rubocop:disable Layout/LineLength
+          &.gsub(/\(?(?:Non (?:disponibles?|mention(?:née?)?s?|spécifiée?s?)\.?|Aucune?s? .+ n'est mentionnée?s?\.?|Inconnue?s? \(pas de [^)]+\))\)?\.?/i, "") # rubocop:disable Layout/LineLength
           &.presence
       # rubocop:enable Style/SafeNavigationChainLength
     end
@@ -45,7 +45,7 @@ module Llms
     def self.extract_json(text)
       (
         text[/```json.?+(\{.+\})/im, 1] || text[/(\{.+\})/im, 1]
-      )&.gsub(/"version": ([\d\.]+)/, '"version": "\1"') # TODO: Remove version temporary fix
+      )&.gsub(/"version": ([\d.]+)/, '"version": "\1"') # TODO: Remove version temporary fix
     end
 
     def self.extract_jsx(text)
