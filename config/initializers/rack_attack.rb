@@ -104,14 +104,14 @@ module Rack
     # ========================================
 
     # Custom responses for different block types
-    self.blocklisted_response = lambda do |_env|
+    self.blocklisted_responder = lambda do |_env|
       [403, { "Content-Type" => "application/json" }, [JSON.generate({
                                                                        error: "Forbidden",
                                                                        message: "Bot access detected and blocked"
                                                                      })]]
     end
 
-    self.throttled_response = lambda do |_env|
+    self.throttled_responder = lambda do |_env|
       [429, { "Content-Type" => "application/json" }, [JSON.generate({
                                                                        error: "Too Many Requests",
                                                                        message: "Rate limit exceeded"
