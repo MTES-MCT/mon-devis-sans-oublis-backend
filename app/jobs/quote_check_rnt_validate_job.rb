@@ -4,21 +4,29 @@
 class QuoteCheckRntValidateJob < ApplicationJob
   queue_as :default
 
+  def self.cache_key(quote_check_id)
+    "rnt:#{quote_check_id}"
+  end
+
   def perform(quote_check_id)
-    quote_check = QuoteCheck.find_by(id: quote_check_id)
-    return unless quote_check
+    return unless QuoteCheck.exists?(quote_check_id)
 
-    begin
-      rnt_validation = RntValidatorService.new(quote_check_id).validate
+    rnt_validation = RntValidatorService.new(quote_check_id).validate
 
-      # Save in Redis cache for 1 day to display it.
-      Kredis.json("rnt:#{quote_check_id}").tap do |cache_key|
-        cache_key.value = rnt_validation
-        cache_key.expires_in = 1.day
-      end
-    rescue RntValidatorService::NotProcessableError => e
-      Rails.logger.error("RNT validation failed for QuoteCheck #{quote_check_id}: #{e.message}")
-      raise
+    # Save in Redis cache for 1 day to display it.
+    raise "Kredis not connected" unless kredis_connected?
+
+    Kredis.json(self.class.cache_key(quote_check_id)).tap do |cache_key|
+      cache_key.value = rnt_validation
+      cache_key.expires_in = 1.day
     end
+  end
+
+  private
+
+  def kredis_connected?
+    Kredis.redis.ping == "PONG"
+  rescue StandardError
+    false
   end
 end

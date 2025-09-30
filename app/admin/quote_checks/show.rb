@@ -130,7 +130,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
           end
         end
 
-        if (rnt = Kredis.json("rnt:#{resource.id}").value)
+        if (rnt = Kredis.json(QuoteCheckRntValidateJob.cache_key(resource.id)).value)
           panel "RNT" do
             content_tag(:table) do
               [

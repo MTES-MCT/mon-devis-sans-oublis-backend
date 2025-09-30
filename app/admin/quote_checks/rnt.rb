@@ -6,11 +6,11 @@ ActiveAdmin.register QuoteCheck do
     quote_check_id = params[:id]
     quote_check = QuoteCheck.find_by(id: quote_check_id)
 
-    if quote_check&.anonymized_text.blank?
-      flash[:error] = "Le devis ne peut pas être testé au RNT."
-    else
+    if RntValidatorService.rnt_validable?(quote_check)
       QuoteCheckRntValidateJob.perform_later(quote_check_id)
-      flash[:success] = "Le devis est en cours de test au RNT."
+      flash[:success] = "Le devis est en cours de test au RNT. Raffraîchissez la page dans quelques instants."
+    else
+      flash[:error] = "Le devis ne peut pas être testé au RNT."
     end
 
     redirect_to admin_quote_check_path(quote_check_id)
