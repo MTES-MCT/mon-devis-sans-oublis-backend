@@ -10,7 +10,9 @@ env:
   REDIS_URL: redis://redis:6379/1
   RUBYCRITIC_THRESHOLD: ${{ vars.RUBYCRITIC_THRESHOLD || '80' }}
 
-permissions: {}
+permissions:
+  contents: read
+  actions: write
 
 jobs:
   build:
