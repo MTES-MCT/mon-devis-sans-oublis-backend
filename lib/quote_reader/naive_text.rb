@@ -52,7 +52,7 @@ module QuoteReader
     NUMBER_REFERENCE_REGEX = /n?[.°]/i
 
     BETWEEN_LABEL_VALUE_REGEX = /\s*(?:#{NUMBER_REFERENCE_REGEX})?\s*(?::\s*)?/i
-    EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
+    EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d-]+(\.[a-z\d-]+)*\.[a-z]+\z/i
     FORME_JURIDIQUE_REGEX = /
     (?:                   # Begin group for legal forms
       E\.?I             | # Entreprise Individuelle
