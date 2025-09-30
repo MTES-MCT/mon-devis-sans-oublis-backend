@@ -5,6 +5,9 @@ class QuoteCheckRntValidateJob < ApplicationJob
   queue_as :default
 
   def perform(quote_check_id)
+    quote_check = QuoteCheck.find_by(id: quote_check_id)
+    return unless quote_check
+
     begin
       rnt_validation = RntValidatorService.new(quote_check_id).validate
 

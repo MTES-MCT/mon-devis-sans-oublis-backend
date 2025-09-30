@@ -24,6 +24,12 @@ RSpec.describe QuoteCheckRntValidateJob, type: :job do
       expect(cached_result).to eq(rnt_validation_result.deep_stringify_keys)
     end
 
+    context "when QuoteCheck does not exist" do
+      it "returns without error" do
+        expect { described_class.new.perform("non-existent-id") }.not_to raise_error
+      end
+    end
+
     context "when QuoteCheck is not processable" do
       before do
         allow_any_instance_of(RntValidatorService).to receive(:validate)
