@@ -4,18 +4,12 @@
 ActiveAdmin.register QuoteCheck do
   member_action :rnt, method: :post do
     quote_check_id = params[:id]
+    quote_check = QuoteCheck.find_by(id: quote_check_id)
 
-    begin
-      rnt_validation = RntValidatorService.new(quote_check_id).validate
-
-      # Save in Redis cache for 1 day to display it.
-      Kredis.json("rnt:#{quote_check_id}").tap do |cache_key|
-        cache_key.value = rnt_validation
-        cache_key.expires_in = 1.day
-      end
-
-      flash[:success] = "Le devis a été test au RNT."
-    rescue RntValidatorService::NotProcessableError
+    if RntValidatorService.rnt_validable?(quote_check)
+      QuoteCheckRntValidateJob.perform_later(quote_check_id)
+      flash[:success] = "Le devis est en cours de test au RNT. Raffraîchissez la page dans quelques instants."
+    else
       flash[:error] = "Le devis ne peut pas être testé au RNT."
     end
 

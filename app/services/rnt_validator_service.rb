@@ -26,6 +26,10 @@ class RntValidatorService
     )
   end
 
+  def self.rnt_validable?(quote_check)
+    quote_check.anonymized_text.present?
+  end
+
   def self.rnt_json_to_xml(json, aide_financiere_collection:)
     rnt_xsd_schema = File.read(RntSchema::XSD_PATH)
     json_to_xml_prompt = "Transforme le JSON suivant en XML conforme au schéma du RNT (Référentiel National des Travaux) fourni. Le XML doit être strictement conforme au schéma XSD du RNT. #{rnt_xsd_schema} Ne pas ajouter d'éléments ou d'attributs non définis dans le schéma. Voici le JSON :" # rubocop:disable Layout/LineLength
@@ -56,7 +60,7 @@ class RntValidatorService
   # - :quote_check_rnt_xml => The extracted RNT data in XML format
   # - :rnt_validation_response => The response from the RNT validation service
   def validate # rubocop:disable Metrics/MethodLength
-    if quote_check.anonymized_text.blank?
+    unless self.class.rnt_validable?(quote_check)
       raise NotProcessableError,
             "QuoteCheck is not processable because not anonymized yet."
     end

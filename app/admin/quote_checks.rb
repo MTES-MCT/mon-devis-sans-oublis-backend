@@ -7,7 +7,7 @@ ActiveAdmin.register QuoteCheck do
   end
 
   action_item :rnt, only: :show do
-    if resource.anonymized_text.present?
+    if RntValidatorService.rnt_validable?(resource)
       link_to "Lancer une analyse via le RNT", rnt_admin_quote_check_path(resource), method: :post
     end
   end
