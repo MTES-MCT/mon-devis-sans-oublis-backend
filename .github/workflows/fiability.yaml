@@ -13,7 +13,9 @@ env:
   MISTRAL_MODEL: ${{ vars.MISTRAL_MODEL || 'mistral-large-latest' }}
   REDIS_URL: redis://redis:6379/1
 
-permissions: {}
+permissions:
+  contents: read
+  actions: write
 
 jobs:
   build:
