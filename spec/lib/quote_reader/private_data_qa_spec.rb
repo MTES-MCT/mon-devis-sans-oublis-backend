@@ -15,6 +15,18 @@ RSpec.describe QuoteReader::PrivateDataQa, type: :service do
     end
   end
 
+  describe ".prompt" do
+    subject(:prompt) { described_class.send(:new, "Sample text").send(:prompt) }
+
+    it "returns the generated prompt text" do
+      expect(prompt).to eq(MdsoApiSchema.prompt_attributes)
+    end
+
+    it "matches the content of prompts/private_data.txt" do
+      expect(prompt).to eq(Rails.root.join("lib/quote_reader/prompts/private_data.txt").read)
+    end
+  end
+
   describe "#read" do
     subject(:attributes) { described_class.new(text).read }
 

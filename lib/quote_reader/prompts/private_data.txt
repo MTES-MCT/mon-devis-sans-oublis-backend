@@ -7,7 +7,7 @@ Rôle : Vous êtes un expert en lecture de devis et vous devez récupérer les d
 - **telephones** : Liste des numéros de téléphone formatés.
 - **raison_sociales** : Liste des noms d'entreprises identifiables.
 - **sirets** : Liste des numéros SIRET et/ou SIREN.
-- **ville_immatriculation_rcss**: Liste des villes d'immatriculation au RCS de la structure. Ne remplissez cet attribut que si la ville d'immatriculation au RCS est explicitement indiquée dans le texte. Si elle ne l'est pas, laissez cet attribut vide.
+- **ville_immatriculation_rcss** : Liste des villes d'immatriculation au RCS de la structure. Ne remplissez cet attribut que si la ville d'immatriculation au RCS est explicitement indiquée dans le texte. Si elle ne l'est pas, laissez cet attribut vide.
 - **numero_rcss** : Liste des numéros RCS explicitement écrits. Ne pas inclure la ville d'immatriculation dans cet attribut. C'est un nombre à 9 chiffres et doit être explicitement écrit.
 - **rnes** : Liste des numéros RNE (Registre national des entreprises).
 - **assurances** : Liste des numéros et références liées à des contrats d'assurance, notamment l'assurance décennale.
@@ -21,9 +21,9 @@ Rôle : Vous êtes un expert en lecture de devis et vous devez récupérer les d
 - **client_civilite** : Liste des civilités des clients particuliers mentionnés (individus) - Il s'agit très souvent d'une abréviation dont voici quelques exemples 'M', 'Mr', 'M.', 'Mme', 'Monsieur', 'Madame'...etc, La civilité comprise dans le devis peut représenter un couple (2 personnes), comme par exemple au pluriel ou avec un 'et'.
 - **client_adresses** : Liste des adresses postales identifiées des clients particuliers mentionnés.
 - **pro_adresses** : Liste des adresses postales identifiées des prestataires professionels mentionnés.
-- **forme_juridiques**: Liste des forme juridiques identifiées des prestataires professionnels mentionnés. La forme juridique peut être comprise dans le nom de la structure directement. (quelques exemples : association, SAS, SASU, EURL, SARL, Entrepreneur individuel ...)
-- **capital_social**: Liste de capital social identifiés des prestataires professionnels mentionnés.
-- **type_fichier** enum(devis, facture, autre); ("devis" pour les devis de rénovation énergétique, "facture" pour les factures de rénvoation énergétique, "autre" si tu ne détexte pas de poste de travaux de rénovation énergétique compris dans la liste gestes_pertinents)
+- **forme_juridiques** : Liste des forme juridiques identifiées des prestataires professionnels mentionnés. La forme juridique peut être comprise dans le nom de la structure directement. (quelques exemples : association, SAS, SASU, EURL, SARL, Entrepreneur individuel ...)
+- **capital_social** : Liste de capital social identifiés des prestataires professionnels mentionnés.
+- **type_fichier** : enum(devis, facture, autre); ("devis" pour les devis de rénovation énergétique, "facture" pour les factures de rénvoation énergétique, "autre" si tu ne détexte pas de poste de travaux de rénovation énergétique compris dans la liste gestes_pertinents)
 
 Instructions :
 

@@ -1,12 +1,15 @@
 # frozen_string_literal: true
 
+# This file is used to configure the Swagger documentation generation
+# via the Rswag gem. It contains the global metadata for the API documentation
+# as well as the schema definitions used in the API.
+
+# The results of the Swagger generation are stored in the `swagger` folder
+# at the root of the Rails project.
+
 require "rails_helper"
 require "openssl"
 require "uri"
-
-require_relative "../lib/geste_types"
-
-TYPE_FICHIERS = %w[devis facture autre].freeze
 
 ADEME_SWAGGER_URI = DataAdeme.rge_openapi_uri
 ademe_yaml = URI(ADEME_SWAGGER_URI).open(ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE).read
@@ -27,245 +30,6 @@ def float_type(options = {})
     type: :number
     # might use multipleOf: 0.01
   )
-end
-
-def geste_properties # rubocop:disable Metrics/MethodLength
-  %i[
-    classe_caisson
-    classe_energetique_ballon
-    classe_regulateur
-    contenance_silo
-    COP
-    deltaR
-    emission_composés_organique
-    emission_monoxyde_carbone
-    emission_oxydes_azotes
-    emission_particules
-    emplacement
-    emplacement_bouches_entree_dair
-    emplacement_bouches_soufflage
-    energie_appoint
-    epaisseur_isolant
-    ETAS
-    fluide_capteur
-    intitule
-    label_flamme_verte
-    localisation
-    marque
-    marque_bouche_extraction
-    marque_bouches_entree_dair
-    marque_bouches_soufflage
-    marque_caisson
-    marque_capteurs
-    marque_isolant
-    marque_regulateur
-    nombre_bouche_extraction
-    nombre_bouches_entree_dair
-    nombre_bouches_extraction
-    nombre_bouches_soufflage
-    norme_calcul_resistance
-    numero_acermi
-    numero_ligne
-    position_paroie
-    presence_fixation
-    presence_note_dimensionnement
-    presence_parement
-    presence_protection
-    prix_ht
-    prix_ttc
-    prix_unitaire_ht
-    productivite_capteurs
-    profil_soutirage
-    puissance
-    puissance_absobée_pondéréé_moteur
-    puissance_nominale
-    quantite
-    reference
-    reference_bouche_extraction
-    reference_bouches_entree_dair
-    reference_bouches_soufflage
-    reference_caisson
-    reference_capteurs
-    reference_isolant
-    reference_regulateur
-    regime_temperature
-    remplacement_chaudiere_condensation
-    rendement_energetique
-    resistance_thermique
-    SCOP
-    surface_captage
-    surface_capteur
-    surface_isolant
-    sw
-    taux_tva
-    type
-    type_appoint
-    type_capteurs
-    type_chargement
-    type_combustible
-    type_fluide_frigorigene
-    type_installation
-    type_isolation_toiture_terrasse
-    type_materiaux
-    type_menuiserie
-    type_pose
-    type_silo
-    type_vitrage
-    type_vmc
-    ud
-    unite
-    uw
-    volume
-    volume_ballon
-  ].index_with do |_key| # TODO: make it dynamic according to Geste Type and fix type
-    { type: :string, nullable: true, description: "peut-être un type autre que chaîne de caractères" }
-  end.merge(
-    %i[
-      label_flamme_verte
-      mention_devis
-      presence_fixation
-      presence_note_dimensionnement
-      presence_parement
-      presence_protection
-      remplacement_chaudiere_condensation
-      separation_prix_fourniture_pose
-      validite
-    ].index_with do |_key|
-      { type: :boolean, nullable: true }
-    end
-  ).merge(
-    %i[
-      emission_composés_organique
-      emission_monoxyde_carbone
-      emission_oxydes_azotes
-      emission_particules
-      nombre_bouche_extraction
-      nombre_bouches_entree_dair
-      nombre_bouches_extraction
-      nombre_bouches_soufflage
-      volume
-    ]
-    .index_with do |_key|
-      { type: :number, nullable: true }
-    end
-  ).merge(
-    %i[
-      contenance_silo
-      COP
-      epaisseur_isolant
-      montant_tva_total
-      prix_ht
-      prix_ht_total
-      prix_total_ht
-      prix_total_ttc
-      prix_ttc
-      prix_unitaire_ht
-      productivite_capteurs
-      puissance
-      puissance_absobée_pondéréé_moteur
-      puissance_nominale
-      quantite
-      rendement_energetique
-      resistance_thermique
-      SCOP
-      surface_captage
-      surface_capteur
-      surface_isolant
-      sw
-      taux_tva
-      uw
-      volume_ballon
-    ].index_with do |_key|
-      float_type(nullable: true)
-    end
-  ).merge(
-    type: { "$ref" => "#/components/schemas/geste_type", nullable: true },
-    deltaR: {
-      oneOf: [
-        { type: :string },
-        float_type
-      ],
-      nullable: true
-    },
-    ETAS: {
-      oneOf: [
-        { type: :string },
-        float_type
-      ],
-      nullable: true
-    },
-    numero_acermi: {
-      oneOf: [
-        { type: :string },
-        { type: :array, items: { type: :string } }
-      ],
-      nullable: true
-    },
-    ud: {
-      oneOf: [
-        { type: :string },
-        float_type
-      ],
-      nullable: true
-    }
-  )
-end
-
-def api_error_light(properties: {}) # rubocop:disable Metrics/MethodLength
-  {
-    type: :object,
-    properties: {
-      error: { type: :string },
-      error_details: {
-        type: :array,
-        items: { "$ref" => "#/components/schemas/quote_check_error_details_light" },
-        description: "liste des erreurs avec détails dans ordre à afficher",
-        nullable: true
-      },
-      valid: { type: :boolean, nullable: true },
-      message: {
-        type: :array,
-        items: { type: :string }
-      }
-    }.merge(properties),
-    additionalProperties: false
-  }
-end
-
-def quote_check_error_details_light(properties: {}, required: %w[code])
-  {
-    type: :object,
-    properties: { code: { "$ref" => "#/components/schemas/quote_check_error_code" } }.merge(properties),
-    additionalProperties: false,
-    required:
-  }
-end
-
-def data_check_result(items_schema = nil) # rubocop:disable Metrics/MethodLength
-  schema = {
-    type: :object,
-    properties: {
-      error_details: {
-        type: :array,
-        items: quote_check_error_details_light,
-        description: "liste des erreurs avec détails dans ordre à afficher",
-        nullable: true
-      },
-      valid: { type: :boolean, nullable: true }
-    },
-    additionalProperties: false
-  }
-
-  if items_schema
-    schema[:properties][:results] = {
-      type: :array,
-      items: items_schema,
-      description: "liste des résultats correspondant à la requête",
-      nullable: true
-    }
-  end
-
-  schema
 end
 
 # Via Rswag gems
@@ -318,8 +82,8 @@ RSpec.configure do |config|
           type: :object,
           properties: ademe_result_schema
         },
-        api_error_light:,
-        api_error: api_error_light(
+        api_error_light: MdsoApi.Swagger.api_error_light,
+        api_error: MdsoApi.Swagger.api_error_light(
           properties: {
             error_details: {
               type: :array,
@@ -402,10 +166,10 @@ RSpec.configure do |config|
             "#{type}: #{description}"
           end.join(" | ")
         },
-        data_check_result: data_check_result,
-        data_check_rge_result: data_check_result({ "$ref" => "#/components/schemas/ademe_result_schema" }),
-        quote_check_error_details_light:,
-        quote_check_error_details: quote_check_error_details_light(
+        data_check_result: MdsoApiSchema.data_check_result,
+        data_check_rge_result: MdsoApiSchema.data_check_result({ "$ref" => "#/components/schemas/ademe_result_schema" }),
+        quote_check_error_details_light: MdsoApiSchema.quote_check_error_details_light,
+        quote_check_error_details: MdsoApiSchema.quote_check_error_details_light(
           properties: {
             id: { type: :string, description: "UUID unique" },
             geste_id: { type: :string, nullable: true },
@@ -428,175 +192,14 @@ RSpec.configure do |config|
         ),
         quote_check_geste: {
           type: :object,
-          properties: geste_properties.merge(
+          properties: MdsoApiSchema.geste_properties.merge(
             id: { type: :string, description: "UUID unique" },
             valid: { type: :boolean, nullable: true }
           ),
           additionalProperties: false,
           required: %w[id intitule]
         },
-        quote_check_private_data_qa_attributes: {
-          type: :object,
-          nullable: true,
-          properties: {
-            client: {
-              type: :object,
-              properties: {
-                adresse: { type: :string, nullable: true },
-                civilite: { type: :string, nullable: true },
-                nom: { type: :string, nullable: true },
-                prenom: { type: :string, nullable: true }
-              },
-              additionalProperties: false
-            },
-            pro: {
-              type: :object,
-              properties: {
-                adresse: { type: :string, nullable: true },
-                assurance: { type: :string, nullable: true },
-                capital: { type: :string, nullable: true },
-                forme_juridique: { type: :string, nullable: true },
-                numero_tva: { type: :string, nullable: true },
-                raison_sociale: { type: :string, nullable: true },
-                rcs: { type: :string, nullable: true },
-                rcs_ville: { type: :string, nullable: true },
-                rge_labels: { type: :array, items: { type: :string } },
-                rne: { type: :string, nullable: true },
-                siret: { type: :string, nullable: true }
-              },
-              additionalProperties: false
-            },
-            noms: {
-              type: :array,
-              nullable: true,
-              items: { type: :string }
-            },
-            rnes: {
-              type: :array,
-              nullable: true,
-              items: { type: :string }
-            },
-            uris: {
-              type: :array,
-              nullable: true,
-              items: { type: :string }
-            },
-            ibans: {
-              type: :array,
-              nullable: true,
-              items: { type: :string }
-            },
-            emails: {
-              type: :array,
-              nullable: true,
-              items: { type: :string }
-            },
-            sirets: {
-              type: :array,
-              nullable: true,
-              items: { type: :string }
-            },
-            type_fichier: {
-              type: :string,
-              enum: TYPE_FICHIERS,
-              nullable: true
-            },
-            version: {
-              type: :string
-            },
-            adresses: {
-              type: :array,
-              nullable: true,
-              items: { type: :string }
-            },
-            assurances: {
-              type: :array,
-              nullable: true,
-              items: { type: :string }
-            },
-            numero_rge: {
-              type: :array,
-              nullable: true,
-              items: { type: :string }
-            },
-            telephones: {
-              type: :array,
-              nullable: true,
-              items: { type: :string }
-            },
-            numero_rcss: {
-              type: :array,
-              nullable: true,
-              items: { type: :string }
-            },
-            rcs: {
-              type: :string,
-              nullable: true,
-              description: "numéro RCS de l'entreprise, si détecté"
-            },
-            rcs_ville: {
-              type: :string,
-              nullable: true,
-              description: "ville d'immatriculation RCS de l'entreprise, si détecté"
-            },
-            rne: {
-              type: :string,
-              nullable: true,
-              description: "numéro RNE de l'entreprise, si détecté"
-            },
-            numeros_tva: {
-              type: :array,
-              nullable: true,
-              items: { type: :string }
-            },
-            pro_adresses: {
-              type: :array,
-              nullable: true,
-              items: { type: :string }
-            },
-            capital_social: {
-              type: :array,
-              nullable: true,
-              items: { type: :string }
-            },
-            client_prenoms: {
-              type: :array,
-              nullable: true,
-              items: { type: :string }
-            },
-            client_adresses: {
-              type: :array,
-              nullable: true,
-              items: { type: :string }
-            },
-            client_civilite: {
-              type: :array,
-              nullable: true,
-              items: { type: :string }
-            },
-            raison_sociales: {
-              type: :array,
-              nullable: true,
-              items: { type: :string }
-            },
-            forme_juridiques: {
-              type: :array,
-              nullable: true,
-              items: { type: :string }
-            },
-            client_noms_de_famille: {
-              type: :array,
-              nullable: true,
-              items: { type: :string }
-            },
-            ville_immatriculation_rcss: {
-              type: :array,
-              nullable: true,
-              items: { type: :string }
-            }
-          },
-          additionalProperties: false
-        },
+        quote_check_private_data_qa_attributes: MdsoApiSchema.quote_check_private_data_qa_attributes,
         quote_check_read_attributes_extended_data: {
           type: :object,
           nullable: true,
@@ -624,7 +227,7 @@ RSpec.configure do |config|
             },
             type_fichier: {
               type: :string,
-              enum: TYPE_FICHIERS,
+              enum: MdsoApiSchema::TYPE_FICHIERS,
               nullable: true
             },
             version: {
@@ -692,7 +295,7 @@ RSpec.configure do |config|
               type: :array,
               items: {
                 type: :object,
-                properties: geste_properties,
+                properties: MdsoApiSchema.geste_properties,
                 additionalProperties: false
               }
             }

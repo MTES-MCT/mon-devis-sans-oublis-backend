@@ -174,7 +174,7 @@ module QuoteReader
     # rubocop:enable Metrics/AbcSize
 
     def prompt
-      Rails.root.join("lib/quote_reader/prompts/private_data.txt").read
+      MdsoApiSchema.prompt_attributes # Rails.root.join("lib/quote_reader/prompts/private_data.txt").read
     end
   end
 end
