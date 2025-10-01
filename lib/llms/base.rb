@@ -153,24 +153,27 @@ module Llms
       when :xml
         self.class.extract_xml(content)
       else # :json
-        content_jsx_result = self.class.extract_jsx(content)
-        unless content_jsx_result
-          content_json_result = self.class.extract_json(content)
-          raise ResultError, "JSON content empty: #{content}" unless content_json_result
-        end
+        json = content.deep_symbolize_keys if content.is_a?(Hash)
 
-        json_result = content_json_result || content_jsx_result
-        @read_attributes = begin
-          TrackingHash.nilify_empty_values(
-            JSON.parse(json_result, symbolize_names: true)
-          )
-        rescue JSON::ParserError => e
-          if e.message.include?("invalid ASCII") && !ignore_null_bytes
-            return extract_result(self.class.remove_null_bytes(content), ignore_null_bytes: true)
+        unless json
+          content_jsx_result = self.class.extract_jsx(content)
+          unless content_jsx_result
+            content_json_result = self.class.extract_json(content)
+            raise ResultError, "JSON content empty: #{content}" unless content_json_result
           end
 
-          raise ResultError, "Parsing JSON inside content: #{json_result}"
+          try_null_bytes = false
+          json_result = content_json_result || content_jsx_result
+          begin
+            json = JSON.parse(json_result, symbolize_names: true)
+          rescue JSON::ParserError => e
+            try_null_bytes = e.message.include?("invalid ASCII") && !ignore_null_bytes
+            raise ResultError, "Parsing JSON inside content: #{json_result}" unless try_null_bytes
+          end
+          return extract_result(self.class.remove_null_bytes(content), ignore_null_bytes: true) if try_null_bytes
         end
+
+        @read_attributes = TrackingHash.nilify_empty_values(json)
         raise ResultError, "No attributes for JSON: #{json_result}" if @read_attributes.empty?
 
         @read_attributes

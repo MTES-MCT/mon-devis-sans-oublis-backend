@@ -39,16 +39,20 @@ module Llms
     def chat_completion(text, model: nil, model_fallback: true, model_type: "text-generation") # rubocop:disable Metrics/MethodLength
       @model = model if model
 
-      chat = albert_context.chat(
-        model: @model,
-        provider: :openai, # Albert API is compatible with OpenAI API and mandatory for custom host context
-        assume_model_exists: true
-      )
+      chat = albert_context
+             .chat(
+               model: @model,
+               provider: :openai, # Albert API is compatible with OpenAI API and mandatory for custom host context
+               assume_model_exists: true
+             )
+             .with_temperature(0)
+             .with_params(seed: 42)
+             .with_params(response_format: { type: "json_object", strict: true })
       chat.with_instructions(prompt)
 
       ruby_llm_message = nil
       begin
-        ruby_llm_message = json_schema ? chat.with_schema(json_schema).ask(text) : chat.ask(text)
+        ruby_llm_message = (json_schema ? chat.with_schema(json_schema) : chat).ask(text)
       rescue RubyLLM::Error => e
         response = e.response
 
@@ -69,8 +73,6 @@ module Llms
       # content = result.dig("choices", 0, "message", "content")
       content = ruby_llm_message.content
       raise ResultError, "Content empty" if content.blank?
-
-      return TrackingHash.nilify_empty_values(content.deep_symbolize_keys) if json_schema
 
       extract_result(content)
     rescue Net::ReadTimeout => e

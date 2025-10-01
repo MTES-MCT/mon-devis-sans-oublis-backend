@@ -603,45 +603,47 @@ components:
           - CERTIFICAT_P_ET_G_PLENETUDE
           - CERTIFICAT_SARL_DOMINIQUE_CALLIET
         domaine:
+          type: array
           title: Domaine de travaux
-          type: string
           description: ''
-          x-capabilities:
-            textAgg: true
-          examples:
-          - Isolation par l'intérieur des murs ou rampants de toitures  ou plafonds
-          - Chauffe-Eau Thermodynamique
-          - 'Pompe à chaleur : chauffage'
-          - Fenêtres, volets, portes donnant sur l'extérieur
-          - Isolation des combles perdus
-          - Isolation des murs par l'extérieur
-          - Poêle ou insert bois
-          - Isolation des toitures terrasses ou des toitures par l'extérieur
-          - Chaudière condensation ou micro-cogénération gaz ou fioul
-          - Fenêtres de toit
-          - Ventilation mécanique
-          - Panneaux solaires photovoltaïques
-          - Isolation des planchers bas
-          - Audit énergétique Maison individuelle
-          - Radiateurs électriques, dont régulation.
-          - Architecte
-          - Chaudière bois
-          - Chauffage et/ou eau chaude solaire
-          - Audit énergétique Logement collectif
-          - Etude thermique reglementaire
-          - Etude solaire photovoltaïque
-          - Etude forage géothermique
-          - Etude bois énergie
-          - Projet complet de rénovation
-          - Etude ACV
-          - Etude solaire thermique
-          - Inconnu
-          - Etude eclairage
-          - Etude système technique bâtiment
-          - Etude enveloppe du bâtiment
-          - Commisionnement
-          - Non renseigné
-          x-separator: "; "
+          items:
+            type: string
+            x-cardinality: 32
+            x-capabilities:
+              textAgg: true
+            examples:
+            - Isolation par l'intérieur des murs ou rampants de toitures  ou plafonds
+            - Chauffe-Eau Thermodynamique
+            - 'Pompe à chaleur : chauffage'
+            - Fenêtres, volets, portes donnant sur l'extérieur
+            - Isolation des combles perdus
+            - Isolation des murs par l'extérieur
+            - Poêle ou insert bois
+            - Isolation des toitures terrasses ou des toitures par l'extérieur
+            - Chaudière condensation ou micro-cogénération gaz ou fioul
+            - Fenêtres de toit
+            - Ventilation mécanique
+            - Panneaux solaires photovoltaïques
+            - Isolation des planchers bas
+            - Audit énergétique Maison individuelle
+            - Radiateurs électriques, dont régulation.
+            - Architecte
+            - Chaudière bois
+            - Chauffage et/ou eau chaude solaire
+            - Audit énergétique Logement collectif
+            - Etude thermique reglementaire
+            - Etude solaire photovoltaïque
+            - Etude forage géothermique
+            - Etude bois énergie
+            - Etude ACV
+            - Projet complet de rénovation
+            - Etude solaire thermique
+            - Etude système technique bâtiment
+            - Etude eclairage
+            - Inconnu
+            - Etude enveloppe du bâtiment
+            - Commisionnement
+            - Non renseigné
         meta_domaine:
           title: Méta domaine
           type: string
@@ -1421,31 +1423,37 @@ components:
           nullable: true
           items:
             type: string
+          description: Liste des Noms et prénoms propres mentionnés (individus).
         rnes:
           type: array
           nullable: true
           items:
             type: string
+          description: Liste des numéros RNE (Registre national des entreprises).
         uris:
           type: array
           nullable: true
           items:
             type: string
+          description: Liste des URL et site internet détectés.
         ibans:
           type: array
           nullable: true
           items:
             type: string
+          description: Liste des IBAN détectés.
         emails:
           type: array
           nullable: true
           items:
             type: string
+          description: Liste des adresses email identifiables.
         sirets:
           type: array
           nullable: true
           items:
             type: string
+          description: Liste des numéros SIRET et/ou SIREN.
         type_fichier:
           type: string
           enum:
@@ -1453,6 +1461,10 @@ components:
           - facture
           - autre
           nullable: true
+          description: enum(devis, facture, autre); ("devis" pour les devis de rénovation
+            énergétique, "facture" pour les factures de rénvoation énergétique, "autre"
+            si tu ne détexte pas de poste de travaux de rénovation énergétique compris
+            dans la liste gestes_pertinents)
         version:
           type: string
         adresses:
@@ -1460,26 +1472,37 @@ components:
           nullable: true
           items:
             type: string
+          description: Liste des adresses postales identifiées.
         assurances:
           type: array
           nullable: true
           items:
             type: string
+          description: Liste des numéros et références liées à des contrats d'assurance,
+            notamment l'assurance décennale.
         numero_rge:
           type: array
           nullable: true
           items:
             type: string
+          description: Liste des numéros de certification RGE mentionnés. (le format
+            doit être comme un des exemples ci après QB/74612,QS/51778, QPV/59641,
+            QPAC/59641, CPLUS/67225, VPLUS/49707, RE/75071, QFRG/49335, E-E181506  ou
+            RE16128)
         telephones:
           type: array
           nullable: true
           items:
             type: string
+          description: Liste des numéros de téléphone formatés.
         numero_rcss:
           type: array
           nullable: true
           items:
             type: string
+          description: Liste des numéros RCS explicitement écrits. Ne pas inclure
+            la ville d'immatriculation dans cet attribut. C'est un nombre à 9 chiffres
+            et doit être explicitement écrit.
         rcs:
           type: string
           nullable: true
@@ -1497,52 +1520,78 @@ components:
           nullable: true
           items:
             type: string
+          description: Liste des numéros de TVA mentionnés (peut être assimilé au
+            Numéro d’Identification Intracommunautaire)
         pro_adresses:
           type: array
           nullable: true
           items:
             type: string
+          description: Liste des adresses postales identifiées des prestataires professionels
+            mentionnés.
         capital_social:
           type: array
           nullable: true
           items:
             type: string
+          description: Liste de capital social identifiés des prestataires professionnels
+            mentionnés.
         client_prenoms:
           type: array
           nullable: true
           items:
             type: string
+          description: Liste des prénoms des clients particuliers mentionnés (individus).
         client_adresses:
           type: array
           nullable: true
           items:
             type: string
+          description: Liste des adresses postales identifiées des clients particuliers
+            mentionnés.
         client_civilite:
           type: array
           nullable: true
           items:
             type: string
+          description: Liste des civilités des clients particuliers mentionnés (individus)
+            - Il s'agit très souvent d'une abréviation dont voici quelques exemples
+            'M', 'Mr', 'M.', 'Mme', 'Monsieur', 'Madame'...etc, La civilité comprise
+            dans le devis peut représenter un couple (2 personnes), comme par exemple
+            au pluriel ou avec un 'et'.
         raison_sociales:
           type: array
           nullable: true
           items:
             type: string
+          description: Liste des noms d'entreprises identifiables.
         forme_juridiques:
           type: array
           nullable: true
           items:
             type: string
+          description: 'Liste des forme juridiques identifiées des prestataires professionnels
+            mentionnés. La forme juridique peut être comprise dans le nom de la structure
+            directement. (quelques exemples : association, SAS, SASU, EURL, SARL,
+            Entrepreneur individuel ...)'
         client_noms_de_famille:
           type: array
           nullable: true
           items:
             type: string
+          description: Liste des Noms propres des clients particuliers mentionnés
+            (individus).
         ville_immatriculation_rcss:
           type: array
           nullable: true
           items:
             type: string
+          description: Liste des villes d'immatriculation au RCS de la structure.
+            Ne remplissez cet attribut que si la ville d'immatriculation au RCS est
+            explicitement indiquée dans le texte. Si elle ne l'est pas, laissez cet
+            attribut vide.
       additionalProperties: false
+      strict: true
     quote_check_read_attributes_extended_data:
       type: object
       nullable: true

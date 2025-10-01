@@ -284,7 +284,7 @@ Nous utilisons Rswag en Ruby pour générer la documentation de notre API MDSO a
 
 Elle est disponible dans le dossier `swagger`, avec une version interne à MDSO et une pour les partenaires avec accès API Key.
 
-La documentation se met à jour via la commande `bundle exec rake rswag:specs:swaggerize PATTERN="spec/**/*_doc_spec.rb"` qui fait appelle au schéma des types situé dans `spec/swagger_helper.rb` et avec les tests `spec/requests/*+doc_spec.rb`.
+La documentation se met à jour via la commande `make doc` qui fait appelle au schéma des types situé dans `spec/swagger_helper.rb` et avec les tests `spec/requests/*+doc_spec.rb`.
 
 ### API Accès
 
