@@ -74,8 +74,6 @@ module Llms
       content = ruby_llm_message.content
       raise ResultError, "Content empty" if content.blank?
 
-      return TrackingHash.nilify_empty_values(content.deep_symbolize_keys) if json_schema
-
       extract_result(content)
     rescue Net::ReadTimeout => e
       raise TimeoutError, e

@@ -168,8 +168,8 @@ RSpec.configure do |config|
         },
         data_check_result: MdsoApiSchema.data_check_result,
         data_check_rge_result: MdsoApiSchema.data_check_result({
-          "$ref" => "#/components/schemas/ademe_result_schema"
-        }),
+                                                                 "$ref" => "#/components/schemas/ademe_result_schema"
+                                                               }),
         quote_check_error_details_light: MdsoApiSchema.quote_check_error_details_light,
         quote_check_error_details: MdsoApiSchema.quote_check_error_details_light(
           properties: {
