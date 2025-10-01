@@ -82,8 +82,8 @@ RSpec.configure do |config|
           type: :object,
           properties: ademe_result_schema
         },
-        api_error_light: MdsoApi.Swagger.api_error_light,
-        api_error: MdsoApi.Swagger.api_error_light(
+        api_error_light: MdsoApiSchema.api_error_light,
+        api_error: MdsoApiSchema.api_error_light(
           properties: {
             error_details: {
               type: :array,

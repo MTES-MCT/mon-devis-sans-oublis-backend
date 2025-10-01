@@ -1,0 +1,278 @@
+{
+  "type": "object",
+  "nullable": true,
+  "properties": {
+    "client": {
+      "type": "object",
+      "properties": {
+        "adresse": {
+          "type": "string",
+          "nullable": true
+        },
+        "civilite": {
+          "type": "string",
+          "nullable": true
+        },
+        "nom": {
+          "type": "string",
+          "nullable": true
+        },
+        "prenom": {
+          "type": "string",
+          "nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "pro": {
+      "type": "object",
+      "properties": {
+        "adresse": {
+          "type": "string",
+          "nullable": true
+        },
+        "assurance": {
+          "type": "string",
+          "nullable": true
+        },
+        "capital": {
+          "type": "string",
+          "nullable": true
+        },
+        "forme_juridique": {
+          "type": "string",
+          "nullable": true
+        },
+        "numero_tva": {
+          "type": "string",
+          "nullable": true
+        },
+        "raison_sociale": {
+          "type": "string",
+          "nullable": true
+        },
+        "rcs": {
+          "type": "string",
+          "nullable": true
+        },
+        "rcs_ville": {
+          "type": "string",
+          "nullable": true
+        },
+        "rge_labels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rne": {
+          "type": "string",
+          "nullable": true
+        },
+        "siret": {
+          "type": "string",
+          "nullable": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "noms": {
+      "type": "array",
+      "nullable": true,
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste des Noms et prénoms propres mentionnés (individus)."
+    },
+    "rnes": {
+      "type": "array",
+      "nullable": true,
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste des numéros RNE (Registre national des entreprises)."
+    },
+    "uris": {
+      "type": "array",
+      "nullable": true,
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste des URL et site internet détectés."
+    },
+    "ibans": {
+      "type": "array",
+      "nullable": true,
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste des IBAN détectés."
+    },
+    "emails": {
+      "type": "array",
+      "nullable": true,
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste des adresses email identifiables."
+    },
+    "sirets": {
+      "type": "array",
+      "nullable": true,
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste des numéros SIRET et/ou SIREN."
+    },
+    "type_fichier": {
+      "type": "string",
+      "enum": [
+        "devis",
+        "facture",
+        "autre"
+      ],
+      "nullable": true,
+      "description": "enum(devis, facture, autre); (\"devis\" pour les devis de rénovation énergétique, \"facture\" pour les factures de rénvoation énergétique, \"autre\" si tu ne détexte pas de poste de travaux de rénovation énergétique compris dans la liste gestes_pertinents)"
+    },
+    "version": {
+      "type": "string"
+    },
+    "adresses": {
+      "type": "array",
+      "nullable": true,
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste des adresses postales identifiées."
+    },
+    "assurances": {
+      "type": "array",
+      "nullable": true,
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste des numéros et références liées à des contrats d'assurance, notamment l'assurance décennale."
+    },
+    "numero_rge": {
+      "type": "array",
+      "nullable": true,
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste des numéros de certification RGE mentionnés. (le format doit être comme un des exemples ci après QB/74612,QS/51778, QPV/59641, QPAC/59641, CPLUS/67225, VPLUS/49707, RE/75071, QFRG/49335, E-E181506  ou RE16128)"
+    },
+    "telephones": {
+      "type": "array",
+      "nullable": true,
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste des numéros de téléphone formatés."
+    },
+    "numero_rcss": {
+      "type": "array",
+      "nullable": true,
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste des numéros RCS explicitement écrits. Ne pas inclure la ville d'immatriculation dans cet attribut. C'est un nombre à 9 chiffres et doit être explicitement écrit."
+    },
+    "rcs": {
+      "type": "string",
+      "nullable": true,
+      "description": "numéro RCS de l'entreprise, si détecté"
+    },
+    "rcs_ville": {
+      "type": "string",
+      "nullable": true,
+      "description": "ville d'immatriculation RCS de l'entreprise, si détecté"
+    },
+    "rne": {
+      "type": "string",
+      "nullable": true,
+      "description": "numéro RNE de l'entreprise, si détecté"
+    },
+    "numeros_tva": {
+      "type": "array",
+      "nullable": true,
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste des numéros de TVA mentionnés (peut être assimilé au Numéro d’Identification Intracommunautaire)"
+    },
+    "pro_adresses": {
+      "type": "array",
+      "nullable": true,
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste des adresses postales identifiées des prestataires professionels mentionnés."
+    },
+    "capital_social": {
+      "type": "array",
+      "nullable": true,
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste de capital social identifiés des prestataires professionnels mentionnés."
+    },
+    "client_prenoms": {
+      "type": "array",
+      "nullable": true,
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste des prénoms des clients particuliers mentionnés (individus)."
+    },
+    "client_adresses": {
+      "type": "array",
+      "nullable": true,
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste des adresses postales identifiées des clients particuliers mentionnés."
+    },
+    "client_civilite": {
+      "type": "array",
+      "nullable": true,
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste des civilités des clients particuliers mentionnés (individus) - Il s'agit très souvent d'une abréviation dont voici quelques exemples 'M', 'Mr', 'M.', 'Mme', 'Monsieur', 'Madame'...etc, La civilité comprise dans le devis peut représenter un couple (2 personnes), comme par exemple au pluriel ou avec un 'et'."
+    },
+    "raison_sociales": {
+      "type": "array",
+      "nullable": true,
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste des noms d'entreprises identifiables."
+    },
+    "forme_juridiques": {
+      "type": "array",
+      "nullable": true,
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste des forme juridiques identifiées des prestataires professionnels mentionnés. La forme juridique peut être comprise dans le nom de la structure directement. (quelques exemples : association, SAS, SASU, EURL, SARL, Entrepreneur individuel ...)"
+    },
+    "client_noms_de_famille": {
+      "type": "array",
+      "nullable": true,
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste des Noms propres des clients particuliers mentionnés (individus)."
+    },
+    "ville_immatriculation_rcss": {
+      "type": "array",
+      "nullable": true,
+      "items": {
+        "type": "string"
+      },
+      "description": "Liste des villes d'immatriculation au RCS de la structure. Ne remplissez cet attribut que si la ville d'immatriculation au RCS est explicitement indiquée dans le texte. Si elle ne l'est pas, laissez cet attribut vide."
+    }
+  },
+  "additionalProperties": false,
+  "strict": true
+}
