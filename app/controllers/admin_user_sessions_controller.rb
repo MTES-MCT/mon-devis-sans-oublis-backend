@@ -18,7 +18,7 @@ class AdminUserSessionsController < ApplicationController
     email = if auth.nil? && Rails.env.development?
               "dev@localhost"
             else
-              auth.info.email
+              auth&.info&.email
             end
 
     if ADMIN_EMAILS.include?(email)
