@@ -10,11 +10,17 @@ module Rack
     # ========================================
 
     SUSPICIOUS_PREFIX_PATHS = %w[
+      /%
+      /..
+      /.aws
       /.env
+      /.git
       /.github
+      /.ssh
       /.well-known
       /_
       /_profiler
+      /actuator
       /admin
       /administrator
       /ajax
@@ -22,16 +28,38 @@ module Rack
       /backend
       /backup
       /bak
+      /beta.
       /bin
+      /C
       /cgi-bin
-      /config.php
+      /common
+      /config.
+      /configur
+      /console
+      /content
+      /controller
+      /data
+      /dashboard
       /data
       /database
       /db
+      /debug
+      /default
+      /deploy
+      /download
       /dump
+      /etc
+      /ftp
       /graphql
+      /html
+      /http
+      /id_
       /index.
+      /install
+      /jolokia
+      /lib
       /login
+      /manage
       /module
       /old
       /output
@@ -40,6 +68,7 @@ module Rack
       /phpinfo.php
       /phpmyadmin
       /Release
+      /rest
       /robots.txt
       /ROOT
       /roundcube
@@ -56,9 +85,11 @@ module Rack
       /upload.
       /uploads.
       /web.
+      /webadmin
       /webapps.
       /website.
       /webtools
+      /windows
       /wp-
       /wp-admin
       /wp-content
@@ -71,13 +102,31 @@ module Rack
 
     SUSPICIOUS_SUFFIX_PATHS = %w[
       .7z
+      .asp
+      .aspx
+      .bak
       .cgi
+      .conf
+      .config
+      .db
+      .dll
+      .dump
+      .exe
       .ini
       .jar
+      .jsp
+      .key
+      .log
+      .old
+      .pem
       .php
+      .ppk
+      .properties
+      .py
       .sh
       .sql
       .tar.gz
+      .txt
       .zip
     ].freeze
 
