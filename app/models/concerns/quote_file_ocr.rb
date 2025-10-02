@@ -16,6 +16,10 @@ module QuoteFileOcr
     read_attribute(:ocr) || QuoteReader::Global::DEFAULT_OCR # TODO: save in a field
   end
 
+  def ocr_used
+    (ocred? && ocr) || "PDF natif"
+  end
+
   def ocrable?
     content_type&.include?("pdf") ||
       only_ocrable?

@@ -36,7 +36,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
           row :profile, label: "Persona"
           row :renovation_type, label: "Type de rénovation"
           row :force_ocr
-          row :ocr
+          row :ocr_used
           row :works_data_qa_llm
           row :file_text
           row :file_markdown
