@@ -32,7 +32,16 @@ RSpec.describe Llms::Mistral, type: :service do
     subject(:read_attributes) { mistral.chat_completion(text) }
 
     context "with JSON schema" do
-      let(:json_schema) { QuoteReader::WorksDataQa.json_schema }
+      let(:json_schema) do
+        JsonOpenapi.make_schema_refs_inline!({
+                                               "components" => {
+                                                 "schemas" => {
+                                                   "geste_type" => GesteTypes.json_schema,
+                                                   "works_data_qa_attributes" => QuoteReader::WorksDataQa.json_schema
+                                                 }
+                                               }
+                                             }).dig("components", "schemas", "works_data_qa_attributes")
+      end
 
       it "returns a hash with the expected keys", :vcr do
         expect(read_attributes.dig(:tva, -1)).to include(
@@ -64,6 +73,14 @@ RSpec.describe Llms::Mistral, type: :service do
         type: "pac_air_eau",
         marque: "Atlantic",
         puissance: 6.0
+      )
+    end
+  end
+
+  describe "#models" do
+    it "returns the list of models", :vcr do
+      expect(mistral.models).to include(
+        a_hash_including(id: "mistral-small-latest")
       )
     end
   end

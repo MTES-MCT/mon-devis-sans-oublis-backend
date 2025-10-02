@@ -41,8 +41,8 @@ module Llms
 
       chat = albert_context
              .chat(
-               model: @model,
                provider: :openai, # Albert API is compatible with OpenAI API and mandatory for custom host context
+               model: @model,
                assume_model_exists: true
              )
              .with_temperature(0)
@@ -117,7 +117,7 @@ module Llms
         config.openai_use_system_role = true # Use 'system' role instead of 'developer' for instructions messages
         config.openai_api_key = @api_key
         config.openai_api_base = HOST
-        config.request_timeout = 300 # seconds
+        config.request_timeout = REQUEST_TIMEOUT # seconds
       end
     end
 

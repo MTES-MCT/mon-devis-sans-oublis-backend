@@ -4,6 +4,7 @@ module QuoteReader
   # Read Quote text to extract Private data attributes by asking questions via LLM prompt online services
   class PrivateDataQa < Text # rubocop:disable Metrics/ClassLength
     DEFAULT_LLM = ENV.fetch("PRIVATE_DATA_QA_DEFAULT_LLM", "albert")
+    DEFAULT_MODEL = ENV.fetch("PRIVATE_DATA_QA_DEFAULT_MODEL", "albert-large")
     VERSION = "0.0.1"
 
     attr_reader :read_attributes, :result
