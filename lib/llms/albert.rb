@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require "json"
-require "langchain"
 require "net/http"
+require "ruby_llm"
 require "uri"
 
 require_relative "base"
@@ -39,38 +39,25 @@ module Llms
     def chat_completion(text, model: nil, model_fallback: true, model_type: "text-generation") # rubocop:disable Metrics/MethodLength
       @model = model if model
 
-      llm = albert_llm
-      messages = [
-        { role: "system", content: prompt },
-        { role: "user", content: text }
-      ]
+      chat = albert_context
+             .chat(
+               model: @model,
+               provider: :openai, # Albert API is compatible with OpenAI API and mandatory for custom host context
+               assume_model_exists: true
+             )
+             .with_temperature(0)
+             .with_params(seed: 42)
+             .with_params(response_format: { type: "json_object", strict: true })
+      chat.with_instructions(prompt)
 
-      params = {
-        model: @model,
-        messages:,
-        temperature: 0,
-        seed: 42,
-        response_format: { type: "json_object", strict: true }
-      }
-
-      if json_schema
-        params[:response_format] = {
-          type: "json_schema",
-          json_schema: {
-            name: "result",
-            strict: true,
-            schema: json_schema
-          }
-        }
-      end
-
+      ruby_llm_message = nil
       begin
-        response = llm.chat(params)
-      rescue Langchain::LLM::ApiError => e
-        error_response = e.message
+        ruby_llm_message = (json_schema ? chat.with_schema(json_schema) : chat).ask(text)
+      rescue RubyLLM::Error => e
+        response = e.response
 
-        # Auto switch model if not found (404 error)
-        if error_response.include?("404") && model_fallback
+        # Auto switch model if not found
+        if response.status == 404 && model_fallback
           backup_model = (self.class.sort_models(
             models.filter { it.fetch("type") == model_type }
                   .map { it.fetch("id") }
@@ -78,11 +65,13 @@ module Llms
           return chat_completion(text, model: backup_model) if backup_model
         end
 
-        raise ResultError, "Error: #{error_response}"
+        raise ResultError, "Error: #{response.status} - #{response.body}"
       end
+      response = ruby_llm_message.raw
 
-      @result = response.raw_response
-      content = response.chat_completion
+      @result = response.body
+      # content = result.dig("choices", 0, "message", "content")
+      content = ruby_llm_message.content
       raise ResultError, "Content empty" if content.blank?
 
       extract_result(content)
@@ -123,14 +112,13 @@ module Llms
 
     private
 
-    def albert_llm
-      @albert_llm ||= Langchain::LLM::OpenAI.new(
-        api_key: @api_key,
-        llm_options: {
-          uri_base: HOST,
-          request_timeout: 300 # seconds
-        }
-      )
+    def albert_context
+      @albert_context ||= RubyLLM.context do |config|
+        config.openai_use_system_role = true # Use 'system' role instead of 'developer' for instructions messages
+        config.openai_api_key = @api_key
+        config.openai_api_base = HOST
+        config.request_timeout = 300 # seconds
+      end
     end
 
     def headers
