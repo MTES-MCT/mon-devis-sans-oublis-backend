@@ -121,7 +121,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
     column "Type de rénovation", :renovation_type
 
     column :force_ocr
-    column :ocr
+    column :ocr_used
     column :works_data_qa_llm
     column "Nb tokens", sortable: :tokens_count do
       number_with_delimiter(it.tokens_count, delimiter: " ")
