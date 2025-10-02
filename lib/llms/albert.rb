@@ -65,7 +65,7 @@ module Llms
       end
 
       begin
-        response = llm.chat(params:)
+        response = llm.chat(params)
       rescue Langchain::LLM::ApiError => e
         error_response = e.message
 
@@ -126,11 +126,9 @@ module Llms
     def albert_llm
       @albert_llm ||= Langchain::LLM::OpenAI.new(
         api_key: @api_key,
-        url: HOST,
-        default_options: {
-          request: {
-            timeout: 300 # seconds
-          }
+        llm_options: {
+          uri_base: HOST,
+          request_timeout: 300 # seconds
         }
       )
     end
