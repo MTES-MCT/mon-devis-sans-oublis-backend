@@ -22,7 +22,7 @@ namespace :doc do
     Rake::Task["rswag:specs:swaggerize"].invoke(
       PATTERN: "spec/**/*_doc_spec.rb"
     )
- 
+
     # 3. Save the sub-schemas
     Rails.root.join("swagger/v1/quote_check_private_data_qa_attributes.json")
          .write(JSON.pretty_generate(MdsoApiSchema.quote_check_private_data_qa_attributes))
