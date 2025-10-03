@@ -4,6 +4,7 @@ module QuoteReader
   # Read Quote text to extract Quote attributes by asking questions via LLM prompt online services
   class WorksDataQa < Text
     DEFAULT_LLM = ENV.fetch("WORKS_DATA_QA_DEFAULT_LLM", ENV.fetch("QA_DEFAULT_LLM", "mistral"))
+    DEFAULT_MODEL = ENV.fetch("WORKS_DATA_QA_DEFAULT_MODEL", ENV.fetch("QA_DEFAULT_MODEL", "mistral-large-latest"))
     VERSION = "0.0.1"
 
     attr_reader :read_attributes, :result

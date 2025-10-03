@@ -2,6 +2,7 @@
 
 require "json"
 require "net/http"
+require "ruby_llm"
 require "uri"
 
 module Llms
@@ -37,44 +38,32 @@ module Llms
     # rubocop:disable Metrics/AbcSize
     # rubocop:disable Metrics/MethodLength
     def chat_completion(text, model: @model)
-      # TODO: Use ruby_llm
-      uri = URI("https://api.mistral.ai/v1/chat/completions")
-      headers = {
-        "Content-Type" => "application/json",
-        "Authorization" => "Bearer #{@api_key}"
-      }
-      body = {
-        model:,
-        messages: [
-          { role: "system", content: prompt },
-          { role: "user", content: text }
-        ]
-      }
+      @model = model if model
 
-      if json_schema
-        # See https://docs.mistral.ai/capabilities/structured-output/structured_output_overview/
-        body[:response_format] = {
-          type: "json_schema",
-          json_schema: {
-            name: "result",
-            strict: true,
-            schema: compacted_schema
-          }
-        }
+      chat = mistral_context
+             .chat(
+               provider: :mistral,
+               model: @model
+             )
+             .with_temperature(0)
+             .with_params(seed: 42)
+             .with_params(response_format: { type: "json_object", strict: true })
+      chat.with_instructions(prompt)
+
+      ruby_llm_message = nil
+      begin
+        ruby_llm_message = (json_schema ? chat.with_schema(json_schema) : chat).ask(text)
+      rescue RubyLLM::Error => e
+        response = e.response
+
+        raise ResultError, "Error: #{response.status} - #{response.body}"
       end
+      response = ruby_llm_message.raw
 
-      http = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true)
-      http.read_timeout = 120 # seconds
-      request = Net::HTTP::Post.new(uri, headers)
-      request.body = body.to_json # doing compact JSON
-      response = http.request(request)
-      raise TimeoutError if response.code == "504"
-
-      raise ResultError, "Error: #{response.code} - #{response.message}" unless response.is_a?(Net::HTTPSuccess)
-
-      @result = JSON.parse(response.body)
-      content = result.dig("choices", 0, "message", "content")
-      raise ResultError, "Content empty" unless content
+      @result = response.body
+      # content = result.dig("choices", 0, "message", "content")
+      content = ruby_llm_message.content
+      raise ResultError, "Content empty" if content.blank?
 
       extract_result(content)
     rescue Net::ReadTimeout => e
@@ -87,8 +76,20 @@ module Llms
       result&.fetch("model") || super
     end
 
+    def models
+      RubyLLM.models.by_provider(:mistral).map(&:to_h)
+    end
+
     def usage
       result&.fetch("usage")
+    end
+
+    private
+
+    def mistral_context
+      @mistral_context ||= RubyLLM.context do |config|
+        config.request_timeout = REQUEST_TIMEOUT # seconds
+      end
     end
   end
 end

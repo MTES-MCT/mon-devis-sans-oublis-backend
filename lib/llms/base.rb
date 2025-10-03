@@ -9,6 +9,7 @@ module Llms
     attr_reader :json_schema, :model, :prompt, :result_format
 
     RESULT_FORMATS = %i[numbered_list json xml].freeze
+    REQUEST_TIMEOUT = 300 # seconds
 
     def initialize(prompt, json_schema: nil, model: nil, result_format: :json)
       @prompt = prompt

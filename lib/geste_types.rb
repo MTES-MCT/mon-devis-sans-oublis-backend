@@ -38,4 +38,10 @@ module GesteTypes
   }.freeze
 
   VALUES = GROUPS.values.flatten.freeze
+
+  def self.json_schema
+    path = Rails.root.join("swagger/v1/mon-devis-sans-oublis_api_v1_internal_swagger.yaml")
+    yml = YAML.safe_load_file(path)
+    yml.dig("components", "schemas").fetch("geste_type")
+  end
 end
