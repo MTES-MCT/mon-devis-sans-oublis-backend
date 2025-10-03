@@ -47,7 +47,7 @@ module Llms
              )
              .with_temperature(0)
              .with_params(seed: 42)
-             .with_params(response_format: { type: "json_object", strict: true })
+             .with_params(response_format: { type: "json_object" }) # Mistral API does not support "strict" mode
       chat.with_instructions(prompt)
 
       ruby_llm_message = nil
