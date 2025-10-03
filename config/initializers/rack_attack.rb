@@ -142,7 +142,8 @@ module Rack
     # Safelist your own IP ranges (development/staging)
     safelist("allow_local_ips") do |req|
       ["127.0.0.1", "::1", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"].any? do |range|
-        IPAddr.new(range).include?(IPAddr.new(req.ip))
+        range_ip = IPAddr.new(range)
+        range_ip.family == request_ip.family && range_ip.include?(request_ip)
       rescue IPAddr::InvalidAddressError
         false
       end
