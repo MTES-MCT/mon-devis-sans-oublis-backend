@@ -193,7 +193,7 @@ Et qu'il faut boucler sur l'appel /quote_check/:id pour récupérer le devis à 
   end
 
   path "/quote_checks/{id}" do
-    get "Récupérer un Devis" do
+    get "Récupérer un Devis et résultats de l'analyse" do
       tags "Devis"
       security [bearer_api_key: []]
       consumes "application/json"
