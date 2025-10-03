@@ -1,0 +1,386 @@
+{
+  "siret": {
+    "title": "SIRET",
+    "type": "string",
+    "description": "",
+    "x-refersTo": "http://www.datatourisme.fr/ontology/core/1.0/#siret",
+    "x-capabilities": {
+      "textAgg": true
+    },
+    "x-concept": {
+      "id": "siret",
+      "title": "SIRET",
+      "primary": true
+    }
+  },
+  "nom_entreprise": {
+    "title": "Nom de l’entreprise",
+    "type": "string",
+    "description": "",
+    "x-refersTo": "http://www.w3.org/2000/01/rdf-schema#label",
+    "x-capabilities": {
+      "textAgg": true
+    },
+    "x-concept": {
+      "id": "label",
+      "title": "Libellé",
+      "primary": true
+    }
+  },
+  "adresse": {
+    "title": "Adresse de l'entreprise",
+    "type": "string",
+    "description": "",
+    "x-refersTo": "http://schema.org/address",
+    "x-capabilities": {
+      "textAgg": true
+    },
+    "x-concept": {
+      "id": "address",
+      "title": "Adresse",
+      "primary": true
+    }
+  },
+  "code_postal": {
+    "title": "Code postal",
+    "type": "string",
+    "description": "",
+    "x-refersTo": "http://schema.org/postalCode",
+    "x-capabilities": {
+      "textAgg": true
+    },
+    "x-concept": {
+      "id": "postalCode",
+      "title": "Code postal",
+      "primary": true
+    }
+  },
+  "commune": {
+    "title": "Commune",
+    "type": "string",
+    "description": "",
+    "x-refersTo": "http://schema.org/City",
+    "x-capabilities": {
+      "textAgg": true
+    },
+    "x-concept": {
+      "id": "city",
+      "title": "Commune",
+      "primary": true
+    }
+  },
+  "latitude": {
+    "title": "Latitude",
+    "type": "number",
+    "description": "",
+    "x-refersTo": "http://schema.org/latitude",
+    "x-capabilities": {},
+    "x-concept": {
+      "id": "latitude",
+      "title": "Latitude",
+      "primary": true
+    }
+  },
+  "longitude": {
+    "title": "Longitude",
+    "type": "number",
+    "description": "",
+    "x-refersTo": "http://schema.org/longitude",
+    "x-capabilities": {},
+    "x-concept": {
+      "id": "longitude",
+      "title": "Longitude",
+      "primary": true
+    }
+  },
+  "telephone": {
+    "title": "Téléphone",
+    "type": "string",
+    "description": "",
+    "x-refersTo": "https://www.w3.org/2006/vcard/ns#tel",
+    "x-capabilities": {
+      "textAgg": true
+    },
+    "x-concept": {
+      "id": "tel",
+      "title": "N° de téléphone",
+      "primary": true
+    }
+  },
+  "email": {
+    "title": "E-mail",
+    "type": "string",
+    "description": "",
+    "x-refersTo": "https://www.w3.org/2006/vcard/ns#email",
+    "x-capabilities": {
+      "textAgg": true
+    },
+    "x-concept": {
+      "id": "email",
+      "title": "Adresse e-mail",
+      "primary": true
+    }
+  },
+  "site_internet": {
+    "title": "Site internet",
+    "type": "string",
+    "description": "",
+    "x-refersTo": "https://schema.org/WebPage",
+    "x-capabilities": {
+      "textAgg": true
+    },
+    "x-concept": {
+      "id": "webPage",
+      "title": "Page Web",
+      "primary": true
+    }
+  },
+  "code_qualification": {
+    "title": "Code qualification",
+    "type": "string",
+    "description": "",
+    "x-capabilities": {
+      "textAgg": true
+    }
+  },
+  "nom_qualification": {
+    "title": "Nom de la qualification",
+    "type": "string",
+    "description": "",
+    "x-capabilities": {
+      "textAgg": true
+    }
+  },
+  "url_qualification": {
+    "title": "URL qualification",
+    "type": "string",
+    "description": "",
+    "x-refersTo": "http://schema.org/DigitalDocument",
+    "x-capabilities": {},
+    "x-concept": {
+      "id": "attachment",
+      "title": "Document numérique attaché",
+      "primary": true
+    }
+  },
+  "nom_certificat": {
+    "title": "Libellé du certificat",
+    "type": "string",
+    "description": "",
+    "x-capabilities": {
+      "textAgg": true
+    },
+    "examples": [
+      "QUALIBAT-RGE",
+      "QualiPAC module Chauffage et ECS",
+      "Certificat OPQIBI",
+      "Tableau de l´Ordre",
+      "Qualibois Eau",
+      "QualiPV 36",
+      "Certificat Qualifelec RGE",
+      "Qualibois Air",
+      "Ventilation +",
+      "Qualisol CESI",
+      "Chauffage +",
+      "QualiPV 500",
+      "Qualisol Combi",
+      "CertiRénov RGE par CERQUAL Qualitel Certification",
+      "QualiPAC module CET",
+      "AUDIT ENERGETIQUE BATIMENT",
+      "CERTIBAT-RGE",
+      "Certiforage module Sonde",
+      "Certiforage module Nappe",
+      "Qualisol Collectif",
+      "RGE Etudes Audits énergétiques Batiments",
+      "CERTIFACT_EUSKADI_EKO",
+      "CERTIFACT_RLB_SQA",
+      "CERTIFICAT_ABCDOMUS",
+      "CERTIFICAT_ADFACTO",
+      "CERTIFICAT_BATIMEX",
+      "CERTIFICAT_BETREC_IG",
+      "CERTIFICAT_BET_PHILIPPE_POULAIN",
+      "CERTIFICAT_CABINET_BAZIN",
+      "CERTIFICAT_CABINET_DENIZOU",
+      "CERTIFICAT_CABINET_HENRI_BRUGNONI_INGENIERIE_HBI",
+      "CERTIFICAT_DPS",
+      "CERTIFICAT_ECHOS",
+      "CERTIFICAT_ECR_HABITAT",
+      "CERTIFICAT_EMIOS",
+      "CERTIFICAT_GBA_CO",
+      "CERTIFICAT_GEXPERTISE",
+      "CERTIFICAT_PLENETUDE",
+      "CERTIFICAT_P_ET_G_PLENETUDE",
+      "CERTIFICAT_SARL_DOMINIQUE_CALLIET"
+    ]
+  },
+  "domaine": {
+    "type": "array",
+    "title": "Domaine de travaux",
+    "description": "",
+    "items": {
+      "type": "string",
+      "x-cardinality": 32,
+      "x-capabilities": {
+        "textAgg": true
+      },
+      "examples": [
+        "Isolation par l'intérieur des murs ou rampants de toitures  ou plafonds",
+        "Chauffe-Eau Thermodynamique",
+        "Pompe à chaleur : chauffage",
+        "Fenêtres, volets, portes donnant sur l'extérieur",
+        "Isolation des combles perdus",
+        "Isolation des murs par l'extérieur",
+        "Poêle ou insert bois",
+        "Isolation des toitures terrasses ou des toitures par l'extérieur",
+        "Chaudière condensation ou micro-cogénération gaz ou fioul",
+        "Fenêtres de toit",
+        "Ventilation mécanique",
+        "Panneaux solaires photovoltaïques",
+        "Isolation des planchers bas",
+        "Audit énergétique Maison individuelle",
+        "Radiateurs électriques, dont régulation.",
+        "Architecte",
+        "Chaudière bois",
+        "Chauffage et/ou eau chaude solaire",
+        "Audit énergétique Logement collectif",
+        "Etude thermique reglementaire",
+        "Etude solaire photovoltaïque",
+        "Etude forage géothermique",
+        "Etude bois énergie",
+        "Etude ACV",
+        "Projet complet de rénovation",
+        "Etude solaire thermique",
+        "Etude système technique bâtiment",
+        "Etude eclairage",
+        "Inconnu",
+        "Etude enveloppe du bâtiment",
+        "Commisionnement",
+        "Non renseigné"
+      ]
+    }
+  },
+  "meta_domaine": {
+    "title": "Méta domaine",
+    "type": "string",
+    "description": "",
+    "x-capabilities": {
+      "textAgg": true
+    },
+    "examples": [
+      "Travaux d'efficacité énergétique",
+      "Installations d'énergies renouvelables",
+      "Etudes énergétiques",
+      "Rénovation globale",
+      "Inconnu",
+      "Non renseigné"
+    ]
+  },
+  "organisme": {
+    "title": "Organisme",
+    "type": "string",
+    "description": "",
+    "x-capabilities": {
+      "textAgg": true
+    },
+    "examples": [
+      "qualibat",
+      "qualitenr",
+      "opqibi",
+      "cnoa",
+      "qualifelec",
+      "Non renseigné",
+      "Inconnu",
+      "cerqual",
+      "afnor",
+      "certibat",
+      "opqtecc",
+      "lne"
+    ]
+  },
+  "particulier": {
+    "title": "Travaille pour les particuliers",
+    "type": "boolean",
+    "description": "",
+    "x-capabilities": {},
+    "examples": [
+      "true",
+      "false"
+    ]
+  },
+  "lien_date_debut": {
+    "title": "Date de début de qualification",
+    "type": "string",
+    "format": "date",
+    "description": "Cette date correspond à la date de début de qualification transmise par l'organisme de qualification",
+    "x-capabilities": {}
+  },
+  "lien_date_fin": {
+    "title": "Date de fin de qualification",
+    "type": "string",
+    "format": "date",
+    "description": "Cette date correspond à la date de fin de qualification transmise par l'organisme de qualification",
+    "x-capabilities": {}
+  },
+  "_file.content": {
+    "x-calculated": true,
+    "type": "string",
+    "title": "Contenu textuel du fichier",
+    "description": "Résultat d'une extraction automatique",
+    "readOnly": true
+  },
+  "_file.content_type": {
+    "x-calculated": true,
+    "type": "string",
+    "title": "Type mime du fichier",
+    "description": "Résultat d'une détection automatique.",
+    "readOnly": true
+  },
+  "_file.content_length": {
+    "x-calculated": true,
+    "type": "integer",
+    "title": "La taille en octet du fichier",
+    "description": "Résultat d'une détection automatique.",
+    "readOnly": true
+  },
+  "_attachment_url": {
+    "x-calculated": true,
+    "type": "string",
+    "title": "URL de téléchargement unitaire du fichier joint",
+    "readOnly": true
+  },
+  "_geopoint": {
+    "x-calculated": true,
+    "type": "string",
+    "title": "Coordonnée géographique",
+    "description": "Centroïde au format \"lat,lon\"",
+    "x-refersTo": "http://www.w3.org/2003/01/geo/wgs84_pos#lat_long",
+    "x-concept": {
+      "id": "latLon",
+      "title": "Latitude / Longitude",
+      "primary": true
+    },
+    "readOnly": true
+  },
+  "_id": {
+    "x-calculated": true,
+    "type": "string",
+    "format": "uri-reference",
+    "title": "Identifiant",
+    "description": "Identifiant unique parmi toutes les lignes du jeu de données",
+    "readOnly": true
+  },
+  "_i": {
+    "x-calculated": true,
+    "type": "integer",
+    "title": "Numéro de ligne",
+    "description": "Indice de la ligne dans le fichier d'origine",
+    "readOnly": true
+  },
+  "_rand": {
+    "x-calculated": true,
+    "type": "integer",
+    "title": "Nombre aléatoire",
+    "description": "Un nombre aléatoire associé à la ligne qui permet d'obtenir un tri aléatoire par exemple",
+    "readOnly": true
+  }
+}

@@ -45,7 +45,7 @@ describe "Dossier API" do
   end
 
   path "/quotes_cases/{id}" do
-    get "Récupérer un Dossier" do
+    get "Récupérer un Dossier et résultats de l'analyse" do
       tags "Dossier"
       security [bearer_api_key: []]
       consumes "application/json"

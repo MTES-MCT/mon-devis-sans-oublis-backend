@@ -266,7 +266,7 @@ paths:
               - file
   "/quote_checks/{id}":
     get:
-      summary: Récupérer un Devis
+      summary: Récupérer un Devis et résultats de l'analyse
       tags:
       - Devis
       security:
@@ -323,7 +323,7 @@ paths:
                   nullable: true
   "/quotes_cases/{id}":
     get:
-      summary: Récupérer un Dossier
+      summary: Récupérer un Dossier et résultats de l'analyse
       tags:
       - Dossier
       security:

@@ -11,12 +11,7 @@ require "rails_helper"
 require "openssl"
 require "uri"
 
-ADEME_SWAGGER_URI = DataAdeme.rge_openapi_uri
-ademe_yaml = URI(ADEME_SWAGGER_URI).open(ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE).read
-ademe_swagger = YAML.safe_load(ademe_yaml, aliases: true)
-ademe_result_schema = ademe_swagger.dig("paths", "/lines", "get", "responses", "200", "content", "application/json",
-                                        "schema", "properties", "results", "items", "properties")
-                                   .transform_values! { it.except("x-cardinality") } # change without usefullness
+ademe_result_schema = JSON.parse(Rails.root.join("swagger/v1/ademe_result_schema.json").read)
 
 def date_type(options = {})
   options.merge(
