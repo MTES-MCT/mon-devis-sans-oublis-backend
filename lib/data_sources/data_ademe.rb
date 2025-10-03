@@ -35,12 +35,15 @@ class DataAdeme
     raise ServiceUnavailableError, uri if body.include?("Impossible d'effectuer cette")
 
     json = JSON.parse(body)
-    return json if !json.key?("next") || json["next"].blank?
+    result = json.merge(
+      "results" => fix_results_schema(json["results"])
+    )
+    return result if !result.key?("next") || result["next"].blank?
 
-    next_json = historique_rge(uri: json.fetch("next"))
-    json.merge(
-      "next" => next_json["next"],
-      "results" => fix_results_schema(json["results"]) + next_json.fetch("results")
+    next_result = historique_rge(uri: result.fetch("next"))
+    result.merge(
+      "next" => next_result["next"],
+      "results" => result["results"] + next_result.fetch("results")
     )
   end
   # rubocop:enable Metrics/AbcSize
