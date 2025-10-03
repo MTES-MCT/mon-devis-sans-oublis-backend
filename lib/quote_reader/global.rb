@@ -76,8 +76,9 @@ module QuoteReader
 
     # rubocop:disable Metrics/AbcSize
     # rubocop:disable Metrics/MethodLength
-    def read(
-      force_ocr: false, ocr: nil, qa_llm: nil,
+    def read( # rubocop:disable Metrics/ParameterLists
+      force_ocr: false, ocr: nil,
+      private_data_qa_llm: nil, qa_llm: nil,
       file_text: nil, file_markdown: nil
     )
       @text = file_markdown || file_text ||
@@ -92,7 +93,7 @@ module QuoteReader
 
       private_data_qa_reader = PrivateDataQa.new(shrinked_text, quote_file:)
       begin
-        @private_data_qa_attributes = private_data_qa_reader.read || {}
+        @private_data_qa_attributes = private_data_qa_reader.read(llm: private_data_qa_llm) || {}
       ensure
         @private_data_qa_result = private_data_qa_reader.result
         @private_data_qa_version = private_data_qa_reader.version
