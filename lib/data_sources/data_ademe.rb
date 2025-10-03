@@ -6,6 +6,7 @@ require "net/http"
 class DataAdeme
   class ServiceUnavailableError < StandardError; end
 
+  # TODO: use API Entreprise https://entreprise.api.gouv.fr/developpeurs/openapi#tag/Certifications-professionnelles/paths/~1v3~1ademe~1etablissements~1%7Bsiret%7D~1certification_rge/get
   API_HOST = "https://data.ademe.fr/data-fair/api/v1"
 
   def self.rge_openapi_uri
@@ -39,8 +40,17 @@ class DataAdeme
     next_json = historique_rge(uri: json.fetch("next"))
     json.merge(
       "next" => next_json["next"],
-      "results" => json["results"] + next_json.fetch("results")
+      "results" => fix_results_schema(json["results"]) + next_json.fetch("results")
     )
   end
   # rubocop:enable Metrics/AbcSize
+
+  private
+
+  def fix_results_schema(results)
+    # Since 2025-10-03 Schema update, the "domaine" field is supposed to be an Array
+    # See https://data.ademe.fr/datasets/historique-rge
+    # But the related API might still return single String value instead of Array
+    results&.map { it.merge("domaine" => Array.wrap(result["domaine"])) }
+  end
 end
