@@ -51,6 +51,6 @@ class DataAdeme
     # Since 2025-10-03 Schema update, the "domaine" field is supposed to be an Array
     # See https://data.ademe.fr/datasets/historique-rge
     # But the related API might still return single String value instead of Array
-    results&.map { it.merge("domaine" => Array.wrap(result["domaine"])) }
+    results&.map { it.merge("domaine" => Array.wrap(it["domaine"])) }
   end
 end
