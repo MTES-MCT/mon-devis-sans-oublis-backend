@@ -34,6 +34,15 @@ RSpec.describe MdsoAdemeMapping, type: :service do
         )
       end
     end
+
+    context "with Array of domaine" do
+      let(:domaine) { ["Ventilation mécanique", "Isolation des combles perdus"] }
+      let(:nom_certificat) { nil }
+
+      it "returns the corresponding MDSO geste type" do
+        expect(ademe_geste_types).to eq(%w[isolation_comble_perdu vmc_double_flux vmc_simple_flux])
+      end
+    end
   end
 
   describe ".geste_types_with_certification" do

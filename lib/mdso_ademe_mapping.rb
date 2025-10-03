@@ -94,11 +94,13 @@ class MdsoAdemeMapping
     [ademe_certificate, mdso_geste_types]
   end.sort.to_h.freeze
 
+  # domaine: String or Array of String
+  # nom_certificat: String
   def self.ademe_geste_types(domaine: nil, nom_certificat: nil)
-    [
-      ADEME_DOMAINE_TO_MDSO_GESTE_TYPE[domaine],
-      ADEME_NOM_CERTIFICAT_TO_MDSO_GESTE_TYPE[nom_certificat]
-    ].flatten.compact.uniq.sort
+    (
+      Array.wrap(domaine).flat_map { ADEME_DOMAINE_TO_MDSO_GESTE_TYPE[it] } +
+        Array.wrap(ADEME_NOM_CERTIFICAT_TO_MDSO_GESTE_TYPE[nom_certificat])
+    ).flatten.compact.uniq.sort
   end
 
   def self.geste_types_with_certification
