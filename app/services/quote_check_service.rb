@@ -46,12 +46,18 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
   end
 
   # rubocop:disable Metrics/AbcSize
-  def check(force_ocr: false, ocr: nil, qa_llm: nil) # rubocop:disable Metrics/MethodLength
+  def check( # rubocop:disable Metrics/MethodLength
+    force_ocr: false, ocr: nil,
+    private_data_qa_llm: nil, qa_llm: nil
+  )
     ErrorNotifier.set_context(:quote_check, { id: quote_check.id })
 
     begin
       reset_check
-      read_quote(force_ocr:, ocr:, qa_llm:)
+      read_quote(
+        force_ocr:, ocr:,
+        private_data_qa_llm:, qa_llm:
+      )
       validate_quote if quote_check.validation_errors.blank?
       quote_check.finished_at = Time.current
     ensure
@@ -109,7 +115,10 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
 
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/MethodLength
-  def read_quote(force_ocr: false, ocr: nil, qa_llm: nil)
+  def read_quote(
+    force_ocr: false, ocr: nil,
+    private_data_qa_llm: nil, qa_llm: nil
+  )
     quote_reader = QuoteReader::Global.new(
       quote_check.file.content,
       quote_check.file.content_type,
@@ -119,7 +128,8 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
 
     begin
       quote_reader.read(
-        force_ocr:, ocr:, qa_llm:,
+        force_ocr:, ocr:,
+        private_data_qa_llm:, qa_llm:,
         file_text: quote_check.file_text,
         file_markdown: quote_check.file_markdown
       )
