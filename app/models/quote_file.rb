@@ -22,7 +22,7 @@ class QuoteFile < ApplicationRecord
   validates :hexdigest, presence: true, uniqueness: { scope: :filename }
 
   validates :data, presence: true
-  validates :file, attached: true, size: { less_than: 50.megabytes }
+  validates :file, attached: true, size: { less_than: Integer(ENV.fetch("MDSO_QUOTE_FILE_MAX_SIZE", 50)).megabytes }
 
   # rubocop:disable Metrics/MethodLength
   def self.find_or_create_file(tempfile, filename, content_type: nil)

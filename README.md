@@ -82,16 +82,21 @@ cp .env.example .env.docker
 | `MDSO_OCR_API_KEY`                     | Clé API du système OCR MDSO            |                            | Optionnel    |
 | `MDSO_OCR_HOST`                     | Host du système OCR MDSO            |                            | Optionnel    |
 | `MDSO_OCR_MODEL`                     | Modèle du système OCR MDSO utilisé par défaut si disponible            |                            | Optionnel    |
+| `MDSO_QUOTE_FILE_MAX_SIZE`                     | Taille du fichier maximum en MB, 50 par défaut            |                            | Optionnel    |
 | `MDSO_SITE_PASSWORD`                     | Ancienne clé accès au Back Office            | `hash` via `rake secret`                           | Optionnel    |
 | `MISTRAL_API_KEY`                     |              | `longueClé`                            | Requis    |
 | `MISTRAL_MODEL`                     | Modèle Mistral utilisé par défaut si disponible            | `mistral-large-latest`                            | Optionnel    |
 | `OCRABLE_UNDER_CARACTERS_COUNT`                     | Limite de caractères en deça de laquelle on tente l'OCR automatiquement           |                            | Optionnel    |
+| `PRIVATE_DATA_QA_DEFAULT_LLM`                     | LLM utilisé pour extraire les données privées par défaut si disponible            | `mistral`                            | Optionnel    |
+| `PRIVATE_DATA_QA_DEFAULT_MODEL`                     | Modèle utilisé pour extraire les données privées par défaut si disponible            | `mistral-large-latest`                            | Optionnel    |
 | `PROCONNECT_CLIENT_ID`                     |             | `hash`                            | Optionnel    |
 | `PROCONNECT_CLIENT_SECRET`                     |             | `hash`                            | Optionnel    |
 | `PROCONNECT_DOMAIN`                     |             | `https://auth.agentconnect.gouv.fr/api/v2`, `https://fca.integ01.dev-agentconnect.fr/api/v2`                            | Optionnel    |
 | `QUOTE_CHECK_EMAIL_RECIPIENTS`       | Emails pour être informé des dépôts | `toto@gouv.fr,tata@gouv.fr`                              | Optionnel |
 | `SENTRY_DSN`       | DSN Sentry pour le tracking d'erreurs | `https://xxx@sentry.io/xxx`                              | Optionnel |
 | `SENTRY_ENVIRONMENT`       | Environnement Sentry pour le tracking d'erreurs | `$APP_ENV`                              | Optionnel |
+| `WORKS_DATA_QA_DEFAULT_LLM`                     | LLM utilisé pour extraite les données travaux par défaut si disponible            | `mistral`                            | Optionnel    |
+| `WORKS_DATA_QA_DEFAULT_MODEL`                     | Modèle utilisé pour extraite les données travaux par défaut si disponible            | `mistral-large-latest`                            | Optionnel    |
 
 ### Configuration Scalingo
 
