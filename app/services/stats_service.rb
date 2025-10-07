@@ -17,6 +17,49 @@ class StatsService
     }
   end
 
+  # rubocop:disable Metrics/AbcSize
+  def quote_check_upload_funnel(date: "today", period: "day") # rubocop:disable Metrics/MethodLength
+    funnel_paths = [
+      "https://mon-devis-sans-oublis.beta.gouv.fr/",
+
+      "/bienvenue",
+
+      %w[
+        /artisan/type-renovation
+        /particulier/type-renovation
+        /conseiller/type-renovation
+      ],
+
+      %w[
+        /artisan/televersement/renovation-par-gestes
+        /artisan/televersement/renovation-ampleur
+        /conseiller/televersement/renovation-par-gestes
+        /conseiller/televersement/renovation-ampleur
+        /particulier/televersement/renovation-par-gestes
+        /particulier/televersement/renovation-ampleur
+      ]
+
+      # TODO: during and afterr upload (same URL) like /artisan/dossier/[UUID]
+    ]
+
+    path_visits = funnel_paths.index_with do |path_or_paths|
+      Array.wrap(path_or_paths).sum do |path|
+        page_data = matomo_api.get_page_url(path, date:, period:).first
+        page_data&.fetch("nb_visits").to_i # TODO: Use nb_hits instead?
+      end
+    end
+
+    funnel_paths.each_with_index.map do |path, index|
+      count = path_visits[path]
+
+      previous_count = index.zero? ? count : path_visits[funnel_paths[index - 1]]
+      conversion = previous_count.positive? ? (count.to_f / previous_count * 100).ceil(1) : 0.0
+
+      { index: index + 1, path:, count:, conversion: }
+    end
+  end
+  # rubocop:enable Metrics/AbcSize
+
   protected
 
   def average_quote_check_cost
@@ -57,12 +100,16 @@ class StatsService
   end
 
   def unique_visitors_count
-    MatomoApi.new.value(method: "VisitsSummary.getUniqueVisitors") if MatomoApi.auto_configured?
+    matomo_api.value(method: "VisitsSummary.getUniqueVisitors") if MatomoApi.auto_configured?
   rescue MatomoApi::TimeoutError
     nil
   end
 
   private
+
+  def matomo_api
+    @matomo_api ||= MatomoApi.new
+  end
 
   def median(array)
     return nil if array.empty?

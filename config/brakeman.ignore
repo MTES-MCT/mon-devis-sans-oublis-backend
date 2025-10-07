@@ -3,6 +3,29 @@
     {
       "warning_type": "SSL Verification Bypass",
       "warning_code": 71,
+      "fingerprint": "84924c83f8be47d667df122fe92e11e4a5929ff25b1b227c8fff5bbcf9a36516",
+      "check_name": "SSLVerify",
+      "message": "SSL certificate verification was bypassed",
+      "file": "lib/matomo_api.rb",
+      "line": 88,
+      "link": "https://brakemanscanner.org/docs/warning_types/ssl_verification_bypass/",
+      "code": "f.ssl.verify_mode = OpenSSL::SSL::VERIFY_NONE",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "MatomoApi",
+        "method": "connection"
+      },
+      "user_input": null,
+      "confidence": "High",
+      "cwe_id": [
+        295
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SSL Verification Bypass",
+      "warning_code": 71,
       "fingerprint": "e53a1f1153cfb2918c06d85a133180805bd5c4e5533daa4d97410eb9b6b76320",
       "check_name": "SSLVerify",
       "message": "SSL certificate verification was bypassed",
