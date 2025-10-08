@@ -42,8 +42,8 @@ class QuoteCheckSerializer < ObjectWithValidationSerializer
     object.read_attributes&.fetch("gestes", nil)&.map&.with_index do |geste, geste_index| # rubocop:disable Style/SafeNavigationChainLength
       geste_id = QuoteValidator::Base.geste_index(object.id, geste_index)
       {
-        "intitule" => "#{geste['numero_ligne']} #{geste['intitule']}",
         "id" => geste_id,
+        "intitule" => "#{geste['numero_ligne']} #{geste['intitule']}",
         "valid" =>
           validation_error_details.nil? || validation_error_details.none? do # rubocop:disable Style/ItBlockParameter
             it["geste_id"] == geste_id

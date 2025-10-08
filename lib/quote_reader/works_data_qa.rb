@@ -27,7 +27,7 @@ module QuoteReader
     # rubocop:disable Metrics/AbcSize
     # rubocop:disable Metrics/CyclomaticComplexity
     # rubocop:disable Metrics/PerceivedComplexity
-    def clean_attributes(attributes)
+    def clean_attributes(attributes) # rubocop:disable Metrics/MethodLength
       attributes&.merge(
         numero_devis: Array.wrap(
           attributes[:numero_devis] ||
@@ -37,7 +37,13 @@ module QuoteReader
         devis_nos: nil, # cleaned up
         no_devis: nil, # cleaned up
 
-        type_fichier: Array.wrap(attributes[:type_fichier]).presence&.map(&:to_s)&.first
+        type_fichier: Array.wrap(attributes[:type_fichier]).presence&.map(&:to_s)&.first,
+
+        gestes: attributes[:gestes]&.map do |geste|
+          geste.merge(
+            numero_ligne: geste[:numero_ligne]&.to_s
+          )
+        end
       )&.compact.presence
     end
     # rubocop:enable Metrics/PerceivedComplexity
