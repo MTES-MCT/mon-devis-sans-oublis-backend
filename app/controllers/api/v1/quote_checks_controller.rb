@@ -26,8 +26,8 @@ module Api
 
         quote_check_service = QuoteCheckService.new(
           upload_file.tempfile, upload_file.original_filename,
-          quote_check_params[:profile],
-          quote_check_params[:renovation_type],
+          quotes_case&.profile || quote_check_params[:profile],
+          quotes_case&.renovation_type || quote_check_params[:renovation_type],
           file_text: quote_check_params[:file_text],
           file_markdown: quote_check_params[:file_markdown],
           metadata: quote_check_params[:metadata],
@@ -76,7 +76,7 @@ module Api
         return if params[:case_id].blank?
 
         @quotes_case ||= QuotesCase
-                         .select(:id)
+                         .select(:id, :profile, :renovation_type)
                          .accessible_for_source(api_user)
                          .find(params[:case_id])
       end
