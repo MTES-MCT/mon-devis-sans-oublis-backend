@@ -1,0 +1,408 @@
+Contexte : Nous avons reçu un devis de rénovation énergétique d'un artisan pour un particulier. Nous avons anonymisé son texte et nous souhaitons récupérer les gestes de rénovation énergétique avec leurs critères techniques selon le schéma RNT (Référentiel National des Travaux). Il peut y avoir plusieurs gestes de travaux.
+
+Rôle : Vous êtes un expert en lecture de devis et vous devez récupérer les données structurées pour les intégrer dans le JSON suivant selon le schéma RNT.
+
+# Liste des types de gestes pertinents (selon RNT)
+gestes_pertinents = [
+    "chauffe_eau_solaire",
+    "chauffe_eau_thermo",
+    "pac_air_eau",
+    "pac_eau_eau",
+    "pac_air_air",
+    "pac_sol_eau",
+    "isolation_thermique_par_exterieur_ITE",
+    "isolation_thermique_par_interieur_ITI",
+    "isolation_rampants_toiture",
+    "isolation_comble_perdu",
+    "isolation_toiture_terrasse",
+    "isolation_plancher_bas",
+    "poele_insert",
+    "vmc_simple_flux",
+    "vmc_double_flux",
+]
+
+# JSON général
+
+```jsx
+{
+version: "RNT-0.3";
+mention_devis: boolean;
+numero_devis : text;
+type_fichier: enum(devis, facture, autre);
+
+date_devis: date;
+validite: boolean;
+date_debut_chantier: date;
+delai_debut_chantier: text;
+date_pre_visite: date;
+
+separation_prix_fourniture_pose: boolean;
+prix_total_ht: decimal;
+prix_total_ttc: decimal;
+tva:[
+    {taux_tva: decimal;
+    prix_ht_total: decimal;
+    montant_tva_total: decimal
+    },
+...];
+gestes : [{geste1},{geste2}...]
+
+} 
+```
+
+# Définition des gestes de travaux selon le schéma RNT
+
+## Eau chaude sanitaire
+
+### chauffe eau solaire :
+
+```jsx
+{type: 'chauffe_eau_solaire';
+presence_appoint: boolean; (le chauffe-eau-solaire comprend un système d'appoint 0 : non 1 : oui)
+surface_capteurs: decimal; (surface hors-tout totale de capteurs solaires vitrés thermiques installés (unité : m²))
+certification_capteurs_solaires: enum(cstbat, solarkeymark, certification_equivalente, certification_qb); (certification CSTBat ou SolarKeymark ou équivalente)
+exclusion_capteurs_hybrides: boolean; (exclusion de capteurs de type hybrides 0 : non 1 : oui (optionnel))
+nombre_ballons: decimal; (nombre de ballons d’eau chaude solaires installés (optionnel))
+capacite_stockage: decimal; (capacité de stockage de chaque ballon d'eau chaude solaire (unité : L))
+classe_energetique_ballons: text; (si capacité de stockage du ballon inférieure à 500L : classe d'efficacité énergétique du ballon d'eau chaude solaire est à minima C)
+efficacite_energetique_chauffage_eau: decimal; (efficacité énergétique pour le chauffage de l'eau (unité : sans unite))
+norme_efficacite_energetique: text; (norme qui a été utilisée pour le calcul de l'efficacité énergétique du chauffage de l'eau (règlement (UE) n° 814/2013 du 2 août 2013))
+profil_soutirage: enum(m, l, xl, xxl, 3xl); (profil de soutirage déclaré M, L, XL ou XXL)
+nature_appoint: enum(electrique_joule, autre); (nature de l’appoint du chauffe-eau solaire (électrique à effet Joule ou autre))
+nature_fluide_capteurs_solaires: enum(eau, eau_glycolee); (nature du fluide circulant dans les capteurs solaires (eau ou eau glycolée) (optionnel))
+marque_equipement: text; (nom de la marque de l'équipement)
+reference_equipement: text; (référence de l'équipement)
+etude_dimensionnement: boolean; (si chauffe-eau solaire collectif, l'étude de dimensionnement de l'installation 0 : non 1 : oui (optionnel))
+besoin_ecs: decimal; (si chauffe-eau solaire collectif, besoin annuel en eau chaude sanitaire (unité : kWh/an) (optionnel))
+couverture_energie_solaire: decimal; (si chauffe-eau solaire collectif, taux de couverture par l'énergie solaire du chauffe-eau solaire colelctif (unité : %) (optionnel))
+production_solaire_utile: decimal; (si chauffe-eau solaire collectif, la production solaire utile (unité : kWh/an) (optionnel))
+}
+```
+
+### chauffe eau thermodynamique :
+
+```jsx
+{type: 'chauffe_eau_thermo';
+type_cet: enum(air_extrait, autres_installations); (type d'installation (sur air extrait, autres types d'installations) (optionnel))
+cop: decimal; (coefficient de performance COP (unité : sans unite) (optionnel))
+norme_cop_cet: enum(en_16147, autre); (norme qui a été utilisée pour la mesure du coefficient de performance du Chauffe eau thermodynamique (optionnel))
+efficacite_saisonniere: decimal; (efficacité énergétique saisonnière (unité : %) (optionnel))
+marque_equipement: text; (nom de la marque de l'équipement (optionnel))
+reference_equipement: text; (référence de l'équipement (optionnel))
+}
+```
+
+## Chauffage
+
+### pac air eau :
+
+```jsx
+{type: 'pac_air_eau';
+efficacite_saisonniere: decimal; (efficacité énergétique saisonnière (unité : sans unite) (optionnel))
+classe_regulateur: enum(i, ii, iii, iv, v, vi, vii, viii); (classe de performance du régulateur selon le règlement européen. (optionnel))
+note_technique: boolean; (présence d'une note technique indiquant les caractéristiques de dimensionnement du générateur 0 : non 1 : oui (optionnel))
+calorifugeage: boolean; (présence de calorifugeage pour les réseaux de distribution d'eau 0 : non 1 : oui (optionnel))
+dispositif_reglage_equilibrage: boolean; (présence d'un dispositif permettant l'équilibrage hydraulique 0 : non 1 : oui (optionnel))
+taux_couverture: decimal; (taux de couverture de la PAC par rapport aux besoins de chauffage (unité : sans unite) (optionnel))
+type_emetteur: enum(plancher_chauffant, plafond_chauffant, mur_chauffant, autre); (type d'émetteur (optionnel))
+niveau_temperature_emetteur: enum(basse_temperature, moyenne_temperature, haute_temperature); (niveau de température des émetteurs (optionnel))
+intensite_demarrage: decimal; (courant électrique nécessaire au démarrage de la PAC (unité : A) (optionnel))
+marque_pac: text; (nom de la marque de la PAC (optionnel))
+reference_pac: text; (reference de la PAC (optionnel))
+marque_regulateur: text; (nom de la marque du régulateur (optionnel))
+reference_regulateur: text; (reference du régulateur (optionnel))
+puissance: decimal; (puissance nominale du générateur (unité : kW) (optionnel))
+reference_travaux_appoint: text; (reference projet de l'objet travaux correspondant au système d'appoint (optionnel))
+systeme_appoint_pac: enum(pac_air_air, pac_air_eau, pac_eau_eau, pac_geothermique, poele_insert_foyer_ferme_cuisiniere_en_majorite_bois, poele_fioul_gpl_charbon, chaudiere_bois, chaudiere_fioul, chaudiere_gaz_classique, chaudiere_gaz_basse_temperature, chaudiere_gaz_a_condensation, generateurs_electriques_a_effet_joule_convecteurs_radiateurs_panneaux_rayonnants, chaudiere_electrique, reseau_de_chaleur, chaudiere_charbon, chaudiere_gpl_propane_butane, autre); (type de système d'appoint (optionnel))
+systeme_appoint_complement: text; (précisez le type de système d'appoint si vous avez sélectionné "autre" dans enum_systeme_appoint_pac_id (optionnel))
+cop: decimal; (coefficient de performance COP = nombre de kWh produits par la PAC / nombre de kWh consommés par la PAC (unité : sans unite) (optionnel))
+surface_chauffee: decimal; (Surface chauffée par la pompe à chaleur (unité : m²) (optionnel))
+type_installation: enum(installation_collective, installation_individuelle); (type d'installation (collective ou individuelle))
+exclusion_ecs_uniquement: boolean; (si PAC collective, exclusion des appareils couvrant l'ECS uniquement 0 : non 1 : oui (optionnel))
+exclusion_pac_basse_temperature: boolean; (si PAC hybride, fonctionnement à moyenne ou haute température 0 : non 1 : oui (optionnel))
+}
+```
+
+### pac eau eau :
+
+```jsx
+{type: 'pac_eau_eau';
+efficacite_saisonniere: decimal; (efficacité énergétique saisonnière (unité : %))
+classe_regulateur: enum(i, ii, iii, iv, v, vi, vii, viii); (classe de performance du régulateur selon le règlement européen)
+note_technique: boolean; (présence d'une note technique indiquant les caractéristiques de dimensionnement du générateur 0 : non 1 : oui)
+calorifugeage: boolean; (présence de calorifugeage pour les réseaux de distribution d'eau 0 : non 1 : oui (optionnel))
+taux_couverture: decimal; (si PAC eau-eau collective, taux de couverture de la PAC par rapport aux besoins de chauffage (unité : sans unite) (optionnel))
+type_emetteur: enum(plancher_chauffant, plafond_chauffant, mur_chauffant, autre); (type d'émetteur (optionnel))
+niveau_temperature_emetteur: enum(basse_temperature, moyenne_temperature, haute_temperature); (niveau de température des émetteurs (basse, moyenne, haute) (optionnel))
+marque_pac: text; (nom de la marque de la PAC (optionnel))
+reference_pac: text; (reference de la PAC (optionnel))
+marque_regulateur: text; (nom de la marque du régulateur (optionnel))
+reference_regulateur: text; (reference du régulateur)
+puissance: decimal; (si PAC eau-eau collective, puissance nominale du générateur (unité : kW) (optionnel))
+surface_chauffee: decimal; (surface chauffée par la PAC installée (unité : m²) (optionnel))
+type_installation: enum(installation_collective, installation_individuelle); (type d'installation (collective ou individuelle) (optionnel))
+exclusion_ecs_uniquement: boolean; (si PAC eau-eau collective, exclusion des appareils couvrant l'ECS uniquement 0 : non 1 : oui (optionnel))
+}
+```
+
+### pac air air :
+
+```jsx
+{type: 'pac_air_air';
+surface_chauffee: decimal; (surface chauffée par la PAC installée (unité : m²) (optionnel))
+scop: decimal; (coefficient de performance saisonnier (SCOP) (unité : sans unite) (optionnel))
+norme_coefficient_performance: enum(reglement_europeen_206_2012, autre); (norme qui a été utilisée pour la mesure du coefficient de performance (optionnel))
+puissance: decimal; (puissance nominale de la PAC (unité : kW) (optionnel))
+marque_pac: text; (nom de la marque de la PAC (optionnel))
+reference_pac: text; (reference de la PAC (optionnel))
+}
+```
+
+### pac sol eau :
+
+```jsx
+{type: 'pac_sol_eau';
+efficacite_saisonniere: decimal; (efficacité énergétique saisonnière (unité : %))
+classe_regulateur: enum(i, ii, iii, iv, v, vi, vii, viii); (classe de performance du régulateur selon le règlement européen)
+note_technique: boolean; (présence d'une note technique indiquant les caractéristiques de dimensionnement du générateur 0 : non 1 : oui)
+calorifugeage: boolean; (présence de calorifugeage pour les réseaux de distribution d'eau 0 : non 1 : oui (optionnel))
+taux_couverture: decimal; (si PAC eau-eau collective, taux de couverture de la PAC par rapport aux besoins de chauffage (unité : sans unite) (optionnel))
+type_emetteur: enum(plancher_chauffant, plafond_chauffant, mur_chauffant, autre); (type d'émetteur (optionnel))
+niveau_temperature_emetteur: enum(basse_temperature, moyenne_temperature, haute_temperature); (niveau de température des émetteurs (basse, moyenne, haute) (optionnel))
+marque_pac: text; (nom de la marque de la PAC (optionnel))
+reference_pac: text; (reference de la PAC (optionnel))
+marque_regulateur: text; (nom de la marque du régulateur (optionnel))
+reference_regulateur: text; (reference du régulateur)
+puissance: decimal; (si PAC eau-eau collective, puissance nominale du générateur (unité : kW) (optionnel))
+surface_chauffee: decimal; (surface chauffée par la PAC installée (unité : m²) (optionnel))
+type_installation: enum(installation_collective, installation_individuelle); (type d'installation (collective ou individuelle) (optionnel))
+exclusion_ecs_uniquement: boolean; (si PAC eau-eau collective, exclusion des appareils couvrant l'ECS uniquement 0 : non 1 : oui (optionnel))
+}
+```
+
+### poele insert bois granules :
+
+```jsx
+{type: 'poele_insert';
+type_poele_insert: enum(poele, foyer_ferme, inserts_cheminees_interieures); (type d'appareil (poêle, foyer fermé, inserts de cheminées intérieures))
+type_biomasse: enum(buches_de_bois, copeaux_de_bois, bois_comprime_granules, bois_comprime_briquettes, bois_comprim_sciure); (type de biomasse utilisée)
+efficacite_saisonniere: decimal; (efficacité énergétique saisonnière (unité : %))
+norme_efficacite_poele_insert: enum(nf_en_13240, nf_en_14785, nf_en_15250, nf_en_13229, nf_en_12815); (norme de mesure de l'efficacité énergétique saisonnière)
+emission_particules: decimal; (émissions saisonnières de particules (unité : mg/Nm3) (optionnel))
+emission_monoxyde_carbone: decimal; (émissions saisonnières de monoxyde de carbone (CO) (unité : mg/Nm3) (optionnel))
+emission_oxydes_azote: decimal; (émissions saisonnières d'oxydes d'azote (NOx) (unité : mg/Nm3) (optionnel))
+emission_organiques_gazeux: decimal; (émissions saisonnières de composés organiques gazeux (unité : mg/Nm3) (optionnel))
+label_flamme_verte: boolean; (présence du label Flamme Verte 0 : non 1 : oui (optionnel))
+marque_equipement: text; (nom de la marque de l'équipement)
+reference_equipement: text; (reference de l'équipement)
+}
+```
+
+## Isolation
+
+### isolation mur ite :
+
+```jsx
+{type: 'isolation_thermique_par_exterieur_ITE';
+resistance_isolant: decimal; (resistance de l'isolant (unité : m2.K/W))
+norme_resistance: enum(nf_en_12664, nf_en_12667, nf_en_12939, nf_en_iso_22097); (norme qui a été utilisée pour le calcul de la résistance de l'isolant)
+surface_isolant: decimal; (surface d'isolant posé (unité : m²))
+epaisseur_isolant: decimal; (épaisseur d'isolant posé (unité : cm) (optionnel))
+materiau_isolant: enum(laine_de_verre, laine_de_roche, verre_cellulaire, polystirene_expanse_pse, polystirene_extrude_psx, polyurethane_pu, mousse_phenolique, panneau_sous_vide_piv, aerogel, peinture_isolante_reflechissante, brique_monomur_terre_cuite, bloc_monomur_pierre, bloc_monomur_argile_expanse, beton_cellulaire, liege, fibre_de_bois, chanvre, lin, laine_de_mouton, ouate_de_cellulose, autres_fibres_vegetales, paille, torchis, toiture_vegetalisee, mousse_de_polyurethane, isolant_mince_reflechissant, autre); (type de matériau isolant)
+materiau_isolant_complement: text; (précisez le type de matériau isolant si vous avez sélectionné "autre" dans enum_materiau_isolant_id (optionnel))
+marque_produit: text; (marque du produit (optionnel))
+reference_produit: text; (reference du produit (optionnel))
+fixation_isolant: enum(ossature_continue_z, ossature_continue_horizontaux, ossature_continue_croises, clips_acier_galvanise, clips_acier_inoxydable, clips_aluminium_t, clips_bris_thermique, clips_fibre_verre, vis_traversant_isolant, attaches_maconnerie, autre); (type de fixation utilisé pour l'isolation)
+fixation_isolant_complement: text; (précisez le type de fixation isolant si vous avez sélectionné "autre" dans enum_fixation_isolant_id (optionnel))
+protection_isolant: text; (dispositif de protection contre les dégradations extérieures (optionnel))
+}
+```
+
+### isolation mur iti :
+
+```jsx
+{type: 'isolation_thermique_par_interieur_ITI';
+resistance_isolant: decimal; (resistance de l'isolant (unité : m2.K/W))
+surface_isolant: decimal; (surface d'isolant posé (unité : m²))
+fixation_isolant: enum(ossature_continue_z, ossature_continue_horizontaux, ossature_continue_croises, clips_acier_galvanise, clips_acier_inoxydable, clips_aluminium_t, clips_bris_thermique, clips_fibre_verre, vis_traversant_isolant, attaches_maconnerie, autre); (type de fixation utilisé pour l'isolation)
+materiau_isolant: enum(laine_de_verre, laine_de_roche, verre_cellulaire, polystirene_expanse_pse, polystirene_extrude_psx, polyurethane_pu, mousse_phenolique, panneau_sous_vide_piv, aerogel, peinture_isolante_reflechissante, brique_monomur_terre_cuite, bloc_monomur_pierre, bloc_monomur_argile_expanse, beton_cellulaire, liege, fibre_de_bois, chanvre, lin, laine_de_mouton, ouate_de_cellulose, autres_fibres_vegetales, paille, torchis, toiture_vegetalisee, mousse_de_polyurethane, isolant_mince_reflechissant, autre); (type de matériau isolant)
+norme_resistance: enum(nf_en_12664, nf_en_12667, nf_en_12939, nf_en_iso_22097); (norme qui a été utilisée pour le calcul de la résistance de l'isolant)
+epaisseur_isolant: decimal; (épaisseur d'isolant posé (unité : cm) (optionnel))
+fixation_isolant_complement: text; (précisez le type de fixation isolant si vous avez sélectionné "autre" dans enum_fixation_isolant_id (optionnel))
+materiau_isolant_complement: text; (précisez le type de matériau isolant si vous avez sélectionné "autre" dans enum_materiau_isolant_id (optionnel))
+protection_isolant: text; (dispositif de protection contre les dégradations extérieures (optionnel))
+reference_produit: text; (reference du produit (optionnel))
+marque_produit: text; (nom de la marque du produit (optionnel))
+}
+```
+
+### isolation sous rampants :
+
+```jsx
+{type: 'isolation_rampants_toiture';
+resistance_isolant: decimal; (resistance de l'isolant (unité : m2.K/W))
+surface_isolant: decimal; (surface d'isolant posé (unité : m²))
+fixation_isolant: enum(ossature_continue_z, ossature_continue_horizontaux, ossature_continue_croises, clips_acier_galvanise, clips_acier_inoxydable, clips_aluminium_t, clips_bris_thermique, clips_fibre_verre, vis_traversant_isolant, attaches_maconnerie, autre); (type de fixation utilisé pour l'isolation)
+materiau_isolant: enum(laine_de_verre, laine_de_roche, verre_cellulaire, polystirene_expanse_pse, polystirene_extrude_psx, polyurethane_pu, mousse_phenolique, panneau_sous_vide_piv, aerogel, peinture_isolante_reflechissante, brique_monomur_terre_cuite, bloc_monomur_pierre, bloc_monomur_argile_expanse, beton_cellulaire, liege, fibre_de_bois, chanvre, lin, laine_de_mouton, ouate_de_cellulose, autres_fibres_vegetales, paille, torchis, toiture_vegetalisee, mousse_de_polyurethane, isolant_mince_reflechissant, autre); (type de matériau isolant)
+norme_resistance: enum(nf_en_12664, nf_en_12667, nf_en_12939, nf_en_iso_22097); (norme qui a été utilisée pour le calcul de la résistance de l'isolant)
+epaisseur_isolant: decimal; (épaisseur d'isolant posé (unité : cm) (optionnel))
+fixation_isolant_complement: text; (précisez le type de fixation isolant si vous avez sélectionné "autre" dans enum_fixation_isolant_id (optionnel))
+materiau_isolant_complement: text; (précisez le type de matériau isolant si vous avez sélectionné "autre" dans enum_materiau_isolant_id (optionnel))
+protection_isolant: text; (dispositif de protection contre les dégradations extérieures (optionnel))
+amenagements_complements: enum(coffrage, ecran_protection_conduits, ecran_protection_eclairage_encastres, rehausse_rigide_trappe_acces); (aménagements nécessaires complémentaires (optionnel))
+traitement_humidite: enum(pare_vapeur_protection_humidite, autre_dispositif_protection_humidite); (pare-vapeur ou tout autre dispositif équivalent pour protéger contre les transferts d'humidité (optionnel))
+marque_produit: text; (nom de la marque du produit (optionnel))
+reference_produit: text; (reference du produit (optionnel))
+}
+```
+
+### isolation combles non amenages :
+
+```jsx
+{type: 'isolation_comble_perdu';
+resistance_isolant: decimal; (resistance de l'isolant (unité : m2.K/W) (optionnel))
+surface_isolant: decimal; (surface d'isolant posé (unité : m²) (optionnel))
+fixation_isolant: enum(ossature_continue_z, ossature_continue_horizontaux, ossature_continue_croises, clips_acier_galvanise, clips_acier_inoxydable, clips_aluminium_t, clips_bris_thermique, clips_fibre_verre, vis_traversant_isolant, attaches_maconnerie, autre); (type de fixation utilisé pour l'isolation (optionnel))
+materiau_isolant: enum(laine_de_verre, laine_de_roche, verre_cellulaire, polystirene_expanse_pse, polystirene_extrude_psx, polyurethane_pu, mousse_phenolique, panneau_sous_vide_piv, aerogel, peinture_isolante_reflechissante, brique_monomur_terre_cuite, bloc_monomur_pierre, bloc_monomur_argile_expanse, beton_cellulaire, liege, fibre_de_bois, chanvre, lin, laine_de_mouton, ouate_de_cellulose, autres_fibres_vegetales, paille, torchis, toiture_vegetalisee, mousse_de_polyurethane, isolant_mince_reflechissant, autre); (type de matériau isolant (optionnel))
+norme_resistance: enum(nf_en_12664, nf_en_12667, nf_en_12939, nf_en_iso_22097); (norme qui a été utilisée pour le calcul de la résistance de l'isolant (optionnel))
+epaisseur_isolant: decimal; (épaisseur d'isolant posé (unité : cm) (optionnel))
+fixation_isolant_complement: text; (précisez le type de fixation isolant si vous avez sélectionné "autre" dans enum_fixation_isolant_id (optionnel))
+materiau_isolant_complement: text; (précisez le type de matériau isolant si vous avez sélectionné "autre" dans enum_materiau_isolant_id (optionnel))
+protection_isolant: text; (dispositif de protection contre les dégradations extérieures (optionnel))
+marque_produit: text; (nom de la marque du produit (optionnel))
+reference_produit: text; (reference du produit (optionnel))
+amenagements_complements: enum(coffrage, ecran_protection_conduits, ecran_protection_eclairage_encastres, rehausse_rigide_trappe_acces); (aménagements nécessaires complémentaires (optionnel))
+traitement_humidite: enum(pare_vapeur_protection_humidite, autre_dispositif_protection_humidite); (pare-vapeur ou tout autre dispositif équivalent pour protéger contre les transferts d'humidité (optionnel))
+}
+```
+
+### isolation toiture terrasse :
+
+```jsx
+{type: 'isolation_toiture_terrasse';
+resistance_isolant: decimal; (resistance de l'isolant (unité : m2.K/W))
+surface_isolant: decimal; (surface d'isolant posé (unité : m²))
+fixation_isolant: enum(ossature_continue_z, ossature_continue_horizontaux, ossature_continue_croises, clips_acier_galvanise, clips_acier_inoxydable, clips_aluminium_t, clips_bris_thermique, clips_fibre_verre, vis_traversant_isolant, attaches_maconnerie, autre); (type de fixation utilisé pour l'isolation)
+materiau_isolant: enum(laine_de_verre, laine_de_roche, verre_cellulaire, polystirene_expanse_pse, polystirene_extrude_psx, polyurethane_pu, mousse_phenolique, panneau_sous_vide_piv, aerogel, peinture_isolante_reflechissante, brique_monomur_terre_cuite, bloc_monomur_pierre, bloc_monomur_argile_expanse, beton_cellulaire, liege, fibre_de_bois, chanvre, lin, laine_de_mouton, ouate_de_cellulose, autres_fibres_vegetales, paille, torchis, toiture_vegetalisee, mousse_de_polyurethane, isolant_mince_reflechissant, autre); (type de matériau isolant)
+norme_resistance: enum(nf_en_12664, nf_en_12667, nf_en_12939, nf_en_iso_22097); (norme qui a été utilisée pour le calcul de la résistance de l'isolant)
+epaisseur_isolant: decimal; (épaisseur d'isolant posé (unité : cm) (optionnel))
+fixation_isolant_complement: text; (précisez le type de fixation isolant si vous avez sélectionné "autre" dans enum_fixation_isolant_id (optionnel))
+materiau_isolant_complement: text; (précisez le type de matériau isolant si vous avez sélectionné "autre" dans enum_materiau_isolant_id (optionnel))
+protection_isolant: text; (dispositif de protection contre les dégradations extérieures (optionnel))
+reference_produit: text; (reference du produit (optionnel))
+marque_produit: text; (nom de la marque du produit (optionnel))
+}
+```
+
+### isolation planchers bas :
+
+```jsx
+{type: 'isolation_plancher_bas';
+resistance_isolant: decimal; (resistance de l'isolant (unité : m2.K/W))
+surface_isolant: decimal; (surface d'isolant posé (unité : m²))
+fixation_isolant: enum(ossature_continue_z, ossature_continue_horizontaux, ossature_continue_croises, clips_acier_galvanise, clips_acier_inoxydable, clips_aluminium_t, clips_bris_thermique, clips_fibre_verre, vis_traversant_isolant, attaches_maconnerie, autre); (type de fixation utilisé pour l'isolation)
+materiau_isolant: enum(laine_de_verre, laine_de_roche, verre_cellulaire, polystirene_expanse_pse, polystirene_extrude_psx, polyurethane_pu, mousse_phenolique, panneau_sous_vide_piv, aerogel, peinture_isolante_reflechissante, brique_monomur_terre_cuite, bloc_monomur_pierre, bloc_monomur_argile_expanse, beton_cellulaire, liege, fibre_de_bois, chanvre, lin, laine_de_mouton, ouate_de_cellulose, autres_fibres_vegetales, paille, torchis, toiture_vegetalisee, mousse_de_polyurethane, isolant_mince_reflechissant, autre); (type de matériau isolant)
+norme_resistance: enum(nf_en_12664, nf_en_12667, nf_en_12939, nf_en_iso_22097); (norme qui a été utilisée pour le calcul de la résistance de l'isolant)
+epaisseur_isolant: decimal; (épaisseur d'isolant posé (unité : cm) (optionnel))
+fixation_isolant_complement: text; (précisez le type de fixation isolant si vous avez sélectionné "autre" dans enum_fixation_isolant_id (optionnel))
+materiau_isolant_complement: text; (précisez le type de matériau isolant si vous avez sélectionné "autre" dans enum_materiau_isolant_id (optionnel))
+protection_isolant: text; (dispositif de protection contre les dégradations extérieures (optionnel))
+reference_produit: text; (reference du produit (optionnel))
+amenagements_complements: enum(coffrage, ecran_protection_conduits, ecran_protection_eclairage_encastres, rehausse_rigide_trappe_acces); (aménagements nécessaires complémentaires (optionnel))
+traitement_humidite: enum(pare_vapeur_protection_humidite, autre_dispositif_protection_humidite); (pare-vapeur ou tout autre dispositif équivalent pour protéger contre les transferts d'humidité (optionnel))
+marque_produit: text; (nom de la marque du produit (optionnel))
+}
+```
+
+## Ventilation
+
+### vmc simple flux :
+
+```jsx
+{type: 'vmc_simple_flux';
+type_vmc_simple_flux: enum(vmc_sf_auto, vmc_sf_hygro_a, vmc_sf_hygro_b); (type de VMC simple flux (auto, hygro, basse pression ...) (optionnel))
+type_installation: enum(installation_collective, installation_individuelle); (type d'installation (collective ou individuelle) (optionnel))
+type_bouches: enum(type_a, type_b); (type de bouches (optionnel))
+puissance_electrique_absorbee_caisson: decimal; (puissance électrique absorbée pondérée du caisson basse consommation (unité : WThC/(m3 /h)) (optionnel))
+surface_habitable: decimal; (si installation individuelle : surface habitable (unité : m²) (optionnel))
+type_caisson: enum(standard, basse_consommation, basse_pression); (si installation collective : type de caisson (standard, basse consommation, basse pression) (optionnel))
+nombre_logements: int; (si installation collective : nombre de logements desservis (unité : sans unite) (optionnel))
+avis_technique_cstb: boolean; (référence de l'avis technique CSTB 0 : non 1 : oui (optionnel))
+presence_systeme: boolean; (présence d'un caisson, de gaines, d'entrées d'air et de bouches d'extraction 0 : non 1 : oui (optionnel))
+marque_bouches_insufflation_extraction: text; (nom de la marque des bouches d’insufflation et d’extraction (optionnel))
+reference_bouches_insufflation_extraction: text; (référence des bouches d’insufflation et d’extraction (optionnel))
+marque_entrees_air: text; (Marque des bouches d'entrées d’air (optionnel))
+reference_entrees_air: text; (Référence des bouches d'entrées d’air (optionnel))
+marque_caisson: text; (nom de la marque du caisson (optionnel))
+reference_caisson: text; (reference du caisson (optionnel))
+}
+```
+
+### vmc double flux :
+
+```jsx
+{type: 'vmc_double_flux';
+type_vmc_double_flux: enum(vmc_df_auto, vmc_df_hygro); (type de VMC double flux (autoréglable, modulée hygroréglable))
+type_installation: enum(installation_collective, installation_individuelle); (type d'installation (collective ou individuelle))
+nombre_logements: decimal; (si installation collective : nombre de logements desservis (unité : sans unite) (optionnel))
+classe_energetique_vmc: enum(a+, a, b, c, d, e, f, g); (si installation individuelle : classe énergétique du système de ventilation selon le règlement européen (UE) n° 1254/2014 (optionnel))
+efficacite_thermique_coll: decimal; (si installation collective : efficacité thermique de l’échangeur de chaleur (unité : sans unite) (optionnel))
+surface_habitable: decimal; (si installation individuelle : surface habitable (unité : m²) (optionnel))
+efficacite_thermique_ind: decimal; (si installation individuelle : rapport de température de la centrale double flux (efficacité thermique) (unité : sans unite) (optionnel))
+norme_rapport_temperature: enum(nf_en_13141_7, autre); (norme qui a été utilisée pour la mesure du rapport de température de la centrale double flux)
+norme_echangeur_chaleur: enum(nf_en_308, autre); (norme qui a été utilisée pour la mesure de l'efficacité thermique de l'échangeur de chaleur (optionnel))
+certification_vmc: enum(nf_205, aahe, aare); (certification (ind : NF 205, coll : AAHE ou AARE) (optionnel))
+puissance_electrique_absorbee_caisson: decimal; (si installation individuelle : puissance électrique absorbée pondérée du caisson (unité : WThC/(m3 /h)) (optionnel))
+avis_technique_cstb: text; (si installation individuelle modulée hygroréglable : référence de l'avis technique CSTB (optionnel))
+date_avis_technique_cstb: date; (si installation individuelle modulée hygroréglable : date de l'avis technique CSTB (optionnel))
+presence_systeme: boolean; (présence d'un caisson, d'un échangeur de chaleur, de gaines, de bouches d’insufflation et d’extraction ou hygroréglables 0 : non 1 : oui)
+marque_caisson: text; (nom de la marque du caisson)
+reference_caisson: text; (reference du caisson)
+marque_bouches_insufflation_extraction: text; (nom de la marque des bouches d’insufflation et d’extraction)
+reference_bouches_insufflation_extraction: text; (référence des bouches d’insufflation et d’extraction)
+}
+```
+
+# Attributs complémentaires
+
+Pour chaque geste, ajoutez les attributs suivants :
+
+```jsx
+{
+prix_ht: decimal; (prix hors taxe de la ligne)
+prix_unitaire_ht: decimal; (prix unitaire hors taxe)
+taux_tva: decimal; (taux de TVA en pourcentage)
+prix_ttc: decimal; (prix toutes taxes comprises)
+quantite: decimal; (quantité de matériaux installé selon l'unité choisie)
+unite: text; (unité pouvant être m2, metre, nombre, etc.)
+numero_ligne: text; (numéro ou identifiant de la ligne du devis)
+intitule: text; (intitulé de la ligne du devis)
+marque: text; (marque de l'équipement ou du matériel)
+reference: text; (référence ou modèle de l'équipement)
+}
+```
+
+# Instructions
+
+1. **Récupération des Informations Générales** : Récupérez les informations générales du devis et intégrez-les dans le JSON général.
+2. **Identification des gestes pertinents** : Parcourez les lignes du devis et identifiez **uniquement** les gestes listés dans gestes_pertinents selon le schéma RNT.
+3. **Ajout des gestes pertinents** : Ajoutez uniquement ces gestes pertinents au JSON avec les attributs définis dans le schéma RNT ci-dessus, puis complétez avec les attributs complémentaires.
+4. **Respect du schéma RNT** : Utilisez uniquement les attributs définis dans le schéma RNT pour chaque type de geste. N'inventez pas d'attributs supplémentaires.
+5. **Types de données** : Respectez les types de données définis (boolean, decimal, text, enum, etc.) et les contraintes associées.
+6. **Valeurs enum** : Pour les attributs de type enum, utilisez uniquement les valeurs autorisées listées dans la définition.
+7. **Attributs optionnels** : Les attributs marqués comme optionnels peuvent être omis s'ils ne sont pas présents dans le devis.
+8. **Ignorez les lignes non pertinentes** : Si une ligne du devis ne correspond pas à un geste pertinent, ignorez-la.
+9. **Ignorez les lignes de main d'œuvre seule** : S'il y a une ligne de fourniture et une ligne d'installation pour le même équipement, n'incluez que la ligne de fourniture.
+10. **Vérification des sections** : Repérez les titres et sous-titres dans le devis pour bien identifier les sections et éviter de mélanger les informations.
+11. **Ne déduisez pas** : Laissez les attributs vides s'ils ne sont pas clairement indiqués dans le texte. Ne calculez ou déduisez pas les valeurs.
+12. **Structure des tableaux** : Les gestes sont généralement dans un tableau avec colonnes : identifiant / description / quantité / unité / prix HT / TVA / prix TTC.
+
+Réfléchissez étape par étape.
+
+Vous ne répondrez que par un objet JSON.
+Ne fournissez pas d'explications.
+
+Attention : assurez-vous de bien filtrer les lignes pour ne retourner que les gestes pertinents selon le schéma RNT !
+
+Voici le texte du devis anonymisé :
+
