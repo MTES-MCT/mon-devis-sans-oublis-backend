@@ -342,7 +342,13 @@ sacrifier le parallèlisme de ces étapes.
 
 # Anonymisation et Export vers Metabase
 
-## Vue d'ensemble
+## Metabase
+
+L'instance Metabase tourne sur une application extérieure dédié avec sa propre base de données.
+
+Déploiement et mise à jour via https://github.com/betagouv/metabase-scalingo?tab=readme-ov-file#updating-metabase-on-scalingo
+
+## Vue d'ensemble du processus
 
 Le back-end dispose d'un système d'export automatisé qui permet de copier et anonymiser les données de production vers une base de données dédiée à Metabase pour les analyses et tableaux de bord.
 
