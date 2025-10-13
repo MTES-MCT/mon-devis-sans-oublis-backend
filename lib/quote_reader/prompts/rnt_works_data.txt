@@ -17,6 +17,8 @@ gestes_pertinents = [
     "isolation_toiture_terrasse",
     "isolation_plancher_bas",
     "poele_insert",
+    "chaudiere_biomasse",
+    "systeme_solaire_combine",
     "vmc_simple_flux",
     "vmc_double_flux",
 ]
@@ -195,6 +197,53 @@ emission_organiques_gazeux: decimal; (émissions saisonnières de composés orga
 label_flamme_verte: boolean; (présence du label Flamme Verte 0 : non 1 : oui (optionnel))
 marque_equipement: text; (nom de la marque de l'équipement)
 reference_equipement: text; (reference de l'équipement)
+}
+```
+
+### chaudiere biomasse :
+
+```jsx
+{type: 'chaudiere_biomasse';
+type_biomasse: enum(buches_de_bois, copeaux_de_bois, bois_comprime_granules, bois_comprime_briquettes, bois_comprim_sciure); (type de biomasse utilisée)
+type_chargement: enum(manuel, automatique); (type de chargement de la chaudière (manuel, automatique))
+type_installation: enum(installation_collective, installation_individuelle); (type d'installation (collective ou individuelle) (optionnel))
+efficacite_saisonniere: decimal; (efficacité énergétique saisonnière (unité : %))
+norme_efficacite_chaudiere_bio: enum(reglement_europeen_2015_1189, autre); (norme qui a été utilisée pour le calcul de l’efficacité énergétique saisonnière)
+puissance_thermique: decimal; (si chaudière individuelle, puissance thermique nominale (unité : kW))
+presence_silo: boolean; (si chaudière à alimentation automatique, présence d’un silo d’au moins 225 litres 0 : non 1 : oui)
+presence_ballon_tampon: boolean; (si chaudière à alimentation manuelle, présence d’un ballon tampon 0 : non 1 : oui (optionnel))
+emission_particules: decimal; (émissions saisonnières de particules (unité : mg/Nm3) (optionnel))
+emission_monoxyde_carbone: decimal; (émissions saisonnières de monoxyde de carbone (CO) (unité : mg/Nm3) (optionnel))
+emission_oxydes_azote: decimal; (émissions saisonnières d'oxydes d'azote (NOx) (unité : mg/Nm3) (optionnel))
+emission_organiques_gazeux: decimal; (émissions saisonnières de composés organiques gazeux (unité : mg/Nm3) (optionnel))
+norme_valeur_concentration: enum(reglement_europeen_2015_1189, autre); (norme qui a été utilisée pour la mesure des valeurs en concentration)
+norme_classe_regulateur: enum(reglement_europeen_2014_c207_02, autre); (norme qui a été utilisée pour la détermination de la classe de performance du régulateur)
+note_technique: boolean; (présence d'une note technique indiquant les caractéristiques de dimensionnement du générateur 0 : non 1 : oui)
+label_flamme_verte_7: boolean; (présence du label Flamme Verte 7* 0 : non 1 : oui (optionnel))
+marque_chaudiere: text; (nom de la marque de la chaudière)
+reference_chaudiere: text; (reference de la chaudière)
+nombre_appartement: decimal; (si chaudière collective : nombre d’appartements chauffés (unité : sans unite) (optionnel))
+surface_chauffee: decimal; (si chaudière collective: surface chauffée (unité : m²) (optionnel))
+efficacite_energetique_saisonniere: decimal; (si chaudière collective dont la puissance thermique est ≤ 500 kW, efficacité énergétique saisonnière (unité : %))
+rendement_pci: decimal; (si chaudière collective dont la puissance thermique est > 500 kW, rendement PCI (unité : %))
+quantite_chaleur: decimal; (si chaudière collective, quantité nette de chaleur produite (unité : GWh/an))
+}
+```
+
+### systeme solaire combine :
+
+```jsx
+{type: 'systeme_solaire_combine';
+presence_appoint: boolean; (le système solairecomprend un système d'appoint 0 : non 1 : oui)
+presence_emetteurs_basse_temperature: boolean; (présence d'émetteurs de chauffage central de type basse température 0 : non 1 : oui (optionnel))
+productivite_capteurs_photovoltaiques: decimal; (productivité des capteurs photovoltaïques (unité : W/m²) (optionnel))
+surface_capteurs: decimal; (surface des capteurs solaires installés (unité : m²))
+presence_ballon: boolean; (présence d'un ou plusieurs ballon(s) d'eau chaude solaire(s) 0 : non 1 : oui)
+capacite_stockage_ballon: decimal; (capacité de stockage du ou des ballons solaires (unité : L))
+certification_capteurs_solaires: enum(cstbat, solarkeymark, certification_equivalente, certification_qb); (certification CSTBat ou SolarKeymark ou équivalente)
+exclusion_capteurs_hybrides: boolean; (exclusion de capteurs de type hybrides 0 : non 1 : oui (optionnel))
+marque_produit: text; (nom de la marque du produit)
+reference_produit: text; (référence du produit)
 }
 ```
 
