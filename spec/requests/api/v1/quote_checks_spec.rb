@@ -228,8 +228,8 @@ RSpec.describe "/api/v1/quote_checks" do
       end
 
       context "when results_sent_at is already set" do # rubocop:disable RSpec/NestedGroups
-        let(:quote_check) { create(:quote_check, file: quote_file, results_sent_at: 1.day.ago) }
-        let(:original_timestamp) { quote_check.results_sent_at }
+        let(:original_timestamp) { 1.day.ago }
+        let(:quote_check) { create(:quote_check, file: quote_file, results_sent_at: original_timestamp) }
 
         it "does not update results_sent_at" do
           expect(quote_check.reload.results_sent_at).to be_within(1.second).of(original_timestamp)

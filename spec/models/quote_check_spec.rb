@@ -31,4 +31,32 @@ RSpec.describe QuoteCheck do
       end
     end
   end
+
+  describe "scopes" do
+    describe ".results_sent" do
+      let!(:quote_check_with_results_sent) { create(:quote_check, results_sent_at: 1.day.ago) }
+      let!(:quote_check_without_results_sent) { create(:quote_check, results_sent_at: nil) }
+
+      it "returns quote checks where results were sent" do
+        expect(described_class.results_sent).to include(quote_check_with_results_sent)
+      end
+
+      it "does not return quote checks where results were not sent" do
+        expect(described_class.results_sent).not_to include(quote_check_without_results_sent)
+      end
+    end
+
+    describe ".results_not_sent" do
+      let!(:quote_check_with_results_sent) { create(:quote_check, results_sent_at: 1.day.ago) }
+      let!(:quote_check_without_results_sent) { create(:quote_check, results_sent_at: nil) }
+
+      it "returns quote checks where results were not sent" do
+        expect(described_class.results_not_sent).to include(quote_check_without_results_sent)
+      end
+
+      it "does not return quote checks where results were sent" do
+        expect(described_class.results_not_sent).not_to include(quote_check_with_results_sent)
+      end
+    end
+  end
 end
