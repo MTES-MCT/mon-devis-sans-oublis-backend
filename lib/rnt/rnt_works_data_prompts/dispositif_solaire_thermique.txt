@@ -1,0 +1,26 @@
+### installation panneaux solaire thermique :
+
+```jsx
+{
+presence_appoint: boolean, Le système solaire combiné comprend un appoint (n'est pas composé uniquement de la partie solaire) 0 : non 1 : oui;
+presence_ballon_stockage: string, présence d'un ballon de stockage solaire 0 : non 1 : oui;
+presence_regulateur_temperature: string, présence d'un régulateur de température 0 : non 1 : oui;
+nature_fluide_capteurs_solaires: enum(eau,eau_glycolee), type capteurs solaires thermiques vitrés (à circulation d’eau ou d’eau glycolée);
+surface_capteurs: double, surface hors-tout totale de capteurs solaires vitrés thermiques installés (unité : m²);
+puissance_capteurs: double, puissance des capteurs (unité : W/m²);
+norme_puissance_capteur: enum(iso_9807,autre), norme qui a été utilisée pour la mesure de la puissance des capteurs;
+certification_capteurs_solaires: enum(cstbat,solarkeymark,certification_equivalente,certification_qb), certification QB ou SolarKeymark ou équivalente;
+exclusion_capteurs_hybrides: boolean, exclusion de capteurs de type hybrides 0 : non 1 : oui;
+efficacite_energetique_chauffage: double, efficacité énergétique chauffage (unité : sans unite);
+norme_efficacite_energetique_chauffage: string, norme qui a été utilisée pour le calcul de l'efficacité énergétique du chauffage (règlement (UE) n° 813/2013 du 2 août 2013);
+nombre_ballons: double, nombre de ballons d’eau chaude solaires installés;
+capacite_stockage_ballons: double, capacité de stockage de chaque ballon d'eau chaude solaire (unité : L);
+classe_energetique_ballons: string, si capacité de stockage du ballon inférieure à 500L : classe d'efficacité énergétique du ballon d'eau chaude solaire;
+efficacite_energetique_appoint: double, efficacité énergétique de l'appoint (unité : sans unite);
+profil_soutirage: enum(m,l,xl,xxl,3xl), si production d'eau chaude sanitaire uniquement : profil de soutirage déclaré M, L, XL ou XXL;
+nature_appoint: enum(electrique_joule,combustible), nature de l’appoint du dispositif solaire thermique (électrique à effet Joule ou combustible);
+nature_fluide: string, nature du fluide circulant dans les capteurs solaires (eau ou eau glycolée);
+marque_equipement: string, nom de la marque de l'équipement;
+reference_equipement: string, référence de l'équipement;
+}
+```

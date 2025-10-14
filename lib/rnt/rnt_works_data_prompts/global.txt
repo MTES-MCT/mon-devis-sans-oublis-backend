@@ -1,0 +1,621 @@
+### isolation murs en ite :
+
+```jsx
+{
+resistance_isolant: double, resistance de l'isolant (unité : m2.K/W);
+norme_resistance: enum(nf_en_12664,nf_en_12667,nf_en_12939,nf_en_iso_22097), norme qui a été utilisée pour le calcul de la résistance de l'isolant;
+surface_isolant: double, surface d'isolant posé (unité : m²);
+epaisseur_isolant: double, épaisseur d'isolant posé (unité : cm);
+materiau_isolant: enum(laine_de_verre,laine_de_roche,verre_cellulaire,polystirene_expanse_pse,polystirene_extrude_psx,polyurethane_pu,mousse_phenolique,panneau_sous_vide_piv,aerogel,peinture_isolante_reflechissante,brique_monomur_terre_cuite,bloc_monomur_pierre,bloc_monomur_argile_expanse,beton_cellulaire,liege,fibre_de_bois,chanvre,lin,laine_de_mouton,ouate_de_cellulose,autres_fibres_vegetales,paille,torchis,toiture_vegetalisee,mousse_de_polyurethane,isolant_mince_reflechissant,autre), type de matériau isolant;
+materiau_isolant_complement: string, précisez le type de matériau isolant si vous avez sélectionné "autre" dans enum_materiau_isolant_id;
+marque_produit: string, marque du produit;
+reference_produit: string, reference du produit;
+fixation_isolant: enum(ossature_continue_z,ossature_continue_horizontaux,ossature_continue_croises,clips_acier_galvanise,clips_acier_inoxydable,clips_aluminium_t,clips_bris_thermique,clips_fibre_verre,vis_traversant_isolant,attaches_maconnerie,autre), type de fixation utilisé pour l'isolation;
+fixation_isolant_complement: string, précisez le type de fixation isolant si vous avez sélectionné "autre" dans enum_fixation_isolant_id;
+protection_isolant: string, dispositif de protection contre les dégradations extérieures;
+}
+```
+
+
+### isolation murs en iti :
+
+```jsx
+{
+resistance_isolant: double, resistance de l'isolant (unité : m2.K/W);
+surface_isolant: double, surface d'isolant posé (unité : m²);
+fixation_isolant: enum(ossature_continue_z,ossature_continue_horizontaux,ossature_continue_croises,clips_acier_galvanise,clips_acier_inoxydable,clips_aluminium_t,clips_bris_thermique,clips_fibre_verre,vis_traversant_isolant,attaches_maconnerie,autre), type de fixation utilisé pour l'isolation;
+materiau_isolant: enum(laine_de_verre,laine_de_roche,verre_cellulaire,polystirene_expanse_pse,polystirene_extrude_psx,polyurethane_pu,mousse_phenolique,panneau_sous_vide_piv,aerogel,peinture_isolante_reflechissante,brique_monomur_terre_cuite,bloc_monomur_pierre,bloc_monomur_argile_expanse,beton_cellulaire,liege,fibre_de_bois,chanvre,lin,laine_de_mouton,ouate_de_cellulose,autres_fibres_vegetales,paille,torchis,toiture_vegetalisee,mousse_de_polyurethane,isolant_mince_reflechissant,autre), type de matériau isolant;
+norme_resistance: enum(nf_en_12664,nf_en_12667,nf_en_12939,nf_en_iso_22097), norme qui a été utilisée pour le calcul de la résistance de l'isolant;
+epaisseur_isolant: double, épaisseur d'isolant posé (unité : cm);
+fixation_isolant_complement: string, précisez le type de fixation isolant si vous avez sélectionné "autre" dans enum_fixation_isolant_id;
+materiau_isolant_complement: string, précisez le type de matériau isolant si vous avez sélectionné "autre" dans enum_materiau_isolant_id;
+protection_isolant: string, dispositif de protection contre les dégradations extérieures;
+reference_produit: string, reference du produit;
+marque_produit: string, nom de la marque du produit;
+}
+```
+
+
+### isolation sous rampants (combles aménagés) :
+
+```jsx
+{
+resistance_isolant: double, resistance de l'isolant (unité : m2.K/W);
+surface_isolant: double, surface d'isolant posé (unité : m²);
+fixation_isolant: enum(ossature_continue_z,ossature_continue_horizontaux,ossature_continue_croises,clips_acier_galvanise,clips_acier_inoxydable,clips_aluminium_t,clips_bris_thermique,clips_fibre_verre,vis_traversant_isolant,attaches_maconnerie,autre), type de fixation utilisé pour l'isolation;
+materiau_isolant: enum(laine_de_verre,laine_de_roche,verre_cellulaire,polystirene_expanse_pse,polystirene_extrude_psx,polyurethane_pu,mousse_phenolique,panneau_sous_vide_piv,aerogel,peinture_isolante_reflechissante,brique_monomur_terre_cuite,bloc_monomur_pierre,bloc_monomur_argile_expanse,beton_cellulaire,liege,fibre_de_bois,chanvre,lin,laine_de_mouton,ouate_de_cellulose,autres_fibres_vegetales,paille,torchis,toiture_vegetalisee,mousse_de_polyurethane,isolant_mince_reflechissant,autre), type de matériau isolant;
+norme_resistance: enum(nf_en_12664,nf_en_12667,nf_en_12939,nf_en_iso_22097), norme qui a été utilisée pour le calcul de la résistance de l'isolant;
+epaisseur_isolant: double, épaisseur d'isolant posé (unité : cm);
+fixation_isolant_complement: string, précisez le type de fixation isolant si vous avez sélectionné "autre" dans enum_fixation_isolant_id;
+materiau_isolant_complement: string, précisez le type de matériau isolant si vous avez sélectionné "autre" dans enum_materiau_isolant_id;
+protection_isolant: string, dispositif de protection contre les dégradations extérieures;
+amenagements_complements: enum(coffrage,ecran_protection_conduits,ecran_protection_eclairage_encastres,rehausse_rigide_trappe_acces), aménagements nécessaires complémentaires;
+traitement_humidite: enum(pare_vapeur_protection_humidite,autre_dispositif_protection_humidite), pare-vapeur ou tout autre dispositif équivalent pour protéger contre les transferts d'humidité;
+marque_produit: string, nom de la marque du produit;
+reference_produit: string, reference du produit;
+}
+```
+
+
+### isolation des combles non aménagés :
+
+```jsx
+{
+resistance_isolant: double, resistance de l'isolant (unité : m2.K/W);
+surface_isolant: double, surface d'isolant posé (unité : m²);
+fixation_isolant: enum(ossature_continue_z,ossature_continue_horizontaux,ossature_continue_croises,clips_acier_galvanise,clips_acier_inoxydable,clips_aluminium_t,clips_bris_thermique,clips_fibre_verre,vis_traversant_isolant,attaches_maconnerie,autre), type de fixation utilisé pour l'isolation;
+materiau_isolant: enum(laine_de_verre,laine_de_roche,verre_cellulaire,polystirene_expanse_pse,polystirene_extrude_psx,polyurethane_pu,mousse_phenolique,panneau_sous_vide_piv,aerogel,peinture_isolante_reflechissante,brique_monomur_terre_cuite,bloc_monomur_pierre,bloc_monomur_argile_expanse,beton_cellulaire,liege,fibre_de_bois,chanvre,lin,laine_de_mouton,ouate_de_cellulose,autres_fibres_vegetales,paille,torchis,toiture_vegetalisee,mousse_de_polyurethane,isolant_mince_reflechissant,autre), type de matériau isolant;
+norme_resistance: enum(nf_en_12664,nf_en_12667,nf_en_12939,nf_en_iso_22097), norme qui a été utilisée pour le calcul de la résistance de l'isolant;
+epaisseur_isolant: double, épaisseur d'isolant posé (unité : cm);
+fixation_isolant_complement: string, précisez le type de fixation isolant si vous avez sélectionné "autre" dans enum_fixation_isolant_id;
+materiau_isolant_complement: string, précisez le type de matériau isolant si vous avez sélectionné "autre" dans enum_materiau_isolant_id;
+protection_isolant: string, dispositif de protection contre les dégradations extérieures;
+marque_produit: string, nom de la marque du produit;
+reference_produit: string, reference du produit;
+amenagements_complements: enum(coffrage,ecran_protection_conduits,ecran_protection_eclairage_encastres,rehausse_rigide_trappe_acces), aménagements nécessaires complémentaires;
+traitement_humidite: enum(pare_vapeur_protection_humidite,autre_dispositif_protection_humidite), pare-vapeur ou tout autre dispositif équivalent pour protéger contre les transferts d'humidité;
+}
+```
+
+
+### isolation toiture terrasse :
+
+```jsx
+{
+resistance_isolant: double, resistance de l'isolant (unité : m2.K/W);
+surface_isolant: double, surface d'isolant posé (unité : m²);
+fixation_isolant: enum(ossature_continue_z,ossature_continue_horizontaux,ossature_continue_croises,clips_acier_galvanise,clips_acier_inoxydable,clips_aluminium_t,clips_bris_thermique,clips_fibre_verre,vis_traversant_isolant,attaches_maconnerie,autre), type de fixation utilisé pour l'isolation;
+materiau_isolant: enum(laine_de_verre,laine_de_roche,verre_cellulaire,polystirene_expanse_pse,polystirene_extrude_psx,polyurethane_pu,mousse_phenolique,panneau_sous_vide_piv,aerogel,peinture_isolante_reflechissante,brique_monomur_terre_cuite,bloc_monomur_pierre,bloc_monomur_argile_expanse,beton_cellulaire,liege,fibre_de_bois,chanvre,lin,laine_de_mouton,ouate_de_cellulose,autres_fibres_vegetales,paille,torchis,toiture_vegetalisee,mousse_de_polyurethane,isolant_mince_reflechissant,autre), type de matériau isolant;
+norme_resistance: enum(nf_en_12664,nf_en_12667,nf_en_12939,nf_en_iso_22097), norme qui a été utilisée pour le calcul de la résistance de l'isolant;
+epaisseur_isolant: double, épaisseur d'isolant posé (unité : cm);
+fixation_isolant_complement: string, précisez le type de fixation isolant si vous avez sélectionné "autre" dans enum_fixation_isolant_id;
+materiau_isolant_complement: string, précisez le type de matériau isolant si vous avez sélectionné "autre" dans enum_materiau_isolant_id;
+protection_isolant: string, dispositif de protection contre les dégradations extérieures;
+reference_produit: string, reference du produit;
+marque_produit: string, nom de la marque du produit;
+}
+```
+
+
+### isolation planchers bas :
+
+```jsx
+{
+resistance_isolant: double, resistance de l'isolant (unité : m2.K/W);
+surface_isolant: double, surface d'isolant posé (unité : m²);
+fixation_isolant: enum(ossature_continue_z,ossature_continue_horizontaux,ossature_continue_croises,clips_acier_galvanise,clips_acier_inoxydable,clips_aluminium_t,clips_bris_thermique,clips_fibre_verre,vis_traversant_isolant,attaches_maconnerie,autre), type de fixation utilisé pour l'isolation;
+materiau_isolant: enum(laine_de_verre,laine_de_roche,verre_cellulaire,polystirene_expanse_pse,polystirene_extrude_psx,polyurethane_pu,mousse_phenolique,panneau_sous_vide_piv,aerogel,peinture_isolante_reflechissante,brique_monomur_terre_cuite,bloc_monomur_pierre,bloc_monomur_argile_expanse,beton_cellulaire,liege,fibre_de_bois,chanvre,lin,laine_de_mouton,ouate_de_cellulose,autres_fibres_vegetales,paille,torchis,toiture_vegetalisee,mousse_de_polyurethane,isolant_mince_reflechissant,autre), type de matériau isolant;
+norme_resistance: enum(nf_en_12664,nf_en_12667,nf_en_12939,nf_en_iso_22097), norme qui a été utilisée pour le calcul de la résistance de l'isolant;
+epaisseur_isolant: double, épaisseur d'isolant posé (unité : cm);
+fixation_isolant_complement: string, précisez le type de fixation isolant si vous avez sélectionné "autre" dans enum_fixation_isolant_id;
+materiau_isolant_complement: string, précisez le type de matériau isolant si vous avez sélectionné "autre" dans enum_materiau_isolant_id;
+protection_isolant: string, dispositif de protection contre les dégradations extérieures;
+reference_produit: string, reference du produit;
+amenagements_complements: enum(coffrage,ecran_protection_conduits,ecran_protection_eclairage_encastres,rehausse_rigide_trappe_acces), aménagements nécessaires complémentaires;
+traitement_humidite: enum(pare_vapeur_protection_humidite,autre_dispositif_protection_humidite), pare-vapeur ou tout autre dispositif équivalent pour protéger contre les transferts d'humidité;
+marque_produit: string, nom de la marque du produit;
+}
+```
+
+
+### installation fenêtres ou portes fenêtres :
+
+```jsx
+{
+nombre_fenetres: double, nombre de fenêtres ou portes-fenêtres (unité : sans unite);
+uw: double, Uw de la baie (unité : W/m²·K);
+sw: double, Sw (facteur solaire) de la baie (unité : Sw);
+norme_transmission_solaire: enum(nf_p_50_777,autre), norme qui a été utilisée pour le calcul de la transmission solaire;
+norme_transmission_thermique: enum(nf_en_14351_1+a2,autre), norme qui a été utilisée pour le calcul de la transmission thermique;
+surface: double, surface totale de fenêtres ou portes-fenêtres posées (unité : m²);
+marque_produit: string, nom de la marque du produit;
+reference_produit: string, reference du produit;
+remplacement_du_dormant_existant: boolean, remplacement du dormant obligatoire 0 : non 1 : oui;
+}
+```
+
+
+### installation vmc simple flux :
+
+```jsx
+{
+type_vmc_simple_flux: enum(vmc_sf_auto,vmc_sf_hygro_a,vmc_sf_hygro_b), type de VMC simple flux (auto, hygro, basse pression ...);
+type_installation: enum(installation_collective,installation_individuelle), type d'installation (collective ou individuelle);
+type_bouches: enum(type_a,type_b), type de bouches;
+puissance_electrique_absorbee_caisson: double, puissance électrique absorbée pondérée du caisson basse consommation (unité : WThC/(m3 /h));
+surface_habitable: double, si installation individuelle : surface habitable (unité : m²);
+type_caisson: enum(standard,basse_consommation,basse_pression), si installation collective : type de caisson (standard, basse consommation, basse pression);
+nombre_logements: int, si installation collective : nombre de logements desservis (unité : sans unite);
+avis_technique_cstb: boolean, référence de l'avis technique CSTB 0 : non 1 : oui;
+presence_systeme: boolean, présence d'un caisson, de gaines, d'entrées d'air et de bouches d'extraction 0 : non 1 : oui;
+marque_bouches_insufflation_extraction: string, nom de la marque des bouches d’insufflation et d’extraction;
+reference_bouches_insufflation_extraction: string, référence des bouches d’insufflation et d’extraction;
+marque_entrees_air: string, Marque des bouches d'entrées d’air;
+reference_entrees_air: string, Référence des bouches d'entrées d’air;
+marque_caisson: string, nom de la marque du caisson;
+reference_caisson: string, reference du caisson;
+}
+```
+
+
+### installation vmc double flux :
+
+```jsx
+{
+type_vmc_double_flux: enum(vmc_df_auto,vmc_df_hygro), type de VMC double flux (autoréglable, modulée hygroréglable);
+type_installation: enum(installation_collective,installation_individuelle), type d'installation (collective ou individuelle);
+nombre_logements: double, si installation collective : nombre de logements desservis (unité : sans unite);
+classe_energetique_vmc: enum(a+,a,b,c,d,e,f,g), si installation individuelle : classe énergétique du système de ventilation selon le règlement européen (UE) n° 1254/2014;
+efficacite_thermique_coll: double, si installation collective : efficacité thermique de l’échangeur de chaleur (unité : sans unite);
+surface_habitable: double, si installation individuelle : surface habitable (unité : m²);
+efficacite_thermique_ind: double, si installation individuelle : rapport de température de la centrale double flux (efficacité thermique) (unité : sans unite);
+norme_rapport_temperature: enum(nf_en_13141_7,autre), norme qui a été utilisée pour la mesure du rapport de température de la centrale double flux;
+norme_echangeur_chaleur: enum(nf_en_308,autre), norme qui a été utilisée pour la mesure de l'efficacité thermique de l'échangeur de chaleur;
+certification_vmc: enum(nf_205,aahe,aare), certification (ind : NF 205, coll : AAHE ou AARE);
+puissance_electrique_absorbee_caisson: double, si installation individuelle : puissance électrique absorbée pondérée du caisson (unité : WThC/(m3 /h));
+avis_technique_cstb: string, si installation individuelle modulée hygroréglable : référence de l'avis technique CSTB;
+date_avis_technique_cstb: date, si installation individuelle modulée hygroréglable : date de l'avis technique CSTB;
+presence_systeme: boolean, présence d'un caisson, d'un échangeur de chaleur, de gaines, de bouches d’insufflation et d’extraction ou hygroréglables 0 : non 1 : oui;
+marque_caisson: string, nom de la marque du caisson;
+reference_caisson: string, reference du caisson;
+marque_bouches_insufflation_extraction: string, nom de la marque des bouches d’insufflation et d’extraction;
+reference_bouches_insufflation_extraction: string, référence des bouches d’insufflation et d’extraction;
+}
+```
+
+
+### installation pac géothermique :
+
+```jsx
+{
+
+}
+```
+
+
+### installation pac sol/eau :
+
+```jsx
+{
+efficacite_saisonniere: double, efficacité énergétique saisonnière (unité : %);
+classe_regulateur: enum(i,ii,iii,iv,v,vi,vii,viii), classe de performance du régulateur selon le règlement européen;
+note_technique: boolean, présence d'une note technique indiquant les caractéristiques de dimensionnement du générateur 0 : non 1 : oui;
+calorifugeage: boolean, présence de calorifugeage pour les réseaux de distribution d'eau 0 : non 1 : oui;
+taux_couverture: double, si PAC eau-eau collective, taux de couverture de la PAC par rapport aux besoins de chauffage (unité : sans unite);
+type_emetteur: enum(plancher_chauffant,plafond_chauffant,mur_chauffant,autre), type d'émetteur;
+niveau_temperature_emetteur: enum(basse_temperature,moyenne_temperature,haute_temperature), niveau de température des émetteurs (basse, moyenne, haute);
+marque_pac: string, nom de la marque de la PAC;
+reference_pac: string, reference de la PAC;
+marque_regulateur: string, nom de la marque du régulateur;
+reference_regulateur: string, reference du régulateur;
+puissance: double, si PAC eau-eau collective, puissance nominale du générateur (unité : kW);
+surface_chauffee: double, surface chauffée par la PAC installée (unité : m²);
+type_installation: enum(installation_collective,installation_individuelle), type d'installation (collective ou individuelle);
+exclusion_ecs_uniquement: boolean, si PAC eau-eau collective, exclusion des appareils couvrant l'ECS uniquement 0 : non 1 : oui;
+}
+```
+
+
+### installation pac eau/eau :
+
+```jsx
+{
+efficacite_saisonniere: double, efficacité énergétique saisonnière (unité : %);
+classe_regulateur: enum(i,ii,iii,iv,v,vi,vii,viii), classe de performance du régulateur selon le règlement européen;
+note_technique: boolean, présence d'une note technique indiquant les caractéristiques de dimensionnement du générateur 0 : non 1 : oui;
+calorifugeage: boolean, présence de calorifugeage pour les réseaux de distribution d'eau 0 : non 1 : oui;
+taux_couverture: double, si PAC eau-eau collective, taux de couverture de la PAC par rapport aux besoins de chauffage (unité : sans unite);
+type_emetteur: enum(plancher_chauffant,plafond_chauffant,mur_chauffant,autre), type d'émetteur;
+niveau_temperature_emetteur: enum(basse_temperature,moyenne_temperature,haute_temperature), niveau de température des émetteurs (basse, moyenne, haute);
+marque_pac: string, nom de la marque de la PAC;
+reference_pac: string, reference de la PAC;
+marque_regulateur: string, nom de la marque du régulateur;
+reference_regulateur: string, reference du régulateur;
+puissance: double, si PAC eau-eau collective, puissance nominale du générateur (unité : kW);
+surface_chauffee: double, surface chauffée par la PAC installée (unité : m²);
+type_installation: enum(installation_collective,installation_individuelle), type d'installation (collective ou individuelle);
+exclusion_ecs_uniquement: boolean, si PAC eau-eau collective, exclusion des appareils couvrant l'ECS uniquement 0 : non 1 : oui;
+}
+```
+
+
+### installation pac air/eau :
+
+```jsx
+{
+efficacite_saisonniere: double, efficacité énergétique saisonnière (unité : sans unite);
+classe_regulateur: enum(i,ii,iii,iv,v,vi,vii,viii), classe de performance du régulateur selon le règlement européen.;
+note_technique: boolean, présence d'une note technique indiquant les caractéristiques de dimensionnement du générateur 0 : non 1 : oui;
+calorifugeage: boolean, présence de calorifugeage pour les réseaux de distribution d'eau 0 : non 1 : oui;
+dispositif_reglage_equilibrage: boolean, présence d'un dispositif permettant l'équilibrage hydraulique 0 : non 1 : oui;
+taux_couverture: double, taux de couverture de la PAC par rapport aux besoins de chauffage (unité : sans unite);
+type_emetteur: enum(plancher_chauffant,plafond_chauffant,mur_chauffant,autre), type d'émetteur;
+niveau_temperature_emetteur: enum(basse_temperature,moyenne_temperature,haute_temperature), niveau de température des émetteurs;
+intensite_demarrage: double, courant électrique nécessaire au démarrage de la PAC (unité : A);
+marque_pac: string, nom de la marque de la PAC;
+reference_pac: string, reference de la PAC;
+marque_regulateur: string, nom de la marque du régulateur;
+reference_regulateur: string, reference du régulateur;
+puissance: double, puissance nominale du générateur (unité : kW);
+reference_travaux_appoint: string, reference projet de l'objet travaux correspondant au système d'appoint;
+systeme_appoint_pac: enum(pac_air_air,pac_air_eau,pac_eau_eau,pac_geothermique,poele_insert_foyer_ferme_cuisiniere_en_majorite_bois,poele_fioul_gpl_charbon,chaudiere_bois,chaudiere_fioul,chaudiere_gaz_classique,chaudiere_gaz_basse_temperature,chaudiere_gaz_a_condensation,generateurs_electriques_a_effet_joule_convecteurs_radiateurs_panneaux_rayonnants,chaudiere_electrique,reseau_de_chaleur,chaudiere_charbon,chaudiere_gpl_propane_butane,autre), type de système d'appoint;
+systeme_appoint_complement: string, précisez le type de système d'appoint si vous avez sélectionné "autre" dans enum_systeme_appoint_pac_id;
+cop: double, coefficient de performance COP = nombre de kWh produits par la PAC / nombre de kWh consommés par la PAC (unité : sans unite);
+surface_chauffee: double, Surface chauffée par la pompe à chaleur (unité : m²);
+type_installation: enum(installation_collective,installation_individuelle), type d'installation (collective ou individuelle);
+exclusion_ecs_uniquement: boolean, si PAC collective, exclusion des appareils couvrant l'ECS uniquement 0 : non 1 : oui;
+exclusion_pac_basse_temperature: boolean, si PAC hybride, fonctionnement à moyenne ou haute température 0 : non 1 : oui;
+}
+```
+
+
+### installation pac air/air (climatiseur inclu) :
+
+```jsx
+{
+surface_chauffee: double, surface chauffée par la PAC installée (unité : m²);
+scop: double, coefficient de performance saisonnier (SCOP) (unité : sans unite);
+norme_coefficient_performance: enum(reglement_europeen_206_2012,autre), norme qui a été utilisée pour la mesure du coefficient de performance;
+puissance: double, puissance nominale de la PAC (unité : kW);
+marque_pac: string, nom de la marque de la PAC;
+reference_pac: string, reference de la PAC;
+}
+```
+
+
+### installation chaudière à gaz :
+
+```jsx
+{
+
+}
+```
+
+
+### installation chaudière à biomasse :
+
+```jsx
+{
+type_biomasse: enum(buches_de_bois,copeaux_de_bois,bois_comprime_granules,bois_comprime_briquettes,bois_comprim_sciure), type de biomasse utilisée;
+type_chargement: enum(manuel,automatique), type de chargement de la chaudière (manuel, automatique);
+type_installation: enum(installation_collective,installation_individuelle), type d'installation (collective ou individuelle);
+efficacite_saisonniere: double, efficacité énergétique saisonnière (unité : %);
+norme_efficacite_chaudiere_bio: enum(reglement_europeen_2015_1189,autre), norme qui a été utilisée pour le calcul de l’efficacité énergétique saisonnière;
+puissance_thermique: double, si chaudière individuelle, puissance thermique nominale (unité : kW);
+presence_silo: boolean, si chaudière à alimentation automatique, présence d’un silo d’au moins 225 litres 0 : non 1 : oui;
+presence_ballon_tampon: boolean, si chaudière à alimentation manuelle, présence d’un ballon tampon 0 : non 1 : oui;
+emission_particules: double, émissions saisonnières de particules (unité : mg/Nm3);
+emission_monoxyde_carbone: double, émissions saisonnières de monoxyde de carbone (CO) (unité : mg/Nm3);
+emission_oxydes_azote: double, émissions saisonnières d'oxydes d'azote (NOx) (unité : mg/Nm3);
+emission_organiques_gazeux: double, émissions saisonnières de composés organiques gazeux (unité : mg/Nm3);
+norme_valeur_concentration: enum(reglement_europeen_2015_1189,autre), norme qui a été utilisée pour la mesure des valeurs en concentration;
+norme_classe_regulateur: enum(reglement_europeen_2014_c207_02,autre), norme qui a été utilisée pour la détermination de la classe de performance du régulateur;
+note_technique: boolean, présence d'une note technique indiquant les caractéristiques de dimensionnement du générateur 0 : non 1 : oui;
+label_flamme_verte_7: boolean, présence du label Flamme Verte 7* 0 : non 1 : oui;
+marque_chaudiere: string, nom de la marque de la chaudière;
+reference_chaudiere: string, reference de la chaudière;
+nombre_appartement: double, si chaudière collective : nombre d’appartements chauffés (unité : sans unite);
+surface_chauffee: double, si chaudière collective: surface chauffée (unité : m²);
+efficacite_energetique_saisonniere: double, si chaudière collective dont la puissance thermique est ≤ 500 kW, efficacité énergétique saisonnière (unité : %);
+rendement_pci: double, si chaudière collective dont la puissance thermique est > 500 kW, rendement PCI (unité : %);
+quantite_chaleur: double, si chaudière collective, quantité nette de chaleur produite (unité : GWh/an);
+}
+```
+
+
+### installation poêle/insert à bois/granulés :
+
+```jsx
+{
+type_poele_insert: enum(poele,foyer_ferme,inserts_cheminees_interieures), type d'appareil (poêle, foyer fermé, inserts de cheminées intérieures);
+type_biomasse: enum(buches_de_bois,copeaux_de_bois,bois_comprime_granules,bois_comprime_briquettes,bois_comprim_sciure), type de biomasse utilisée;
+efficacite_saisonniere: double, efficacité énergétique saisonnière (unité : %);
+norme_efficacite_poele_insert: enum(nf_en_13240,nf_en_14785,nf_en_15250,nf_en_13229,nf_en_12815), norme de mesure de l'efficacité énergétique saisonnière;
+emission_particules: double, émissions saisonnières de particules (unité : mg/Nm3);
+emission_monoxyde_carbone: double, émissions saisonnières de monoxyde de carbone (CO) (unité : mg/Nm3);
+emission_oxydes_azote: double, émissions saisonnières d'oxydes d'azote (NOx) (unité : mg/Nm3);
+emission_organiques_gazeux: double, émissions saisonnières de composés organiques gazeux (unité : mg/Nm3);
+label_flamme_verte: boolean, présence du label Flamme Verte 0 : non 1 : oui;
+marque_equipement: string, nom de la marque de l'équipement;
+reference_equipement: string, reference de l'équipement;
+}
+```
+
+
+### installation radiateur électrique :
+
+```jsx
+{
+amplitude_emetteur_electrique: double, amplitude de l'émetteur électrique (unité : K);
+derive_emetteur_electrique: double, dérive de l'émetteur électrique (unité : K);
+detection_ouverture_fenetre: boolean, détection automatique et intégrée à l’appareil de l’ouverture d’une fenêtre 0 : non 1 : oui;
+detection_absence: boolean, détection automatique d’absence 0 : non 1 : oui;
+indication_surconsommation: boolean, indication de surconsommation par information visuelle 0 : non 1 : oui;
+nombre_emetteurs: double, nombre d’émetteurs électriques installés (unité : sans unite);
+marque_emetteur: string, nom de la marque de l'émetteur;
+reference_emetteur: string, reference de l'émetteur;
+}
+```
+
+
+### installation radiateur hydraulique :
+
+```jsx
+{
+presence_chauffage_central: boolean, logement chauffé par un système de chauffage central 0 : non 1 : oui;
+dimensionnement_radiateurs: double, dimensionnement des radiateurs (unité : K);
+norme_dimensionnement_radiateur: enum(en_443,autre), norme qui a été utilisée pour le dimensionnement des radiateurs;
+nombre_radiateurs: double, nombre de radiateurs basse température mis en place (unité : sans unite);
+marque_radiateurs: string, nom de la marque des radiateurs;
+reference_radiateurs: string, reference des radiateurs;
+}
+```
+
+
+### installation plancher/plafond chauffant hydraulique :
+
+```jsx
+{
+surface_chauffee: double, Surface de bâtiment chauffée par le plancher chauffant hydraulique à basse température (unité : m²);
+temperature_eau: double, température de l’eau dans le réseau (unité : °C);
+dispositif_regulation: boolean, dispositif de régulation de la température de l’eau commandé par une sonde 0 : non 1 : oui;
+marque_plancher_chauffant: string, nom de la marque du plancher chauffant;
+reference_plancher_chauffant: string, reference du plancher chauffant;
+}
+```
+
+
+### installation chauffe-eau thermodynamique :
+
+```jsx
+{
+type_cet: enum(air_extrait,autres_installations), type d'installation (sur air extrait, autres types d'installations);
+cop: double, coefficient de performance COP (unité : sans unite);
+norme_cop_cet: enum(en_16147,autre), norme qui a été utilisée pour la mesure du coefficient de performance du Chauffe eau thermodynamique;
+efficacite_saisonniere: double, efficacité énergétique saisonnière (unité : %);
+marque_equipement: string, nom de la marque de l'équipement;
+reference_equipement: string, référence de l'équipement;
+}
+```
+
+
+### installation ballon d'ecs à effet joule :
+
+```jsx
+{
+volume_stockage: double, volume de stockage du ballon d'ECS (unité : L);
+norme_dispositif_regulation: enum(nf_en_iso_52120_1,autre), norme qui a été utilisée pour qualifier le dispositif de régulation répondant à la classe A;
+sonde_de_mesure: boolean, présence d'une sonde qui mesure la température de stockage de l’eau dans le chauffe-eau 0 : non 1 : oui;
+service_analyse_donnes: boolean, présence d'un service d’analyse de données du chauffe-eau 0 : non 1 : oui;
+equipement_pilotage: boolean, présence d'un équipement de pilotage du chauffe-eau 0 : non 1 : oui;
+indication_surconsommation: boolean, présence d'un moyen de mesure ou d’estimation de la consommation d’eau chaude 0 : non 1 : oui;
+marque_systeme: string, nom de la marque du système;
+reference_systeme: string, reference du système;
+}
+```
+
+
+### installation panneaux solaire thermique :
+
+```jsx
+{
+presence_appoint: boolean, Le système solaire combiné comprend un appoint (n'est pas composé uniquement de la partie solaire) 0 : non 1 : oui;
+presence_ballon_stockage: string, présence d'un ballon de stockage solaire 0 : non 1 : oui;
+presence_regulateur_temperature: string, présence d'un régulateur de température 0 : non 1 : oui;
+nature_fluide_capteurs_solaires: enum(eau,eau_glycolee), type capteurs solaires thermiques vitrés (à circulation d’eau ou d’eau glycolée);
+surface_capteurs: double, surface hors-tout totale de capteurs solaires vitrés thermiques installés (unité : m²);
+puissance_capteurs: double, puissance des capteurs (unité : W/m²);
+norme_puissance_capteur: enum(iso_9807,autre), norme qui a été utilisée pour la mesure de la puissance des capteurs;
+certification_capteurs_solaires: enum(cstbat,solarkeymark,certification_equivalente,certification_qb), certification QB ou SolarKeymark ou équivalente;
+exclusion_capteurs_hybrides: boolean, exclusion de capteurs de type hybrides 0 : non 1 : oui;
+efficacite_energetique_chauffage: double, efficacité énergétique chauffage (unité : sans unite);
+norme_efficacite_energetique_chauffage: string, norme qui a été utilisée pour le calcul de l'efficacité énergétique du chauffage (règlement (UE) n° 813/2013 du 2 août 2013);
+nombre_ballons: double, nombre de ballons d’eau chaude solaires installés;
+capacite_stockage_ballons: double, capacité de stockage de chaque ballon d'eau chaude solaire (unité : L);
+classe_energetique_ballons: string, si capacité de stockage du ballon inférieure à 500L : classe d'efficacité énergétique du ballon d'eau chaude solaire;
+efficacite_energetique_appoint: double, efficacité énergétique de l'appoint (unité : sans unite);
+profil_soutirage: enum(m,l,xl,xxl,3xl), si production d'eau chaude sanitaire uniquement : profil de soutirage déclaré M, L, XL ou XXL;
+nature_appoint: enum(electrique_joule,combustible), nature de l’appoint du dispositif solaire thermique (électrique à effet Joule ou combustible);
+nature_fluide: string, nature du fluide circulant dans les capteurs solaires (eau ou eau glycolée);
+marque_equipement: string, nom de la marque de l'équipement;
+reference_equipement: string, référence de l'équipement;
+}
+```
+
+
+### installation panneaux solaire photovoltaïque :
+
+```jsx
+{
+
+}
+```
+
+
+### installation de porte d’entrée isolante :
+
+```jsx
+{
+
+}
+```
+
+
+### installation de volets isolants :
+
+```jsx
+{
+surface_fermetures: double, surface de fermetures isolantes posée (unité : m²);
+nombre_fermetures: double, nombre de fermetures isolantes posées (unité : sans unite);
+resistance_thermique: double, résistance thermique additionnelle (unité : m².K/W);
+marque_fermetures: string, marque des fermetures isolantes;
+reference_fermetures: string, référence des fermetures isolantes;
+}
+```
+
+
+### installation de protections solaires des fenêtres :
+
+```jsx
+{
+
+}
+```
+
+
+### installation de double fenêtre :
+
+```jsx
+{
+nombre_fenetres: double, nombre de doubles fenêtres (unité : sans unite);
+uw: double, Uw de la baie (unité : W/(m².K));
+sw: double, Sw (facteur solaire) de la baie (unité : Sw);
+norme_transmission_solaire: enum(nf_p_50_777,autre), norme qui a été utilisée pour le calcul de la transmission solaire;
+norme_transmission_thermique: enum(nf_en_14351_1+a2,autre), norme qui a été utilisée pour le calcul de la transmission thermique;
+surface: double, Surface totale de doubles fenêtres (unité : m²);
+marque_produit: string, nom de la marque du produit;
+reference_produit: string, reference du produit;
+}
+```
+
+
+### installation de fenêtre de toit :
+
+```jsx
+{
+nombre_fenetres: double, nombre de fenêtres de toiture (unité : sans unite);
+uw: double, Uw de la baie (unité : W/m²·K);
+sw: double, Sw (facteur solaire) de la baie (unité : Sw);
+norme_transmission_solaire: enum(nf_p_50_777,autre), norme qui a été utilisée pour le calcul de la transmission solaire;
+norme_transmission_thermique: enum(nf_en_14351_1+a2,autre), norme qui a été utilisée pour le calcul de la transmission thermique;
+surface: double, surface totale de fenêtres de toiture (unité : m²);
+marque_produit: string, nom de la marque du produit;
+reference_produit: string, reference du produit;
+remplacement_du_dormant_existant: boolean, remplacement du dormant obligatoire 0 : non 1 : oui;
+}
+```
+
+
+### raccordement à un réseau de chaleur :
+
+```jsx
+{
+premier_raccordement: boolean, le bâtiment n’a jamais été raccordé à un réseau de chaleur ces cinq dernières années 0 : non 1 : oui;
+nombre_appartement: double, si logement collectif : nombre d’appartements raccordés (unité : sans unite);
+surface_habitable: double, si maison individuelle : surface habitable (unité : m²);
+presence_contrat_fourniture_chaleur: boolean, présence du contrat de fourniture de chaleur entre le bénéficiaire de l’opération et le gestionnaire du réseau 0 : non 1 : oui;
+nom_reseau: string, nom du réseau (quartiers ou villes desservis);
+}
+```
+
+
+### chauffe-bain individuel :
+
+```jsx
+{
+surface_habitable: double, si maison individuelle : surface habitable (unité : m²);
+type_chauffe_bain: enum(flux_haut_rendement,flux_condensation,combustion_atmospherique_haut_rendement), type de chauffe-bain;
+rendement_chauffe_bain_haut_rendement: double, si chauffe-bain à haut rendement : rendement PCI au débit calorifique nominal (unité : sans unite);
+rendement_chauffe_bain_condensation: double, si chauffe-bain à condensation : rendement PCI au débit calorifique nominal (unité : sans unite);
+norme_rendement_debit: enum(nf_en_26,autre), norme qui a été utilisée pour le calcul du rendement du débit calorifique nominal;
+type_combustible: boolean, présence d'un combustible gazeux 0 : non 1 : oui;
+nombre_chauffe_bain: double, si logements collectifs : nombre d'appatements équipés d'un chauffe bain individuel (unité : sans unite);
+}
+```
+
+
+### installation de brasseurs d’air fixes :
+
+```jsx
+{
+diametre: double, diamètre du brasseur (unité : m);
+nombre_vitesse: double, nombre de vitesse de fonctionnement (unité : sans unite);
+niveau_sonore_vitesse_max: double, Niveau sonore à la vitesse de fonctionnement maximale (unité : dB);
+niveau_sonore_vitesse_min: double, Niveau sonore à la vitesse de fonctionnement minimale (unité : dB);
+efficacite_energetique_vitesse_max: double, rapport entre le débit d'air et la puissance à la vitesse maximale (unité : m3/Wh);
+}
+```
+
+
+### installation chauffe-eau solaire :
+
+```jsx
+{
+presence_appoint: boolean, le chauffe-eau-solaire comprend un système d'appoint 0 : non 1 : oui;
+surface_capteurs: double, surface hors-tout totale de capteurs solaires vitrés thermiques installés (unité : m²);
+certification_capteurs_solaires: enum(cstbat,solarkeymark,certification_equivalente,certification_qb), certification CSTBat ou SolarKeymark ou équivalente;
+exclusion_capteurs_hybrides: boolean, exclusion de capteurs de type hybrides 0 : non 1 : oui;
+nombre_ballons: double, nombre de ballons d’eau chaude solaires installés;
+capacite_stockage: double, capacité de stockage de chaque ballon d'eau chaude solaire (unité : L);
+classe_energetique_ballons: string, si capacité de stockage du ballon inférieure à 500L : classe d'efficacité énergétique du ballon d'eau chaude solaire est à minima C;
+efficacite_energetique_chauffage_eau: double, efficacité énergétique pour le chauffage de l'eau (unité : sans unite);
+norme_efficacite_energetique: string, norme qui a été utilisée pour le calcul de l'efficacité énergétique du chauffage de l'eau (règlement (UE) n° 814/2013 du 2 août 2013);
+profil_soutirage: enum(m,l,xl,xxl,3xl), profil de soutirage déclaré M, L, XL ou XXL;
+nature_appoint: enum(electrique_joule,autre), nature de l’appoint du chauffe-eau solaire (électrique à effet Joule ou autre);
+nature_fluide_capteurs_solaires: enum(eau,eau_glycolee), nature du fluide circulant dans les capteurs solaires (eau ou eau glycolée);
+marque_equipement: string, nom de la marque de l'équipement;
+reference_equipement: string, référence de l'équipement;
+etude_dimensionnement: boolean, si chauffe-eau solaire collectif, l'étude de dimensionnement de l'installation 0 : non 1 : oui;
+besoin_ecs: double, si chauffe-eau solaire collectif, besoin annuel en eau chaude sanitaire (unité : kWh/an);
+couverture_energie_solaire: double, si chauffe-eau solaire collectif, taux de couverture par l'énergie solaire du chauffe-eau solaire colelctif (unité : %);
+production_solaire_utile: double, si chauffe-eau solaire collectif, la production solaire utile (unité : kWh/an);
+}
+```
+
+
+### installation sytème solaire combiné :
+
+```jsx
+{
+presence_appoint: boolean, le système solairecomprend un système d'appoint 0 : non 1 : oui;
+presence_emetteurs_basse_temperature: boolean, présence d'émetteurs de chauffage central de type basse température 0 : non 1 : oui;
+productivite_capteurs_photovoltaiques: double, productivité des capteurs photovoltaïques (unité : W/m²);
+surface_capteurs: double, surface des capteurs solaires installés (unité : m²);
+presence_ballon: boolean, présence d'un ou plusieurs ballon(s) d'eau chaude solaire(s) 0 : non 1 : oui;
+capacite_stockage_ballon: double, capacité de stockage du ou des ballons solaires (unité : L);
+certification_capteurs_solaires: enum(cstbat,solarkeymark,certification_equivalente,certification_qb), certification CSTBat ou SolarKeymark ou équivalente;
+exclusion_capteurs_hybrides: boolean, exclusion de capteurs de type hybrides 0 : non 1 : oui;
+marque_produit: string, nom de la marque du produit;
+reference_produit: string, référence du produit;
+}
+```
+
+
+### installation ventilation hybride hygroreglable :
+
+```jsx
+{
+type_bouches: enum(type_a,type_b), type de bouches;
+nombre_appartements: int, nombre d'appartements (unité : sans unite);
+avis_technique_cstb: string, référence de l'avis technique CSTB;
+type_extracteur: enum(standard,basse_consommation), type d'extracteur (standard, basse consommation);
+puissance_extracteur: double, puissance de l'extracteur (unité : Wh/m3);
+marque_extracteur: string, nom de la marque de l'extracteur;
+reference_extracteur: string, reference de l'extrateur;
+presence_systeme: boolean, présence d'un extracteur, d'entrées d'air et de bouches d'extraction 0 : non 1 : oui;
+marque_bouches_extraction: string, nom de la marque des bouches d’extraction;
+reference_bouches_extraction: string, référence des bouches d’extraction;
+marque_entrees_air: string, marque des bouches d'entrées d’air;
+reference_entrees_air: string, référence des bouches d'entrées d’air;
+}
+```

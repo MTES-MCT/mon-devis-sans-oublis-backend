@@ -1,0 +1,12 @@
+### installation pac air/air (climatiseur inclu) :
+
+```jsx
+{
+surface_chauffee: double, surface chauffée par la PAC installée (unité : m²);
+scop: double, coefficient de performance saisonnier (SCOP) (unité : sans unite);
+norme_coefficient_performance: enum(reglement_europeen_206_2012,autre), norme qui a été utilisée pour la mesure du coefficient de performance;
+puissance: double, puissance nominale de la PAC (unité : kW);
+marque_pac: string, nom de la marque de la PAC;
+reference_pac: string, reference de la PAC;
+}
+```

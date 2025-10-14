@@ -1,0 +1,11 @@
+### installation de volets isolants :
+
+```jsx
+{
+surface_fermetures: double, surface de fermetures isolantes posée (unité : m²);
+nombre_fermetures: double, nombre de fermetures isolantes posées (unité : sans unite);
+resistance_thermique: double, résistance thermique additionnelle (unité : m².K/W);
+marque_fermetures: string, marque des fermetures isolantes;
+reference_fermetures: string, référence des fermetures isolantes;
+}
+```

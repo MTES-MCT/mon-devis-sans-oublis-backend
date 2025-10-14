@@ -1,0 +1,11 @@
+### raccordement à un réseau de chaleur :
+
+```jsx
+{
+premier_raccordement: boolean, le bâtiment n’a jamais été raccordé à un réseau de chaleur ces cinq dernières années 0 : non 1 : oui;
+nombre_appartement: double, si logement collectif : nombre d’appartements raccordés (unité : sans unite);
+surface_habitable: double, si maison individuelle : surface habitable (unité : m²);
+presence_contrat_fourniture_chaleur: boolean, présence du contrat de fourniture de chaleur entre le bénéficiaire de l’opération et le gestionnaire du réseau 0 : non 1 : oui;
+nom_reseau: string, nom du réseau (quartiers ou villes desservis);
+}
+```
