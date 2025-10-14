@@ -11,6 +11,7 @@ module Api
 
       def show
         # Force to use async way by using show to get other fields
+        quote_check.update_column(:results_sent_at, Time.current) if quote_check.results_sent_at.nil?
         render json: quote_check_json
       end
 
