@@ -12,5 +12,8 @@ if defined?(Sentry)
 
     config.environment = ENV.fetch("SENTRY_ENVIRONMENT", Rails.application.config.app_env)
     config.release = ENV.fetch("CONTAINER_VERSION", `git rev-parse HEAD`).strip
+
+    config.enable_logs = true
+    config.enabled_patches = [:logger]
   end
 end
