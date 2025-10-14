@@ -1,4 +1,4 @@
-### installation fenêtres ou portes fenêtres :
+### installation fenêtres ou portes fenêtres (fenetre_porte_fenetre) :
 
 ```jsx
 {

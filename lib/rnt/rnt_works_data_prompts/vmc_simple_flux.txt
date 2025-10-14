@@ -1,4 +1,4 @@
-### installation vmc simple flux :
+### installation vmc simple flux (vmc_simple_flux) :
 
 ```jsx
 {

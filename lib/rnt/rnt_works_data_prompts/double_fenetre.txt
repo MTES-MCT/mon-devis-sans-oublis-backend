@@ -1,4 +1,4 @@
-### installation de double fenêtre :
+### installation de double fenêtre (double_fenetre) :
 
 ```jsx
 {

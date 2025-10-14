@@ -1,4 +1,4 @@
-### installation pac air/eau :
+### installation pac air/eau (pac_air_eau) :
 
 ```jsx
 {

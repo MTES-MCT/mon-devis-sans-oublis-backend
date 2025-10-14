@@ -1,4 +1,4 @@
-### installation de fenêtre de toit :
+### installation de fenêtre de toit (fenetre_toiture) :
 
 ```jsx
 {

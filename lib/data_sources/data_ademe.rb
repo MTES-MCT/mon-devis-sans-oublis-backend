@@ -27,9 +27,20 @@ class DataAdeme
 
   # Use params to build the URI or force URI (for direct next pages)
   # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/CyclomaticComplexity
   def historique_rge(params) # rubocop:disable Metrics/MethodLength
     uri ||= params[:uri] || historique_rge_uri(params)
-    body = Net::HTTP.get(URI(uri))
+    parsed_uri = URI(uri)
+
+    http = Net::HTTP.new(parsed_uri.host, parsed_uri.port)
+    http.use_ssl = true
+    if ActiveModel::Type::Boolean.new.cast(ENV.fetch("ADEME_SKIP_SSL_VERIFICATION", nil))
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    end
+
+    request = Net::HTTP::Get.new(parsed_uri.request_uri)
+    response = http.request(request)
+    body = response.body
 
     raise ServiceUnavailableError if body.include?("all shards failed")
     raise ServiceUnavailableError, uri if body.include?("Impossible d'effectuer cette")
@@ -46,6 +57,7 @@ class DataAdeme
       "results" => result["results"] + next_result.fetch("results")
     )
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/AbcSize
 
   private

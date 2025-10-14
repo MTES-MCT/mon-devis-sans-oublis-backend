@@ -43,16 +43,40 @@ class RntSchema
     }.compact
   end
 
+  # rubocop:disable Metrics/AbcSize
   def prompt_travaux(type = nil, description = nil) # rubocop:disable Metrics/MethodLength
     unless type
-      return types_travaux.map do |sub_type, sub_description|
-        prompt_travaux(sub_type, sub_description)
-      end.join("\n\n")
+      types_travaux_infos = types_travaux
+
+      return <<~PROMPT
+                Contexte : Nous avons reçu un devis de rénovation énergétique d'un artisan pour un particulier. Nous avons anonymisé son texte et nous souhaitons récupérer les travaux de rénovation énergétique avec leurs critères techniques. Il peut y avoir plusieurs travaux de travaux.#{' '}
+
+                Rôle : Vous êtes un expert en lecture de devis et vous devez récupérer les données structurées pour les intégrer dans le JSON suivant
+
+
+                # Liste des types de travaux pertinents
+                travaux_pertinents = [#{types_travaux_infos.keys.map { "\"#{it}\"" }.join(', ')}]
+
+
+                Voici les JSON que l'on souhaite récupérer :#{' '}
+
+        # JSON général
+
+        ```jsx
+        {
+        travaux : [{travaux1},{travaux2}...]
+        }#{' '}
+        ```
+
+                #{types_travaux_infos.map do |sub_type, sub_description|
+                  prompt_travaux(sub_type, sub_description)
+                end.join("\n\n")}
+      PROMPT
     end
 
     caracteristiques = caracteristiques_travaux(type)
     <<~PROMPT
-      ### #{description || type} :
+      ### #{description ? "#{description} (#{type})" : type} :
 
       ```jsx
       {
@@ -65,6 +89,7 @@ class RntSchema
       ```
     PROMPT
   end
+  # rubocop:enable Metrics/AbcSize
 
   def valid?(xml_path)
     # Parse XML and XSD

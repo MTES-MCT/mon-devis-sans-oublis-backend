@@ -1,4 +1,4 @@
-### installation panneaux solaire photovoltaïque :
+### installation panneaux solaire photovoltaïque (dispositif_solaire_photovoltaique) :
 
 ```jsx
 {

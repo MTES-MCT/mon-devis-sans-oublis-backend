@@ -42,17 +42,30 @@ class RntValidatorService
   end
 
   def self.rnt_json_for_text(text)
-    rnt_json_schema ||= JsonOpenapi.make_schema_refs_inline!(
-      JSON.parse(File.read(RntSchema::OPENAPI_PATH))
-    ).dig("components", "schemas", "rnt")
+    # Option A: Using full RNT Schema directly
 
-    json_prompt = "Retrouver les informations du RNT (Référentiel National des Travaux) dans le texte de devis suivant."
+    # rnt_json_schema ||= JsonOpenapi.make_schema_refs_inline!(
+    #   JSON.parse(File.read(RntSchema::OPENAPI_PATH))
+    # ).dig("components", "schemas", "rnt")
 
-    Llms::Albert.new(
-      json_prompt,
-      json_schema: rnt_json_schema,
-      result_format: :json
-    ).chat_completion(text)
+    # json_prompt = "Retrouver les informations du RNT (Référentiel National des Travaux) dans le texte de devis suivant." # rubocop:disable Layout/LineLength
+
+    # Llms::Albert.new(
+    #   json_prompt,
+    #   json_schema: rnt_json_schema,
+    #   result_format: :json
+    # ).chat_completion(text)
+
+    # Option B: Using only the relevant subset of the RNT Schema for Works (travaux)
+    prompt = Rails.root.join("lib/rnt/rnt_works_data_prompts/global.txt").read
+    travaux_json = Llms::Mistral.new(prompt, result_format: :json).chat_completion(text)
+    {
+      "projet_travaux" => {
+        "travaux_collection" => {
+          "travaux" => travaux_json.fetch("travaux")
+        }
+      }
+    }
   end
 
   # Validate the QuoteCheck and return a hash with:

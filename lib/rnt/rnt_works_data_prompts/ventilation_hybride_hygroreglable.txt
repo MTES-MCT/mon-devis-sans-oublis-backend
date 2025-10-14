@@ -1,4 +1,4 @@
-### installation ventilation hybride hygroreglable :
+### installation ventilation hybride hygroreglable (ventilation_hybride_hygroreglable) :
 
 ```jsx
 {

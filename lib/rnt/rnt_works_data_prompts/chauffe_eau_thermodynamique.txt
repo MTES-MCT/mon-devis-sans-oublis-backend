@@ -1,4 +1,4 @@
-### installation chauffe-eau thermodynamique :
+### installation chauffe-eau thermodynamique (chauffe_eau_thermodynamique) :
 
 ```jsx
 {

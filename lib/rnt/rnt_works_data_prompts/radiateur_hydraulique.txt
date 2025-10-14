@@ -1,4 +1,4 @@
-### installation radiateur hydraulique :
+### installation radiateur hydraulique (radiateur_hydraulique) :
 
 ```jsx
 {

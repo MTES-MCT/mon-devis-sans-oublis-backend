@@ -1,4 +1,4 @@
-### installation de volets isolants :
+### installation de volets isolants (fermeture_isolante) :
 
 ```jsx
 {

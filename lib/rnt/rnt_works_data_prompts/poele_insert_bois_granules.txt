@@ -1,4 +1,4 @@
-### installation poêle/insert à bois/granulés :
+### installation poêle/insert à bois/granulés (poele_insert_bois_granules) :
 
 ```jsx
 {

@@ -1,4 +1,4 @@
-### installation plancher/plafond chauffant hydraulique :
+### installation plancher/plafond chauffant hydraulique (plancher_plafond_chauffant_hydraulique) :
 
 ```jsx
 {

@@ -1,4 +1,4 @@
-### installation radiateur électrique :
+### installation radiateur électrique (radiateur_electrique) :
 
 ```jsx
 {

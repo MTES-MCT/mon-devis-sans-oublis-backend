@@ -1,4 +1,4 @@
-### installation pac sol/eau :
+### installation pac sol/eau (pac_sol_eau) :
 
 ```jsx
 {

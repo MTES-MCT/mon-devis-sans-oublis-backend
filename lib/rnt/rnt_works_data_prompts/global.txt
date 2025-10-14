@@ -1,4 +1,23 @@
-### isolation murs en ite :
+        Contexte : Nous avons reçu un devis de rénovation énergétique d'un artisan pour un particulier. Nous avons anonymisé son texte et nous souhaitons récupérer les travaux de rénovation énergétique avec leurs critères techniques. Il peut y avoir plusieurs travaux de travaux. 
+
+        Rôle : Vous êtes un expert en lecture de devis et vous devez récupérer les données structurées pour les intégrer dans le JSON suivant
+
+
+        # Liste des types de travaux pertinents
+        travaux_pertinents = ["isolation_mur_ite", "isolation_mur_iti", "isolation_sous_rampants", "isolation_combles_non_amenages", "isolation_toiture_terrasse", "isolation_planchers_bas", "fenetre_porte_fenetre", "vmc_simple_flux", "vmc_double_flux", "pac_geothermique", "pac_sol_eau", "pac_eau_eau", "pac_air_eau", "pac_air_air", "chaudiere_gaz", "chaudiere_biomasse", "poele_insert_bois_granules", "radiateur_electrique", "radiateur_hydraulique", "plancher_plafond_chauffant_hydraulique", "chauffe_eau_thermodynamique", "ballon_ecs_effet_joule", "dispositif_solaire_thermique", "dispositif_solaire_photovoltaique", "porte_entree", "fermeture_isolante", "protection_solaire", "double_fenetre", "fenetre_toiture", "raccordement_reseau_chaleur", "chauffe_bain_individuel", "brasseur_air", "chauffe_eau_solaire", "systeme_solaire_combine", "ventilation_hybride_hygroreglable"]
+
+
+        Voici les JSON que l'on souhaite récupérer : 
+
+# JSON général
+
+```jsx
+{
+travaux : [{travaux1},{travaux2}...]
+} 
+```
+
+        ### isolation murs en ite (isolation_mur_ite) :
 
 ```jsx
 {
@@ -17,7 +36,7 @@ protection_isolant: string, dispositif de protection contre les dégradations ex
 ```
 
 
-### isolation murs en iti :
+### isolation murs en iti (isolation_mur_iti) :
 
 ```jsx
 {
@@ -36,7 +55,7 @@ marque_produit: string, nom de la marque du produit;
 ```
 
 
-### isolation sous rampants (combles aménagés) :
+### isolation sous rampants (combles aménagés) (isolation_sous_rampants) :
 
 ```jsx
 {
@@ -57,7 +76,7 @@ reference_produit: string, reference du produit;
 ```
 
 
-### isolation des combles non aménagés :
+### isolation des combles non aménagés (isolation_combles_non_amenages) :
 
 ```jsx
 {
@@ -78,7 +97,7 @@ traitement_humidite: enum(pare_vapeur_protection_humidite,autre_dispositif_prote
 ```
 
 
-### isolation toiture terrasse :
+### isolation toiture terrasse (isolation_toiture_terrasse) :
 
 ```jsx
 {
@@ -97,7 +116,7 @@ marque_produit: string, nom de la marque du produit;
 ```
 
 
-### isolation planchers bas :
+### isolation planchers bas (isolation_planchers_bas) :
 
 ```jsx
 {
@@ -118,7 +137,7 @@ marque_produit: string, nom de la marque du produit;
 ```
 
 
-### installation fenêtres ou portes fenêtres :
+### installation fenêtres ou portes fenêtres (fenetre_porte_fenetre) :
 
 ```jsx
 {
@@ -135,7 +154,7 @@ remplacement_du_dormant_existant: boolean, remplacement du dormant obligatoire 0
 ```
 
 
-### installation vmc simple flux :
+### installation vmc simple flux (vmc_simple_flux) :
 
 ```jsx
 {
@@ -158,7 +177,7 @@ reference_caisson: string, reference du caisson;
 ```
 
 
-### installation vmc double flux :
+### installation vmc double flux (vmc_double_flux) :
 
 ```jsx
 {
@@ -184,7 +203,7 @@ reference_bouches_insufflation_extraction: string, référence des bouches d’i
 ```
 
 
-### installation pac géothermique :
+### installation pac géothermique (pac_geothermique) :
 
 ```jsx
 {
@@ -193,30 +212,7 @@ reference_bouches_insufflation_extraction: string, référence des bouches d’i
 ```
 
 
-### installation pac sol/eau :
-
-```jsx
-{
-efficacite_saisonniere: double, efficacité énergétique saisonnière (unité : %);
-classe_regulateur: enum(i,ii,iii,iv,v,vi,vii,viii), classe de performance du régulateur selon le règlement européen;
-note_technique: boolean, présence d'une note technique indiquant les caractéristiques de dimensionnement du générateur 0 : non 1 : oui;
-calorifugeage: boolean, présence de calorifugeage pour les réseaux de distribution d'eau 0 : non 1 : oui;
-taux_couverture: double, si PAC eau-eau collective, taux de couverture de la PAC par rapport aux besoins de chauffage (unité : sans unite);
-type_emetteur: enum(plancher_chauffant,plafond_chauffant,mur_chauffant,autre), type d'émetteur;
-niveau_temperature_emetteur: enum(basse_temperature,moyenne_temperature,haute_temperature), niveau de température des émetteurs (basse, moyenne, haute);
-marque_pac: string, nom de la marque de la PAC;
-reference_pac: string, reference de la PAC;
-marque_regulateur: string, nom de la marque du régulateur;
-reference_regulateur: string, reference du régulateur;
-puissance: double, si PAC eau-eau collective, puissance nominale du générateur (unité : kW);
-surface_chauffee: double, surface chauffée par la PAC installée (unité : m²);
-type_installation: enum(installation_collective,installation_individuelle), type d'installation (collective ou individuelle);
-exclusion_ecs_uniquement: boolean, si PAC eau-eau collective, exclusion des appareils couvrant l'ECS uniquement 0 : non 1 : oui;
-}
-```
-
-
-### installation pac eau/eau :
+### installation pac sol/eau (pac_sol_eau) :
 
 ```jsx
 {
@@ -239,7 +235,30 @@ exclusion_ecs_uniquement: boolean, si PAC eau-eau collective, exclusion des appa
 ```
 
 
-### installation pac air/eau :
+### installation pac eau/eau (pac_eau_eau) :
+
+```jsx
+{
+efficacite_saisonniere: double, efficacité énergétique saisonnière (unité : %);
+classe_regulateur: enum(i,ii,iii,iv,v,vi,vii,viii), classe de performance du régulateur selon le règlement européen;
+note_technique: boolean, présence d'une note technique indiquant les caractéristiques de dimensionnement du générateur 0 : non 1 : oui;
+calorifugeage: boolean, présence de calorifugeage pour les réseaux de distribution d'eau 0 : non 1 : oui;
+taux_couverture: double, si PAC eau-eau collective, taux de couverture de la PAC par rapport aux besoins de chauffage (unité : sans unite);
+type_emetteur: enum(plancher_chauffant,plafond_chauffant,mur_chauffant,autre), type d'émetteur;
+niveau_temperature_emetteur: enum(basse_temperature,moyenne_temperature,haute_temperature), niveau de température des émetteurs (basse, moyenne, haute);
+marque_pac: string, nom de la marque de la PAC;
+reference_pac: string, reference de la PAC;
+marque_regulateur: string, nom de la marque du régulateur;
+reference_regulateur: string, reference du régulateur;
+puissance: double, si PAC eau-eau collective, puissance nominale du générateur (unité : kW);
+surface_chauffee: double, surface chauffée par la PAC installée (unité : m²);
+type_installation: enum(installation_collective,installation_individuelle), type d'installation (collective ou individuelle);
+exclusion_ecs_uniquement: boolean, si PAC eau-eau collective, exclusion des appareils couvrant l'ECS uniquement 0 : non 1 : oui;
+}
+```
+
+
+### installation pac air/eau (pac_air_eau) :
 
 ```jsx
 {
@@ -269,7 +288,7 @@ exclusion_pac_basse_temperature: boolean, si PAC hybride, fonctionnement à moye
 ```
 
 
-### installation pac air/air (climatiseur inclu) :
+### installation pac air/air (climatiseur inclu) (pac_air_air) :
 
 ```jsx
 {
@@ -283,7 +302,7 @@ reference_pac: string, reference de la PAC;
 ```
 
 
-### installation chaudière à gaz :
+### installation chaudière à gaz (chaudiere_gaz) :
 
 ```jsx
 {
@@ -292,7 +311,7 @@ reference_pac: string, reference de la PAC;
 ```
 
 
-### installation chaudière à biomasse :
+### installation chaudière à biomasse (chaudiere_biomasse) :
 
 ```jsx
 {
@@ -323,7 +342,7 @@ quantite_chaleur: double, si chaudière collective, quantité nette de chaleur p
 ```
 
 
-### installation poêle/insert à bois/granulés :
+### installation poêle/insert à bois/granulés (poele_insert_bois_granules) :
 
 ```jsx
 {
@@ -342,7 +361,7 @@ reference_equipement: string, reference de l'équipement;
 ```
 
 
-### installation radiateur électrique :
+### installation radiateur électrique (radiateur_electrique) :
 
 ```jsx
 {
@@ -358,7 +377,7 @@ reference_emetteur: string, reference de l'émetteur;
 ```
 
 
-### installation radiateur hydraulique :
+### installation radiateur hydraulique (radiateur_hydraulique) :
 
 ```jsx
 {
@@ -372,7 +391,7 @@ reference_radiateurs: string, reference des radiateurs;
 ```
 
 
-### installation plancher/plafond chauffant hydraulique :
+### installation plancher/plafond chauffant hydraulique (plancher_plafond_chauffant_hydraulique) :
 
 ```jsx
 {
@@ -385,7 +404,7 @@ reference_plancher_chauffant: string, reference du plancher chauffant;
 ```
 
 
-### installation chauffe-eau thermodynamique :
+### installation chauffe-eau thermodynamique (chauffe_eau_thermodynamique) :
 
 ```jsx
 {
@@ -399,7 +418,7 @@ reference_equipement: string, référence de l'équipement;
 ```
 
 
-### installation ballon d'ecs à effet joule :
+### installation ballon d'ecs à effet joule (ballon_ecs_effet_joule) :
 
 ```jsx
 {
@@ -415,7 +434,7 @@ reference_systeme: string, reference du système;
 ```
 
 
-### installation panneaux solaire thermique :
+### installation panneaux solaire thermique (dispositif_solaire_thermique) :
 
 ```jsx
 {
@@ -443,7 +462,7 @@ reference_equipement: string, référence de l'équipement;
 ```
 
 
-### installation panneaux solaire photovoltaïque :
+### installation panneaux solaire photovoltaïque (dispositif_solaire_photovoltaique) :
 
 ```jsx
 {
@@ -452,7 +471,7 @@ reference_equipement: string, référence de l'équipement;
 ```
 
 
-### installation de porte d’entrée isolante :
+### installation de porte d’entrée isolante (porte_entree) :
 
 ```jsx
 {
@@ -461,7 +480,7 @@ reference_equipement: string, référence de l'équipement;
 ```
 
 
-### installation de volets isolants :
+### installation de volets isolants (fermeture_isolante) :
 
 ```jsx
 {
@@ -474,7 +493,7 @@ reference_fermetures: string, référence des fermetures isolantes;
 ```
 
 
-### installation de protections solaires des fenêtres :
+### installation de protections solaires des fenêtres (protection_solaire) :
 
 ```jsx
 {
@@ -483,7 +502,7 @@ reference_fermetures: string, référence des fermetures isolantes;
 ```
 
 
-### installation de double fenêtre :
+### installation de double fenêtre (double_fenetre) :
 
 ```jsx
 {
@@ -499,7 +518,7 @@ reference_produit: string, reference du produit;
 ```
 
 
-### installation de fenêtre de toit :
+### installation de fenêtre de toit (fenetre_toiture) :
 
 ```jsx
 {
@@ -516,7 +535,7 @@ remplacement_du_dormant_existant: boolean, remplacement du dormant obligatoire 0
 ```
 
 
-### raccordement à un réseau de chaleur :
+### raccordement à un réseau de chaleur (raccordement_reseau_chaleur) :
 
 ```jsx
 {
@@ -529,7 +548,7 @@ nom_reseau: string, nom du réseau (quartiers ou villes desservis);
 ```
 
 
-### chauffe-bain individuel :
+### chauffe-bain individuel (chauffe_bain_individuel) :
 
 ```jsx
 {
@@ -544,7 +563,7 @@ nombre_chauffe_bain: double, si logements collectifs : nombre d'appatements équ
 ```
 
 
-### installation de brasseurs d’air fixes :
+### installation de brasseurs d’air fixes (brasseur_air) :
 
 ```jsx
 {
@@ -557,7 +576,7 @@ efficacite_energetique_vitesse_max: double, rapport entre le débit d'air et la 
 ```
 
 
-### installation chauffe-eau solaire :
+### installation chauffe-eau solaire (chauffe_eau_solaire) :
 
 ```jsx
 {
@@ -583,7 +602,7 @@ production_solaire_utile: double, si chauffe-eau solaire collectif, la productio
 ```
 
 
-### installation sytème solaire combiné :
+### installation sytème solaire combiné (systeme_solaire_combine) :
 
 ```jsx
 {
@@ -601,7 +620,7 @@ reference_produit: string, référence du produit;
 ```
 
 
-### installation ventilation hybride hygroreglable :
+### installation ventilation hybride hygroreglable (ventilation_hybride_hygroreglable) :
 
 ```jsx
 {
@@ -619,3 +638,4 @@ marque_entrees_air: string, marque des bouches d'entrées d’air;
 reference_entrees_air: string, référence des bouches d'entrées d’air;
 }
 ```
+

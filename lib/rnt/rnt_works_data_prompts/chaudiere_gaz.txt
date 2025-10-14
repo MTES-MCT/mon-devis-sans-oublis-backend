@@ -1,4 +1,4 @@
-### installation chaudière à gaz :
+### installation chaudière à gaz (chaudiere_gaz) :
 
 ```jsx
 {

@@ -59,6 +59,7 @@ cp .env.example .env.docker
 
 | Variable                       | Description                           | Exemple                                                  | Requis    |
 | ------------------------------ | ------------------------------------- | -------------------------------------------------------- | --------- |
+| `ADEME_SKIP_SSL_VERIFICATION`                     | Ne pas vérifier la connexion SSL avec l'API ADEME             | `false`                            | Optionnel    |
 | `ADMIN_EMAILS`                     | Mail ProConnect pouvant accédant aux Back Office             | `toto@gouv.fr,tata@gouv.fr`                            | Optionnel    |
 | `ALBERT_API_KEY`                     |              | `longueClé`                            | Requis    |
 | `ALBERT_MODEL`                     | Modèle Albert utilisé par défaut si disponible            | `neuralmagic/Meta-Llama-3.1-70B-Instruct-FP8`                            | Optionnel    |
@@ -93,6 +94,7 @@ cp .env.example .env.docker
 | `PROCONNECT_CLIENT_SECRET`                     |             | `hash`                            | Optionnel    |
 | `PROCONNECT_DOMAIN`                     |             | `https://auth.agentconnect.gouv.fr/api/v2`, `https://fca.integ01.dev-agentconnect.fr/api/v2`                            | Optionnel    |
 | `QUOTE_CHECK_EMAIL_RECIPIENTS`       | Emails pour être informé des dépôts | `toto@gouv.fr,tata@gouv.fr`                              | Optionnel |
+| `RNT_SKIP_SSL_VERIFICATION`                     | Ne pas vérifier la connexion SSL avec le Web Service RNT             | `false`                            | Optionnel    |
 | `SENTRY_DSN`       | DSN Sentry pour le tracking d'erreurs | `https://xxx@sentry.io/xxx`                              | Optionnel |
 | `SENTRY_ENVIRONMENT`       | Environnement Sentry pour le tracking d'erreurs | `$APP_ENV`                              | Optionnel |
 | `WORKS_DATA_QA_DEFAULT_LLM`                     | LLM utilisé pour extraite les données travaux par défaut si disponible            | `mistral`                            | Optionnel    |
