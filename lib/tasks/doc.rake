@@ -1,6 +1,31 @@
 # frozen_string_literal: true
 
-namespace :doc do
+require "fileutils"
+
+namespace :doc do # rubocop:disable Metrics/BlockLength
+  desc "Generate full documentation"
+  task full: :environment do
+    Rake::Task["doc:rnt_prompts"].invoke
+    Rake::Task["doc:swagger"].invoke
+  end
+
+  desc "Generate RNT prompts documentation"
+  task rnt_prompts: :environment do
+    require_relative "../../lib/rnt/rnt_schema"
+
+    directory = Rails.root.join("lib/rnt/rnt_works_data_prompts")
+    FileUtils.mkdir_p(directory)
+
+    global_prompt = RntSchema.new.prompt_travaux
+    Rails.root.join(directory, "global.txt").write(global_prompt)
+
+    types_travaux = RntSchema.new.types_travaux
+    types_travaux.each do |type, description|
+      type_travaux_prompt = RntSchema.new.prompt_travaux(type, description)
+      Rails.root.join(directory, "#{type}.txt").write(type_travaux_prompt)
+    end
+  end
+
   desc "Generate API documentation"
   task swagger: :environment do |_t, _args|
     # 1. Copy the ADEME schema and sub-schema

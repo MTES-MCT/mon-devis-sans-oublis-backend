@@ -1,0 +1,16 @@
+### installation sytème solaire combiné :
+
+```jsx
+{
+presence_appoint: boolean, le système solairecomprend un système d'appoint 0 : non 1 : oui;
+presence_emetteurs_basse_temperature: boolean, présence d'émetteurs de chauffage central de type basse température 0 : non 1 : oui;
+productivite_capteurs_photovoltaiques: double, productivité des capteurs photovoltaïques (unité : W/m²);
+surface_capteurs: double, surface des capteurs solaires installés (unité : m²);
+presence_ballon: boolean, présence d'un ou plusieurs ballon(s) d'eau chaude solaire(s) 0 : non 1 : oui;
+capacite_stockage_ballon: double, capacité de stockage du ou des ballons solaires (unité : L);
+certification_capteurs_solaires: enum(cstbat,solarkeymark,certification_equivalente,certification_qb), certification CSTBat ou SolarKeymark ou équivalente;
+exclusion_capteurs_hybrides: boolean, exclusion de capteurs de type hybrides 0 : non 1 : oui;
+marque_produit: string, nom de la marque du produit;
+reference_produit: string, référence du produit;
+}
+```

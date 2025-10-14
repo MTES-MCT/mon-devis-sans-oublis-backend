@@ -1,0 +1,14 @@
+### installation radiateur électrique :
+
+```jsx
+{
+amplitude_emetteur_electrique: double, amplitude de l'émetteur électrique (unité : K);
+derive_emetteur_electrique: double, dérive de l'émetteur électrique (unité : K);
+detection_ouverture_fenetre: boolean, détection automatique et intégrée à l’appareil de l’ouverture d’une fenêtre 0 : non 1 : oui;
+detection_absence: boolean, détection automatique d’absence 0 : non 1 : oui;
+indication_surconsommation: boolean, indication de surconsommation par information visuelle 0 : non 1 : oui;
+nombre_emetteurs: double, nombre d’émetteurs électriques installés (unité : sans unite);
+marque_emetteur: string, nom de la marque de l'émetteur;
+reference_emetteur: string, reference de l'émetteur;
+}
+```

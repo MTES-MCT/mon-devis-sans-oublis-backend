@@ -1,0 +1,28 @@
+### installation pac air/eau :
+
+```jsx
+{
+efficacite_saisonniere: double, efficacité énergétique saisonnière (unité : sans unite);
+classe_regulateur: enum(i,ii,iii,iv,v,vi,vii,viii), classe de performance du régulateur selon le règlement européen.;
+note_technique: boolean, présence d'une note technique indiquant les caractéristiques de dimensionnement du générateur 0 : non 1 : oui;
+calorifugeage: boolean, présence de calorifugeage pour les réseaux de distribution d'eau 0 : non 1 : oui;
+dispositif_reglage_equilibrage: boolean, présence d'un dispositif permettant l'équilibrage hydraulique 0 : non 1 : oui;
+taux_couverture: double, taux de couverture de la PAC par rapport aux besoins de chauffage (unité : sans unite);
+type_emetteur: enum(plancher_chauffant,plafond_chauffant,mur_chauffant,autre), type d'émetteur;
+niveau_temperature_emetteur: enum(basse_temperature,moyenne_temperature,haute_temperature), niveau de température des émetteurs;
+intensite_demarrage: double, courant électrique nécessaire au démarrage de la PAC (unité : A);
+marque_pac: string, nom de la marque de la PAC;
+reference_pac: string, reference de la PAC;
+marque_regulateur: string, nom de la marque du régulateur;
+reference_regulateur: string, reference du régulateur;
+puissance: double, puissance nominale du générateur (unité : kW);
+reference_travaux_appoint: string, reference projet de l'objet travaux correspondant au système d'appoint;
+systeme_appoint_pac: enum(pac_air_air,pac_air_eau,pac_eau_eau,pac_geothermique,poele_insert_foyer_ferme_cuisiniere_en_majorite_bois,poele_fioul_gpl_charbon,chaudiere_bois,chaudiere_fioul,chaudiere_gaz_classique,chaudiere_gaz_basse_temperature,chaudiere_gaz_a_condensation,generateurs_electriques_a_effet_joule_convecteurs_radiateurs_panneaux_rayonnants,chaudiere_electrique,reseau_de_chaleur,chaudiere_charbon,chaudiere_gpl_propane_butane,autre), type de système d'appoint;
+systeme_appoint_complement: string, précisez le type de système d'appoint si vous avez sélectionné "autre" dans enum_systeme_appoint_pac_id;
+cop: double, coefficient de performance COP = nombre de kWh produits par la PAC / nombre de kWh consommés par la PAC (unité : sans unite);
+surface_chauffee: double, Surface chauffée par la pompe à chaleur (unité : m²);
+type_installation: enum(installation_collective,installation_individuelle), type d'installation (collective ou individuelle);
+exclusion_ecs_uniquement: boolean, si PAC collective, exclusion des appareils couvrant l'ECS uniquement 0 : non 1 : oui;
+exclusion_pac_basse_temperature: boolean, si PAC hybride, fonctionnement à moyenne ou haute température 0 : non 1 : oui;
+}
+```

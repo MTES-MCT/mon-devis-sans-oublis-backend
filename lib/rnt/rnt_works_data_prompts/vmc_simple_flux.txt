@@ -1,0 +1,21 @@
+### installation vmc simple flux :
+
+```jsx
+{
+type_vmc_simple_flux: enum(vmc_sf_auto,vmc_sf_hygro_a,vmc_sf_hygro_b), type de VMC simple flux (auto, hygro, basse pression ...);
+type_installation: enum(installation_collective,installation_individuelle), type d'installation (collective ou individuelle);
+type_bouches: enum(type_a,type_b), type de bouches;
+puissance_electrique_absorbee_caisson: double, puissance électrique absorbée pondérée du caisson basse consommation (unité : WThC/(m3 /h));
+surface_habitable: double, si installation individuelle : surface habitable (unité : m²);
+type_caisson: enum(standard,basse_consommation,basse_pression), si installation collective : type de caisson (standard, basse consommation, basse pression);
+nombre_logements: int, si installation collective : nombre de logements desservis (unité : sans unite);
+avis_technique_cstb: boolean, référence de l'avis technique CSTB 0 : non 1 : oui;
+presence_systeme: boolean, présence d'un caisson, de gaines, d'entrées d'air et de bouches d'extraction 0 : non 1 : oui;
+marque_bouches_insufflation_extraction: string, nom de la marque des bouches d’insufflation et d’extraction;
+reference_bouches_insufflation_extraction: string, référence des bouches d’insufflation et d’extraction;
+marque_entrees_air: string, Marque des bouches d'entrées d’air;
+reference_entrees_air: string, Référence des bouches d'entrées d’air;
+marque_caisson: string, nom de la marque du caisson;
+reference_caisson: string, reference du caisson;
+}
+```

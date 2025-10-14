@@ -1,0 +1,29 @@
+### installation chaudière à biomasse :
+
+```jsx
+{
+type_biomasse: enum(buches_de_bois,copeaux_de_bois,bois_comprime_granules,bois_comprime_briquettes,bois_comprim_sciure), type de biomasse utilisée;
+type_chargement: enum(manuel,automatique), type de chargement de la chaudière (manuel, automatique);
+type_installation: enum(installation_collective,installation_individuelle), type d'installation (collective ou individuelle);
+efficacite_saisonniere: double, efficacité énergétique saisonnière (unité : %);
+norme_efficacite_chaudiere_bio: enum(reglement_europeen_2015_1189,autre), norme qui a été utilisée pour le calcul de l’efficacité énergétique saisonnière;
+puissance_thermique: double, si chaudière individuelle, puissance thermique nominale (unité : kW);
+presence_silo: boolean, si chaudière à alimentation automatique, présence d’un silo d’au moins 225 litres 0 : non 1 : oui;
+presence_ballon_tampon: boolean, si chaudière à alimentation manuelle, présence d’un ballon tampon 0 : non 1 : oui;
+emission_particules: double, émissions saisonnières de particules (unité : mg/Nm3);
+emission_monoxyde_carbone: double, émissions saisonnières de monoxyde de carbone (CO) (unité : mg/Nm3);
+emission_oxydes_azote: double, émissions saisonnières d'oxydes d'azote (NOx) (unité : mg/Nm3);
+emission_organiques_gazeux: double, émissions saisonnières de composés organiques gazeux (unité : mg/Nm3);
+norme_valeur_concentration: enum(reglement_europeen_2015_1189,autre), norme qui a été utilisée pour la mesure des valeurs en concentration;
+norme_classe_regulateur: enum(reglement_europeen_2014_c207_02,autre), norme qui a été utilisée pour la détermination de la classe de performance du régulateur;
+note_technique: boolean, présence d'une note technique indiquant les caractéristiques de dimensionnement du générateur 0 : non 1 : oui;
+label_flamme_verte_7: boolean, présence du label Flamme Verte 7* 0 : non 1 : oui;
+marque_chaudiere: string, nom de la marque de la chaudière;
+reference_chaudiere: string, reference de la chaudière;
+nombre_appartement: double, si chaudière collective : nombre d’appartements chauffés (unité : sans unite);
+surface_chauffee: double, si chaudière collective: surface chauffée (unité : m²);
+efficacite_energetique_saisonniere: double, si chaudière collective dont la puissance thermique est ≤ 500 kW, efficacité énergétique saisonnière (unité : %);
+rendement_pci: double, si chaudière collective dont la puissance thermique est > 500 kW, rendement PCI (unité : %);
+quantite_chaleur: double, si chaudière collective, quantité nette de chaleur produite (unité : GWh/an);
+}
+```

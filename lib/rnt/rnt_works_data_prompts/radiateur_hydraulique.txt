@@ -1,0 +1,12 @@
+### installation radiateur hydraulique :
+
+```jsx
+{
+presence_chauffage_central: boolean, logement chauffé par un système de chauffage central 0 : non 1 : oui;
+dimensionnement_radiateurs: double, dimensionnement des radiateurs (unité : K);
+norme_dimensionnement_radiateur: enum(en_443,autre), norme qui a été utilisée pour le dimensionnement des radiateurs;
+nombre_radiateurs: double, nombre de radiateurs basse température mis en place (unité : sans unite);
+marque_radiateurs: string, nom de la marque des radiateurs;
+reference_radiateurs: string, reference des radiateurs;
+}
+```

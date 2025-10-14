@@ -1,0 +1,14 @@
+### installation ballon d'ecs à effet joule :
+
+```jsx
+{
+volume_stockage: double, volume de stockage du ballon d'ECS (unité : L);
+norme_dispositif_regulation: enum(nf_en_iso_52120_1,autre), norme qui a été utilisée pour qualifier le dispositif de régulation répondant à la classe A;
+sonde_de_mesure: boolean, présence d'une sonde qui mesure la température de stockage de l’eau dans le chauffe-eau 0 : non 1 : oui;
+service_analyse_donnes: boolean, présence d'un service d’analyse de données du chauffe-eau 0 : non 1 : oui;
+equipement_pilotage: boolean, présence d'un équipement de pilotage du chauffe-eau 0 : non 1 : oui;
+indication_surconsommation: boolean, présence d'un moyen de mesure ou d’estimation de la consommation d’eau chaude 0 : non 1 : oui;
+marque_systeme: string, nom de la marque du système;
+reference_systeme: string, reference du système;
+}
+```

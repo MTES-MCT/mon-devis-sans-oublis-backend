@@ -1,0 +1,17 @@
+### isolation toiture terrasse :
+
+```jsx
+{
+resistance_isolant: double, resistance de l'isolant (unité : m2.K/W);
+surface_isolant: double, surface d'isolant posé (unité : m²);
+fixation_isolant: enum(ossature_continue_z,ossature_continue_horizontaux,ossature_continue_croises,clips_acier_galvanise,clips_acier_inoxydable,clips_aluminium_t,clips_bris_thermique,clips_fibre_verre,vis_traversant_isolant,attaches_maconnerie,autre), type de fixation utilisé pour l'isolation;
+materiau_isolant: enum(laine_de_verre,laine_de_roche,verre_cellulaire,polystirene_expanse_pse,polystirene_extrude_psx,polyurethane_pu,mousse_phenolique,panneau_sous_vide_piv,aerogel,peinture_isolante_reflechissante,brique_monomur_terre_cuite,bloc_monomur_pierre,bloc_monomur_argile_expanse,beton_cellulaire,liege,fibre_de_bois,chanvre,lin,laine_de_mouton,ouate_de_cellulose,autres_fibres_vegetales,paille,torchis,toiture_vegetalisee,mousse_de_polyurethane,isolant_mince_reflechissant,autre), type de matériau isolant;
+norme_resistance: enum(nf_en_12664,nf_en_12667,nf_en_12939,nf_en_iso_22097), norme qui a été utilisée pour le calcul de la résistance de l'isolant;
+epaisseur_isolant: double, épaisseur d'isolant posé (unité : cm);
+fixation_isolant_complement: string, précisez le type de fixation isolant si vous avez sélectionné "autre" dans enum_fixation_isolant_id;
+materiau_isolant_complement: string, précisez le type de matériau isolant si vous avez sélectionné "autre" dans enum_materiau_isolant_id;
+protection_isolant: string, dispositif de protection contre les dégradations extérieures;
+reference_produit: string, reference du produit;
+marque_produit: string, nom de la marque du produit;
+}
+```

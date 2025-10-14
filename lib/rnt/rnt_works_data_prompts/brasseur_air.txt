@@ -1,0 +1,11 @@
+### installation de brasseurs d’air fixes :
+
+```jsx
+{
+diametre: double, diamètre du brasseur (unité : m);
+nombre_vitesse: double, nombre de vitesse de fonctionnement (unité : sans unite);
+niveau_sonore_vitesse_max: double, Niveau sonore à la vitesse de fonctionnement maximale (unité : dB);
+niveau_sonore_vitesse_min: double, Niveau sonore à la vitesse de fonctionnement minimale (unité : dB);
+efficacite_energetique_vitesse_max: double, rapport entre le débit d'air et la puissance à la vitesse maximale (unité : m3/Wh);
+}
+```

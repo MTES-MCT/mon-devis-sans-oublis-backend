@@ -1,0 +1,13 @@
+### chauffe-bain individuel :
+
+```jsx
+{
+surface_habitable: double, si maison individuelle : surface habitable (unité : m²);
+type_chauffe_bain: enum(flux_haut_rendement,flux_condensation,combustion_atmospherique_haut_rendement), type de chauffe-bain;
+rendement_chauffe_bain_haut_rendement: double, si chauffe-bain à haut rendement : rendement PCI au débit calorifique nominal (unité : sans unite);
+rendement_chauffe_bain_condensation: double, si chauffe-bain à condensation : rendement PCI au débit calorifique nominal (unité : sans unite);
+norme_rendement_debit: enum(nf_en_26,autre), norme qui a été utilisée pour le calcul du rendement du débit calorifique nominal;
+type_combustible: boolean, présence d'un combustible gazeux 0 : non 1 : oui;
+nombre_chauffe_bain: double, si logements collectifs : nombre d'appatements équipés d'un chauffe bain individuel (unité : sans unite);
+}
+```

@@ -1,0 +1,12 @@
+### installation chauffe-eau thermodynamique :
+
+```jsx
+{
+type_cet: enum(air_extrait,autres_installations), type d'installation (sur air extrait, autres types d'installations);
+cop: double, coefficient de performance COP (unité : sans unite);
+norme_cop_cet: enum(en_16147,autre), norme qui a été utilisée pour la mesure du coefficient de performance du Chauffe eau thermodynamique;
+efficacite_saisonniere: double, efficacité énergétique saisonnière (unité : %);
+marque_equipement: string, nom de la marque de l'équipement;
+reference_equipement: string, référence de l'équipement;
+}
+```

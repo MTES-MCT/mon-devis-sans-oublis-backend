@@ -1,0 +1,15 @@
+### installation fenêtres ou portes fenêtres :
+
+```jsx
+{
+nombre_fenetres: double, nombre de fenêtres ou portes-fenêtres (unité : sans unite);
+uw: double, Uw de la baie (unité : W/m²·K);
+sw: double, Sw (facteur solaire) de la baie (unité : Sw);
+norme_transmission_solaire: enum(nf_p_50_777,autre), norme qui a été utilisée pour le calcul de la transmission solaire;
+norme_transmission_thermique: enum(nf_en_14351_1+a2,autre), norme qui a été utilisée pour le calcul de la transmission thermique;
+surface: double, surface totale de fenêtres ou portes-fenêtres posées (unité : m²);
+marque_produit: string, nom de la marque du produit;
+reference_produit: string, reference du produit;
+remplacement_du_dormant_existant: boolean, remplacement du dormant obligatoire 0 : non 1 : oui;
+}
+```
