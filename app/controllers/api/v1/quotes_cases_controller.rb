@@ -9,6 +9,8 @@ module Api
       before_action :quotes_case, except: %i[create]
 
       def show
+        # Update result_sent_at for all quote_checks in this case
+        quotes_case.quote_checks.each { |qc| update_result_sent_at(qc) }
         render json: quotes_case_json
       end
 
@@ -61,6 +63,13 @@ module Api
         ).merge(
           source_name: api_user.downcase
         )
+      end
+
+      def update_result_sent_at(quote_check)
+        return if quote_check.result_sent_at.present?
+        return if quote_check.status == "pending"
+
+        quote_check.update_column(:result_sent_at, Time.current)
       end
     end
   end

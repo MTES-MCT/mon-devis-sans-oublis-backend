@@ -73,5 +73,29 @@ RSpec.describe "/api/v1/quotes_cases" do
         )
       end
     end
+
+    context "with finished QuoteChecks" do
+      before do
+        create(:quote_check, :finished, case: quotes_case)
+        get api_v1_quotes_case_url(quotes_case), as: :json, headers: api_key_header
+      end
+
+      it "sets result_sent_at for finished quote_checks" do
+        finished_quote_check = quotes_case.quote_checks.first
+        expect(finished_quote_check.reload.result_sent_at).to be_present
+      end
+    end
+
+    context "with pending QuoteChecks" do
+      before do
+        create(:quote_check, :pending, case: quotes_case)
+        get api_v1_quotes_case_url(quotes_case), as: :json, headers: api_key_header
+      end
+
+      it "does not set result_sent_at for pending quote_checks" do
+        pending_quote_check = quotes_case.quote_checks.first
+        expect(pending_quote_check.reload.result_sent_at).to be_nil
+      end
+    end
   end
 end

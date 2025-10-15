@@ -33,29 +33,29 @@ RSpec.describe QuoteCheck do
   end
 
   describe "scopes" do
-    describe ".results_sent" do
-      let!(:quote_check_with_results_sent) { create(:quote_check, results_sent_at: 1.day.ago) }
-      let!(:quote_check_without_results_sent) { create(:quote_check, results_sent_at: nil) }
+    describe ".result_sent" do
+      let!(:quote_check_with_result_sent) { create(:quote_check, result_sent_at: 1.day.ago) }
+      let!(:quote_check_without_result_sent) { create(:quote_check, result_sent_at: nil) }
 
-      it "returns quote checks where results were sent" do
-        expect(described_class.results_sent).to include(quote_check_with_results_sent)
+      it "returns quote checks where result was sent" do
+        expect(described_class.result_sent).to include(quote_check_with_result_sent)
       end
 
-      it "does not return quote checks where results were not sent" do
-        expect(described_class.results_sent).not_to include(quote_check_without_results_sent)
+      it "does not return quote checks where result was not sent" do
+        expect(described_class.result_sent).not_to include(quote_check_without_result_sent)
       end
     end
 
-    describe ".results_not_sent" do
-      let!(:quote_check_with_results_sent) { create(:quote_check, results_sent_at: 1.day.ago) }
-      let!(:quote_check_without_results_sent) { create(:quote_check, results_sent_at: nil) }
+    describe ".result_not_sent" do
+      let!(:quote_check_with_result_sent) { create(:quote_check, result_sent_at: 1.day.ago) }
+      let!(:quote_check_without_result_sent) { create(:quote_check, result_sent_at: nil) }
 
-      it "returns quote checks where results were not sent" do
-        expect(described_class.results_not_sent).to include(quote_check_without_results_sent)
+      it "returns quote checks where result was not sent" do
+        expect(described_class.result_not_sent).to include(quote_check_without_result_sent)
       end
 
-      it "does not return quote checks where results were sent" do
-        expect(described_class.results_not_sent).not_to include(quote_check_with_results_sent)
+      it "does not return quote checks where result was sent" do
+        expect(described_class.result_not_sent).not_to include(quote_check_with_result_sent)
       end
     end
   end
