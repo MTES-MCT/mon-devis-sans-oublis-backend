@@ -10,7 +10,8 @@ class QuoteCheckSerializer < ObjectWithValidationSerializer
              :gestes,
              :started_at, :finished_at,
              :comment,
-             :gestes
+             :gestes,
+             :result_link
 
   attribute :case_id, if: :full?
   attribute :private_data_qa_attributes, if: :full?
@@ -54,5 +55,9 @@ class QuoteCheckSerializer < ObjectWithValidationSerializer
 
   def finished_at
     format_datetime(object.finished_at)
+  end
+
+  def result_link
+    object.frontend_webapp_url(mtm_campaign: "api")
   end
 end

@@ -11,6 +11,10 @@ RSpec.describe QuoteCheckSerializer, type: :serializer do
   let(:quote_check) { create(:quote_check) }
 
   describe "serialization" do
+    it "includes result_link" do
+      expect(json["result_link"]).to eq(quote_check.frontend_webapp_url(mtm_campaign: "api"))
+    end
+
     context "with geste_prices validation error" do
       before do
         quote_check.update!(

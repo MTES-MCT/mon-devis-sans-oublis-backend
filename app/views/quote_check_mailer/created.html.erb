@@ -1,5 +1,5 @@
 <h1>Devis <%= @quote_check.id %></h1>
 
-<p><%= link_to "Devis #{@quote_check.id} frontend", @quote_check.frontend_webapp_url %></p>
+<p><%= link_to "Devis #{@quote_check.id} frontend", @quote_check.frontend_webapp_url(mtm_campaign: "mail_admin") %></p>
 
 <p><%= link_to "Devis #{@quote_check.id} backend", quote_check_url(@quote_check) %></p>

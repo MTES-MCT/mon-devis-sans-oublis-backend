@@ -387,6 +387,11 @@ RSpec.configure do |config|
               description: "commentaire manuel (humain), vide ou null pour retirer",
               maxLength: QuoteCheck::MAX_COMMENT_LENGTH
             },
+            result_link: {
+              type: :string,
+              nullable: true,
+              description: "lien vers le résultat frontend"
+            },
             private_data_qa_attributes: { "$ref" => "#/components/schemas/quote_check_private_data_qa_attributes" },
             read_attributes: {
               allOf: [
