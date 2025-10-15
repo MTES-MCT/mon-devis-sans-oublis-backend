@@ -1,4 +1,4 @@
-### installation pac eau/eau :
+### installation pac eau/eau (pac_eau_eau) :
 
 ```jsx
 {

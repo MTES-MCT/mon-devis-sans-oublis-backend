@@ -3,6 +3,29 @@
     {
       "warning_type": "SSL Verification Bypass",
       "warning_code": 71,
+      "fingerprint": "7e6fc87e6fb8d87e2e74751f7b43b39df2a880972ad2c659b0fcec8979f8fa7a",
+      "check_name": "SSLVerify",
+      "message": "SSL certificate verification was bypassed",
+      "file": "lib/data_sources/data_ademe.rb",
+      "line": 37,
+      "link": "https://brakemanscanner.org/docs/warning_types/ssl_verification_bypass/",
+      "code": "Net::HTTP.new(URI((params[:uri] or historique_rge_uri(params))).host, URI((params[:uri] or historique_rge_uri(params))).port).verify_mode = OpenSSL::SSL::VERIFY_NONE",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "DataAdeme",
+        "method": "historique_rge"
+      },
+      "user_input": null,
+      "confidence": "High",
+      "cwe_id": [
+        295
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SSL Verification Bypass",
+      "warning_code": 71,
       "fingerprint": "84924c83f8be47d667df122fe92e11e4a5929ff25b1b227c8fff5bbcf9a36516",
       "check_name": "SSLVerify",
       "message": "SSL certificate verification was bypassed",
@@ -15,6 +38,29 @@
         "type": "method",
         "class": "MatomoApi",
         "method": "connection"
+      },
+      "user_input": null,
+      "confidence": "High",
+      "cwe_id": [
+        295
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SSL Verification Bypass",
+      "warning_code": 71,
+      "fingerprint": "a6f34292fac80073855bb7fd65767cd21d4895521069eb6b8e2cb4fa65c9648b",
+      "check_name": "SSLVerify",
+      "message": "SSL certificate verification was bypassed",
+      "file": "lib/data_sources/rnt.rb",
+      "line": 20,
+      "link": "https://brakemanscanner.org/docs/warning_types/ssl_verification_bypass/",
+      "code": "Net::HTTP.start(URI(HOST).host, URI(HOST).port, :use_ssl => true, :verify_mode => (OpenSSL::SSL::VERIFY_NONE))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Rnt",
+        "method": "validate"
       },
       "user_input": null,
       "confidence": "High",

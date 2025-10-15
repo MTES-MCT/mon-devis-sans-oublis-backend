@@ -1,4 +1,4 @@
-### installation chauffe-eau solaire :
+### installation chauffe-eau solaire (chauffe_eau_solaire) :
 
 ```jsx
 {

@@ -1,4 +1,4 @@
-### isolation murs en ite :
+### isolation murs en ite (isolation_mur_ite) :
 
 ```jsx
 {

@@ -1,4 +1,4 @@
-### raccordement à un réseau de chaleur :
+### raccordement à un réseau de chaleur (raccordement_reseau_chaleur) :
 
 ```jsx
 {

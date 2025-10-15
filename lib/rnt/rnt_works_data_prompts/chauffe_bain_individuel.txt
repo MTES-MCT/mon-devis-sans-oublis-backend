@@ -1,4 +1,4 @@
-### chauffe-bain individuel :
+### chauffe-bain individuel (chauffe_bain_individuel) :
 
 ```jsx
 {

@@ -1,4 +1,4 @@
-### installation de porte d’entrée isolante :
+### installation de porte d’entrée isolante (porte_entree) :
 
 ```jsx
 {

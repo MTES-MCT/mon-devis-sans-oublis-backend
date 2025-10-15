@@ -1,4 +1,4 @@
-### installation panneaux solaire thermique :
+### installation panneaux solaire thermique (dispositif_solaire_thermique) :
 
 ```jsx
 {

@@ -1,4 +1,4 @@
-### installation ballon d'ecs à effet joule :
+### installation ballon d'ecs à effet joule (ballon_ecs_effet_joule) :
 
 ```jsx
 {

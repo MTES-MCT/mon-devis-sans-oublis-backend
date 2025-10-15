@@ -1,4 +1,4 @@
-### installation sytème solaire combiné :
+### installation sytème solaire combiné (systeme_solaire_combine) :
 
 ```jsx
 {

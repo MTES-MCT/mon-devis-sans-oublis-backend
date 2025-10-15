@@ -1,4 +1,4 @@
-### installation vmc double flux :
+### installation vmc double flux (vmc_double_flux) :
 
 ```jsx
 {

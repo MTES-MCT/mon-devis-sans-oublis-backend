@@ -1,4 +1,4 @@
-### installation pac géothermique :
+### installation pac géothermique (pac_geothermique) :
 
 ```jsx
 {

@@ -1,4 +1,4 @@
-### installation chaudière à biomasse :
+### installation chaudière à biomasse (chaudiere_biomasse) :
 
 ```jsx
 {
