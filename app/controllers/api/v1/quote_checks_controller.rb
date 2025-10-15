@@ -107,7 +107,7 @@ module Api
         return if quote_check.result_sent_at.present?
         return if quote_check.status == "pending"
 
-        quote_check.update_column(:result_sent_at, Time.current)
+        quote_check.update_column(:result_sent_at, Time.current) # rubocop:disable Rails/SkipsModelValidations
       end
     end
   end
