@@ -455,6 +455,11 @@ RSpec.configure do |config|
             profile: { "$ref" => "#/components/schemas/profile" },
             renovation_type: { "$ref" => "#/components/schemas/renovation_type" },
             metadata: { "$ref" => "#/components/schemas/quote_check_metadata", nullable: true },
+            result_link: {
+              type: :string,
+              nullable: true,
+              description: "lien vers le résultat frontend"
+            },
             quote_checks: {
               type: :array,
               items: { "$ref" => "#/components/schemas/quote_check" },

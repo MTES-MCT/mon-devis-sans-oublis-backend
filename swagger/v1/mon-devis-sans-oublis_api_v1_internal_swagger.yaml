@@ -2159,6 +2159,10 @@ components:
         metadata:
           "$ref": "#/components/schemas/quote_check_metadata"
           nullable: true
+        result_link:
+          type: string
+          nullable: true
+          description: lien vers le résultat frontend
         quote_checks:
           type: array
           items:
