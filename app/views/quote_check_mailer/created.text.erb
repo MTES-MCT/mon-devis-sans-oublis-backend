@@ -1,6 +1,6 @@
 Devis <%= @quote_check.id %>
 ===============================================
 
-Lien Devis frontend: <%= @quote_check.frontend_webapp_url %>
+Lien Devis frontend: <%= @quote_check.frontend_webapp_url(mtm_campaign: "mail_admin") %>
 
 Lien Devis backend: <%= quote_check_url(@quote_check) %>

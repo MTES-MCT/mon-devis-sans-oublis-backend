@@ -82,7 +82,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
     column "Statut", :status
 
     column "Correction" do
-      link_to "Devis #{it.id}", it.frontend_webapp_url,
+      link_to "Devis #{it.id}", it.frontend_webapp_url(mtm_campaign: "backoffice"),
               target: "_blank", rel: "noopener"
     end
 

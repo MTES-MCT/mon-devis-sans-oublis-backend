@@ -58,6 +58,6 @@ class QuoteCheckSerializer < ObjectWithValidationSerializer
   end
 
   def result_link
-    object.frontend_webapp_url
+    object.frontend_webapp_url(mtm_campaign: "api")
   end
 end
