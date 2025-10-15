@@ -62,7 +62,7 @@ class RntValidatorService
     {
       "projet_travaux" => {
         "travaux_collection" => {
-          "travaux" => travaux_json.fetch("travaux")
+          "travaux" => travaux_json.fetch(:travaux, travaux_json.fetch("travaux"))
         }
       }
     }
