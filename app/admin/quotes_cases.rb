@@ -36,6 +36,11 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
       link_to "Dossier #{it.id}", admin_quotes_case_path(it)
     end
 
+    column "Correction" do
+      link_to "Dossier #{it.id}", it.frontend_webapp_url(mtm_campaign: "backoffice"),
+              target: "_blank", rel: "noopener"
+    end
+
     column "Nb devis" do
       it.quote_checks.count
     end
@@ -51,8 +56,8 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
 
   show do # rubocop:disable Metrics/BlockLength
     columns do # rubocop:disable Metrics/BlockLength
-      column do
-        attributes_table do
+      column do # rubocop:disable Metrics/BlockLength
+        attributes_table do # rubocop:disable Metrics/BlockLength
           row "Nb devis" do
             it.quote_checks.count
           end
@@ -66,6 +71,11 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
           row :renovation_type, label: "Type de rénovation"
 
           row :status
+
+          row "Correction" do
+            link_to "Dossier #{it.id}", it.frontend_webapp_url(mtm_campaign: "backoffice"),
+                    target: "_blank", rel: "noopener"
+          end
 
           row :quote_checks do |quotes_case|
             content_tag(:ul) do

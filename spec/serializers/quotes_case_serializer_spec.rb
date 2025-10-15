@@ -17,6 +17,10 @@ RSpec.describe QuotesCaseSerializer do
     )
   end
 
+  it "includes result_link" do
+    expect(json["result_link"]).to eq(quotes_case.frontend_webapp_url(mtm_campaign: "api"))
+  end
+
   context "with quote checks" do
     let!(:older_check) { create(:quote_check, case: quotes_case, created_at: 2.days.ago) }
     let!(:newer_check) { create(:quote_check, case: quotes_case, created_at: 1.day.ago) }

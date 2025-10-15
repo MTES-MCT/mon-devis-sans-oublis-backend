@@ -63,7 +63,7 @@ module QuoteCheckPostCheckMetadata
                      raise NotImplementedError, "Unknown path for profile: #{profile}"
                    end
 
-    uri = URI.join("#{ENV.fetch('FRONTEND_APPLICATION_HOST')}/", "#{profile_path}/", "televersement/", id)
+    uri = URI.join("#{ENV.fetch('FRONTEND_APPLICATION_HOST')}/", "#{profile_path}/", "devis/", id)
     uri.query = URI.encode_www_form(mtm_campaign:) if mtm_campaign
     uri.to_s
   end

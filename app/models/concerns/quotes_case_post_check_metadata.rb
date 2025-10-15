@@ -35,6 +35,23 @@ module QuotesCasePostCheckMetadata
       quote_checks.maximum(:finished_at)
   end
 
+  def frontend_webapp_url(mtm_campaign: nil) # rubocop:disable Metrics/MethodLength
+    return unless id
+
+    profile_path = case profile
+                   when "artisan" then "artisan"
+                   when "conseiller" then "conseiller"
+                   when "mandataire" then "mandataire"
+                   when "particulier" then "particulier"
+                   else
+                     raise NotImplementedError, "Unknown path for profile: #{profile}"
+                   end
+
+    uri = URI.join("#{ENV.fetch('FRONTEND_APPLICATION_HOST')}/", "#{profile_path}/", "dossier/", id)
+    uri.query = URI.encode_www_form(mtm_campaign:) if mtm_campaign
+    uri.to_s
+  end
+
   # pending if any quote_check is pending
   # valid if all quote_checks are valid
   # else invalid
