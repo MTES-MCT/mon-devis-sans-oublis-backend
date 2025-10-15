@@ -11,6 +11,7 @@ module Api
 
       def show
         # Force to use async way by using show to get other fields
+        update_result_sent_at(quote_check)
         render json: quote_check_json
       end
 
@@ -100,6 +101,13 @@ module Api
 
       def api_user
         super || "mdso" # TODO: Remove me after no basic auth anymore
+      end
+
+      def update_result_sent_at(quote_check)
+        return if quote_check.result_sent_at.present?
+        return if quote_check.status == "pending"
+
+        quote_check.update_column(:result_sent_at, Time.current) # rubocop:disable Rails/SkipsModelValidations
       end
     end
   end

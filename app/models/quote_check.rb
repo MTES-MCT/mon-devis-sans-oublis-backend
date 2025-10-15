@@ -40,6 +40,8 @@ class QuoteCheck < ApplicationRecord
   scope :with_file_error, -> { where("validation_error_details @> ?", [{ "category" => "file" }].to_json) }
   scope :with_file_type_error, -> { where("validation_error_details @> ?", [{ "code" => "file_type_error" }].to_json) }
   scope :with_price_error, -> { where("validation_error_details @> ?", [{ "category" => "geste_prices" }].to_json) }
+  scope :result_sent, -> { where.not(result_sent_at: nil) }
+  scope :result_not_sent, -> { where(result_sent_at: nil) }
 
   def set_application_version
     self.application_version = Rails.application.config.application_version

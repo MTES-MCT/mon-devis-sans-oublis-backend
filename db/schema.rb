@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_15_094500) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_14_100418) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -196,6 +196,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_15_094500) do
     t.string "reference"
     t.string "renovation_type", default: "geste", null: false
     t.jsonb "validation_control_codes"
+    t.datetime "result_sent_at"
     t.index "\"left\"((qa_result)::text, 1)", name: "index_qa_result_not_null", where: "(qa_result IS NOT NULL)"
     t.index "\"left\"((validation_errors)::text, 1)", name: "index_validation_errors_not_null", where: "(validation_errors IS NOT NULL)"
     t.index ["case_id"], name: "index_quote_checks_on_case_id"
@@ -205,6 +206,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_15_094500) do
     t.index ["profile"], name: "index_quote_checks_on_profile"
     t.index ["reference"], name: "index_quote_checks_on_reference"
     t.index ["renovation_type"], name: "index_quote_checks_on_renovation_type"
+    t.index ["result_sent_at"], name: "index_quote_checks_on_result_sent_at"
     t.index ["source_name"], name: "index_quote_checks_on_source_name"
     t.index ["started_at"], name: "index_quote_checks_on_started_at"
   end

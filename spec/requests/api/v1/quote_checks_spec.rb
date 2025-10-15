@@ -219,6 +219,31 @@ RSpec.describe "/api/v1/quote_checks" do
         end
       end
     end
+
+    context "with result_sent_at tracking" do
+      let(:quote_check) { create(:quote_check, file: quote_file, result_sent_at: nil) }
+
+      it "sets result_sent_at on first call when not pending" do
+        expect(quote_check.reload.result_sent_at).to be_present
+      end
+
+      context "when result_sent_at is already set" do # rubocop:disable RSpec/NestedGroups
+        let(:original_timestamp) { 1.day.ago }
+        let(:quote_check) { create(:quote_check, file: quote_file, result_sent_at: original_timestamp) }
+
+        it "does not update result_sent_at" do
+          expect(quote_check.reload.result_sent_at).to be_within(1.second).of(original_timestamp)
+        end
+      end
+
+      context "when quote_check is pending" do # rubocop:disable RSpec/NestedGroups
+        let(:quote_check) { create(:quote_check, :pending, file: quote_file, result_sent_at: nil) }
+
+        it "does not set result_sent_at" do
+          expect(quote_check.reload.result_sent_at).to be_nil
+        end
+      end
+    end
   end
 
   describe "PATCH /api/v1/quote_checks/:id" do
