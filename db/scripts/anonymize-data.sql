@@ -32,6 +32,7 @@ SELECT
     parent_id,
     reference,
     validation_error_edited_at,
+    result_sent_at,
     -- Anonymisation du texte sensible
     CASE 
         WHEN text IS NOT NULL THEN 'Contenu anonymisé pour export Metabase'
