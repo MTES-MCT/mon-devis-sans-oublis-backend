@@ -1,25 +1,26 @@
 {
   "siret": {
-    "title": "SIRET",
+    "x-originalName": "siret",
     "type": "string",
     "description": "",
     "x-refersTo": "http://www.datatourisme.fr/ontology/core/1.0/#siret",
-    "x-capabilities": {
-      "textAgg": true
-    },
     "x-concept": {
       "id": "siret",
       "title": "SIRET",
       "primary": true
-    }
+    },
+    "pattern": "^\\d{14}$",
+    "title": "SIRET",
+    "x-capabilities": {}
   },
   "nom_entreprise": {
+    "x-originalName": "nom_entreprise",
     "title": "Nom de l’entreprise",
+    "description": "\nCette variable désigne la raison sociale pour les personnes morales. Il s'agit du nom sous lequel est déclarée l'unité légale.\n\nCette variable est à null pour les personnes physiques.\n\nLa dénomination peut parfois contenir la mention de la forme de la société (SA, SAS, SARL, etc.).\n\nhttps://www.sirene.fr/sirene/public/variable/denominationUniteLegale\n      ",
     "type": "string",
-    "description": "",
     "x-refersTo": "http://www.w3.org/2000/01/rdf-schema#label",
     "x-capabilities": {
-      "textAgg": true
+      "textStandard": false
     },
     "x-concept": {
       "id": "label",
@@ -28,26 +29,22 @@
     }
   },
   "adresse": {
-    "title": "Adresse de l'entreprise",
-    "type": "string",
+    "x-originalName": "adresse",
+    "title": "Adresse",
     "description": "",
-    "x-refersTo": "http://schema.org/address",
-    "x-capabilities": {
-      "textAgg": true
-    },
-    "x-concept": {
-      "id": "address",
-      "title": "Adresse",
-      "primary": true
-    }
+    "type": "string",
+    "x-capabilities": {}
   },
   "code_postal": {
+    "x-originalName": "code_postal",
     "title": "Code postal",
+    "description": "Cette variable désigne le code postal de l'adresse de l'établissement.\n\nPour les adresses à l'étranger (codeCommuneEtablissement commence par 99), cette variable est à null.\n\nhttps://www.sirene.fr/sirene/public/variable/codePostalEtablissement",
     "type": "string",
-    "description": "",
     "x-refersTo": "http://schema.org/postalCode",
     "x-capabilities": {
-      "textAgg": true
+      "insensitive": false,
+      "text": false,
+      "textStandard": false
     },
     "x-concept": {
       "id": "postalCode",
@@ -56,12 +53,15 @@
     }
   },
   "commune": {
+    "x-originalName": "commune",
     "title": "Commune",
+    "description": "Cette variable indique le libellé de la commune de localisation de l'établissement si celui-ci n'est pas à l'étranger.\n\nC'est un élément constitutif de l'adresse.\n\nhttps://www.sirene.fr/sirene/public/variable/libelleCommuneEtablissement",
     "type": "string",
-    "description": "",
     "x-refersTo": "http://schema.org/City",
     "x-capabilities": {
-      "textAgg": true
+      "insensitive": false,
+      "textStandard": false,
+      "values": false
     },
     "x-concept": {
       "id": "city",
@@ -70,11 +70,15 @@
     }
   },
   "latitude": {
+    "x-originalName": "latitude",
     "title": "Latitude",
+    "description": "Latitude (en degrés décimaux = coordonnées GPS)",
     "type": "number",
-    "description": "",
     "x-refersTo": "http://schema.org/latitude",
-    "x-capabilities": {},
+    "x-capabilities": {
+      "textStandard": false,
+      "index": false
+    },
     "x-concept": {
       "id": "latitude",
       "title": "Latitude",
@@ -82,11 +86,15 @@
     }
   },
   "longitude": {
+    "x-originalName": "longitude",
     "title": "Longitude",
+    "description": "Longitude (en degrés décimaux = coordonnées GPS)",
     "type": "number",
-    "description": "",
     "x-refersTo": "http://schema.org/longitude",
-    "x-capabilities": {},
+    "x-capabilities": {
+      "textStandard": false,
+      "index": false
+    },
     "x-concept": {
       "id": "longitude",
       "title": "Longitude",
@@ -94,82 +102,102 @@
     }
   },
   "telephone": {
-    "title": "Téléphone",
+    "x-originalName": "telephone",
     "type": "string",
     "description": "",
     "x-refersTo": "https://www.w3.org/2006/vcard/ns#tel",
-    "x-capabilities": {
-      "textAgg": true
-    },
     "x-concept": {
       "id": "tel",
       "title": "N° de téléphone",
       "primary": true
-    }
+    },
+    "pattern": "^(\\d{2} \\d{2} \\d{2} \\d{2} \\d{2})?$",
+    "title": "Téléphone",
+    "x-capabilities": {}
   },
   "email": {
-    "title": "E-mail",
+    "x-originalName": "email",
     "type": "string",
     "description": "",
+    "maxLength": 110,
     "x-refersTo": "https://www.w3.org/2006/vcard/ns#email",
-    "x-capabilities": {
-      "textAgg": true
-    },
     "x-concept": {
       "id": "email",
       "title": "Adresse e-mail",
       "primary": true
-    }
+    },
+    "pattern": "(^$|^.*@.*\\..*$)",
+    "title": "E-mail",
+    "x-capabilities": {}
   },
   "site_internet": {
-    "title": "Site internet",
+    "x-originalName": "site_internet",
     "type": "string",
     "description": "",
+    "pattern": "[(http(s)?):\\/\\/(www\\.)?a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)",
+    "maxLength": 255,
     "x-refersTo": "https://schema.org/WebPage",
-    "x-capabilities": {
-      "textAgg": true
-    },
     "x-concept": {
       "id": "webPage",
       "title": "Page Web",
       "primary": true
-    }
+    },
+    "title": "Site internet",
+    "x-capabilities": {}
   },
   "code_qualification": {
-    "title": "Code qualification",
+    "x-originalName": "code_qualification",
     "type": "string",
     "description": "",
-    "x-capabilities": {
-      "textAgg": true
-    }
+    "x-transform": {
+      "expr": "",
+      "examples": [
+        ""
+      ],
+      "type": "string"
+    },
+    "pattern": "^[A-Za-z0-9-]{1,11}$",
+    "x-refersTo": "code-qualification",
+    "x-concept": {
+      "id": "code-qualification",
+      "title": "Code Qualification",
+      "primary": true
+    },
+    "title": "Code qualification",
+    "x-capabilities": {}
   },
   "nom_qualification": {
+    "x-originalName": "nom_qualification",
     "title": "Nom de la qualification",
-    "type": "string",
     "description": "",
+    "type": "string",
     "x-capabilities": {
       "textAgg": true
     }
   },
   "url_qualification": {
-    "title": "URL qualification",
+    "x-originalName": "url_qualification",
     "type": "string",
     "description": "",
+    "pattern": "[(http(s)?):\\/\\/(www\\.)?a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)",
+    "maxLength": 255,
     "x-refersTo": "http://schema.org/DigitalDocument",
-    "x-capabilities": {},
     "x-concept": {
       "id": "attachment",
       "title": "Document numérique attaché",
       "primary": true
-    }
+    },
+    "title": "URL qualification",
+    "x-capabilities": {},
+    "x-display": "text-field"
   },
   "nom_certificat": {
-    "title": "Libellé du certificat",
+    "x-originalName": "nom_certificat",
     "type": "string",
     "description": "",
-    "x-capabilities": {
-      "textAgg": true
-    },
+    "maxLength": 255,
+    "title": "Libellé du certificat",
+    "x-capabilities": {},
     "examples": [
       "QUALIBAT-RGE",
       "QualiPAC module Chauffage et ECS",
@@ -188,8 +216,8 @@
       "QualiPAC module CET",
       "AUDIT ENERGETIQUE BATIMENT",
       "CERTIBAT-RGE",
-      "Certiforage module Sonde",
-      "Certiforage module Nappe",
+      "Certification forage module Sonde",
+      "Certification forage module Nappe",
       "Qualisol Collectif",
       "RGE Etudes Audits énergétiques Batiments",
       "CERTIFACT_EUSKADI_EKO",
@@ -218,11 +246,12 @@
     "title": "Domaine de travaux",
     "description": "",
     "items": {
+      "x-originalName": "domaine",
       "type": "string",
-      "x-cardinality": 32,
       "x-capabilities": {
         "textAgg": true
       },
+      "x-cardinality": 30,
       "examples": [
         "Isolation par l'intérieur des murs ou rampants de toitures  ou plafonds",
         "Chauffe-Eau Thermodynamique",
@@ -247,22 +276,21 @@
         "Etude solaire photovoltaïque",
         "Etude forage géothermique",
         "Etude bois énergie",
-        "Etude ACV",
         "Projet complet de rénovation",
+        "Etude ACV",
         "Etude solaire thermique",
         "Etude système technique bâtiment",
         "Etude eclairage",
-        "Inconnu",
         "Etude enveloppe du bâtiment",
-        "Commisionnement",
-        "Non renseigné"
+        "Commisionnement"
       ]
     }
   },
   "meta_domaine": {
+    "x-originalName": "meta_domaine",
     "title": "Méta domaine",
-    "type": "string",
     "description": "",
+    "type": "string",
     "x-capabilities": {
       "textAgg": true
     },
@@ -270,26 +298,22 @@
       "Travaux d'efficacité énergétique",
       "Installations d'énergies renouvelables",
       "Etudes énergétiques",
-      "Rénovation globale",
-      "Inconnu",
-      "Non renseigné"
+      "Rénovation globale"
     ]
   },
   "organisme": {
-    "title": "Organisme",
+    "x-originalName": "organisme",
     "type": "string",
+    "title": "Organisme",
+    "x-capabilities": {},
+    "maxLength": 200,
     "description": "",
-    "x-capabilities": {
-      "textAgg": true
-    },
     "examples": [
       "qualibat",
       "qualitenr",
       "opqibi",
       "cnoa",
       "qualifelec",
-      "Non renseigné",
-      "Inconnu",
       "cerqual",
       "afnor",
       "certibat",
@@ -298,9 +322,10 @@
     ]
   },
   "particulier": {
-    "title": "Travaille pour les particuliers",
+    "x-originalName": "particulier",
     "type": "boolean",
     "description": "",
+    "title": "Travaille pour les particuliers",
     "x-capabilities": {},
     "examples": [
       "true",
@@ -308,17 +333,33 @@
     ]
   },
   "lien_date_debut": {
-    "title": "Date de début de qualification",
+    "x-originalName": "lien_date_debut",
     "type": "string",
     "format": "date",
-    "description": "Cette date correspond à la date de début de qualification transmise par l'organisme de qualification",
+    "description": "",
+    "dateFormat": "YYYY/M/D",
+    "x-refersTo": "https://schema.org/startDate",
+    "x-concept": {
+      "id": "startDate",
+      "title": "Date de début",
+      "primary": true
+    },
+    "title": "Date de début de qualification",
     "x-capabilities": {}
   },
   "lien_date_fin": {
-    "title": "Date de fin de qualification",
+    "x-originalName": "lien_date_fin",
     "type": "string",
     "format": "date",
-    "description": "Cette date correspond à la date de fin de qualification transmise par l'organisme de qualification",
+    "description": "",
+    "dateFormat": "YYYY/M/D",
+    "x-refersTo": "https://schema.org/endDate",
+    "x-concept": {
+      "id": "endDate",
+      "title": "Date de fin",
+      "primary": true
+    },
+    "title": "Date de fin de qualification",
     "x-capabilities": {}
   },
   "_file.content": {
