@@ -38,21 +38,4 @@ module QuoteCheckBackoffice
   included do
     attr_accessor :process_synchronously
   end
-
-  def frontend_webapp_url(mtm_campaign: nil)
-    return unless id
-
-    profile_path = case profile
-                   when "artisan" then "artisan"
-                   when "conseiller" then "conseiller"
-                   when "mandataire" then "mandataire"
-                   when "particulier" then "particulier"
-                   else
-                     raise NotImplementedError, "Unknown path for profile: #{profile}"
-                   end
-
-    uri = URI.join("#{ENV.fetch('FRONTEND_APPLICATION_HOST')}/", "#{profile_path}/", "televersement/", id)
-    uri.query = URI.encode_www_form(mtm_campaign:) if mtm_campaign
-    uri.to_s
-  end
 end

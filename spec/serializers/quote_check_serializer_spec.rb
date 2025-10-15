@@ -12,7 +12,6 @@ RSpec.describe QuoteCheckSerializer, type: :serializer do
 
   describe "serialization" do
     it "includes result_link" do
-      expect(json).to have_key("result_link")
       expect(json["result_link"]).to eq(quote_check.frontend_webapp_url(mtm_campaign: "api"))
     end
 
