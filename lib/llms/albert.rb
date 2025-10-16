@@ -19,7 +19,9 @@ module Llms
     DEFAULT_MODEL = ENV.fetch("ALBERT_MODEL", "albert-large")
     HOST = "https://albert.api.etalab.gouv.fr/v1"
 
-    def initialize(prompt, json_schema: nil, model: DEFAULT_MODEL, result_format: :json)
+    def initialize(prompt, # rubocop:disable Metrics/ParameterLists
+                   json_schema: nil, model: DEFAULT_MODEL, result_format: :json,
+                   xml_root_name: nil, xml_root_attrs: nil)
       super
       @api_key = ENV.fetch("ALBERT_API_KEY")
     end

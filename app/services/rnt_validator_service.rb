@@ -15,14 +15,26 @@ class RntValidatorService
   end
 
   # Complete the RNT JSON with required donnees_contextuelles
-  def self.complete_json_for_rnt(json, aide_financiere_collection:)
+  def self.complete_json_for_rnt(json, aide_financiere_collection:) # rubocop:disable Metrics/MethodLength
+    projet_travaux = json["projet_travaux"]
+
+    unless projet_travaux
+      return complete_json_for_rnt({
+                                     "projet_travaux" => json
+                                   }, aide_financiere_collection:)
+    end
+
     json.merge(
-      "donnees_contextuelles" => {
-        "version" => RntSchema::VERSION,
-        "contexte" => "devis",
-        "usage_batiment" => "appartement_chauffage_individuel", # TODO: Remove me when optional
-        "aide_financiere_collection" => Array.wrap(aide_financiere_collection)
-      }.merge(json["donnees_contextuelles"] || {})
+      "projet_travaux" => projet_travaux.merge(
+        {
+          "donnees_contextuelles" => {
+            "version" => RntSchema::VERSION,
+            "contexte" => "devis",
+            "usage_batiment" => "appartement_chauffage_individuel", # TODO: Remove me when optional
+            "aide_financiere_collection" => Array.wrap(aide_financiere_collection)
+          }.merge(projet_travaux["donnees_contextuelles"] || {})
+        }
+      )
     )
   end
 
@@ -30,13 +42,18 @@ class RntValidatorService
     quote_check.anonymized_text.present?
   end
 
-  def self.rnt_json_to_xml(json, aide_financiere_collection:)
+  def self.rnt_json_to_xml(json, aide_financiere_collection:) # rubocop:disable Metrics/MethodLength
     rnt_xsd_schema = File.read(RntSchema::XSD_PATH)
     json_to_xml_prompt = "Transforme le JSON suivant en XML conforme au schéma du RNT (Référentiel National des Travaux) fourni. Le XML doit être strictement conforme au schéma XSD du RNT. #{rnt_xsd_schema} Ne pas ajouter d'éléments ou d'attributs non définis dans le schéma. Voici le JSON :" # rubocop:disable Layout/LineLength
-    Llms::Mistral.new(
+    llm_call = Llms::Albert.new( # Mistral still render JSON instead of XML
       json_to_xml_prompt,
-      result_format: :xml
-    ).chat_completion(
+      result_format: :xml,
+
+      xml_root_name: "rnt",
+      xml_root_attrs: { version: RntSchema::VERSION }
+    )
+
+    llm_call.chat_completion(
       complete_json_for_rnt(json, aide_financiere_collection:)
     )
   end
@@ -54,7 +71,7 @@ class RntValidatorService
     #   json_prompt,
     #   json_schema: rnt_json_schema,
     #   result_format: :json
-    # ).chat_completion(text)
+    # ).chat_completion(text).deep_transform_keys(&:to_s)
 
     # Option B: Using only the relevant subset of the RNT Schema for Works (travaux)
     prompt = Rails.root.join("lib/rnt/rnt_works_data_prompts/global.txt").read
@@ -65,7 +82,7 @@ class RntValidatorService
           "travaux" => travaux_json.fetch(:travaux, travaux_json["travaux"])
         }
       }
-    }
+    }.deep_transform_keys(&:to_s)
   end
 
   # Validate the QuoteCheck and return a hash with:
