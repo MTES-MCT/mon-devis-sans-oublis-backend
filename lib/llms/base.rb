@@ -6,12 +6,16 @@ module Llms
     class ResultError < StandardError; end
     class TimeoutError < ResultError; end
 
-    attr_reader :json_schema, :model, :prompt, :result_format
+    attr_reader :prompt,
+                :json_schema, :model, :result_format,
+                :xml_root_name, :xml_root_attrs
 
     RESULT_FORMATS = %i[numbered_list json xml].freeze
     REQUEST_TIMEOUT = 300 # seconds
 
-    def initialize(prompt, json_schema: nil, model: nil, result_format: :json)
+    def initialize(prompt, # rubocop:disable Metrics/ParameterLists
+                   json_schema: nil, model: nil, result_format: :json,
+                   xml_root_name: nil, xml_root_attrs: nil)
       @prompt = prompt
 
       raise NotImplementedError, "JSON Schema with $ref are not supported" if json_schema&.to_json&.include?("$ref")
@@ -22,6 +26,9 @@ module Llms
       raise ArgumentError, "Invalid result format: #{result_format}" unless RESULT_FORMATS.include?(result_format)
 
       @result_format = result_format
+
+      @xml_root_name = xml_root_name
+      @xml_root_attrs = xml_root_attrs
     end
 
     def compacted_schema
@@ -96,10 +103,13 @@ module Llms
     # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/AbcSize
 
-    def self.extract_xml(text)
+    def self.extract_xml(text, xml_root_name: nil, xml_root_attrs: nil)
       return text[/```xml(.+)```/im, 1]&.strip if text&.match?(/```xml\n/i)
 
-      text[%r{<\?xml.+</.+>}im, 0]&.strip
+      return text[%r{<\?xml.+</.+>}im, 0]&.strip if text&.match?(/<\?xml\n/i)
+
+      json_string = extract_json(text)
+      JsonToXml.convert(json_string, root_name: xml_root_name, root_attrs: xml_root_attrs) if json_string
     end
 
     def self.include_null_bytes?(text)
@@ -152,7 +162,7 @@ module Llms
           self.class.extract_numbered_list(content).to_h { [it.fetch(:label), it.fetch(:value)] }
         )
       when :xml
-        self.class.extract_xml(content)
+        self.class.extract_xml(content, xml_root_name:, xml_root_attrs:)
       else # :json
         json = content.deep_symbolize_keys if content.is_a?(Hash)
 
