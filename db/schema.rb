@@ -10,9 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_14_100418) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_20_073344) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "action_mailbox_inbound_emails", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "status", default: 0, null: false
+    t.string "message_id", null: false
+    t.string "message_checksum", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["message_id", "message_checksum"], name: "index_action_mailbox_inbound_emails_uniqueness", unique: true
+  end
 
   create_table "active_storage_attachments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
@@ -197,9 +206,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_100418) do
     t.string "renovation_type", default: "geste", null: false
     t.jsonb "validation_control_codes"
     t.datetime "result_sent_at"
+    t.string "email"
     t.index "\"left\"((qa_result)::text, 1)", name: "index_qa_result_not_null", where: "(qa_result IS NOT NULL)"
     t.index "\"left\"((validation_errors)::text, 1)", name: "index_validation_errors_not_null", where: "(validation_errors IS NOT NULL)"
     t.index ["case_id"], name: "index_quote_checks_on_case_id"
+    t.index ["email"], name: "index_quote_checks_on_email"
     t.index ["file_id"], name: "index_quote_checks_on_file_id"
     t.index ["finished_at"], name: "index_quote_checks_on_finished_at"
     t.index ["parent_id"], name: "index_quote_checks_on_parent_id"
@@ -247,6 +258,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_14_100418) do
     t.datetime "finished_at"
     t.jsonb "validation_error_edits"
     t.datetime "validation_error_edited_at"
+    t.string "email"
+    t.index ["email"], name: "index_quotes_cases_on_email"
     t.index ["reference"], name: "index_quotes_cases_on_reference"
     t.index ["renovation_type"], name: "index_quotes_cases_on_renovation_type"
     t.index ["source_name"], name: "index_quotes_cases_on_source_name"

@@ -15,9 +15,16 @@ VCR.configure do |config|
 
   # Filter sensitive data
   config.filter_sensitive_data("<ALBERT_API_KEY>") { ENV.fetch("ALBERT_API_KEY", "ALBERT_API_KEY") }
+  config.filter_sensitive_data("<BREVO_API_KEY>") { ENV.fetch("BREVO_API_KEY", "BREVO_API_KEY") }
+  config.filter_sensitive_data("<BREVO_SMTP_USER_NAME>") { ENV.fetch("BREVO_SMTP_USER_NAME", "BREVO_SMTP_USER_NAME") }
+  config.filter_sensitive_data("<BREVO_SMTP_PASSWORD>") { ENV.fetch("BREVO_SMTP_PASSWORD", "BREVO_SMTP_PASSWORD") }
   config.filter_sensitive_data("<MDSO_OCR_API_KEY>") { ENV.fetch("MDSO_OCR_API_KEY", "MDSO_OCR_API_KEY") }
   config.filter_sensitive_data("<MDSO_OCR_HOST>") { ENV.fetch("MDSO_OCR_HOST", "http://MDSO_OCR_HOST") }
   config.filter_sensitive_data("<MISTRAL_API_KEY>") { ENV.fetch("MISTRAL_API_KEY", "MISTRAL_API_KEY") }
+  config.filter_sensitive_data("<RAILS_INBOUND_EMAIL_PASSWORD>") do
+    ENV.fetch("RAILS_INBOUND_EMAIL_PASSWORD", "RAILS_INBOUND_EMAIL_PASSWORD")
+  end
+
   # Filter any other potential sensitive key
   sensitive_keys = %w[ALBERT_API_KEY MDSO_OCR_API_KEY MDSO_OCR_HOST MISTRAL_API_KEY]
   ENV.each do |key, value|

@@ -5,10 +5,14 @@ if [ -f /app/tmp/pids/server.pid ]; then
   rm /app/tmp/pids/server.pid
 fi
 
-if [ -n "$SILENT_MIGRATION" ]; then
-  bin/rails db:create && bin/rails db:migrate > /dev/null
+if [ -n "$NO_DATABASE" ]; then
+  echo "Skipping database setup as NO_DATABASE is set"
 else
-  bin/rails db:create && bin/rails db:migrate
+  if [ -n "$SILENT_MIGRATION" ]; then
+    bin/rails db:create && bin/rails db:migrate > /dev/null
+  else
+    bin/rails db:create && bin/rails db:migrate
+  fi
 fi
 
 exec "$@"

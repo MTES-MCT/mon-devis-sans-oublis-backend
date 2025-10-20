@@ -30,6 +30,11 @@ module MesDevisSansOublis
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
 
+    # Generated via `rails db:encryption:init`
+    config.active_record.encryption.primary_key = ENV.fetch("ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY", nil)
+    config.active_record.encryption.deterministic_key = ENV.fetch("ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY", nil)
+    config.active_record.encryption.key_derivation_salt = ENV.fetch("ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT", nil)
+
     config.i18n.default_locale = :fr
     config.i18n.fallbacks = [:fr]
     config.i18n.available_locales = [:fr]

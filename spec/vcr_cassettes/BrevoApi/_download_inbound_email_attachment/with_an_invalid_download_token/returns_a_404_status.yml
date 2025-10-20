@@ -1,0 +1,69 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.brevo.com/v3/inbound/attachments/invalid_download_token_example?headers%5BAccept%5D=application/octet-stream
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Api-Key:
+      - "<BREVO_API_KEY>"
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      User-Agent:
+      - Faraday v2.14.0
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 400
+      message: Bad Request
+    headers:
+      Date:
+      - Sat, 01 Nov 2025 09:08:12 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '66'
+      Connection:
+      - keep-alive
+      Cf-Ray:
+      - 997a3f0b2e04f5d7-AMS
+      Vary:
+      - Origin, Accept-Encoding
+      X-Xss-Protection:
+      - '0'
+      X-Frame-Options:
+      - SAMEORIGIN
+      Strict-Transport-Security:
+      - max-age=0; includeSubDomains
+      X-Download-Options:
+      - noopen
+      X-Content-Type-Options:
+      - nosniff
+      Etag:
+      - W/"42-kDgws7n4xehw1TQ7dO2eZxoQkKc"
+      X-Envoy-Upstream-Service-Time:
+      - '40'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Sib-Request-Id:
+      - 7c0830ee-90bc-98ff-bd52-58e3c1f67ed4
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - PUT, POST, GET, DELETE, PATCH, OPTIONS
+      Cf-Cache-Status:
+      - DYNAMIC
+      Server:
+      - cloudflare
+    body:
+      encoding: UTF-8
+      string: '{"code":"invalid_parameter","message":"Download token is invalid"}'
+  recorded_at: Sat, 01 Nov 2025 09:08:12 GMT
+recorded_with: VCR 6.3.1
