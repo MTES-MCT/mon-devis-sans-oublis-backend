@@ -135,11 +135,36 @@ psql $SOURCE_DB_URL -f "$SCRIPT_DIR/cleanup-anonymized-source-data.sql"
 # Comptage des enregistrements exportés
 TOTAL_RECORDS=$(psql $TARGET_DB_URL -t -c "
 SELECT 
-    (SELECT count(*) FROM mdso_analytics.quote_checks) +
-    (SELECT count(*) FROM mdso_analytics.quote_check_feedbacks) +
-    (SELECT count(*) FROM mdso_analytics.quotes_cases) +
-    (SELECT count(*) FROM mdso_analytics.quote_error_edits) +
-    (SELECT count(*) FROM mdso_analytics.processing_logs)
+    (SELECT count(*) FROM mdso_analytics.quote_checks
+     WHERE EXISTS (
+         SELECT 1 FROM information_schema.tables 
+         WHERE table_schema = 'mdso_analytics' 
+         AND table_name = 'quote_checks'
+     )) +
+    (SELECT count(*) FROM mdso_analytics.quote_check_feedbacks
+     WHERE EXISTS (
+         SELECT 1 FROM information_schema.tables 
+         WHERE table_schema = 'mdso_analytics' 
+         AND table_name = 'quote_check_feedbacks'
+     )) +
+    (SELECT count(*) FROM mdso_analytics.quotes_cases
+     WHERE EXISTS (
+         SELECT 1 FROM information_schema.tables 
+         WHERE table_schema = 'mdso_analytics' 
+         AND table_name = 'quotes_cases'
+     )) +
+    (SELECT count(*) FROM mdso_analytics.quote_error_edits
+     WHERE EXISTS (
+         SELECT 1 FROM information_schema.tables 
+         WHERE table_schema = 'mdso_analytics' 
+         AND table_name = 'quote_error_edits'
+     )) +
+    (SELECT count(*) FROM mdso_analytics.processing_logs
+     WHERE EXISTS (
+         SELECT 1 FROM information_schema.tables 
+         WHERE table_schema = 'mdso_analytics' 
+         AND table_name = 'processing_logs'
+     )) +
 ;" | tr -d ' ' || echo "0")
 
 # Log de succès
