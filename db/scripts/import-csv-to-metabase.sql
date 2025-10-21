@@ -19,6 +19,7 @@ CREATE TABLE mdso_analytics.quote_checks (
     parent_id UUID,
     reference VARCHAR(100),
     validation_error_edited_at TIMESTAMP,
+    result_sent_at TIMESTAMP,
     text TEXT,
     comment TEXT
 );
