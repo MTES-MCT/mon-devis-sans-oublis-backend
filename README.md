@@ -94,6 +94,8 @@ cp .env.example .env.docker
 | `PROCONNECT_CLIENT_SECRET`                     |             | `hash`                            | Optionnel    |
 | `PROCONNECT_DOMAIN`                     |             | `https://auth.agentconnect.gouv.fr/api/v2`, `https://fca.integ01.dev-agentconnect.fr/api/v2`                            | Optionnel    |
 | `QUOTE_CHECK_EMAIL_RECIPIENTS`       | Emails pour être informé des dépôts | `toto@gouv.fr,tata@gouv.fr`                              | Optionnel |
+| `RAILS_ENV`                     | Environnement global du framework             | `production` ou `development` en local                            | Optionnel    |
+| `RAILS_INBOUND_EMAIL_PASSWORD`                     | Secret pour authentifier les appels emails             | via `bin/rails secret`                            | Optionnel    |
 | `RNT_SKIP_SSL_VERIFICATION`                     | Ne pas vérifier la connexion SSL avec le Web Service RNT             | `false`                            | Optionnel    |
 | `SENTRY_DSN`       | DSN Sentry pour le tracking d'erreurs | `https://xxx@sentry.io/xxx`                              | Optionnel |
 | `SENTRY_ENVIRONMENT`       | Environnement Sentry pour le tracking d'erreurs | `$APP_ENV`                              | Optionnel |
@@ -247,7 +249,13 @@ Différentes briques sont mises à contribution et encore en évaluation via le 
 
 `docker compose exec web rake 'quote_checks:create[tmp/devis_tests/DC004200PAC-Aireau+Chauffe eau thermo.pdf]' | less`
 
-#### Re-vérifier devis
+#### Vérifier un devis via email
+
+En mode local `development`
+
+Aller sur http://localhost:3000/rails/conductor/action_mailbox/inbound_emails pour suivre les mails entrants
+
+#### Re-vérifier un devis
 
 ```
 quote_check_id = "b9705194-02aa-4db7-bc38-5fc2dcb6ce58"
