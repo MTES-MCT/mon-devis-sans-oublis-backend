@@ -167,6 +167,8 @@ SELECT
      )) +
 ;" | tr -d ' ' || echo "0")
 
+TOTAL_RECORDS=${TOTAL_RECORDS:-0}
+
 # Log de succès
 psql $SOURCE_DB_URL -c "INSERT INTO export_logs (status, message, records_exported) VALUES ('success', 'Export CSV terminé avec succès', $TOTAL_RECORDS);"
 
