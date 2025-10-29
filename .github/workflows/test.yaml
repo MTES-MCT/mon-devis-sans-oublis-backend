@@ -19,7 +19,7 @@ jobs:
     uses: ./.github/workflows/build.yaml
   security-dependencies:
     name: "Security: bundle-audit dependencies"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     needs: build
     steps:
       - uses: docker/setup-buildx-action@v3
@@ -34,7 +34,7 @@ jobs:
             bash -c "bundle exec bundle-audit check --update"
   security-audit:
     name: "Security: Brakeman audit"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     needs: build
     steps:
       - uses: docker/setup-buildx-action@v3
@@ -51,7 +51,7 @@ jobs:
             bash -c "bundle exec brakeman -q -w2"
   lint:
     name: "Linting: Rubocop"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     needs: build
     steps:
       - uses: docker/setup-buildx-action@v3
@@ -68,7 +68,7 @@ jobs:
             bash -c "bundle exec rubocop"
   unit-tests:
     name: "Unit tests: RSpec"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     needs: build
     services:
       postgres:
@@ -110,7 +110,7 @@ jobs:
             bash -c "bundle exec rspec"
   code-quality:
     name: "Code Quality: RubyCritic"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     needs: build
     steps:
       - uses: docker/setup-buildx-action@v3
