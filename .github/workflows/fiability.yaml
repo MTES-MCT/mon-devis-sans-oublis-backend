@@ -22,7 +22,7 @@ jobs:
     uses: ./.github/workflows/build.yaml
   fiability:
     name: "Fiability tests"
-    runs-on: ubuntu-24.04-slim
+    runs-on: ubuntu-slim
     needs: build
     environment: production
     services:
