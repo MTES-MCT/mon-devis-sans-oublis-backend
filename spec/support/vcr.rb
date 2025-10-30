@@ -18,10 +18,11 @@ VCR.configure do |config|
   config.filter_sensitive_data("<MDSO_OCR_API_KEY>") { ENV.fetch("MDSO_OCR_API_KEY", "MDSO_OCR_API_KEY") }
   config.filter_sensitive_data("<MDSO_OCR_HOST>") { ENV.fetch("MDSO_OCR_HOST", "http://MDSO_OCR_HOST") }
   config.filter_sensitive_data("<MISTRAL_API_KEY>") { ENV.fetch("MISTRAL_API_KEY", "MISTRAL_API_KEY") }
-
   # Filter any other potential sensitive key
+  sensitive_keys = %w[ALBERT_API_KEY MDSO_OCR_API_KEY MDSO_OCR_HOST MISTRAL_API_KEY]
   ENV.each do |key, value|
-    next if config.filtered_values.values.include?(value)
+    next if sensitive_keys.include?(key)
+    next if value.blank?
 
     if key.include?("API_KEY") || key.include?("PASSWORD") || key.include?("SECRET")
       config.filter_sensitive_data("<#{key}>") { value }
