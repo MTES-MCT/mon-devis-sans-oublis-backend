@@ -81,6 +81,6 @@ class DataAdeme
   def format_phone(phone)
     phone = "0#{phone}" if phone&.scan(/\d/)&.length == 9 # Add leading 0 if missing
 
-    phone.scan(/\d{1,2}/).join(" ")
+    phone&.scan(/\d{1,2}/)&.join(" ")
   end
 end
