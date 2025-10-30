@@ -69,9 +69,18 @@ class DataAdeme
     results&.map do |result|
       result.merge(
         "domaine" => Array.wrap(result["domaine"]), # Ensure Array as in schema
-        # Remove empty "http://" value that not match the Regex
-        "site_internet" => result["site_internet"]&.gsub(%r{https?://$}i, "")&.strip
+        # Remove empty "http://" value that not match the Regex in documentation
+        "site_internet" => result["site_internet"]&.gsub(%r{https?://$}i, "")&.strip,
+        "telephone" => format_phone(result["telephone"])
       )
     end
+  end
+
+  # format_phone("76653196X") => "07 66 53 19 6X"
+  # So it matches the Regex in documentation
+  def format_phone(phone)
+    phone = "0#{phone}" if phone&.scan(/\d/)&.length == 9 # Add leading 0 if missing
+
+    phone.scan(/\d{1,2}/).join(" ")
   end
 end
