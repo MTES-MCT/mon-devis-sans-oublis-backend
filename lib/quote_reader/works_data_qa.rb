@@ -42,7 +42,7 @@ module QuoteReader
         gestes: attributes[:gestes]&.map do |geste|
           geste.merge(
             numero_ligne: geste[:numero_ligne]&.to_s,
-            surface_isolant: Float(geste[:surface_isolant]) rescue nil
+            surface_isolant: Float(geste[:surface_isolant], exception: false)
           ).compact
         end
       )&.compact.presence
