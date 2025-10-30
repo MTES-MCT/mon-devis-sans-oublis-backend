@@ -58,10 +58,12 @@ module QuoteReader
         sirets: Array.wrap(
           attributes[:sirets] ||
           attributes[:pro_sirets] ||
-          attributes[:sirens]
+          attributes[:sirens] ||
+          attributes[:siren]
         ).map(&:to_s).presence,
         pro_sirets: nil, # cleaned up
         sirens: nil, # cleaned up
+        siren: nil, # cleaned up
 
         ville_immatriculation_rcss: Array.wrap(
           attributes[:ville_immatriculation_rcss] ||
