@@ -1,0 +1,15 @@
+name: Validate Workflow
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-slim
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate YAML
+        run: |
+          pip install yamllint --no-warn-script-location
+          /home/runner/.local/bin/yamllint .github/workflows/
