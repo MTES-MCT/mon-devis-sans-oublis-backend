@@ -45,6 +45,7 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
       it.quote_checks.count
     end
     column "Source", :source_name
+    column "Email", :email
     column "Référence", :reference
     column :created_at, sortable: :created_at do
       local_time(it.created_at)
@@ -62,6 +63,7 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
             it.quote_checks.count
           end
           row :source_name, label: "Source"
+          row :email, label: "Email"
           row :reference, label: "Référence"
           row :created_at do
             local_time(it.created_at)
