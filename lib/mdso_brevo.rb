@@ -90,6 +90,8 @@ class MdsoBrevo
     quote_check_service = QuoteCheckService.new(*quote_check_args[0..3], **quote_check_args[4])
     quote_check = quote_check_service.quote_check
 
+    QuoteCheckMailer.created_from_email(quote_check).deliver_later
+
     QuoteFileSecurityScanJob.perform_later(quote_check.file.id)
     QuoteCheckCheckJob.perform_later(quote_check.id)
 
@@ -130,7 +132,8 @@ class MdsoBrevo
       {
         content_type:,
         case_id: quotes_case&.id,
-        source_name:
+        source_name:,
+        email: from
       }
     ]
     create_quote_check(quote_check_args)

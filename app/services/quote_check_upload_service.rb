@@ -6,7 +6,7 @@ class QuoteCheckUploadService
               :profile, :renovation_type,
               :content_type, :metadata, :case_id, :parent_id,
               :file_text, :file_markdown,
-              :reference, :source_name,
+              :reference, :source_name, :email,
               :quote_check
 
   # rubocop:disable Metrics/ParameterLists
@@ -14,7 +14,7 @@ class QuoteCheckUploadService
     tempfile, filename, profile, renovation_type,
     content_type: nil, metadata: nil, case_id: nil, parent_id: nil,
     file_text: nil, file_markdown: nil,
-    reference: nil, source_name: nil
+    reference: nil, source_name: nil, email: nil
   )
     @tempfile = tempfile
     @filename = filename
@@ -31,6 +31,7 @@ class QuoteCheckUploadService
     @parent_id = parent_id
     @reference = reference
     @source_name = source_name
+    @email = email
   end
   # rubocop:enable Metrics/ParameterLists
 
@@ -50,6 +51,7 @@ class QuoteCheckUploadService
       parent_id:,
       reference:,
       source_name:,
+      email:,
 
       file_text:,
       file_markdown:
