@@ -10,7 +10,7 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
     profile = nil, renovation_type = nil,
     content_type: nil, metadata: nil, case_id: nil, parent_id: nil,
     file_text: nil, file_markdown: nil,
-    reference: nil, source_name: nil,
+    reference: nil, source_name: nil, email: nil,
     save: true
   )
     @quote_check = if tempfile_or_quote_check.is_a?(QuoteCheck)
@@ -20,7 +20,7 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
                        tempfile_or_quote_check, filename, profile, renovation_type,
                        file_text:, file_markdown:,
                        content_type:, metadata:, case_id:, parent_id:,
-                       reference:, source_name:
+                       reference:, source_name:, email:
                      ).upload
                    end
     @save = save
@@ -76,6 +76,8 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
         end
       end
     end
+
+    QuoteCheckMailer.results_available(quote_check).deliver_later if quote_check.email
 
     quote_check
   end

@@ -77,6 +77,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
     end
 
     column "Source", :source_name
+    column "Email", :email
     column "Référence", :reference
 
     column "Statut", :status
