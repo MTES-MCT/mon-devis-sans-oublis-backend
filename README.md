@@ -73,6 +73,8 @@ cp .env.example .env.docker
 | `FRONTEND_APPLICATION_HOST`                     | Host du frontend pour autoriser API            | `http://localhost:3001`, `https://mon-devis-sans-oublis.beta.gouv.fr`                            | Optionnel    |
 | `GOOD_JOB_PASSWORD`                     | Mot de passe accès au Back Office Jobs            | `secret`                            | Requis    |
 | `GOOD_JOB_USERNAME`                     | Utilisateur accès au Back Office Jobs            | `secret`                            | Requis    |
+| `INBOUND_MAIL_DOMAIN`                     | Domaine de(s) email(s) de réception (vérifié sous Brevo et avec DNS MX) pour utiliser `devis@mail.domain.gouv.fr` par exemple            | `mail.domain.gouv.fr`                            | Optionnel    |
+| `INBOUND_WEBHOOK_HOST`                     | Domaine pour webhook email différent du courant            | `sub.domain.gouv.fr`                            | Optionnel    |
 | `MATOMO_SITE_ID`                     |             | `123`                            | Optionnel    |
 | `MATOMO_TOKEN_AUTH`                     |             | `hash`                            | Optionnel    |
 | `MDSO_API_KEY_FOR_MDSO`                     | Clé API pour frontend            | `hash` via `rake secret`                           | Optionnel    |
@@ -94,6 +96,8 @@ cp .env.example .env.docker
 | `PROCONNECT_CLIENT_SECRET`                     |             | `hash`                            | Optionnel    |
 | `PROCONNECT_DOMAIN`                     |             | `https://auth.agentconnect.gouv.fr/api/v2`, `https://fca.integ01.dev-agentconnect.fr/api/v2`                            | Optionnel    |
 | `QUOTE_CHECK_EMAIL_RECIPIENTS`       | Emails pour être informé des dépôts | `toto@gouv.fr,tata@gouv.fr`                              | Optionnel |
+| `RAILS_ENV`                     | Environnement global du framework             | `production` ou `development` en local                            | Optionnel    |
+| `RAILS_INBOUND_EMAIL_PASSWORD`                     | Secret pour authentifier les appels emails             | via `bin/rails secret`                            | Optionnel    |
 | `RNT_SKIP_SSL_VERIFICATION`                     | Ne pas vérifier la connexion SSL avec le Web Service RNT             | `false`                            | Optionnel    |
 | `SENTRY_DSN`       | DSN Sentry pour le tracking d'erreurs | `https://xxx@sentry.io/xxx`                              | Optionnel |
 | `SENTRY_ENVIRONMENT`       | Environnement Sentry pour le tracking d'erreurs | `$APP_ENV`                              | Optionnel |
@@ -247,7 +251,20 @@ Différentes briques sont mises à contribution et encore en évaluation via le 
 
 `docker compose exec web rake 'quote_checks:create[tmp/devis_tests/DC004200PAC-Aireau+Chauffe eau thermo.pdf]' | less`
 
-#### Re-vérifier devis
+#### Vérifier un devis via email
+
+En mode local `development`
+
+Aller sur http://localhost:3000/rails/conductor/action_mailbox/inbound_emails pour suivre les mails entrants
+
+Pour les autres environnements `staging` et `production`:
+
+- suivez la [documentation Inbound Parsing Brevo](https://developers.brevo.com/docs/inbound-parse-webhooks)
+- configurez les variables d'environnement `BREVO*` et `RAILS_INBOUND*`
+- lancez l'upsert du Webhook via `rake brevo:setup_webhook` car uniquement faisable via API Brevo et ⚠️ invisible sur l'interface même présent
+- testez et utilisez
+
+#### Re-vérifier un devis
 
 ```
 quote_check_id = "b9705194-02aa-4db7-bc38-5fc2dcb6ce58"

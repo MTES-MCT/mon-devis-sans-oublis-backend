@@ -1,0 +1,57 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.brevo.com/v3/webhooks
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Api-Key:
+      - "<BREVO_API_KEY>"
+      Content-Type:
+      - application/json
+      Accept:
+      - application/json
+      User-Agent:
+      - Faraday v2.14.0
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 31 Oct 2025 14:30:51 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Envoy-Upstream-Service-Time:
+      - '81'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Sib-Request-Id:
+      - 18df9d6f-92a6-9470-aca7-facb3cc3c987
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - "*"
+      Access-Control-Allow-Methods:
+      - PUT, POST, GET, DELETE, PATCH, OPTIONS
+      Cf-Cache-Status:
+      - DYNAMIC
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 9973da4a6b90fb8b-AMS
+    body:
+      encoding: ASCII-8BIT
+      string: '{"webhooks":[{"url":"https://reply.example.com/<MDSO_API_KEY_FOR_MDSO>-brevo","id":1618890,"description":"","events":["hardBounce","spam","delivered","uniqueProxyOpen","blocked","request","opened","error","proxyOpen","softBounce","click","invalid","deferred","uniqueOpened","unsubscribed"],"type":"transactional","channel":"email","createdAt":"2025-10-29T14:18:02.000+01:00","modifiedAt":"2025-10-29T14:18:02.000+01:00","batched":false,"auth":{"type":"bearer","token":"83ebd0c63a93280c40d172750a4f547abd956adc3c66f0c2d297fba8ea0ccee770deb1f965d204db78fefabeec78b6ce23dcd2a69b7da6396f376e152661031b"}}]}
+
+        '
+  recorded_at: Fri, 31 Oct 2025 14:30:51 GMT
+recorded_with: VCR 6.3.1

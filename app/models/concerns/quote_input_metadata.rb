@@ -10,6 +10,8 @@ module QuoteInputMetadata
   RENOVATION_TYPES = %w[geste ampleur].freeze
 
   included do
+    encrypts :email, deterministic: true # For searching
+
     validates :source_name, presence: true
     validates :profile, presence: true, inclusion: { in: PROFILES + DEPRECATED_PROFILES }
 

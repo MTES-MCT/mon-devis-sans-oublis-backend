@@ -47,6 +47,7 @@ jobs:
           docker run \
             -e DATABASE_URL="${{ env.DATABASE_URL }}" \
             -e REDIS_URL="${{ env.REDIS_URL }}" \
+            -e NO_DATABASE="true" \
             --rm rails-template \
             bash -c "bundle exec brakeman -q -w2"
   lint:
