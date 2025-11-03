@@ -37,7 +37,7 @@ module QuoteReader
         devis_nos: nil, # cleaned up
         no_devis: nil, # cleaned up
 
-        type_fichier: Array.wrap(attributes[:type_fichier]).presence&.map(&:to_s)&.first,
+        type_fichier: Array.wrap(attributes[:type_fichier]).flatten.presence&.map(&:to_s)&.first,
 
         gestes: attributes[:gestes]&.map do |geste|
           geste.merge(
