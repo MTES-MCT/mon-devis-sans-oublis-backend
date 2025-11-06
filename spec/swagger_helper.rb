@@ -306,7 +306,8 @@ RSpec.configure do |config|
               type: :string,
               description: "UUID unique"
             },
-            parent_id: { type: :string, nullable: true },
+            # TODO: manage QuoteCheck update in QuotesCase
+            # parent_id: { type: :string, nullable: true }, # NOT IMPLEMENTD
             case_id: {
               type: :string,
               nullable: true,

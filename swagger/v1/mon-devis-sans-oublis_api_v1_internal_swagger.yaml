@@ -2014,9 +2014,6 @@ components:
         id:
           type: string
           description: UUID unique
-        parent_id:
-          type: string
-          nullable: true
         case_id:
           type: string
           nullable: true
