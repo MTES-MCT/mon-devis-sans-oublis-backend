@@ -8,6 +8,8 @@ class MdsoBrevo
               :quotes_case,
               :quote_checks
 
+  MAX_INBOUND_EMAILS_PER_DAY = 20
+
   def initialize(email_params)
     @email_params = email_params
   end
@@ -46,10 +48,13 @@ class MdsoBrevo
   def import_quote_check # rubocop:disable Metrics/MethodLength
     raise ActiveRecord::RecordNotFound, "No matching Inbound Email found" unless to
 
+    check_inbound_email_limit!
+
     if attachments.size > 1
       @quotes_case = QuotesCase.create!(
         source_name:,
         email: from,
+        email_to: to,
         profile:,
         renovation_type:
       )
@@ -85,12 +90,23 @@ class MdsoBrevo
     email_params.fetch("Attachments")
   end
 
+  def check_inbound_email_limit!
+    return if from&.match?(/@(?:beta)?\.gouv\.fr$/i) # No limit for government emails
+
+    inbound_email_count_last_day = QuoteCheck.where(email: from)
+                                             .where(created_at: (DateTime.now - 1.day)..)
+                                             .count
+    return unless inbound_email_count_last_day >= MAX_INBOUND_EMAILS_PER_DAY
+
+    raise StandardError, "Inbound email limit exceeded for #{from}"
+  end
+
   # Like in Api::V1::QuoteChecksController#create
   def create_quote_check(quote_check_args)
     quote_check_service = QuoteCheckService.new(*quote_check_args[0..3], **quote_check_args[4])
     quote_check = quote_check_service.quote_check
 
-    QuoteCheckMailer.created_from_email(quote_check).deliver_later
+    QuoteCheckMailer.created_from_email(quote_check, from: to).deliver_later
 
     QuoteFileSecurityScanJob.perform_later(quote_check.file.id)
     QuoteCheckCheckJob.perform_later(quote_check.id)
