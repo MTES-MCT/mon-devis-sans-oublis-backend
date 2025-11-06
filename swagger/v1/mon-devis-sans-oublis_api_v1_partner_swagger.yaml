@@ -253,10 +253,6 @@ paths:
                   - "$ref": "#/components/schemas/quote_check_metadata"
                   description: hérité du QuotesCase à la création si vide
                   nullable: true
-                parent_id:
-                  type: string
-                  description: Ancienne soumission du fichier
-                  nullable: true
                 case_id:
                   type: string
                   description: Dossier de devis pour rénovation d’ampleur, maximum
@@ -2078,9 +2074,6 @@ components:
         id:
           type: string
           description: UUID unique
-        parent_id:
-          type: string
-          nullable: true
         case_id:
           type: string
           nullable: true

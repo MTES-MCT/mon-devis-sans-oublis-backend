@@ -79,11 +79,11 @@ describe "Devis API" do
             description: "hérité du QuotesCase à la création si vide",
             nullable: true
           },
-          parent_id: {
-            type: :string,
-            description: "Ancienne soumission du fichier",
-            nullable: true
-          },
+          # parent_id: {
+          #   type: :string,
+          #   description: "Ancienne soumission du fichier",
+          #   nullable: true
+          # },
           case_id: {
             type: :string,
             description:
