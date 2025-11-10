@@ -367,6 +367,10 @@ L'instance Metabase tourne sur une application extérieure dédié avec sa propr
 
 Déploiement et mise à jour via https://github.com/betagouv/metabase-scalingo?tab=readme-ov-file#updating-metabase-on-scalingo
 
+`scalingo --app mon-devis-sans-oublis-metabase deploy https://github.com/Scalingo/metabase-scalingo/archive/refs/heads/master.tar.gz`
+
+Et si besoin forcer la `METABASE_VERSION` par exemple avec `0.56.13`.
+
 ## Vue d'ensemble du processus
 
 Le back-end dispose d'un système d'export automatisé qui permet de copier et anonymiser les données de production vers une base de données dédiée à Metabase pour les analyses et tableaux de bord.
