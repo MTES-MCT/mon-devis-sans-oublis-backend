@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_06_161020) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_12_110432) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -208,6 +208,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_06_161020) do
     t.datetime "result_sent_at"
     t.string "email"
     t.string "email_to"
+    t.string "email_subject"
     t.index "\"left\"((qa_result)::text, 1)", name: "index_qa_result_not_null", where: "(qa_result IS NOT NULL)"
     t.index "\"left\"((validation_errors)::text, 1)", name: "index_validation_errors_not_null", where: "(validation_errors IS NOT NULL)"
     t.index ["case_id"], name: "index_quote_checks_on_case_id"
@@ -262,6 +263,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_06_161020) do
     t.datetime "validation_error_edited_at"
     t.string "email"
     t.string "email_to"
+    t.string "email_subject"
     t.index ["email"], name: "index_quotes_cases_on_email"
     t.index ["email_to"], name: "index_quotes_cases_on_email_to"
     t.index ["reference"], name: "index_quotes_cases_on_reference"

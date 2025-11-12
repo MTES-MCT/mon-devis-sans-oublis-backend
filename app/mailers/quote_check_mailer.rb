@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# TODO: @@@ Fix from and reply to the original mail
-
 class QuoteCheckMailer < ApplicationMailer
   def created(quote_check)
     @quote_check = quote_check
@@ -15,25 +13,29 @@ class QuoteCheckMailer < ApplicationMailer
     )
   end
 
-  def created_from_email(quote_check, from: nil)
+  def created_from_email(quote_check, from: nil, subject: nil)
     @quote_check = quote_check
 
     mail(
-      from: from || default_params[:from],
+      from: from || quote_check.email_to || default_params[:from],
       to: quote_check.email,
-      cci: admin_recipients,
-      subject: subject("Devis en cours d'analyse")
+      subject: subject ||
+               (quote_check.email_subject && "Re: #{quote_check.email_subject}") ||
+               self.subject("Devis en cours d'analyse"),
+      bcc: admin_recipients
     )
   end
 
-  def results_available(quote_check, from: nil)
+  def results_available(quote_check, from: nil, subject: nil)
     @quote_check = quote_check
 
     mail(
-      from: from || default_params[:from],
+      from: from || quote_check.email_to || default_params[:from],
       to: quote_check.email,
-      cci: admin_recipients,
-      subject: subject("Devis analysé avec résultats disponibles")
+      subject: subject ||
+               (quote_check.email_subject && "Re: #{quote_check.email_subject}") ||
+               self.subject("Devis analysé avec résultats disponibles"),
+      bcc: admin_recipients
     )
   end
 

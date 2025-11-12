@@ -11,6 +11,7 @@ module QuoteInputMetadata
 
   included do
     encrypts :email, deterministic: true # For searching
+    encrypts :email_subject
 
     validates :source_name, presence: true
     validates :profile, presence: true, inclusion: { in: PROFILES + DEPRECATED_PROFILES }
