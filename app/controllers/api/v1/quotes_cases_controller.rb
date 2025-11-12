@@ -4,7 +4,8 @@ module Api
   module V1
     # Controller for QuotesCases API
     class QuotesCasesController < BaseController
-      before_action :authorize_request
+      before_action :authorize_request, except: :email_content
+      before_action :authorize_internal_mdso_only, only: :email_content
 
       before_action :quotes_case, except: %i[create]
 
@@ -12,6 +13,10 @@ module Api
         # Update result_sent_at for all quote_checks in this case
         quotes_case.quote_checks.each { |qc| update_result_sent_at(qc) }
         render json: quotes_case_json
+      end
+
+      def email_content
+        render html: QuoteErrorEmailGenerator.generate_case_email_content(quotes_case).html_safe
       end
 
       def create

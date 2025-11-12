@@ -215,6 +215,24 @@ paths:
                   maxLength: 1000
               required:
               - comment
+  "/quote_checks/{id}/email_content":
+    get:
+      summary: Récupérer un Devis et résultats de l'analyse au format HTML pour email
+      tags:
+      - Devis
+      security:
+      - bearer_api_key: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Devis trouvé
+        '404':
+          description: Devis non trouvé
   "/quote_checks/{id}":
     patch:
       summary: Mettre à jour un Devis
@@ -346,6 +364,53 @@ paths:
               properties:
                 comment:
                   type: string
+  "/quotes_cases/{id}/email_content":
+    get:
+      summary: Récupérer un Dossier et résultats de l'analyse au format HTML pour
+        email
+      tags:
+      - Dossier
+      security:
+      - bearer_api_key: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Dossier trouvé
+        '404':
+          description: Dossier non trouvé
+    patch:
+      summary: Mettre à jour un Dossier
+      tags:
+      - Dossier
+      security:
+      - bearer_api_key: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Devis mis à jour
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/quotes_case"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reference:
+                  type: string
+                  nullable: true
 produces:
 - application/json
 consumes:

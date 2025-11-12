@@ -107,6 +107,12 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
         )
       end
 
+      if resource.finished_at
+        tab "Retour Mail" do
+          div QuoteErrorEmailGenerator.generate_case_email_content(resource).html_safe
+        end
+      end
+
       instance_exec(&processing_logs_tab(resource))
     end
   end

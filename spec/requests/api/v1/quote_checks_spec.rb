@@ -246,6 +246,25 @@ RSpec.describe "/api/v1/quote_checks" do
     end
   end
 
+  describe "GET /api/v1/quote_checks/:id/email_content" do
+    let(:quote_file) { create(:quote_file) }
+    let(:quote_check) { create(:quote_check, file: quote_file) }
+
+    before do
+      QuoteCheckCheckJob.new.perform(quote_check.id)
+
+      get email_content_api_v1_quote_check_url(quote_check), headers: api_key_header
+    end
+
+    it "returns a successful response" do
+      expect(response).to be_successful
+    end
+
+    it "returns email content including error details" do
+      expect(response.body).to include(quote_check.error_details_admin.first[:message])
+    end
+  end
+
   describe "PATCH /api/v1/quote_checks/:id" do
     let(:quote_check) { create(:quote_check) }
 
