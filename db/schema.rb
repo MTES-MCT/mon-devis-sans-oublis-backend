@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_20_073344) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_12_110432) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -207,10 +207,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_20_073344) do
     t.jsonb "validation_control_codes"
     t.datetime "result_sent_at"
     t.string "email"
+    t.string "email_to"
+    t.string "email_subject"
     t.index "\"left\"((qa_result)::text, 1)", name: "index_qa_result_not_null", where: "(qa_result IS NOT NULL)"
     t.index "\"left\"((validation_errors)::text, 1)", name: "index_validation_errors_not_null", where: "(validation_errors IS NOT NULL)"
     t.index ["case_id"], name: "index_quote_checks_on_case_id"
     t.index ["email"], name: "index_quote_checks_on_email"
+    t.index ["email_to"], name: "index_quote_checks_on_email_to"
     t.index ["file_id"], name: "index_quote_checks_on_file_id"
     t.index ["finished_at"], name: "index_quote_checks_on_finished_at"
     t.index ["parent_id"], name: "index_quote_checks_on_parent_id"
@@ -259,7 +262,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_20_073344) do
     t.jsonb "validation_error_edits"
     t.datetime "validation_error_edited_at"
     t.string "email"
+    t.string "email_to"
+    t.string "email_subject"
     t.index ["email"], name: "index_quotes_cases_on_email"
+    t.index ["email_to"], name: "index_quotes_cases_on_email_to"
     t.index ["reference"], name: "index_quotes_cases_on_reference"
     t.index ["renovation_type"], name: "index_quotes_cases_on_renovation_type"
     t.index ["source_name"], name: "index_quotes_cases_on_source_name"

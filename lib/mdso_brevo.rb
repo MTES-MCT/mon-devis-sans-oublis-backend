@@ -3,10 +3,12 @@
 require "faraday"
 
 # Interface between MDSO and Brevo
-class MdsoBrevo
+class MdsoBrevo # rubocop:disable Metrics/ClassLength
   attr_reader :email_params,
               :quotes_case,
               :quote_checks
+
+  MAX_INBOUND_EMAILS_PER_DAY = 20
 
   def initialize(email_params)
     @email_params = email_params
@@ -43,15 +45,22 @@ class MdsoBrevo
     email_params.dig("From", "Address")
   end
 
+  # rubocop:disable Metrics/AbcSize
   def import_quote_check # rubocop:disable Metrics/MethodLength
     raise ActiveRecord::RecordNotFound, "No matching Inbound Email found" unless to
 
+    check_inbound_email_limit!
+
     if attachments.size > 1
       @quotes_case = QuotesCase.create!(
-        source_name:,
-        email: from,
         profile:,
-        renovation_type:
+        renovation_type:,
+
+        source_name:,
+
+        email: from,
+        email_to: to,
+        email_subject: subject
       )
     end
 
@@ -61,6 +70,7 @@ class MdsoBrevo
     # rescue StandardError => e
     #   ErrorNotifier.notify(e, context: { email_params:, quotes_case_id: quotes_case&.id })
   end
+  # rubocop:enable Metrics/AbcSize
 
   def profile
     @profile ||= begin
@@ -85,10 +95,23 @@ class MdsoBrevo
     email_params.fetch("Attachments")
   end
 
+  def check_inbound_email_limit!
+    return if from&.match?(/@(?:beta)?\.gouv\.fr$/i) # No limit for government emails
+
+    inbound_email_count_last_day = QuoteCheck.where(email: from)
+                                             .where(created_at: (DateTime.now - 1.day)..)
+                                             .count
+    return unless inbound_email_count_last_day >= MAX_INBOUND_EMAILS_PER_DAY
+
+    raise StandardError, "Inbound email limit exceeded for #{from}"
+  end
+
   # Like in Api::V1::QuoteChecksController#create
   def create_quote_check(quote_check_args)
     quote_check_service = QuoteCheckService.new(*quote_check_args[0..3], **quote_check_args[4])
     quote_check = quote_check_service.quote_check
+
+    QuoteCheckMailer.created_from_email(quote_check).deliver_later
 
     QuoteFileSecurityScanJob.perform_later(quote_check.file.id)
     QuoteCheckCheckJob.perform_later(quote_check.id)
@@ -99,6 +122,10 @@ class MdsoBrevo
     @quote_checks << quote_check
 
     quote_check
+  end
+
+  def subject
+    email_params.fetch("Subject")
   end
 
   def to
@@ -130,7 +157,12 @@ class MdsoBrevo
       {
         content_type:,
         case_id: quotes_case&.id,
-        source_name:
+
+        source_name:,
+
+        email: from,
+        to_email: to,
+        email_subject: subject
       }
     ]
     create_quote_check(quote_check_args)

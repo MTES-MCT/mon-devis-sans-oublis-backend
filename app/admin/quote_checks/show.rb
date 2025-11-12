@@ -31,6 +31,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
           end
 
           row :source_name, lael: "Source"
+          row :email, lael: "Email"
           row :reference, label: "Référence"
           row :status, lael: "Statut"
           row :profile, label: "Persona"
