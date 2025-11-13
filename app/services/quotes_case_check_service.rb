@@ -9,6 +9,7 @@ class QuotesCaseCheckService
     @save = save
   end
 
+  # rubocop:disable Metrics/AbcSize
   def check
     ErrorNotifier.set_context(:quotes_case, { id: quotes_case.id })
 
@@ -20,8 +21,11 @@ class QuotesCaseCheckService
       quotes_case.save! if save
     end
 
+    QuotesCaseMailer.results_available(quotes_case).deliver_later if quotes_case.email
+
     quotes_case
   end
+  # rubocop:enable Metrics/AbcSize
 
   # Reset results but keep attributes
   def reset_check

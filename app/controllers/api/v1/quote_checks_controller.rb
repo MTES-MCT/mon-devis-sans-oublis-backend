@@ -16,7 +16,7 @@ module Api
       end
 
       def email_content
-        render html: QuoteErrorEmailGenerator.generate_email_content(quote_check).html_safe
+        render html: QuoteErrorEmailGenerator.generate_email_content(quote_check).html_safe # rubocop:disable Rails/OutputSafety
       end
 
       # rubocop:disable Metrics/AbcSize

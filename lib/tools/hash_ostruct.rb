@@ -2,6 +2,7 @@
 
 require "ostruct" # Included in Rails
 
+# A Hash subclass that can be converted to OpenStruct recursively
 class HashOstruct < Hash
   def initialize(hash = {})
     super()
@@ -9,7 +10,7 @@ class HashOstruct < Hash
   end
 
   def to_ostruct_recursive
-    OpenStruct.new(transform_values do |value|
+    OpenStruct.new(transform_values do |value| # rubocop:disable Style/OpenStructUse
       case value
       when Array
         value.map { |item| item.is_a?(Hash) ? HashOstruct.new(item).to_ostruct_recursive : item }

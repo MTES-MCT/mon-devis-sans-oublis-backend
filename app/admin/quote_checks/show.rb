@@ -29,6 +29,9 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
           row "Date de soumission" do
             local_time(it.started_at)
           end
+          row "Date de fin d'analyse" do
+            local_time(it.finished_at)
+          end
 
           row :source_name, lael: "Source"
           row :email, lael: "Email"
@@ -424,7 +427,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
 
       if resource.finished_at
         tab "7. Retour Mail" do
-          div QuoteErrorEmailGenerator.generate_email_content(resource).html_safe
+          div QuoteErrorEmailGenerator.generate_email_content(resource).html_safe # rubocop:disable Rails/OutputSafety
         end
       end
 

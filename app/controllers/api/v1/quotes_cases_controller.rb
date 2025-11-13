@@ -16,7 +16,7 @@ module Api
       end
 
       def email_content
-        render html: QuoteErrorEmailGenerator.generate_case_email_content(quotes_case).html_safe
+        render html: QuoteErrorEmailGenerator.generate_case_email_content(quotes_case).html_safe # rubocop:disable Rails/OutputSafety
       end
 
       def create

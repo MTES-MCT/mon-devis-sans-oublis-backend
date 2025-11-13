@@ -9,7 +9,7 @@ require_relative "quote_error_email_generator_wordings"
 class QuoteErrorEmailGenerator # rubocop:disable Metrics/ClassLength
   # Filter active errors (not deleted)
   def self.get_active_errors(error_list)
-    error_list.reject { it.deleted }
+    error_list.reject(&:deleted)
   end
 
   # Generate email header in HTML
@@ -152,7 +152,7 @@ class QuoteErrorEmailGenerator # rubocop:disable Metrics/ClassLength
     gestes_error_list = error_details_gestes(quote_check.error_details) || []
     gestes = quote_check.gestes || []
     filename = quote_check.filename
-    date_analyse = Time.parse(quote_check.finished_at || quote_check.started_at || quote_check.created_at)
+    date_analyse = Time.zone.parse(quote_check.finished_at || quote_check.started_at || quote_check.created_at)
 
     active_admin_errors = get_active_errors(admin_error_list)
     active_gestes_errors = get_active_errors(gestes_error_list)
@@ -179,10 +179,12 @@ class QuoteErrorEmailGenerator # rubocop:disable Metrics/ClassLength
 
   # Generate email content for a QuoteCase (case/dossier)
   # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/PerceivedComplexity
   def self.generate_case_email_content(quotes_case) # rubocop:disable Metrics/MethodLength
     quotes_case = wrap_serializer(quotes_case, QuotesCaseSerializer)
 
-    date_analyse = Time.parse(quotes_case.finished_at || quotes_case.started_at || quotes_case.created_at)
+    date_analyse = Time.zone.parse(quotes_case.finished_at || quotes_case.started_at || quotes_case.created_at)
 
     header = generate_case_email_header(quotes_case, date_analyse)
 
@@ -205,6 +207,8 @@ class QuoteErrorEmailGenerator # rubocop:disable Metrics/ClassLength
       header + "<ul>\n#{all_sections.join}\n</ul>"
     end
   end
+  # rubocop:enable Metrics/PerceivedComplexity
+  # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/AbcSize
 
   # Reuse JSON serialization like frontend ensure to data access and format

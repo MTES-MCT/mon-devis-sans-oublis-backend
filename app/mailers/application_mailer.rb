@@ -14,4 +14,10 @@ class ApplicationMailer < ActionMailer::Base
 
     subject_parts.join(" ")
   end
+
+  protected
+
+  def admin_recipients
+    @admin_recipients ||= ENV["QUOTE_CHECK_EMAIL_RECIPIENTS"]&.strip&.split(",")
+  end
 end
