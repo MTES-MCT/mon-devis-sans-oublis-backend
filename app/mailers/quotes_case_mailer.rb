@@ -20,7 +20,8 @@ class QuotesCaseMailer < ApplicationMailer
     @quotes_case = quotes_case
 
     @content_html = QuoteErrorEmailGenerator.generate_case_email_content(quotes_case)
-    @content_text = Nokogiri::HTML(@content_html).text
+    @content_text = Nokogiri::HTML(@content_html).text.strip
+    @link = @quotes_case.frontend_webapp_url(mtm_campaign: "full_email")
 
     mail(
       from: quotes_case.email_to || default_params[:from],

@@ -31,7 +31,8 @@ class QuoteCheckMailer < ApplicationMailer
     @quote_check = quote_check
 
     @content_html = QuoteErrorEmailGenerator.generate_email_content(quote_check)
-    @content_text = Nokogiri::HTML(@content_html).text
+    @content_text = Nokogiri::HTML(@content_html).text.strip
+    @link = @quote_check.frontend_webapp_url(mtm_campaign: "full_email")
 
     mail(
       from: quote_check.email_to || default_params[:from],
