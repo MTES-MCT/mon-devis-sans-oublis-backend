@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "nokogiri"
+
 require_relative "quote_error_email_generator_wordings"
 
 # Generate email content for quote errors
@@ -7,6 +9,8 @@ require_relative "quote_error_email_generator_wordings"
 # https://github.com/MTES-MCT/mon-devis-sans-oublis-frontend/blob/main/src/components/QuoteErrorSharingCard/QuoteErrorSharingCard.modal.tsx
 # TODO: Refactor in more Ruby way but stick with serialization source to ensure clean data access
 class QuoteErrorEmailGenerator # rubocop:disable Metrics/ClassLength
+  attr_reader :quote_check, :quotes_case
+
   # Filter active errors (not deleted)
   def self.get_active_errors(error_list)
     error_list.reject(&:deleted)
@@ -152,7 +156,9 @@ class QuoteErrorEmailGenerator # rubocop:disable Metrics/ClassLength
     gestes_error_list = error_details_gestes(quote_check.error_details) || []
     gestes = quote_check.gestes || []
     filename = quote_check.filename
-    date_analyse = Time.zone.parse(quote_check.finished_at || quote_check.started_at || quote_check.created_at)
+
+    date_string = quote_check.finished_at || quote_check.started_at || quote_check.created_at
+    date_analyse = date_string ? Time.zone.parse(date_string) : Time.zone.now
 
     active_admin_errors = get_active_errors(admin_error_list)
     active_gestes_errors = get_active_errors(gestes_error_list)
@@ -184,7 +190,8 @@ class QuoteErrorEmailGenerator # rubocop:disable Metrics/ClassLength
   def self.generate_case_email_content(quotes_case) # rubocop:disable Metrics/MethodLength
     quotes_case = wrap_serializer(quotes_case, QuotesCaseSerializer)
 
-    date_analyse = Time.zone.parse(quotes_case.finished_at || quotes_case.started_at || quotes_case.created_at)
+    date_string = quotes_case.finished_at || quotes_case.started_at || quotes_case.created_at
+    date_analyse = date_string ? Time.zone.parse(date_string) : Time.zone.now
 
     header = generate_case_email_header(quotes_case, date_analyse)
 
@@ -226,5 +233,29 @@ class QuoteErrorEmailGenerator # rubocop:disable Metrics/ClassLength
 
   def self.error_details_gestes(error_details)
     error_details&.filter { it["category"] == "gestes" }
+  end
+
+  def initialize(quote_object = nil, quote_check: nil, quotes_case: nil)
+    value = quote_object || quotes_case || quote_check
+    case value
+    when QuotesCase
+      @quotes_case = value
+    when QuoteCheck
+      @quote_check = value
+    else
+      raise ArgumentError, "Either quote_check or quotes_case must be provided"
+    end
+  end
+
+  def html
+    @html ||= if quotes_case
+                self.class.generate_case_email_content(quotes_case)
+              elsif quote_check
+                self.class.generate_email_content(quote_check)
+              end
+  end
+
+  def text
+    Nokogiri::HTML(html).text.strip if html
   end
 end

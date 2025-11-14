@@ -18,4 +18,22 @@ RSpec.describe QuoteErrorEmailGenerator, type: :service do
       expect(described_class.generate_case_email_content(quotes_case)).to include("Bonjour")
     end
   end
+
+  describe "#html" do
+    let(:quote_check) { create(:quote_check) }
+
+    it "returns HTML content for QuoteCheck" do
+      generator = described_class.new(quote_check)
+      expect(generator.html).to include("Aucune erreur à signaler.")
+    end
+  end
+
+  describe "#text" do
+    let(:quote_check) { create(:quote_check) }
+
+    it "returns Text content for QuoteCheck" do
+      generator = described_class.new(quote_check)
+      expect(generator.text).to include("Aucune erreur à signaler.")
+    end
+  end
 end

@@ -3,12 +3,12 @@
 require "swagger_helper"
 
 describe "Dossier API", swagger_doc: "v1/#{Rails.application.config.openapi_file.call('v1', 'internal')}" do
-  path "/quotes_cases/{id}/email_content" do
+  path "/quotes_cases/{id}/results" do
     get "Récupérer un Dossier et résultats de l'analyse au format HTML pour email" do
       tags "Dossier"
       security [bearer_api_key: []]
       consumes "application/json"
-      produces "text/html"
+      produces ["text/html", "text/plain"]
       parameter name: :id, in: :path, type: :string, required: true
 
       response "200", "Dossier trouvé" do

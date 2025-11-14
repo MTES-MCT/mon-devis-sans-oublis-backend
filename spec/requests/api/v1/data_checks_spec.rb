@@ -114,7 +114,7 @@ RSpec.describe "/api/v1/data_checks" do
       let(:params) { { siret: "52503410400014", rge: "Q90513", geste_types: "abcd" } }
 
       it "returns a bad request error" do
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
 
       # Log d'erreur geste_type inconnu

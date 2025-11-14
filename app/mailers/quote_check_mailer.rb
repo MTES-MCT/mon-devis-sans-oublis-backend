@@ -22,7 +22,7 @@ class QuoteCheckMailer < ApplicationMailer
       from: quote_check.email_to || default_params[:from],
       to: quote_check.email,
       subject: (quote_check.email_subject && "Re: #{quote_check.email_subject}") ||
-               self.subject("Devis en cours d'analyse"),
+               subject("Devis en cours d'analyse"),
       bcc: admin_recipients
     )
   end
@@ -30,14 +30,16 @@ class QuoteCheckMailer < ApplicationMailer
   def results_available(quote_check) # rubocop:disable Metrics/MethodLength
     @quote_check = quote_check
 
-    @content_html = QuoteErrorEmailGenerator.generate_email_content(quote_check)
-    @content_text = Nokogiri::HTML(@content_html).text
+    content_generator = QuoteErrorEmailGenerator.new(quote_check)
+    @content_html = content_generator.html
+    @content_text = content_generator.text
+    @link = @quote_check.frontend_webapp_url(mtm_campaign: "full_email")
 
     mail(
       from: quote_check.email_to || default_params[:from],
       to: quote_check.email,
       subject: (quote_check.email_subject && "Re: #{quote_check.email_subject}") ||
-               self.subject("Devis analysé avec résultats disponibles"),
+               subject("Devis analysé avec résultats disponibles"),
       bcc: admin_recipients
     )
   end

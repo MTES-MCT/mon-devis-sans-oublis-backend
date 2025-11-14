@@ -3,12 +3,12 @@
 require "swagger_helper"
 
 describe "Devis API", swagger_doc: "v1/#{Rails.application.config.openapi_file.call('v1', 'internal')}" do
-  path "/quote_checks/{id}/email_content" do
+  path "/quote_checks/{id}/results" do
     get "Récupérer un Devis et résultats de l'analyse au format HTML pour email" do
       tags "Devis"
       security [bearer_api_key: []]
       consumes "application/json"
-      produces "text/html"
+      produces ["text/html", "text/plain"]
       parameter name: :id, in: :path, type: :string, required: true
 
       response "200", "Devis trouvé" do

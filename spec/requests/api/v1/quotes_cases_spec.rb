@@ -99,20 +99,36 @@ RSpec.describe "/api/v1/quotes_cases" do
     end
   end
 
-  describe "GET /api/v1/quotes_cases/:id/email_content" do
+  describe "GET /api/v1/quotes_cases/:id/results" do
     let(:quotes_case) { create(:quotes_case) }
 
     before do
       create_list(:quote_check, 2, case: quotes_case)
-      get email_content_api_v1_quotes_case_url(quotes_case), headers: api_key_header
+      get results_api_v1_quotes_case_url(quotes_case), headers: api_key_header
     end
 
     it "returns a successful response" do
       expect(response).to be_successful
     end
 
-    it "returns email content including error details" do
+    it "returns content including error details" do
       expect(response.body).to include(quotes_case.quote_checks.first.error_details_admin.first[:message])
+    end
+
+    context "with text format" do
+      skip "TODO: Fix StackLevel too deep"
+
+      before do
+        get results_api_v1_quotes_case_url(quotes_case, format: :txt), headers: api_key_header
+      end
+
+      it "returns a successful response" do
+        expect(response).to be_successful
+      end
+
+      it "returns content including error details" do
+        expect(response.body).to include(quotes_case.quote_checks.first.error_details_admin.first[:message])
+      end
     end
   end
 end

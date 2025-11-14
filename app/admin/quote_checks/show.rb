@@ -427,7 +427,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
 
       if resource.finished_at
         tab "7. Retour Mail" do
-          div QuoteErrorEmailGenerator.generate_email_content(resource).html_safe # rubocop:disable Rails/OutputSafety
+          div QuoteErrorEmailGenerator.new(resource).html.html_safe # rubocop:disable Rails/OutputSafety
         end
       end
 

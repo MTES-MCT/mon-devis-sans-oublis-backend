@@ -52,7 +52,7 @@ RSpec.describe "/api/v1/quote_checks/:quote_check_id/feedbacks" do
           post api_v1_quote_check_feedbacks_url(quote_check_id: quote_check_id),
                params: quote_check_feedback_params.merge(rating: -1),
                headers: api_key_header
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
       end
     end
@@ -98,7 +98,7 @@ RSpec.describe "/api/v1/quote_checks/:quote_check_id/feedbacks" do
           post api_v1_quote_check_feedbacks_url(quote_check_id: quote_check_id),
                params: quote_check_feedback_params.merge(validation_error_details_id: "wrong"),
                headers: api_key_header
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
       end
     end

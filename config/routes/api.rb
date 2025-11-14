@@ -36,7 +36,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
           #   to: "brevo_webhooks#inbound_emails", as: :rails_brevo_inbound_emails
         end
         member do
-          get :email_content, format: :html
+          get :results, format: %i[html txt]
         end
 
         resources :feedbacks, only: %i[create], controller: "quote_check_feedbacks"
@@ -57,7 +57,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
               to: "quotes_cases_validation_error_details#validation_error_detail_deletion_reasons"
         end
         member do
-          get :email_content, format: :html
+          get :results, format: %i[html txt]
         end
 
         resources :quotes_cases_validation_error_details,

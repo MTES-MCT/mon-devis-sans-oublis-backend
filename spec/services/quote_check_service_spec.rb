@@ -32,6 +32,7 @@ RSpec.describe QuoteCheckService, type: :service do
       stub_request(:post, /albert.+chat/i)
         .to_return(
           status: 200,
+          headers: { "Content-Type" => "application/json" },
           body: {
             "choices" => [
               {
@@ -46,6 +47,7 @@ RSpec.describe QuoteCheckService, type: :service do
       stub_request(:post, /mistral.+chat/i)
         .to_return(
           status: 200,
+          headers: { "Content-Type" => "application/json" },
           body: {
             "choices" => [
               {
