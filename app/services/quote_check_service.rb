@@ -75,11 +75,11 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
           if quotes_case.quote_checks.pending.where.not(id: quote_check.id).empty?
             QuotesCaseCheckService.new(quotes_case).check
           end
+        elsif quote_check.email
+          QuoteCheckMailer.results_available(quote_check).deliver_later
         end
       end
     end
-
-    QuoteCheckMailer.results_available(quote_check).deliver_later if quote_check.email
 
     quote_check
   end

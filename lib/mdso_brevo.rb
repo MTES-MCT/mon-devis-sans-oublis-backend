@@ -64,7 +64,9 @@ class MdsoBrevo # rubocop:disable Metrics/ClassLength
       )
     end
 
-    attachments.each { treat_attachment(it) }
+    attachments.each { treat_attachment(it, no_email_response: quotes_case.present?) }
+
+    QuotesCaseMailer.created_from_email(quotes_case).deliver_later if quotes_case
 
     quotes_case || quote_checks
     # rescue StandardError => e
@@ -107,11 +109,11 @@ class MdsoBrevo # rubocop:disable Metrics/ClassLength
   end
 
   # Like in Api::V1::QuoteChecksController#create
-  def create_quote_check(quote_check_args)
+  def create_quote_check(quote_check_args, no_email_response: false)
     quote_check_service = QuoteCheckService.new(*quote_check_args[0..3], **quote_check_args[4])
     quote_check = quote_check_service.quote_check
 
-    QuoteCheckMailer.created_from_email(quote_check).deliver_later
+    QuoteCheckMailer.created_from_email(quote_check).deliver_later unless no_email_response
 
     QuoteFileSecurityScanJob.perform_later(quote_check.file.id)
     QuoteCheckCheckJob.perform_later(quote_check.id)
@@ -135,7 +137,7 @@ class MdsoBrevo # rubocop:disable Metrics/ClassLength
   end
 
   # rubocop:disable Metrics/AbcSize
-  def treat_attachment(attachment) # rubocop:disable Metrics/MethodLength
+  def treat_attachment(attachment, no_email_response: false) # rubocop:disable Metrics/MethodLength
     filename = attachment.fetch("Name")
     content_type = attachment.fetch("ContentType")
     # attachment.fetch("ContentLength") # TODO: Check size limit?
@@ -165,7 +167,7 @@ class MdsoBrevo # rubocop:disable Metrics/ClassLength
         email_subject: subject
       }
     ]
-    create_quote_check(quote_check_args)
+    create_quote_check(quote_check_args, no_email_response:)
   end
   # rubocop:enable Metrics/AbcSize
 end
