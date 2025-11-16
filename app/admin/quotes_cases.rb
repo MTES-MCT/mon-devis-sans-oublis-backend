@@ -68,6 +68,9 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
           row :created_at do
             local_time(it.created_at)
           end
+          row "Date de fin d'analyse" do
+            local_time(it.finished_at)
+          end
 
           row :profile, label: "Persona"
           row :renovation_type, label: "Type de rénovation"
@@ -105,6 +108,12 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
         pre JSON.pretty_generate(
           QuotesCaseSerializer.new(resource).as_json
         )
+      end
+
+      if resource.finished_at
+        tab "Retour Mail" do
+          div QuoteErrorEmailGenerator.new(resource).html.html_safe # rubocop:disable Rails/OutputSafety
+        end
       end
 
       instance_exec(&processing_logs_tab(resource))

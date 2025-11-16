@@ -29,6 +29,9 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
           row "Date de soumission" do
             local_time(it.started_at)
           end
+          row "Date de fin d'analyse" do
+            local_time(it.finished_at)
+          end
 
           row :source_name, lael: "Source"
           row :email, lael: "Email"
@@ -416,10 +419,16 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
         pre JSON.pretty_generate(resource.works_data_qa_result) if resource.works_data_qa_result
       end
 
-      tab "6. Retour API pour frontend" do
+      tab "6. Retour API" do
         pre JSON.pretty_generate(
           QuoteCheckSerializer.new(resource).as_json
         )
+      end
+
+      if resource.finished_at
+        tab "7. Retour Mail" do
+          div QuoteErrorEmailGenerator.new(resource).html.html_safe # rubocop:disable Rails/OutputSafety
+        end
       end
 
       instance_exec(&processing_logs_tab(resource))

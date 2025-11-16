@@ -4,7 +4,10 @@ module Api
   module V1
     # Controller for QuotesCases API
     class QuotesCasesController < BaseController
-      before_action :authorize_request
+      include ActionController::MimeResponds
+
+      before_action :authorize_request, except: :results
+      before_action :authorize_internal_mdso_only, only: :results
 
       before_action :quotes_case, except: %i[create]
 
@@ -12,6 +15,14 @@ module Api
         # Update result_sent_at for all quote_checks in this case
         quotes_case.quote_checks.each { |qc| update_result_sent_at(qc) }
         render json: quotes_case_json
+      end
+
+      def results
+        content_generator = QuoteErrorEmailGenerator.new(quotes_case)
+        respond_to do |format|
+          format.html { render html: content_generator.html.html_safe, layout: false } # rubocop:disable Rails/OutputSafety
+          # format.txt { render plain: content_generator.text }# TODO: Fix StackLevel too deep
+        end
       end
 
       def create

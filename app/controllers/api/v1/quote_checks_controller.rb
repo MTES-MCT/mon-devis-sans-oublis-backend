@@ -4,8 +4,10 @@ module Api
   module V1
     # Controller for QuoteChecks API
     class QuoteChecksController < BaseController
-      before_action :authorize_request, except: %i[metadata update]
-      before_action :authorize_internal_mdso_only, only: :update
+      include ActionController::MimeResponds
+
+      before_action :authorize_request, except: %i[metadata results update]
+      before_action :authorize_internal_mdso_only, only: %i[results update]
 
       before_action :quote_check, except: %i[create metadata]
 
@@ -13,6 +15,14 @@ module Api
         # Force to use async way by using show to get other fields
         update_result_sent_at(quote_check)
         render json: quote_check_json
+      end
+
+      def results
+        content_generator = QuoteErrorEmailGenerator.new(quote_check)
+        respond_to do |format|
+          format.html { render html: content_generator.html.html_safe, layout: false } # rubocop:disable Rails/OutputSafety
+          # format.txt { render plain: content_generator.text } # TODO: Fix StackLevel too deep
+        end
       end
 
       # rubocop:disable Metrics/AbcSize
