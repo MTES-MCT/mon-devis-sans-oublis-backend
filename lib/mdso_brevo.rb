@@ -25,7 +25,7 @@ class MdsoBrevo # rubocop:disable Metrics/ClassLength
       protocol: "https"
     )
 
-    webhook = brevo.webhooks_list.detect { it.fetch("type") == "inbound" && it.fetch("url") == url }
+    webhook = brevo.webhooks_list.detect { it.fetch(:type) == "inbound" && it.fetch(:url) == url }
     webhook ||= brevo.webhook_create(
       type: "inbound",
       events: ["inboundEmailProcessed"],
@@ -144,13 +144,9 @@ class MdsoBrevo # rubocop:disable Metrics/ClassLength
 
     # Fetch attachment content from Brevo API synchronously
     # TODO: make async if performance issue
-    content = BrevoApi.new.download_inbound_email_attachment(
+    tempfile = BrevoApi.new.download_inbound_email_attachment(
       attachment.fetch("DownloadToken")
     )
-    tempfile = Tempfile.new(filename)
-    tempfile.binmode
-    tempfile.write(content)
-    tempfile.rewind
 
     quote_check_args = [
       tempfile, filename,

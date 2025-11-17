@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 if ENV.key?("BREVO_API_KEY")
-  require "sib-api-v3-sdk"
+  require "brevo"
 
   ActiveSupport.on_load(:action_mailer) do
     # rubocop:disable Lint/ConstantDefinitionInBlock
@@ -22,7 +22,7 @@ if ENV.key?("BREVO_API_KEY")
     }
   end
 
-  SibApiV3Sdk.configure do |config|
+  Brevo.configure do |config|
     config.api_key["api-key"] = ENV.fetch("BREVO_API_KEY")
   end
 
