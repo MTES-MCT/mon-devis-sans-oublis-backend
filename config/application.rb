@@ -67,6 +67,8 @@ module MesDevisSansOublis
 
     config.action_mailer.default_url_options = { host: ENV.fetch("APPLICATION_HOST", nil) }
 
+    config.active_storage.variant_processor = :disabled # Disable Rails 8.2 warning
+
     require_relative "custom"
   end
 end
