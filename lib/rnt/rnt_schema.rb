@@ -5,7 +5,8 @@ require "nokogiri"
 # Interact with the RNT (Référentiel National des Travaux) data Schema locally.
 class RntSchema
   OPENAPI_PATH = Rails.root.join("lib/rnt/mdd_v0.0.3.json").to_s
-  VERSION = "0.3"
+  # See versions on https://gitlab.com/referentiel-numerique-travaux/referentiel-numerique-travaux/-/blob/main/versions.yml
+  VERSION = "0.3" # full RNT version for the Web Service, not only the Schema version
   XSD_PATH = Rails.root.join("lib/rnt/mdd_v0.0.3.xsd").to_s
 
   attr_reader :xsd_path
