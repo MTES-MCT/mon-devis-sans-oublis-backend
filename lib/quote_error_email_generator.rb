@@ -256,6 +256,6 @@ class QuoteErrorEmailGenerator # rubocop:disable Metrics/ClassLength
   end
 
   def text
-    Nokogiri::HTML(html).text.strip if html
+    Nokogiri::HTML(html).text.gsub(/\A\n+|\n+\z/, "") if html
   end
 end
