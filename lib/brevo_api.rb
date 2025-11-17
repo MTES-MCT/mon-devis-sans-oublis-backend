@@ -23,7 +23,9 @@ class BrevoApi
   end
 
   def webhooks_list
-    api_instance(Brevo::WebhooksApi).get_webhooks.webhooks
+    parse_list do
+      api_instance(Brevo::WebhooksApi).get_webhooks.webhooks
+    end
   end
 
   def download_inbound_email_attachment(download_token)
@@ -33,8 +35,14 @@ class BrevoApi
   private
 
   def api_instance(klass = Brevo::InboundParsingApi)
-    klass.new.tap do |api_instance|
-      api_instance.api_client.config.api_key["api-key"] = @api_key
+    klass.new.tap do |instance|
+      instance.api_client.config.api_key["api-key"] = @api_key
     end
+  end
+
+  def parse_list
+    yield
+  rescue Brevo::ApiError => e # Treat non-existing as empty list
+    e.code == 400 ? [] : raise
   end
 end
