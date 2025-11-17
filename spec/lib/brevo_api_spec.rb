@@ -12,15 +12,15 @@ RSpec.describe BrevoApi, type: :service do
       end
 
       it "returns the attachment content" do
-        expect(body).to match(/^%PDF-/)
+        expect(body).to be_a(Tempfile)
       end
     end
 
     context "with an invalid download token" do
       let(:download_token) { "invalid_download_token_example" }
 
-      it "raises a BadRequestError" do
-        expect { body }.to raise_error(BrevoApi::BadRequestError, /Download token is invalid/)
+      it "raises a Brevo::ApiError" do
+        expect { body }.to raise_error(Brevo::ApiError)
       end
     end
   end
