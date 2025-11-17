@@ -181,8 +181,8 @@ GEM
       cucumber-tag-expressions (> 5, < 9)
     cucumber-cucumber-expressions (18.0.1)
       bigdecimal
-    cucumber-gherkin (32.2.0)
-      cucumber-messages (> 25, < 28)
+    cucumber-gherkin (34.0.0)
+      cucumber-messages (> 25, < 29)
     cucumber-html-formatter (21.15.1)
       cucumber-messages (> 19, < 28)
     cucumber-messages (27.2.0)
@@ -190,7 +190,7 @@ GEM
       capybara (>= 3.25, < 4)
       cucumber (>= 7, < 11)
       railties (>= 6.1, < 9)
-    cucumber-tag-expressions (6.1.2)
+    cucumber-tag-expressions (8.0.0)
     database_cleaner (2.1.0)
       database_cleaner-active_record (>= 2, < 3)
     database_cleaner-active_record (2.2.2)
@@ -242,11 +242,11 @@ GEM
       dry-logic (~> 1.4)
       zeitwerk (~> 2.6)
     dsfr-assets (1.13.2)
-    dsfr-view-components (3.1)
+    dsfr-view-components (4.0)
       dsfr-assets (~> 1.13.2)
       html-attributes-utils (~> 1)
       view_component (~> 3)
-    erb (5.1.3)
+    erb (6.0.0)
     erubi (1.13.1)
     erubis (2.7.0)
     et-orbi (1.4.0)
@@ -735,10 +735,10 @@ GEM
       addressable (>= 2.3.5)
       faraday (>= 0.17.3, < 3)
     securerandom (0.4.1)
-    sentry-rails (5.28.1)
-      railties (>= 5.0)
-      sentry-ruby (~> 5.28.1)
-    sentry-ruby (5.28.1)
+    sentry-rails (6.1.0)
+      railties (>= 5.2.0)
+      sentry-ruby (~> 6.1.0)
+    sentry-ruby (6.1.0)
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
     sexp_processor (4.17.4)
@@ -965,11 +965,11 @@ CHECKSUMS
   cucumber-ci-environment (10.0.1) sha256=bb6e3fcec85c981dff4561997e8675a7123eead5fe9e587d2ad7568adbe18631
   cucumber-core (15.3.0) sha256=7a5c79e443b52096ca7f7df05b749e16abecb3b7d6f40f3074d30afc7464c14f
   cucumber-cucumber-expressions (18.0.1) sha256=8398a0bf636af33ff3b61e459a309295eb02745b9e21bd7af0eaaa2a1e6be3e5
-  cucumber-gherkin (32.2.0) sha256=a33699d3be9c7fe1b6d4a26c1aa18150f274a90c871a6bc1811d5795a52e4ad6
+  cucumber-gherkin (34.0.0) sha256=c4b1ef7e9a536498e09be99fc6ab64e723cbed99fe8136bb6f2c835e5f2c4c6d
   cucumber-html-formatter (21.15.1) sha256=a08d7c30c357bfd4ea746312ed36e75dab5ba069e5ebc364ecfd5508540920e0
   cucumber-messages (27.2.0) sha256=46e2a1454620db3d0811ad990b9a96cd47bfdb5e2ad4f2ae0b41822332979fff
   cucumber-rails (4.0.0) sha256=b2fe07af16f74e7c6ef7cec5bb238a358443a91af019fba8586d936f49c47cf2
-  cucumber-tag-expressions (6.1.2) sha256=f790e4e820b80d453e83c6a462ed6de36b9477b046543322f646c1e8c275916d
+  cucumber-tag-expressions (8.0.0) sha256=2eda2417e32e2e9ff4bfda8ff277dfdea66ec1f207a46a3c9b6a73b95340cf58
   database_cleaner (2.1.0) sha256=1dcba26e3b1576da692fc6bac10136a4744da5bcc293d248aae19640c65d89cd
   database_cleaner-active_record (2.2.2) sha256=88296b9f3088c31f7c0d4fcec10f68e4b71c96698043916de59b04debec10388
   database_cleaner-core (2.0.1) sha256=8646574c32162e59ed7b5258a97a208d3c44551b854e510994f24683865d846c
@@ -990,8 +990,8 @@ CHECKSUMS
   dry-schema (1.14.1) sha256=2fcd7539a7099cacae6a22f6a3a2c1846fe5afeb1c841cde432c89c6cb9b9ff1
   dry-types (1.8.3) sha256=b5d97a45e0ed273131c0c3d5bc9f5633c2d1242e092ee47401ce7d5eab65c1bc
   dsfr-assets (1.13.2) sha256=3395e15fa783a894e927889600ee9a1bbf45f3f3960590d76c0b4d92504e1c76
-  dsfr-view-components (3.1) sha256=9344bd5f0648e01a9be926bea727b609ae4280224469d751d7cf1262ab4b7b4f
-  erb (5.1.3) sha256=566e53057b6ba48699f824b578473b391fa8aef100aa14afad1c46725fae0e67
+  dsfr-view-components (4.0) sha256=a1f237df3c9ec6bd79493f17656084c9e2ae5d0aea51d7467a931885f5fd67ab
+  erb (6.0.0) sha256=2730893f9d8c9733f16cab315a4e4b71c1afa9cabc1a1e7ad1403feba8f52579
   erubi (1.13.1) sha256=a082103b0885dbc5ecf1172fede897f9ebdb745a4b97a5e8dc63953db1ee4ad9
   erubis (2.7.0) sha256=63653f5174a7997f6f1d6f465fbe1494dcc4bdab1fb8e635f6216989fb1148ba
   et-orbi (1.4.0) sha256=6c7e3c90779821f9e3b324c5e96fda9767f72995d6ae435b96678a4f3e2de8bc
@@ -1170,8 +1170,8 @@ CHECKSUMS
   sassc-rails (2.1.2) sha256=5f4fdf3881fc9bdc8e856ffbd9850d70a2878866feae8114aa45996179952db5
   sawyer (0.9.3) sha256=0d0f19298408047037638639fe62f4794483fb04320269169bd41af2bdcf5e41
   securerandom (0.4.1) sha256=cc5193d414a4341b6e225f0cb4446aceca8e50d5e1888743fac16987638ea0b1
-  sentry-rails (5.28.1) sha256=43a5f884622c60fa459ba05dc8bd22fbd5f28daaced1d00dbcfc4669eaf93807
-  sentry-ruby (5.28.1) sha256=1162d474271e8b82202c984b1116db234007a084c5b73293e921468898d07e99
+  sentry-rails (6.1.0) sha256=55422991fef630ff5b4bee035f7b0fea6b67d8df0178da668f97ed28e6c8f8f2
+  sentry-ruby (6.1.0) sha256=ac00b41cd1ac95d17108727292bec7a6d71434b9b3974398899c0e8c01414df9
   sexp_processor (4.17.4) sha256=af0d2a40124b00f7bc1315d220471990403bd4cf9138f289417ae4e54e6e1ad0
   shellany (0.0.1) sha256=0e127a9132698766d7e752e82cdac8250b6adbd09e6c0a7fbbb6f61964fedee7
   sib-api-v3-sdk (9.1.0) sha256=a8a3fb9c1b0eee304af33be0d14b50dcb2b55cd30003e8b068ea853e8a8dad58
