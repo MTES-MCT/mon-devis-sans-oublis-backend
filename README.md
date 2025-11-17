@@ -73,6 +73,7 @@ cp .env.example .env.docker
 | `FRONTEND_APPLICATION_HOST`                     | Host du frontend pour autoriser API            | `http://localhost:3001`, `https://mon-devis-sans-oublis.beta.gouv.fr`                            | Optionnel    |
 | `GOOD_JOB_PASSWORD`                     | Mot de passe accès au Back Office Jobs            | `secret`                            | Requis    |
 | `GOOD_JOB_USERNAME`                     | Utilisateur accès au Back Office Jobs            | `secret`                            | Requis    |
+| `INBOUND_FORWARDING_MAIL`                     | Mail vers lequel sont redirigés les emails entrant non traités            | `toto@gouv.fr`                            | Optionnel    |
 | `INBOUND_MAIL_DOMAIN`                     | Domaine de(s) email(s) de réception (vérifié sous Brevo et avec DNS MX) pour utiliser `devis@mail.domain.gouv.fr` par exemple            | `mail.domain.gouv.fr`                            | Optionnel    |
 | `INBOUND_WEBHOOK_HOST`                     | Domaine pour webhook email différent du courant            | `sub.domain.gouv.fr`                            | Optionnel    |
 | `MATOMO_SITE_ID`                     |             | `123`                            | Optionnel    |

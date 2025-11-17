@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "brevo"
 require "faraday"
 
 # Interface between MDSO and Brevo
@@ -11,7 +12,7 @@ class MdsoBrevo # rubocop:disable Metrics/ClassLength
   MAX_INBOUND_EMAILS_PER_DAY = 20
 
   def initialize(email_params)
-    @email_params = email_params
+    @email_params = email_params.to_unsafe_h
   end
 
   # See documentation at https://developers.brevo.com/docs/inbound-parse-webhooks
@@ -47,9 +48,9 @@ class MdsoBrevo # rubocop:disable Metrics/ClassLength
 
   # rubocop:disable Metrics/AbcSize
   def import_quote_check # rubocop:disable Metrics/MethodLength
-    raise ActiveRecord::RecordNotFound, "No matching Inbound Email found" unless to
-
     check_inbound_email_limit!
+
+    return if manage_wrong_inbound_email
 
     if attachments.size > 1
       @quotes_case = QuotesCase.create!(
@@ -166,4 +167,54 @@ class MdsoBrevo # rubocop:disable Metrics/ClassLength
     create_quote_check(quote_check_args, no_email_response:)
   end
   # rubocop:enable Metrics/AbcSize
+
+  # Forwarding wrong inbound emails to a fixed address
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/CyclomaticComplexity
+  def manage_wrong_inbound_email # rubocop:disable Metrics/MethodLength
+    return false if to && attachments.any?
+    return unless inbound_forwarding_to
+
+    # raise ActiveRecord::RecordNotFound, "No matching Inbound Email found"
+
+    sender = email_params.fetch("From")
+    original_to = email_params.fetch("Recipients")
+    prefix_html = <<~HTML
+      <p>Email de #{sender} reçu par #{original_to} avec #{attachments.size} pièce(s) jointe(s) :</p>
+      <p>Ayant été envoyé à une mauvaise adresse ou sans pièce jointe, donc cet email n'a pas été traité.</p>
+    HTML
+    prefix_text = Html.html_to_text(prefix_html)
+
+    stmp_params = {
+      # email_params from https://developers.brevo.com/docs/inbound-parse-webhooks#parsed-email-payload
+      # to https://github.com/getbrevo/brevo-ruby/blob/main/docs/SendSmtpEmail.md
+      sender: { email: "devis@#{ENV.fetch('INBOUND_MAIL_DOMAIN')}" }, # TODO: re-use original_to if configured on Brevo
+      to: inbound_forwarding_to,
+      reply_to: email_params.fetch("ReplyTo") || sender,
+      subject: "Fwd: #{subject}",
+      htmlContent: "#{prefix_html}<br />#{email_params.fetch('RawHtmlBody')}",
+      textContent: "#{prefix_text}\n\n#{email_params.fetch('RawTextBody')}",
+      attachment: attachments.map do |attachment|
+        tempfile = BrevoApi.new.download_inbound_email_attachment(attachment.fetch("DownloadToken"))
+        Brevo::SendSmtpEmailAttachment.new(
+          name: attachment.fetch("Name"),
+          content: tempfile.base64_encoded
+        )
+      end.presence
+    }.compact
+
+    Brevo::TransactionalEmailsApi.new.send_transac_email(
+      Brevo::SendSmtpEmail.new(stmp_params)
+    )
+  rescue Brevo::ApiError => e
+    raise StandardError, (attachments.inspect + e.response_body) if e.respond_to?(:response_body)
+  end
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/AbcSize
+
+  def inbound_forwarding_to
+    @inbound_forwarding_to ||= ENV.fetch("INBOUND_FORWARDING_MAIL", "").split(",").map do |email|
+      { email: email.strip }
+    end.presence
+  end
 end

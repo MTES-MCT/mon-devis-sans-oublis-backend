@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "nokogiri"
-
 require_relative "quote_error_email_generator_wordings"
 
 # Generate email content for quote errors
@@ -256,6 +254,6 @@ class QuoteErrorEmailGenerator # rubocop:disable Metrics/ClassLength
   end
 
   def text
-    Nokogiri::HTML(html).text.gsub(/\A\n+|\n+\z/, "") if html
+    Html.html_to_text(html)
   end
 end
