@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 if defined?(Sentry)
+  require "brevo"
+
   Sentry.init do |config|
     config.dsn = ENV.fetch("SENTRY_DSN")
     config.breadcrumbs_logger = %i[active_support_logger http_logger]
@@ -15,5 +17,19 @@ if defined?(Sentry)
 
     config.enable_logs = true
     config.enabled_patches = [:logger]
+
+    config.before_send = lambda do |event, hint|
+      err = hint[:exception]
+
+      case err
+      when Brevo::ApiError
+        event.extra ||= {}
+        event.extra[:code] ||= err.code
+        event.extra[:response_body] ||= err.response_body
+        event.extra[:response_headers] ||= err.response_headers
+      end
+
+      event
+    end
   end
 end

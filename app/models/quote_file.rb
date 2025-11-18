@@ -24,8 +24,8 @@ class QuoteFile < ApplicationRecord
   validates :data, presence: true
   validates :file, attached: true, size: { less_than: Integer(ENV.fetch("MDSO_QUOTE_FILE_MAX_SIZE", 50)).megabytes }
 
-  # rubocop:disable Metrics/MethodLength
-  def self.find_or_create_file(tempfile, filename, content_type: nil)
+  # rubocop:disable Metrics/AbcSize
+  def self.find_or_create_file(tempfile, filename, content_type: nil) # rubocop:disable Metrics/MethodLength
     hexdigest = hexdigest_for_file(tempfile)
     file = tempfile_to_file(tempfile, content_type:)
 
@@ -33,11 +33,13 @@ class QuoteFile < ApplicationRecord
     return existing_quote_file if existing_quote_file
 
     new_quote_file = new(
-      filename: filename,
+      filename:,
       content_type: file[:content_type],
-      hexdigest: hexdigest,
+      hexdigest:,
       uploaded_at: Time.current
     )
+
+    tempfile.open if tempfile.closed? # Reopen tempfile if closed, then rewind
     tempfile.rewind
     new_quote_file.data = tempfile.read
     raise QuoteReader::NoFileContentError if new_quote_file.data.blank?
@@ -48,10 +50,10 @@ class QuoteFile < ApplicationRecord
 
     new_quote_file
   end
-  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/AbcSize
 
   def self.hexdigest_for_file(tempfile)
-    Digest::SHA256.file(tempfile).hexdigest
+    Digest::SHA256.file(tempfile.path).hexdigest
   end
 
   def self.tempfile_to_file(tempfile, content_type: nil) # rubocop:disable Metrics/MethodLength
