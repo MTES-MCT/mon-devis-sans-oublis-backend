@@ -240,7 +240,7 @@ paths:
                   nullable: true
                 profile:
                   allOf:
-                  - "$ref": "#/components/schemas/profile"
+                  - "$ref": "#/components/schemas/api_profile"
                   description: hérité du QuotesCase à la création si vide
                   nullable: true
                 renovation_type:
@@ -311,7 +311,7 @@ paths:
                   type: string
                   nullable: true
                 profile:
-                  "$ref": "#/components/schemas/profile"
+                  "$ref": "#/components/schemas/api_profile"
                 renovation_type:
                   "$ref": "#/components/schemas/renovation_type"
                 metadata:
@@ -842,6 +842,13 @@ components:
           items:
             type: string
       additionalProperties: false
+    api_profile:
+      type: string
+      enum:
+      - artisan
+      - particulier
+      - conseiller
+      description: hérité du QuotesCase à la création si vide
     geste_type:
       type: string
       enum:
@@ -886,6 +893,8 @@ components:
       - artisan
       - particulier
       - conseiller
+      - email
+      - mandataire
       description: hérité du QuotesCase à la création si vide
     renovation_type:
       type: string

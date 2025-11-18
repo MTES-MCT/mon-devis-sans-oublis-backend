@@ -60,7 +60,7 @@ describe "Devis API" do
           reference: { type: :string, nullable: true },
           profile: {
             allOf: [
-              { "$ref" => "#/components/schemas/profile" }
+              { "$ref" => "#/components/schemas/api_profile" }
             ],
             description: "hérité du QuotesCase à la création si vide",
             nullable: true
@@ -104,7 +104,7 @@ describe "Devis API" do
       #       type: :string,
       #       format: :binary
       #     },
-      #     profile: { "$ref" => "#/components/schemas/profile" }
+      #     profile: { "$ref" => "#/components/schemas/api_profile" }
       #   },
       #   required: %w[file profile]
       # }
@@ -113,7 +113,7 @@ describe "Devis API" do
       #   format: :binary
       # }, required: true
       # parameter name: :profile, in: :formData, schema: {
-      #   "$ref" => "#/components/schemas/profile"
+      #   "$ref" => "#/components/schemas/api_profile"
       # }, required: true
 
       let(:quote_check) do

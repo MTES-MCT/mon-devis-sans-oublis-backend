@@ -88,6 +88,11 @@ RSpec.configure do |config|
             }
           }
         ),
+        api_profile: {
+          type: :string,
+          enum: QuoteCheck::API_PROFILES,
+          description: "hérité du QuotesCase à la création si vide"
+        },
         geste_type: {
           type: :string,
           enum: GesteTypes::VALUES

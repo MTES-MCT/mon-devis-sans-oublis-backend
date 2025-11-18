@@ -15,7 +15,7 @@ describe "Dossier API" do
         type: :object,
         properties: {
           reference: { type: :string, nullable: true },
-          profile: { "$ref" => "#/components/schemas/profile" },
+          profile: { "$ref" => "#/components/schemas/api_profile" },
           renovation_type: { "$ref" => "#/components/schemas/renovation_type" },
           metadata: { "$ref" => "#/components/schemas/quote_check_metadata", nullable: true }
         }
