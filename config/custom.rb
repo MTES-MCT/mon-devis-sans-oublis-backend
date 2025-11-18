@@ -16,6 +16,7 @@ end
 # added beside common Rails configuration
 Rails.application.configure do
   config.app_env = ENV.fetch("APP_ENV", Rails.env)
+  config.github_repository = "MTES-MCT/mon-devis-sans-oublis-backend"
 
   config.application_name = "Mon Devis Sans Oublis"
   config.application_host = UriExtended.host_with_port(ENV.fetch("APPLICATION_HOST", "http://localhost:3000"))
