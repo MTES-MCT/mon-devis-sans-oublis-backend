@@ -4,8 +4,10 @@
 module QuoteInputMetadata
   extend ActiveSupport::Concern
 
-  PROFILES = %w[artisan particulier conseiller].freeze # Also called Persona
+  API_PROFILES = %w[artisan particulier conseiller].freeze # Also called Persona
   DEPRECATED_PROFILES = %w[mandataire].freeze
+  TECH_PROFILES = %w[email].freeze
+  PROFILES = API_PROFILES + TECH_PROFILES + DEPRECATED_PROFILES # Also called Persona
 
   RENOVATION_TYPES = %w[geste ampleur].freeze
 
@@ -14,7 +16,12 @@ module QuoteInputMetadata
     encrypts :email_subject
 
     validates :source_name, presence: true
-    validates :profile, presence: true, inclusion: { in: PROFILES + DEPRECATED_PROFILES }
+
+    validates :profile, presence: true, inclusion: { in: PROFILES }
+    validates :profile, presence: true, inclusion: { in: PROFILES - DEPRECATED_PROFILES }, if: -> { new_record? }
+    validates :profile, presence: true, inclusion: { in: PROFILES - DEPRECATED_PROFILES - TECH_PROFILES }, if: lambda {
+      new_record? && source_name != "email"
+    }
 
     validates :renovation_type, presence: true, inclusion: { in: RENOVATION_TYPES }
 

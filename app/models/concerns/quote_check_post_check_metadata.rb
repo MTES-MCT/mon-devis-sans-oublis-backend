@@ -56,7 +56,7 @@ module QuoteCheckPostCheckMetadata
 
     profile_path = case profile
                    when "artisan" then "artisan"
-                   when "conseiller" then "conseiller"
+                   when "conseiller", "email" then "conseiller"
                    when "mandataire" then "mandataire"
                    when "particulier" then "particulier"
                    else

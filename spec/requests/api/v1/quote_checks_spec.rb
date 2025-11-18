@@ -88,10 +88,12 @@ RSpec.describe "/api/v1/quote_checks" do
 
   describe "POST /api/v1/quote_checks" do
     let(:file) { fixture_file_upload("quote_files/Devis_test.pdf") }
+    let(:profile) { "artisan" }
+
     let(:quote_check_params) do
       {
-        file: file,
-        profile: "artisan",
+        file:,
+        profile:,
         renovation_type: "geste"
       }
     end
@@ -112,6 +114,30 @@ RSpec.describe "/api/v1/quote_checks" do
 
     it "creates a QuoteCheck" do
       expect(QuoteCheck.find(json.fetch("id"))).to be_present
+    end
+
+    context "with deprecated profile" do
+      let(:profile) { QuoteCheck::DEPRECATED_PROFILES.fetch(0) }
+
+      it "returns a failed response" do
+        expect(response).to have_http_status(:unprocessable_content)
+      end
+
+      it "returns error on invalid profile" do
+        expect(json.fetch("message").first).to match(/Profile n'est pas inclus\(e\) dans la liste/i)
+      end
+    end
+
+    context "with tech profile" do
+      let(:profile) { QuoteCheck::TECH_PROFILES.fetch(0) }
+
+      it "returns a failed response" do
+        expect(response).to have_http_status(:unprocessable_content)
+      end
+
+      it "returns error on invalid profile" do
+        expect(json.fetch("message").first).to match(/Profile n'est pas inclus\(e\) dans la liste/i)
+      end
     end
 
     context "with case_id" do

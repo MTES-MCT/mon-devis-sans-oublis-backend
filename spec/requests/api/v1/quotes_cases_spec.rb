@@ -6,9 +6,16 @@ RSpec.describe "/api/v1/quotes_cases" do
   subject(:json) { response.parsed_body }
 
   describe "POST /api/v1/quotes_cases" do
-    before { post api_v1_quotes_cases_url, params: quotes_case_params, headers: api_key_header }
+    let(:profile) { nil }
+    let(:quotes_case_params) do
+      {
+        profile:,
+        reference:
+      }.presence
+    end
+    let(:reference) { nil }
 
-    let(:quotes_case_params) { {} }
+    before { post api_v1_quotes_cases_url, params: quotes_case_params, headers: api_key_header }
 
     it "returns a successful response" do
       expect(response).to be_successful
@@ -26,13 +33,32 @@ RSpec.describe "/api/v1/quotes_cases" do
       expect(QuotesCase.find_by(id: json.fetch("id"))).to be_present
     end
 
+    context "with deprecated profile" do
+      let(:profile) { QuoteCheck::DEPRECATED_PROFILES.fetch(0) }
+
+      it "returns a failed response" do
+        expect(response).to have_http_status(:unprocessable_content)
+      end
+
+      it "returns error on invalid profile" do
+        expect(json.fetch("message").first).to match(/Profile n'est pas inclus\(e\) dans la liste/i)
+      end
+    end
+
+    context "with tech profile" do
+      let(:profile) { QuoteCheck::TECH_PROFILES.fetch(0) }
+
+      it "returns a failed response" do
+        expect(response).to have_http_status(:unprocessable_content)
+      end
+
+      it "returns error on invalid profile" do
+        expect(json.fetch("message").first).to match(/Profile n'est pas inclus\(e\) dans la liste/i)
+      end
+    end
+
     context "with reference" do
       let(:reference) { "test-ref" }
-      let(:quotes_case_params) do
-        {
-          reference: reference
-        }
-      end
 
       it "returns the reference" do
         post api_v1_quotes_cases_url, params: quotes_case_params, headers: api_key_header

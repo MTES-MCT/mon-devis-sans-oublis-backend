@@ -144,7 +144,7 @@ RSpec.configure do |config|
         quote_check_error_code: {
           type: :string,
           enum: QuoteValidator::Global.error_codes.keys,
-          description: "code d'erreur de validation, voir liste et correspondance sur https://github.com/#{Rails.application.config.github_repository}/blob/main/config/locales/fr/mon-devis-sans-oublis-quote-validator.yml comme ci-dessous : " + QuoteValidator::Global.error_codes.map do |code, description|
+          description: "code d'erreur de validation, voir liste et correspondance sur https://github.com/#{Rails.application.config.github_repository}/blob/main/config/locales/fr/mon-devis-sans-oublis-quote-validator.yml comme ci-dessous : " + QuoteValidator::Global.error_codes.map do |code, description| # rubocop:disable Layout/LineLength
             "#{code}: #{description}"
           end.join(" | ")
         },

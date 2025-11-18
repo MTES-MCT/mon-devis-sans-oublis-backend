@@ -76,12 +76,9 @@ class MdsoBrevo # rubocop:disable Metrics/ClassLength
   # rubocop:enable Metrics/AbcSize
 
   def profile
-    @profile ||= begin
-      mail_alias = to.split("@").first
-
-      QuoteCheck::PROFILES.detect { mail_alias.match?(/#{it}/i) } ||
-        "artisan"
-    end
+    # mail_alias = to.split("@").first
+    # QuoteCheck::PROFILES.detect { mail_alias.match?(/#{it}/i) } ||
+    @profile ||= "email"
   end
 
   def renovation_type
