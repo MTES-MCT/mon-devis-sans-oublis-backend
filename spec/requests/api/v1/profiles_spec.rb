@@ -13,7 +13,7 @@ RSpec.describe "/api/v1/profiles" do
     end
 
     it "returns a complete response" do
-      expect(json.fetch("data")).to include(*QuoteCheck::PROFILES)
+      expect(json.fetch("data")).to include(*QuoteCheck::API_PROFILES)
     end
 
     it "includes labels" do
