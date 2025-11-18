@@ -269,7 +269,9 @@ class MdsoApiSchema # rubocop:disable Metrics/ClassLength
   def self.quote_check_error_details_light(properties: {}, required: %w[code])
     {
       type: :object,
-      properties: { code: { "$ref" => "#/components/schemas/quote_check_error_code" } }.merge(properties),
+      properties: {
+        code: { "$ref" => "#/components/schemas/quote_check_error_code" }
+      }.merge(properties),
       additionalProperties: false,
       required:
     }

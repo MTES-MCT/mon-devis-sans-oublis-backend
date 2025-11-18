@@ -143,8 +143,10 @@ RSpec.configure do |config|
         },
         quote_check_error_code: {
           type: :string,
-          # enum: QuoteCheck::ERRORS, # TODO
-          description: "code d'erreur de validation"
+          enum: QuoteValidator::Global.error_codes.keys,
+          description: "code d'erreur de validation, voir liste et correspondance sur https://github.com/#{Rails.application.config.github_repository}/blob/main/config/locales/fr/mon-devis-sans-oublis-quote-validator.yml comme ci-dessous : " + QuoteValidator::Global.error_codes.map do |code, description|
+            "#{code}: #{description}"
+          end.join(" | ")
         },
         quote_check_error_deletion_reason_code: {
           type: :string,
