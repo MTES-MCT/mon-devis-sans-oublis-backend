@@ -134,30 +134,29 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
           end
         end
 
-        if (rnt = Kredis.json(QuoteCheckRntValidateJob.cache_key(resource.id)).value)
+        if (rnt_check = resource.last_rnt_check)
           panel "RNT" do
             content_tag(:table) do
               [
                 content_tag(:tr) do
-                  content_tag(:td, "1. QuoteCheck en JSON via schéma RNT") +
+                  content_tag(:a, "Voir RNT Check #{rnt_check.id}",
+                              href: admin_rnt_check_path(rnt_check), target: "_blank", rel: "noopener")
+                end,
+                content_tag(:tr) do
+                  content_tag(:td, "1. QuoteCheck en XML envoyé au RNT") +
                     content_tag(
                       :td,
-                      content_tag(:pre, JSON.pretty_generate(rnt.fetch("quote_check_rnt_json")))
+                      content_tag(:pre, Nokogiri::XML(rnt_check.sent_input_xml).to_xml(indent: 2))
                     )
                 end,
                 content_tag(:tr) do
-                  content_tag(:td, "2. QuoteCheck en XML envoyé au RNT") +
-                    content_tag(
-                      :td,
-                      content_tag(:pre, Nokogiri::XML(rnt.fetch("quote_check_rnt_xml")).to_xml(indent: 2))
-                    )
-                end,
-                content_tag(:tr) do
-                  content_tag(:td, "3. Réponse via validation du RNT") +
-                    content_tag(
-                      :td,
-                      content_tag(:pre, JSON.pretty_generate(rnt.fetch("rnt_validation_response")))
-                    )
+                  if rnt_check.result_json
+                    content_tag(:td, "2. Réponse via validation du RNT") +
+                      content_tag(
+                        :td,
+                        content_tag(:pre, JSON.pretty_generate(rnt_check.result_json))
+                      )
+                  end
                 end
               ].join.html_safe # rubocop:disable Rails/OutputSafety
             end

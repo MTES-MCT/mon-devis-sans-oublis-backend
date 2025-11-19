@@ -21,6 +21,13 @@ class QuoteCheck < ApplicationRecord
   belongs_to :parent, class_name: "QuoteCheck", optional: true
   has_many :children, class_name: "QuoteCheck", foreign_key: :parent_id, inverse_of: :parent, dependent: :nullify
 
+  has_many :rnt_checks, class_name: "RntCheck", dependent: :destroy
+  has_one :last_rnt_check, -> { order(sent_at: :desc) },
+          class_name: "RntCheck",
+          foreign_key: :quote_check_id,
+          inverse_of: :quote_check,
+          dependent: :destroy
+
   after_initialize :set_application_version
   strip_attributes
 
