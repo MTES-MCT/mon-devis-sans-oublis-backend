@@ -13,6 +13,7 @@ module Rack
       /%
       /..
       /.aws
+      /.drone
       /.env
       /.git
       /.github
@@ -25,6 +26,8 @@ module Rack
       /administrator
       /ajax
       /application
+      /artemis
+      /auth
       /backend
       /backup
       /bak
@@ -56,17 +59,22 @@ module Rack
       /id_
       /index.
       /install
+      /jira
       /jolokia
       /lib
       /login
       /manage
       /module
+      /my-account
       /old
       /output
+      /owncloud
       /php
       /phpinfo
       /phpinfo.php
       /phpmyadmin
+      /plugins
+      /processexecution
       /Release
       /rest
       /robots.txt
@@ -84,12 +92,15 @@ module Rack
       /tmui
       /upload.
       /uploads.
+      /user
       /web.
       /webadmin
       /webapps.
       /website.
       /webtools
+      /webui
       /windows
+      /wizard
       /wp-
       /wp-admin
       /wp-content
@@ -141,7 +152,8 @@ module Rack
 
     # Safelist your own IP ranges (development/staging)
     safelist("allow_local_ips") do |req|
-      request_ip = IPAddr.new(req.ip)
+      request_ip = IPAddr.new(req.ip) rescue IPAddr::AddressFamilyError # rubocop:disable Style/RescueModifier
+      next false unless request_ip
 
       ["127.0.0.1", "::1", "10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"].any? do |range|
         range_ip = IPAddr.new(range)
