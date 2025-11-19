@@ -68,19 +68,36 @@ class DataAdeme
     # But the related API might still return single String value instead of Array
     results&.map do |result|
       result.merge(
-        "domaine" => Array.wrap(result["domaine"]), # Ensure Array as in schema
-        # Remove empty "http://" value that not match the Regex in documentation
-        "site_internet" => result["site_internet"]&.gsub(%r{https?://$}i, "")&.strip,
-        "telephone" => format_phone(result["telephone"])
+        "domaine" => format_domaine(result["domaine"]),
+        "site_internet" => format_site_internet(result["site_internet"]),
+        "telephone" => format_telephone(result["telephone"])
       )
     end
   end
 
-  # format_phone("76653196X") => "07 66 53 19 6X"
-  # So it matches the Regex in documentation
-  def format_phone(phone)
-    phone = "0#{phone}" if phone&.scan(/\d/)&.length == 9 # Add leading 0 if missing
+  def format_domaine(domaine)
+    Array.wrap(domaine) # Ensure Array as in schema
+  end
 
-    phone&.scan(/\d{1,2}/)&.join(" ")
+  # format_telephone("76653196X") => "07 66 53 19 6X"
+  # So it matches the Regex in documentation
+  def format_telephone(telephone)
+    telephone = "0#{telephone}" if telephone&.scan(/\d/)&.length == 9 # Add leading 0 if missing
+
+    telephone&.scan(/\d{1,2}/)&.join(" ")
+  end
+
+  def format_site_internet(site_internet)
+    # Remove empty "http://" value that not match the Regex in documentation
+    clean_site_internet = site_internet&.gsub(%r{https?://$}i, "")&.strip
+    return "" if clean_site_internet.blank?
+
+    pattern = Regexp.new(
+      "[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)", # rubocop:disable Style/RedundantStringEscape
+      Regexp::IGNORECASE
+    )
+    return "" unless clean_site_internet.match?(pattern)
+
+    clean_site_internet
   end
 end
