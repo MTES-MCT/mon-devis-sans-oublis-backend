@@ -92,11 +92,14 @@ class DataAdeme
     clean_site_internet = site_internet&.gsub(%r{https?://$}i, "")&.strip
     return "" if clean_site_internet.blank?
 
-    pattern = Regexp.new(
-      "[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)", # rubocop:disable Style/RedundantStringEscape
-      Regexp::IGNORECASE
-    )
-    return "" unless clean_site_internet.match?(pattern)
+    # Data correction for known invalid value
+    return "https://www.engie-homeservices.fr/" if site_internet == "http://engie home services"
+
+    # pattern = Regexp.new(
+    #   "[(http(s)?):\\/\\/(www\\.)?a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)",
+    #   Regexp::IGNORECASE
+    # )
+    # return "" unless clean_site_internet.match?(pattern)
 
     clean_site_internet
   end
