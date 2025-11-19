@@ -52,8 +52,15 @@ class QuoteFile < ApplicationRecord
   end
   # rubocop:enable Metrics/AbcSize
 
-  def self.hexdigest_for_file(tempfile)
-    Digest::SHA256.file(tempfile.path).hexdigest
+  def self.hexdigest_for_file(tempfile_or_path)
+    path = case tempfile_or_path
+           when Pathname
+             tempfile_or_path.to_s
+           else
+             tempfile_or_path.path
+           end
+
+    Digest::SHA256.file(path).hexdigest
   end
 
   def self.tempfile_to_file(tempfile, content_type: nil) # rubocop:disable Metrics/MethodLength

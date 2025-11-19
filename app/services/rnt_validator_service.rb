@@ -8,7 +8,7 @@ require_relative "../../lib/rnt/rnt_schema"
 class RntValidatorService
   class NotProcessableError < StandardError; end
 
-  attr_reader :quote_check_id
+  attr_reader :quote_check_id, :rnt_check
 
   def initialize(quote_check_id)
     @quote_check_id = quote_check_id
@@ -89,7 +89,10 @@ class RntValidatorService
   # - :quote_check_rnt_json => The extracted RNT data in JSON format
   # - :quote_check_rnt_xml => The extracted RNT data in XML format
   # - :rnt_validation_response => The response from the RNT validation service
+  # rubocop:disable Metrics/AbcSize
   def validate # rubocop:disable Metrics/MethodLength
+    @rnt_check = nil
+
     unless self.class.rnt_validable?(quote_check)
       raise NotProcessableError,
             "QuoteCheck is not processable because not anonymized yet."
@@ -104,7 +107,12 @@ class RntValidatorService
       aide_financiere_collection: quote_check.renovation_type == "ampleur" ? "mpr_ampleur" : "mpr_geste"
     )
     # 3. Validate XML against RNT schema using RNT Web service
+    @rnt_check = RntCheck.create!(quote_check:, sent_input_xml: quote_check_rnt_xml, sent_at: Time.current)
     rnt_validation_response = Rnt.new.validate(quote_check_rnt_xml)
+    @rnt_check.update!(
+      result_json: rnt_validation_response,
+      result_at: Time.current
+    )
 
     {
       quote_check_rnt_json:,
@@ -112,6 +120,7 @@ class RntValidatorService
       rnt_validation_response:
     }
   end
+  # rubocop:enable Metrics/AbcSize
 
   private
 
