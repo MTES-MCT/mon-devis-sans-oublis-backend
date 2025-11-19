@@ -199,6 +199,8 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
   # rubocop:enable Metrics/AbcSize
 
   def validate_quote # rubocop:disable Metrics/MethodLength
+    QuoteCheckRntValidateJob.perform_later(quote_check.id)
+
     validator = QuoteValidator::Global.new(
       quote_check.read_attributes,
       quote_id: quote_check.id
