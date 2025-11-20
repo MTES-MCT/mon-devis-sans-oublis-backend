@@ -69,6 +69,15 @@ class MdsoBrevo # rubocop:disable Metrics/ClassLength
 
     QuotesCaseMailer.created_from_email(quotes_case).deliver_later if quotes_case
 
+    sender = email_params.fetch("From")
+    original_to = email_params.fetch("Recipients")
+    link = (quotes_case || quote_checks.first).frontend_webapp_url(mtm_campaign: "full_email")
+    prefix_html = <<~HTML
+      <p>Email de #{sender} reçu par #{original_to} avec #{attachments.size} pièce(s) jointe(s) :</p>
+      <p>Traité sur <a href="#{link}" target="_blank" rel="noopener noreferrer">#{link}</a></p>
+    HTML
+    forward_email(prefix_html)
+
     quotes_case || quote_checks
     # rescue StandardError => e
     #   ErrorNotifier.notify(e, context: { email_params:, quotes_case_id: quotes_case&.id })
@@ -166,11 +175,8 @@ class MdsoBrevo # rubocop:disable Metrics/ClassLength
   # rubocop:enable Metrics/AbcSize
 
   # Forwarding wrong inbound emails to a fixed address
-  # rubocop:disable Metrics/AbcSize
-  # rubocop:disable Metrics/CyclomaticComplexity
-  def manage_wrong_inbound_email # rubocop:disable Metrics/MethodLength
-    return false if to && attachments.any?
-    return unless inbound_forwarding_to
+  def manage_wrong_inbound_email
+    return false if to && attachments.any? # Rejects legitimate emails
 
     # raise ActiveRecord::RecordNotFound, "No matching Inbound Email found"
 
@@ -180,14 +186,22 @@ class MdsoBrevo # rubocop:disable Metrics/ClassLength
       <p>Email de #{sender} reçu par #{original_to} avec #{attachments.size} pièce(s) jointe(s) :</p>
       <p>Ayant été envoyé à une mauvaise adresse ou sans pièce jointe, donc cet email n'a pas été traité.</p>
     HTML
-    prefix_text = Html.html_to_text(prefix_html)
+
+    forward_email(prefix_html)
+  end
+
+  # rubocop:disable Metrics/AbcSize
+  def forward_email(prefix_html = nil) # rubocop:disable Metrics/MethodLength
+    return unless inbound_forwarding_to
+
+    prefix_text = Html.html_to_text(prefix_html) if prefix_html
 
     stmp_params = {
       # email_params from https://developers.brevo.com/docs/inbound-parse-webhooks#parsed-email-payload
       # to https://github.com/getbrevo/brevo-ruby/blob/main/docs/SendSmtpEmail.md
       sender: { email: "devis@#{ENV.fetch('INBOUND_MAIL_DOMAIN')}" }, # TODO: re-use original_to if configured on Brevo
       to: inbound_forwarding_to,
-      reply_to: email_params.fetch("ReplyTo") || sender,
+      reply_to: email_params.fetch("ReplyTo") || email_params.fetch("From"),
       subject: "Fwd: #{subject}",
       htmlContent: "#{prefix_html}<br />#{email_params.fetch('RawHtmlBody')}",
       textContent: "#{prefix_text}\n\n#{email_params.fetch('RawTextBody')}",
@@ -206,7 +220,6 @@ class MdsoBrevo # rubocop:disable Metrics/ClassLength
   rescue Brevo::ApiError => e
     raise StandardError, (attachments.inspect + e.response_body) if e.respond_to?(:response_body)
   end
-  # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/AbcSize
 
   def inbound_forwarding_to
