@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "base64"
+
 require "brevo"
 require "faraday"
 
@@ -209,7 +211,7 @@ class MdsoBrevo # rubocop:disable Metrics/ClassLength
         tempfile = BrevoApi.new.download_inbound_email_attachment(attachment.fetch("DownloadToken"))
         Brevo::SendSmtpEmailAttachment.new(
           name: attachment.fetch("Name"),
-          content: tempfile.base64_encoded
+          content: Base64.strict_encode64(tempfile.read) # file.base64_encoded
         )
       end.presence
     }.compact

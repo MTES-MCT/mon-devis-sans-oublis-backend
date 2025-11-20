@@ -27,7 +27,6 @@ module Rack
       /ajax
       /application
       /artemis
-      /auth
       /backend
       /backup
       /bak
