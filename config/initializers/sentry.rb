@@ -21,12 +21,15 @@ if defined?(Sentry)
     config.before_send = lambda do |event, hint|
       err = hint[:exception]
 
+      # Customize event based on exception type
       case err
       when Brevo::ApiError
         event.extra ||= {}
         event.extra[:code] ||= err.code
         event.extra[:response_body] ||= err.response_body
         event.extra[:response_headers] ||= err.response_headers
+      when MdsoApi::InvalidResponse
+        event.priority = "low"
       end
 
       event
