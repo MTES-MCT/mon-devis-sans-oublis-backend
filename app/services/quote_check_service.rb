@@ -62,6 +62,8 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
       )
       validate_quote if quote_check.validation_errors.blank?
       quote_check.finished_at = Time.current
+
+      QuoteCheckRntValidateJob.perform_later(quote_check.id)
     ensure
       quote_check.application_version = Rails.application.config.application_version
       if save
@@ -199,8 +201,6 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
   # rubocop:enable Metrics/AbcSize
 
   def validate_quote # rubocop:disable Metrics/MethodLength
-    QuoteCheckRntValidateJob.perform_later(quote_check.id)
-
     validator = QuoteValidator::Global.new(
       quote_check.read_attributes,
       quote_id: quote_check.id
