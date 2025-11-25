@@ -2,7 +2,14 @@
 
 # Job to perform security scan on QuoteFile
 class QuoteFileSecurityScanJob < ApplicationJob
+  include GoodJob::ActiveJobExtensions::Concurrency
+
   queue_as :default
+
+  good_job_control_concurrency_with(
+    total_limit: 1,
+    key: -> { "#{self.class.name}-#{queue_name}-#{arguments.first}" }
+  )
 
   def perform(quote_file_id) # rubocop:disable Metrics/MethodLength
     quote_file = QuoteFile.find_by(id: quote_file_id)

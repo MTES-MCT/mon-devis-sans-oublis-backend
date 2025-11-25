@@ -2,7 +2,14 @@
 
 # Job to (re)check an existing QuoteCheck
 class QuoteCheckCheckJob < ApplicationJob
+  include GoodJob::ActiveJobExtensions::Concurrency
+
   queue_as :critical
+
+  good_job_control_concurrency_with(
+    total_limit: 1,
+    key: -> { "#{self.class.name}-#{queue_name}-#{arguments.first}" }
+  )
 
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/CyclomaticComplexity

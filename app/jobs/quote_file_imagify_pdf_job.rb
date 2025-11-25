@@ -2,7 +2,14 @@
 
 # Job to extract images of pages of an existing PDF QuoteFile
 class QuoteFileImagifyPdfJob < ApplicationJob
+  include GoodJob::ActiveJobExtensions::Concurrency
+
   queue_as :low
+
+  good_job_control_concurrency_with(
+    total_limit: 1,
+    key: -> { "#{self.class.name}-#{queue_name}-#{arguments.first}" }
+  )
 
   def perform(quote_file_id)
     quote_file = QuoteFile.find_by(id: quote_file_id)
