@@ -60,7 +60,12 @@ module Llms
         response = e.response
 
         if e.is_a?(RubyLLM::RateLimitError) || response.status == 429
-          raise TooManyRequestsError, response.body["detail"] || response.body
+          json = begin
+            JSON.parse(response.body)
+          rescue JSON::ParserError
+            nil
+          end
+          raise TooManyRequestsError, (json && json["detail"]) || response.body
         end
 
         # Auto switch model if not found
