@@ -13,6 +13,7 @@ module Llms
   class Albert < Base
     class ResponseError < StandardError; end
     class UnauthorizedError < ResponseError; end
+    class TooManyRequestsError < ResponseError; end
 
     attr_reader :prompt, :read_attributes, :result
 
@@ -57,6 +58,10 @@ module Llms
         ruby_llm_message = (json_schema ? chat.with_schema(json_schema) : chat).ask(text)
       rescue RubyLLM::Error => e
         response = e.response
+
+        if e.is_a?(RubyLLM::RateLimitError) || response.status == 429
+          raise TooManyRequestsError, response.body["detail"] || response.body
+        end
 
         # Auto switch model if not found
         if response.status == 404 && model_fallback
