@@ -1,0 +1,8 @@
+<div class="panel">
+  <h3>Retrouver par fichier</h3>
+  
+  <%= form_with local: true, multipart: true do |f| %>
+    <%= f.file_field :file %>
+    <%= f.submit "Retrouver" %>
+  <% end %>
+</div>
