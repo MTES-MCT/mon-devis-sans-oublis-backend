@@ -5,6 +5,27 @@ ActiveAdmin.register QuoteFile do # rubocop:disable Metrics/BlockLength
 
   actions :index, :show, :view_file
 
+  action_item :filter_by_file, only: :index do
+    link_to "Retrouver par fichier", filter_by_file_admin_quote_files_path
+  end
+
+  collection_action :filter_by_file, method: %i[get post] do
+    if request.post?
+      if params[:file].present?
+        file = params[:file]
+
+        hexdigest = QuoteFile.hexdigest_for_file(file)
+        quote_file = QuoteFile.find_by(hexdigest:) # filename: file.original_filename
+
+        redirect_to admin_quote_file_path(quote_file) and return if quote_file
+
+        flash.now[:alert] = "Aucun fichier de devis trouvé pour le fichier uploadé." # rubocop:disable Rails/I18nLocaleTexts
+      else
+        flash.now[:alert] = "Veuillez sélectionner un fichier à uploader." # rubocop:disable Rails/I18nLocaleTexts
+      end
+    end
+  end
+
   config.filters = false
   config.sort_order = "created_at_desc"
 
@@ -117,6 +138,18 @@ ActiveAdmin.register QuoteFile do # rubocop:disable Metrics/BlockLength
                                   ])
                       end
                     ])
+        end
+      end
+
+      row "Devis associés" do |quote_file|
+        ul do
+          quote_file.quote_checks.order(created_at: :desc).each do |quote_check|
+            li do
+              link_to "#{local_time(quote_check.created_at)} - Devis #{quote_check.id}",
+                      admin_quote_check_path(quote_check),
+                      target: "_blank", rel: "noopener"
+            end
+          end
         end
       end
     end
