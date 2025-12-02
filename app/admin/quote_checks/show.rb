@@ -3,7 +3,7 @@
 require "nokogiri"
 
 ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
-  show do # rubocop:disable Metrics/BlockLength
+  show title: proc { "Devis #{resource.id}" } do # rubocop:disable Metrics/BlockLength
     columns do # rubocop:disable Metrics/BlockLength
       column do # rubocop:disable Metrics/BlockLength
         attributes_table do # rubocop:disable Metrics/BlockLength

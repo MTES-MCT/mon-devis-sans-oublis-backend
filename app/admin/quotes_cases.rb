@@ -55,7 +55,7 @@ ActiveAdmin.register QuotesCase do # rubocop:disable Metrics/BlockLength
     column "Type de rénovation", :renovation_type
   end
 
-  show do # rubocop:disable Metrics/BlockLength
+  show title: proc { "Dossier #{resource.id}" } do # rubocop:disable Metrics/BlockLength
     columns do # rubocop:disable Metrics/BlockLength
       column do # rubocop:disable Metrics/BlockLength
         attributes_table do # rubocop:disable Metrics/BlockLength
