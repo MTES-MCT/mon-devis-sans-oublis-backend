@@ -14,6 +14,15 @@ class RntValidatorService
     @quote_check_id = quote_check_id
   end
 
+  def self.clean_xml_for_rnt(xml_for_rnt)
+    doc = Nokogiri::XML(xml_for_rnt)
+
+    # Remove all empty nodes
+    doc.xpath("//*[not(node())]").each(&:remove)
+
+    doc.to_xml
+  end
+
   # Complete the RNT JSON with required donnees_contextuelles
   def self.complete_json_for_rnt(json, aide_financiere_collection:) # rubocop:disable Metrics/MethodLength
     projet_travaux = json["projet_travaux"]
@@ -53,9 +62,10 @@ class RntValidatorService
       xml_root_attrs: { version: RntSchema::VERSION }
     )
 
-    llm_call.chat_completion(
+    xml_for_rnt = llm_call.chat_completion(
       complete_json_for_rnt(json, aide_financiere_collection:)
     )
+    clean_xml_for_rnt(xml_for_rnt)
   end
 
   def self.rnt_json_for_text(text)
