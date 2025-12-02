@@ -101,7 +101,7 @@ ActiveAdmin.register QuoteFile do # rubocop:disable Metrics/BlockLength
     end
   end
 
-  show do # rubocop:disable Metrics/BlockLength
+  show title: proc { resource.filename } do # rubocop:disable Metrics/BlockLength
     attributes_table do # rubocop:disable Metrics/BlockLength
       row :id
 
