@@ -476,7 +476,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 19 Nov 2025 09:38:00 GMT
+      - Wed, 03 Dec 2025 09:28:38 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -484,24 +484,38 @@ http_interactions:
       Connection:
       - keep-alive
       Mistral-Correlation-Id:
-      - '019a9b7a-49b0-7f7e-9533-4f697595489d'
+      - '019ae38a-b1ad-725a-8f68-4b7248c714bc'
       X-Kong-Request-Id:
-      - '019a9b7a-49b0-7f7e-9533-4f697595489d'
+      - '019ae38a-b1ad-725a-8f68-4b7248c714bc'
+      X-Ratelimit-Limit-Tokens-Minute:
+      - '20000000'
+      X-Ratelimit-Remaining-Tokens-Minute:
+      - '19960275'
+      X-Ratelimit-Limit-Tokens-Month:
+      - '200000000000'
+      X-Ratelimit-Remaining-Tokens-Month:
+      - '199862021451'
+      X-Ratelimit-Tokens-Query-Cost:
+      - '12482'
+      X-Ratelimit-Limit-Req-10-Second:
+      - '240'
+      X-Ratelimit-Remaining-Req-10-Second:
+      - '239'
       X-Envoy-Upstream-Service-Time:
-      - '6018'
+      - '9983'
       Access-Control-Allow-Origin:
       - "*"
       X-Kong-Upstream-Latency:
-      - '6019'
+      - '9986'
       X-Kong-Proxy-Latency:
-      - '8'
+      - '12'
       Cf-Cache-Status:
       - DYNAMIC
       Set-Cookie:
-      - __cf_bm=LGG7LCdBKG.I0s9cxoicP6EwvvMr3pNyt39xM5Wvkck-1763545080-1.0.1.1-m3KoD_PkRZ1mGSDo20FyERLb7kvM3no8gJVHmJkYBEhxdHidqpjbdD7TiIYLlCOBE1RkFulaocSrcZtOBW.o8uMQO0HQVMH44Rhu2PDrt0U;
-        path=/; expires=Wed, 19-Nov-25 10:08:00 GMT; domain=.mistral.ai; HttpOnly;
+      - __cf_bm=JzmgTJnu2ddG.LnqVnA8Ayz8IEgtIoXojpbyAFUxSHU-1764754118-1.0.1.1-4GdsF02yPY7KfyppR1Bd8WoiA5Qc0aoqJjJS2V4mZ1xlvdR2eEFEUiUzsuR_E28jdz2N9uer89vxwJzs4hURjOsWIlK3pcbB8rh2VRClOtk;
+        path=/; expires=Wed, 03-Dec-25 09:58:38 GMT; domain=.mistral.ai; HttpOnly;
         Secure; SameSite=None
-      - _cfuvid=ZSdcKWK7JU.lHEGLMP1vOkEQNsmNCfnJtZ9FbXjhWFg-1763545080144-0.0.1.1-604800000;
+      - _cfuvid=.5KlI3gCsovSRwSviTcT2alUayBbkkzhc8x435aDU5o-1764754118869-0.0.1.1-604800000;
         path=/; domain=.mistral.ai; HttpOnly; Secure; SameSite=None
       Strict-Transport-Security:
       - max-age=15552000; includeSubDomains; preload
@@ -510,22 +524,14 @@ http_interactions:
       Server:
       - cloudflare
       Cf-Ray:
-      - 9a0ebb487b92d28d-FRA
+      - 9a8208bbd903169b-MRS
       Alt-Svc:
       - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
-      string: '{"id":"498ae9e7cc6a4727a23b0e8386a51cc4","created":1763545074,"model":"mistral-large-la<MDSO_OCR_API_KEY>","usage":{"prompt_tokens":12184,"total_tokens":12453,"completion_tokens":269},"object":"chat.completion","choices":[{"index":0,"finish_reason":"stop","message":{"role":"assistant","tool_calls":null,"content":"{\n  \"travaux\":
-        [\n    {\n      \"isolation_mur_ite\": {\n        \"resistance_isolant\":
-        3.5,\n        \"norme_resistance\": \"nf_en_12664\",\n        \"surface_isolant\":
-        120,\n        \"epaisseur_isolant\": 10,\n        \"materiau_isolant\": \"laine_de_verre\",\n        \"fixation_isolant\":
-        \"ossature_continue_z\",\n        \"protection_isolant\": \"bardage\"\n      }\n    },\n    {\n      \"fenetre_porte_fenetre\":
-        {\n        \"nombre_fenetres\": 8,\n        \"uw\": 1.2,\n        \"sw\":
-        0.36,\n        \"norme_transmission_solaire\": \"nf_p_50_777\",\n        \"norme_transmission_thermique\":
-        \"nf_en_14351_1+a2\",\n        \"surface\": 12,\n        \"marque_produit\":
-        \"MarqueFenetre\",\n        \"reference_produit\": \"RefFenetre123\",\n        \"remplacement_du_dormant_existant\":
-        true\n      }\n    }\n  ]\n}"}}]}'
-  recorded_at: Wed, 19 Nov 2025 09:38:00 GMT
+      string: !binary |-
+        eyJpZCI6ImI3ODhkMTBlOGFhMDQ3Y2FiZjkzNzQyM2MyMzJjMWU4IiwiY3JlYXRlZCI6MTc2NDc1NDEwOCwibW9kZWwiOiJtaXN0cmFsLWxhcmdlLWxhPE1EU09fT0NSX0FQSV9LRVk+IiwidXNhZ2UiOnsicHJvbXB0X3Rva2VucyI6MTIxODQsInRvdGFsX3Rva2VucyI6MTI0ODIsImNvbXBsZXRpb25fdG9rZW5zIjoyOTh9LCJvYmplY3QiOiJjaGF0LmNvbXBsZXRpb24iLCJjaG9pY2VzIjpbeyJpbmRleCI6MCwiZmluaXNoX3JlYXNvbiI6InN0b3AiLCJtZXNzYWdlIjp7InJvbGUiOiJhc3Npc3RhbnQiLCJ0b29sX2NhbGxzIjpudWxsLCJjb250ZW50Ijoie1xuICBcImRldmlzXCI6IFwiRGV2aXMgcG91ciBsYSByw6lub3ZhdGlvbiDDqW5lcmfDqXRpcXVlIGQndW5lIG1haXNvbiBpbmRpdmlkdWVsbGUgZGUgMTIwIG3Csi4gVm9pY2kgbGVzIHRyYXZhdXggcHJvcG9zw6lzIDpcXG5cXG4xLiBJc29sYXRpb24gZGVzIG11cnMgcGFyIGwnZXh0w6lyaWV1ciAoSVRFKSBhdmVjIDE0MCBtbSBkZSBsYWluZSBkZSByb2NoZSwgcsOpc2lzdGFuY2UgdGhlcm1pcXVlIGRlIDMuNyBtwrIuSy9XLCBzdXJmYWNlIHRvdGFsZSBkZSAxNTAgbcKyLiBGaXhhdGlvbiBwYXIgb3NzYXR1cmUgY29udGludWUgaG9yaXpvbnRhbGUuIE1hcnF1ZSA6IFJvY2t3b29sLCByw6lmw6lyZW5jZSA6IFJvY2tNdXIuXFxuXFxuMi4gSW5zdGFsbGF0aW9uIGQndW5lIFZNQyBkb3VibGUgZmx1eCBhdXRvcsOpZ2xhYmxlIHBvdXIgdW5lIHN1cmZhY2UgaGFiaXRhYmxlIGRlIDEyMCBtwrIuIEVmZmljYWNpdMOpIHRoZXJtaXF1ZSBkZSBsJ8OpY2hhbmdldXIgZGUgODUlLCBwdWlzc2FuY2Ugw6lsZWN0cmlxdWUgYWJzb3Jiw6llIGRlIDAuMyBXVGhDLyhtwrMvaCkuIFByw6lzZW5jZSBkJ3VuIGNhaXNzb24sIGQndW4gw6ljaGFuZ2V1ciBkZSBjaGFsZXVyLCBkZSBnYWluZXMgZXQgZGUgYm91Y2hlcyBoeWdyb3LDqWdsYWJsZXMuIE1hcnF1ZSBkdSBjYWlzc29uIDogQXRsYW50aWMsIHLDqWbDqXJlbmNlIDogRHVvbGl4IE1heC4gTWFycXVlIGRlcyBib3VjaGVzIDogQWxkZXMsIHLDqWbDqXJlbmNlIDogSHlncm9jb3N5LlxcblxcbjMuIFJlbXBsYWNlbWVudCBkZSA4IGZlbsOqdHJlcyBlbiBkb3VibGUgdml0cmFnZSBhdmVjIHVuIFV3IGRlIDEuMyBXL23Csi5LIGV0IHVuIFN3IGRlIDAuNC4gTm9ybWUgZGUgdHJhbnNtaXNzaW9uIHRoZXJtaXF1ZSA6IE5GIEVOIDE0MzUxLTErQTIuIFN1cmZhY2UgdG90YWxlIGRlIDE2IG3Csi4gTWFycXVlIDogVmVsdXgsIHLDqWbDqXJlbmNlIDogR0dVLlwiXG59In19XX0=
+  recorded_at: Wed, 03 Dec 2025 09:28:38 GMT
 - request:
     method: post
     uri: https://albert.api.etalab.gouv.fr/v1/chat/completions
@@ -3550,7 +3556,7 @@ http_interactions:
         A13, 3eme gauche)</xs:documentation>\n                </xs:annotation>\n                <xs:simpleType>\n                    <xs:restriction
         base=\"xs:string\">\n                        <xs:maxLength value=\"255\"/>\n                    </xs:restriction>\n                </xs:simpleType>\n            </xs:element>\n        </xs:all>\n    </xs:complexType>\n</xs:schema>\n
         Ne pas ajouter d''éléments ou d''attributs non définis dans le schéma. Voici
-        le JSON :"},{"role":"user","content":"{\"projet_travaux\":{\"travaux_collection\":{\"travaux\":[{\"isolation_mur_ite\":{\"resistance_isolant\":3.5,\"norme_resistance\":\"nf_en_12664\",\"surface_isolant\":120,\"epaisseur_isolant\":10,\"materiau_isolant\":\"laine_de_verre\",\"fixation_isolant\":\"ossature_continue_z\",\"protection_isolant\":\"bardage\"}},{\"fenetre_porte_fenetre\":{\"nombre_fenetres\":8,\"uw\":1.2,\"sw\":0.36,\"norme_transmission_solaire\":\"nf_p_50_777\",\"norme_transmission_thermique\":\"nf_en_14351_1+a2\",\"surface\":12,\"marque_produit\":\"MarqueFenetre\",\"reference_produit\":\"RefFenetre123\",\"remplacement_du_dormant_existant\":true}}]},\"donnees_contextuelles\":{\"version\":\"0.3\",\"contexte\":\"devis\",\"usage_batiment\":\"appartement_chauffage_individuel\",\"aide_financiere_collection\":[\"mpr_geste\"]}}}"}],"stream":false,"temperature":0,"response_format":{"type":"json_object","strict":true}}'
+        le JSON :"},{"role":"user","content":"{\"projet_travaux\":{\"travaux_collection\":{\"travaux\":null},\"donnees_contextuelles\":{\"version\":\"0.3\",\"contexte\":\"devis\",\"usage_batiment\":\"appartement_chauffage_individuel\",\"aide_financiere_collection\":[\"mpr_geste\"]}}}"}],"stream":false,"temperature":0,"response_format":{"type":"json_object","strict":true}}'
     headers:
       User-Agent:
       - Faraday v2.14.0
@@ -3564,37 +3570,22 @@ http_interactions:
       - "*/*"
   response:
     status:
-      code: 200
-      message: OK
+      code: 429
+      message: Too Many Requests
     headers:
       Server:
       - nginx/1.27.4
       Date:
-      - Wed, 19 Nov 2025 09:38:49 GMT
+      - Wed, 03 Dec 2025 09:28:39 GMT
       Content-Type:
       - application/json
-      Transfer-Encoding:
-      - chunked
+      Content-Length:
+      - '83'
       Connection:
       - keep-alive
-      Vary:
-      - Accept-Encoding
     body:
-      encoding: ASCII-8BIT
-      string: '{"id":"chatcmpl-77a5005e56f34aca9ff853a87fa0747c","object":"chat.completion","created":1763545081,"model":"mistralai/Mistral-Small-3.2-24B-Instruct-2506","choices":[{"index":0,"message":{"role":"assistant","content":"{\"rnt\":
-        {\"projet_travaux\": {\"donnees_contextuelles\": {\"version\": \"0.3\", \"contexte\":
-        \"devis\", \"usage_batiment\": \"appartement_chauffage_individuel\", \"aide_financiere_collection\":
-        {\"aide_financiere\": [\"mpr_geste\"]}}, \"projet_travaux\": {\"travaux_collection\":
-        {\"travaux\": [{\"lot_travaux\": \"mur\", \"type_travaux\": \"isolation_mur_ite\",
-        \"caracteristiques_travaux\": {\"isolation_mur_ite\": {\"resistance_isolant\":
-        3.5, \"norme_resistance\": \"nf_en_12664\", \"surface_isolant\": 120, \"epaisseur_isolant\":
-        10, \"materiau_isolant\": \"laine_de_verre\", \"fixation_isolant\": \"ossature_continue_z\",
-        \"protection_isolant\": \"bardage\"}}, \"reference_travaux\": \"RefTravaux123\",
-        \"cout\": 2500}, {\"lot_travaux\": \"menuiserie\", \"type_travaux\": \"fenetre_porte_fenetre\",
-        \"caracteristiques_travaux\": {\"fenetre_porte_fenetre\": {\"nombre_fenetres\":
-        8, \"uw\": 1.2, \"sw\": 0.36, \"norme_transmission_solaire\": \"nf_p_50_777\",
-        \"norme_transmission_thermique\": \"nf_en_14351_1+a2\", \"surface\": 12, \"marque_produit\":
-        \"MarqueFenetre\", \"reference_produit\": \"RefFenetre123\", \"remplacement_du_dormant_existant\":
-        true}}, \"reference_travaux\": \"RefTravaux456\", \"cout\": 3000}]}}}} }","refusal":null,"annotations":null,"audio":null,"function_call":null,"tool_calls":[],"reasoning_content":null},"logprobs":null,"finish_reason":"stop","stop_reason":null}],"service_tier":null,"system_fingerprint":null,"usage":{"prompt_tokens":72631,"completion_tokens":396,"total_tokens":73027,"cost":0.0,"carbon":{"kWh":{"min":0.0,"max":0.0},"kgCO2eq":{"min":0.0,"max":0.0}},"details":[{"id":"chatcmpl-77a5005e56f34aca9ff853a87fa0747c","model":"mistralai/Mistral-Small-3.2-24B-Instruct-2506","usage":{"prompt_tokens":72631,"completion_tokens":396,"total_tokens":73027,"cost":0.0,"carbon":{"kWh":{"min":0.0,"max":0.0},"kgCO2eq":{"min":0.0,"max":0.0}}}}]},"prompt_logprobs":null,"kv_transfer_params":null}'
-  recorded_at: Wed, 19 Nov 2025 09:38:49 GMT
+      encoding: UTF-8
+      string: '{"detail":"2460000 input tokens for albert-large per day exceeded (remaining:
+        0)."}'
+  recorded_at: Wed, 03 Dec 2025 09:28:39 GMT
 recorded_with: VCR 6.3.1

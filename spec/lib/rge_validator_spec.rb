@@ -53,7 +53,7 @@ RSpec.describe RgeValidator, type: :service do
       it { is_expected.to be_truthy }
 
       it "returns results" do
-        expect(valid.first["domaine"]).to eq("Ventilation mécanique")
+        expect(valid.first["domaine"]).to eq(["Ventilation mécanique"])
       end
     end
 
