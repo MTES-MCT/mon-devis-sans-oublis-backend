@@ -20,6 +20,12 @@ class RntValidatorService
     # Remove all empty nodes
     doc.xpath("//*[not(node())]").each(&:remove)
 
+    # Remove usage_systeme nodes if not relevant
+    doc.xpath("//usage_systeme").each do |node|
+      parent_lot_travaux = node.parent.at_xpath("lot_travaux")&.text
+      node.remove unless parent_lot_travaux.match?(/systeme/i)
+    end
+
     doc.to_xml
   end
 
