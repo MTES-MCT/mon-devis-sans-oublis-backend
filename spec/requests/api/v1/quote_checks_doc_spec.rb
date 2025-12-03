@@ -45,7 +45,9 @@ describe "Devis API" do
         properties: {
           file: {
             type: :string,
-            format: :binary
+            format: :binary,
+            description:
+              "Taille maximum de #{QuoteFile::FILE_MAX_SIZE_MB} MB par fichier téléversé"
           },
           file_text: {
             type: :string,
@@ -87,7 +89,7 @@ describe "Devis API" do
           case_id: {
             type: :string,
             description:
-              "Dossier de devis pour rénovation d’ampleur, maximum #{QuotesCase::MAX_QUOTE_CHECKS} devis par dossier",
+              "Dossier de devis pour rénovation d’ampleur, maximum de #{QuotesCase::MAX_QUOTE_CHECKS} fichiers devis par dossier", # rubocop:disable Layout/LineLength
             nullable: true
           }
         },

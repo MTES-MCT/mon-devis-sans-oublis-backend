@@ -6,7 +6,11 @@ info:
   description: |
     [Vidéo explicative de l'API](https://mon-devis-sans-oublis.notion.site/API-Partenaire-Mon-Devis-Sans-Oublis-24268d71969180419721c8a272dffc6a)
 
-    **Général champs:**
+    **Limitations :**
+    - Taille maximum par fichier téléversé : 50 MB
+    - Nombre maximum de fichiers par dossier (QuotesCase) : 20
+
+    **Général champs :**
     - les champs optionnels sont nullables voir peuvent ne pas être présents dans le payload (corps de la requête)
     - `id` : considérer comme un string (chaîne de caractères) unique
     - type date string au format "YYYY-MM-DD" exemple "2025-05-27"
