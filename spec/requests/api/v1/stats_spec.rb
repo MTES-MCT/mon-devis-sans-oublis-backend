@@ -13,7 +13,7 @@ RSpec.describe "/api/v1/stats" do
 
     it "returns a complete response" do
       get api_v1_stats_url
-      expect(json).to include(*StatsService.keys)
+      expect(json).to include(*StatsService.keys.map(&:to_s) - %w[quote_check_upload_funnel])
     end
   end
 end

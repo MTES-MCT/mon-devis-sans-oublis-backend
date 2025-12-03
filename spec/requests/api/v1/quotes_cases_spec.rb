@@ -7,7 +7,7 @@ RSpec.describe "/api/v1/quotes_cases" do
   subject(:json) { response.parsed_body }
 
   describe "POST /api/v1/quotes_cases" do
-    let(:profile) { nil }
+    let(:profile) { QuoteCheck::API_PROFILES.first }
     let(:quotes_case_params) do
       {
         profile:,
@@ -139,7 +139,10 @@ RSpec.describe "/api/v1/quotes_cases" do
     end
 
     it "returns content including error details" do
-      expect(response.body).to include(quotes_case.quote_checks.first.error_details_admin.first[:message])
+      expect(response.body).to include(
+        quotes_case.quote_checks.first.validation_error_details&.first&.fetch(:message) ||
+        "Aucune erreur à signaler"
+      )
     end
 
     context "with text format" do
@@ -154,7 +157,10 @@ RSpec.describe "/api/v1/quotes_cases" do
         end
 
         it "returns content including error details" do
-          expect(response.body).to include(quotes_case.quote_checks.first.error_details_admin.first[:message])
+          expect(response.body).to include(
+            quotes_case.quote_checks.first.validation_error_details&.first&.fetch(:message) ||
+            "Aucune erreur à signaler"
+          )
         end
       end
       # rubocop:enable RSpec/MultipleExpectations

@@ -12,10 +12,10 @@ class RntCheck < ApplicationRecord
   end
 
   def rnt_version
-    sent_input_xml[/<rnt[^>]*version=["']([^"']+)["'][^>]*>/, 1] if sent_input_xml
+    sent_input_xml[%r{<version>([^<]+)</version>}, 1] if sent_input_xml
   end
 
   def schema_version
-    sent_input_xml[%r{<version>([^<]+)</version>}, 1] if sent_input_xml
+    sent_input_xml[/<rnt[^>]*version=["']([^"']+)["'][^>]*>/, 1] if sent_input_xml
   end
 end

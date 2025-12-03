@@ -4,12 +4,14 @@
 module SiretValidator
   class ArgumentError < QuoteValidator::Base::ArgumentError; end
 
+  SIRET_VALID = "11006801200050" # MTE
+
   # TODO: Add optional date parameter
   # Boolean check if SIRET is valid, raise ArgumentError on wrong format
   def self.valid?(siret)
-    SireneApi.new.recherche(
-      validate_format!(siret)
-    )
+    # TODO: Use API Entreprise instead
+    SireneApi.new.recherche(validate_format!(siret)) ||
+      SireneApi.new.recherche(SIRET_VALID) == false
   end
 
   # Format and raise errors on wrong format

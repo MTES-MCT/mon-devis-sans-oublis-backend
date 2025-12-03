@@ -9,7 +9,7 @@ describe "Devis API", swagger_doc: "v1/#{Rails.application.config.openapi_file.c
       tags "Devis"
       security [bearer_api_key: []]
       consumes "application/json"
-      produces ["text/html", "text/plain"]
+      produces "text/html" # "text/plain" # TODO
       parameter name: :id, in: :path, type: :string, required: true
 
       response "200", "Devis trouvé" do

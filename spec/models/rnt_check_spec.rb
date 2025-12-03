@@ -8,7 +8,7 @@ RSpec.describe RntCheck do
       rnt_check = described_class.new(
         sent_input_xml: <<~XML
           <?xml version="1.0" encoding="UTF-8"?>
-          <rnt version="0.1.0<">
+          <rnt version="0.1.0">
             <projet_travaux>
               <donnees_contextuelles>
                 <version>0.4</version>
@@ -26,7 +26,7 @@ RSpec.describe RntCheck do
       rnt_check = described_class.new(
         sent_input_xml: <<~XML
           <?xml version="1.0" encoding="UTF-8"?>
-          <rnt version="0.1.0<">
+          <rnt version="0.1.0">
             <some_data></some_data>
           </rnt>
         XML

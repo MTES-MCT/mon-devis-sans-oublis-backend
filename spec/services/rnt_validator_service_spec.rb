@@ -13,10 +13,9 @@ RSpec.describe RntValidatorService, type: :service do
     let(:raw_xml) do
       <<~XML
         <?xml version="1.0" encoding="UTF-8"?>
-        <rnt hashkey="string" id="string" version="string">
+        <rnt version="#{schema_version}">
             <projet_travaux>
                 <donnees_contextuelles>
-                    <version>#{schema_version}</version>
                     <contexte>devis</contexte>
                     <usage_batiment>appartement_chauffage_individuel</usage_batiment>
                     <aide_financiere_collection>

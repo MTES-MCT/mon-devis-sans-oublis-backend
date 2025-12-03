@@ -15,7 +15,6 @@ if defined?(Sentry)
     config.environment = ENV.fetch("SENTRY_ENVIRONMENT", Rails.application.config.app_env)
     config.release = ENV.fetch("CONTAINER_VERSION", `git rev-parse HEAD`).strip
 
-
     if ActiveModel::Type::Boolean.new.cast(ENV.fetch("SENTRY_LOGS_ENABLED", "false"))
       config.enable_logs = true
       config.enabled_patches = [:logger] # :puma, :faraday, :redis
