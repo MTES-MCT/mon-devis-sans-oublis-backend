@@ -48,7 +48,11 @@ RSpec.configure do |config|
       description: <<~DESC
         [Vidéo explicative de l'API](https://mon-devis-sans-oublis.notion.site/API-Partenaire-Mon-Devis-Sans-Oublis-24268d71969180419721c8a272dffc6a)
 
-        **Général champs:**
+        **Limitations :**
+        - Taille maximum par fichier téléversé : #{QuoteFile::FILE_MAX_SIZE_MB} MB
+        - Nombre maximum de fichiers par dossier (QuotesCase) : #{QuotesCase::MAX_QUOTE_CHECKS}
+
+        **Général champs :**
         - les champs optionnels sont nullables voir peuvent ne pas être présents dans le payload (corps de la requête)
         - `id` : considérer comme un string (chaîne de caractères) unique
         - type date string au format "YYYY-MM-DD" exemple "2025-05-27"
