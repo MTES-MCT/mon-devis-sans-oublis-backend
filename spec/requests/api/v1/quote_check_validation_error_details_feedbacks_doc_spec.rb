@@ -6,7 +6,8 @@ describe "Devis API", swagger_doc: "v1/#{Rails.application.config.openapi_file.c
   path "/quote_checks/{quote_check_id}/error_details/{error_details_id}/feedbacks" do
     # TODO: i18n?
     post "Déposer un retour" do
-      tags "Erreurs Devis"
+      operationId :createQuoteCheckValidationErrorDetailsFeedback
+      tags "ErreursDevis"
       security [bearer_api_key: []]
       consumes "application/json"
       produces "application/json"

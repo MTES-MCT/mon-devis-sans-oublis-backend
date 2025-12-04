@@ -159,6 +159,10 @@ GEM
       json_schema (~> 0.14, >= 0.14.3)
       openapi_parser (~> 2.0)
       rack (>= 1.5)
+    commonmarker (2.6.0-aarch64-linux)
+    commonmarker (2.6.0-arm64-darwin)
+    commonmarker (2.6.0-x64-mingw-ucrt)
+    commonmarker (2.6.0-x86_64-linux)
     concurrent-ruby (1.3.5)
     connection_pool (2.5.4)
     crack (1.0.1)
@@ -492,6 +496,8 @@ GEM
     omniauth-rails_csrf_protection (1.0.2)
       actionpack (>= 4.2)
       omniauth (~> 2.0)
+    openapi3_parser (0.10.1)
+      commonmarker (>= 1.0)
     openapi_parser (2.3.1)
     ostruct (0.6.3)
     parallel (1.27.0)
@@ -870,6 +876,7 @@ DEPENDENCIES
   next_rails
   omniauth-proconnect
   omniauth-rails_csrf_protection
+  openapi3_parser
   ostruct
   parallel
   pdf-reader
@@ -957,6 +964,10 @@ CHECKSUMS
   coderay (1.1.3) sha256=dc530018a4684512f8f38143cd2a096c9f02a1fc2459edcfe534787a7fc77d4b
   coercible (1.0.0) sha256=5081ad24352cc8435ce5472bc2faa30260c7ea7f2102cc6a9f167c4d9bffaadc
   committee (5.6.1) sha256=464d99be2efdddfbce4f7658899b84b92c5ac790bc66971397c94acccff06a50
+  commonmarker (2.6.0-aarch64-linux) sha256=41038a1d4ffe5ac71a2bfbcb9bb2ba569fff6a2b410cecc7cded1a679497cb76
+  commonmarker (2.6.0-arm64-darwin) sha256=1e154955c5e32735bec7d5779e0fb1d21e55f46bcfcd43399ec1cbfc105030a0
+  commonmarker (2.6.0-x64-mingw-ucrt) sha256=753ea0d20f75fbacb3d1ccf4f75482cf180cbf151325dc58f64a37ff2605f2c7
+  commonmarker (2.6.0-x86_64-linux) sha256=cddae70929aea45c6a8aa72bfc02d15029611b0e88fee965d0151bc9453fd8bb
   concurrent-ruby (1.3.5) sha256=813b3e37aca6df2a21a3b9f1d497f8cbab24a2b94cab325bffe65ee0f6cbebc6
   connection_pool (2.5.4) sha256=e9e1922327416091f3f6542f5f4446c2a20745276b9aa796dd0bb2fd0ea1e70a
   crack (1.0.1) sha256=ff4a10390cd31d66440b7524eb1841874db86201d5b70032028553130b6d4c7e
@@ -1089,6 +1100,7 @@ CHECKSUMS
   omniauth (2.1.4) sha256=42a05b0496f0d22e1dd85d42aaf602f064e36bb47a6826a27ab55e5ba608763c
   omniauth-proconnect (0.5) sha256=d43d53e14a06688e526363f49b60caabfbe066d77730c5a7233516e45fe5361d
   omniauth-rails_csrf_protection (1.0.2) sha256=1170fd672aff092b9b7ebebc1453559f073ed001e3ce62a1df616e32f8dc5fe0
+  openapi3_parser (0.10.1) sha256=e373bfcec1f183252a51fbe28787b52c4052e045697bae1778258bb9b3296a19
   openapi_parser (2.3.1) sha256=c5415a8123c148692617a607a086f71e26d843339aa0bfa10c24e18d446d5e8b
   ostruct (0.6.3) sha256=95a2ed4a4bd1d190784e666b47b2d3f078e4a9efda2fccf18f84ddc6538ed912
   parallel (1.27.0) sha256=4ac151e1806b755fb4e2dc2332cbf0e54f2e24ba821ff2d3dcf86bf6dc4ae130

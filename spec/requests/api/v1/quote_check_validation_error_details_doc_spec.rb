@@ -6,7 +6,8 @@ describe "Error Details edition API",
          swagger_doc: "v1/#{Rails.application.config.openapi_file.call('v1', 'internal')}" do
   path "/quote_checks/error_detail_deletion_reasons" do
     get "Récupérer les détails de suppression d'erreur disponibles" do
-      tags "Erreurs Devis"
+      operationId :getQuoteCheckErrorDetailDeletionReasons
+      tags "ErreursDevis"
       produces "application/json"
 
       response "200", "liste des raisons de suppression d'erreur" do
@@ -25,7 +26,8 @@ describe "Error Details edition API",
 
   path "/quote_checks/{quote_check_id}/error_details/{error_details_id}" do
     post "Annuler la suppression d'un détail d'erreur donc le Ré-ajouter comme originellement" do
-      tags "Erreurs Devis"
+      operationId :restoreQuoteCheckErrorDetail
+      tags "ErreursDevis"
       security [bearer_api_key: []]
       consumes "application/json"
       produces "application/json"
@@ -45,7 +47,8 @@ describe "Error Details edition API",
     end
 
     delete "Supprimer un détail d'erreur" do
-      tags "Erreurs Devis"
+      operationId :deleteQuoteCheckErrorDetail
+      tags "ErreursDevis"
       security [bearer_api_key: []]
       consumes "application/json"
       produces "application/json"
@@ -60,9 +63,7 @@ describe "Error Details edition API",
                                                  maxLength: QuoteCheck::MAX_EDITION_REASON_LENGTH }
                                              ]
                                            },
-                description: "Raison de la suppression (soit un code quote_check_error_deletion_reason_code ou champs libre)", # rubocop:disable Layout/LineLength
-                maxLength: QuoteCheck::MAX_EDITION_REASON_LENGTH
-
+                description: "Raison de la suppression (soit un code quote_check_error_deletion_reason_code ou champs libre)" # rubocop:disable Layout/LineLength
       let(:quote_check) { create(:quote_check, :invalid) }
       let(:quote_check_id) { quote_check.id }
       let(:error_details_id) { quote_check.validation_error_details.first.fetch("id") }
@@ -76,7 +77,8 @@ describe "Error Details edition API",
     end
 
     patch "Modifier le commentaire sur le détail d'erreur" do
-      tags "Erreurs Devis"
+      operationId :updateQuoteCheckErrorDetail
+      tags "ErreursDevis"
       security [bearer_api_key: []]
       consumes "application/json"
       produces "application/json"

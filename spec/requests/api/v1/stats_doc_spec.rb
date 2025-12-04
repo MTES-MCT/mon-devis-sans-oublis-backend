@@ -5,6 +5,7 @@ require "swagger_helper"
 describe "Stats API" do
   path "/stats" do
     get "Récupérer les stats" do
+      operationId :getStats
       tags "Stats"
       produces "application/json"
 

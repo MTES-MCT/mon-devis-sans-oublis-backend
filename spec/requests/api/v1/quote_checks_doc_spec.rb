@@ -5,6 +5,7 @@ require "swagger_helper"
 describe "Devis API" do
   path "/quote_checks/metadata" do
     get "Récupérer les metadata possibles" do
+      operationId :getQuoteCheckMetadata
       tags "Devis"
       produces "application/json"
 
@@ -13,15 +14,15 @@ describe "Devis API" do
                properties: {
                  aides: {
                    type: :array,
-                   data: { type: :string }
+                   items: { type: :string }
                  },
                  gestes: {
                    type: :array,
-                   data: {
+                   items: {
                      type: :object,
                      properties: {
                        group: { type: :string },
-                       values: { type: :array, data: { type: :string } }
+                       values: { type: :array, items: { type: :string } }
                      }
                    }
                  }
@@ -35,6 +36,7 @@ describe "Devis API" do
   path "/quote_checks" do
     # TODO: i18n?
     post "Téléverser un devis" do
+      operationId :createQuoteCheck
       tags "Devis"
       security [bearer_api_key: []]
       consumes "multipart/form-data"
@@ -196,6 +198,7 @@ Et qu'il faut boucler sur l'appel /quote_check/:id pour récupérer le devis à 
 
   path "/quote_checks/{id}" do
     get "Récupérer un Devis et résultats de l'analyse" do
+      operationId :getQuoteCheck
       tags "Devis"
       security [bearer_api_key: []]
       consumes "application/json"

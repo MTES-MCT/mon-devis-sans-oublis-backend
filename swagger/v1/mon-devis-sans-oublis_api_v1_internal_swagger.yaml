@@ -3,6 +3,9 @@ openapi: 3.0.1
 info:
   title: Mon Devis Sans Oublis Internal API V1
   version: v1
+  contact:
+    name: Mon Devis Sans Oublis Team
+    url: https://mon-devis-sans-oublis.beta.gouv.fr/
   description: |
     [Vidéo explicative de l'API](https://mon-devis-sans-oublis.notion.site/API-Partenaire-Mon-Devis-Sans-Oublis-24268d71969180419721c8a272dffc6a)
 
@@ -20,6 +23,7 @@ paths:
   "/quote_checks/{quote_check_id}/feedbacks":
     post:
       summary: Déposer un retour global ou sur error detail
+      operationId: createQuoteCheckFeedback
       tags:
       - Devis
       security:
@@ -80,8 +84,9 @@ paths:
   "/quote_checks/error_detail_deletion_reasons":
     get:
       summary: Récupérer les détails de suppression d'erreur disponibles
+      operationId: getQuoteCheckErrorDetailDeletionReasons
       tags:
-      - Erreurs Devis
+      - ErreursDevis
       responses:
         '200':
           description: liste des raisons de suppression d'erreur
@@ -100,8 +105,9 @@ paths:
     post:
       summary: Annuler la suppression d'un détail d'erreur donc le Ré-ajouter comme
         originellement
+      operationId: restoreQuoteCheckErrorDetail
       tags:
-      - Erreurs Devis
+      - ErreursDevis
       security:
       - bearer_api_key: []
       parameters:
@@ -120,8 +126,9 @@ paths:
           description: détail d'erreur ré-ajouté
     delete:
       summary: Supprimer un détail d'erreur
+      operationId: deleteQuoteCheckErrorDetail
       tags:
-      - Erreurs Devis
+      - ErreursDevis
       security:
       - bearer_api_key: []
       parameters:
@@ -144,14 +151,14 @@ paths:
             maxLength: 255
         description: Raison de la suppression (soit un code quote_check_error_deletion_reason_code
           ou champs libre)
-        maxLength: 255
       responses:
         '204':
           description: détail d'erreur supprimé
     patch:
       summary: Modifier le commentaire sur le détail d'erreur
+      operationId: updateQuoteCheckErrorDetail
       tags:
-      - Erreurs Devis
+      - ErreursDevis
       security:
       - bearer_api_key: []
       parameters:
@@ -179,8 +186,9 @@ paths:
   "/quote_checks/{quote_check_id}/error_details/{error_details_id}/feedbacks":
     post:
       summary: Déposer un retour
+      operationId: createQuoteCheckValidationErrorDetailsFeedback
       tags:
-      - Erreurs Devis
+      - ErreursDevis
       security:
       - bearer_api_key: []
       parameters:
@@ -222,6 +230,7 @@ paths:
   "/quote_checks/{id}/results":
     get:
       summary: Récupérer un Devis et résultats de l'analyse au format HTML pour email
+      operationId: getQuoteCheckResultsHtml
       tags:
       - Devis
       security:
@@ -240,6 +249,7 @@ paths:
   "/quote_checks/{id}":
     patch:
       summary: Mettre à jour un Devis
+      operationId: updateQuoteCheck
       tags:
       - Devis
       security:
@@ -272,8 +282,9 @@ paths:
   "/quotes_cases/error_detail_deletion_reasons":
     get:
       summary: Récupérer les détails de suppression d'erreur disponibles
+      operationId: getQuotesCaseErrorDetailDeletionReasons
       tags:
-      - Erreurs Devis
+      - ErreursDevis
       responses:
         '200':
           description: liste des raisons de suppression d'erreur
@@ -292,8 +303,9 @@ paths:
     post:
       summary: Annuler la suppression d'un détail d'erreur donc le Ré-ajouter comme
         originellement
+      operationId: restoreQuotesCaseErrorDetail
       tags:
-      - Erreurs Devis
+      - ErreursDevis
       security:
       - bearer_api_key: []
       parameters:
@@ -312,8 +324,9 @@ paths:
           description: détail d'erreur ré-ajouté
     delete:
       summary: Supprimer un détail d'erreur
+      operationId: deleteQuotesCaseErrorDetail
       tags:
-      - Erreurs Devis
+      - ErreursDevis
       security:
       - bearer_api_key: []
       parameters:
@@ -336,14 +349,14 @@ paths:
             maxLength: 255
         description: Raison de la suppression (soit un code quotes_case_error_deletion_reason_code
           ou champs libre)
-        maxLength: 255
       responses:
         '204':
           description: détail d'erreur supprimé
     patch:
       summary: Modifier le commentaire sur le détail d'erreur
+      operationId: updateQuotesCaseErrorDetail
       tags:
-      - Erreurs Devis
+      - ErreursDevis
       security:
       - bearer_api_key: []
       parameters:
@@ -372,8 +385,9 @@ paths:
     get:
       summary: Récupérer un Dossier et résultats de l'analyse au format HTML pour
         email
+      operationId: getQuotesCaseResultsHtml
       tags:
-      - Dossier
+      - Dossiers
       security:
       - bearer_api_key: []
       parameters:
@@ -389,8 +403,9 @@ paths:
           description: Dossier non trouvé
     patch:
       summary: Mettre à jour un Dossier
+      operationId: updateQuotesCase
       tags:
-      - Dossier
+      - Dossiers
       security:
       - bearer_api_key: []
       parameters:
@@ -415,10 +430,15 @@ paths:
                 reference:
                   type: string
                   nullable: true
-produces:
-- application/json
-consumes:
-- application/json
+tags:
+- name: Authentification
+- name: Checks
+- name: Devis
+- name: Dossiers
+- name: ErreursDevis
+- name: Profils
+- name: RenovationTypes
+- name: Stats
 components:
   securitySchemes:
     bearer_api_key:
@@ -573,7 +593,7 @@ components:
           description: ''
           x-transform:
             expr: ''
-            examples:
+            x-examples:
             - ''
             type: string
           pattern: "^[A-Za-z0-9-]{1,11}$"
@@ -612,7 +632,7 @@ components:
           maxLength: 255
           title: Libellé du certificat
           x-capabilities: {}
-          examples:
+          x-examples:
           - QUALIBAT-RGE
           - QualiPAC module Chauffage et ECS
           - Certificat OPQIBI
@@ -663,7 +683,7 @@ components:
             x-capabilities:
               textAgg: true
             x-cardinality: 30
-            examples:
+            x-examples:
             - Isolation par l'intérieur des murs ou rampants de toitures  ou plafonds
             - Chauffe-Eau Thermodynamique
             - 'Pompe à chaleur : chauffage'
@@ -701,7 +721,7 @@ components:
           type: string
           x-capabilities:
             textAgg: true
-          examples:
+          x-examples:
           - Travaux d'efficacité énergétique
           - Installations d'énergies renouvelables
           - Etudes énergétiques
@@ -713,7 +733,7 @@ components:
           x-capabilities: {}
           maxLength: 200
           description: ''
-          examples:
+          x-examples:
           - qualibat
           - qualitenr
           - opqibi
@@ -730,7 +750,7 @@ components:
           description: ''
           title: Travaille pour les particuliers
           x-capabilities: {}
-          examples:
+          x-examples:
           - 'true'
           - 'false'
         lien_date_debut:
@@ -738,7 +758,7 @@ components:
           type: string
           format: date
           description: ''
-          dateFormat: YYYY/M/D
+          x-dateFormat: YYYY/M/D
           x-refersTo: https://schema.org/startDate
           x-concept:
             id: startDate
@@ -751,7 +771,7 @@ components:
           type: string
           format: date
           description: ''
-          dateFormat: YYYY/M/D
+          x-dateFormat: YYYY/M/D
           x-refersTo: https://schema.org/endDate
           x-concept:
             id: endDate
@@ -759,30 +779,30 @@ components:
             primary: true
           title: Date de fin de qualification
           x-capabilities: {}
-        _file.content:
+        x-file.content:
           x-calculated: true
           type: string
           title: Contenu textuel du fichier
           description: Résultat d'une extraction automatique
           readOnly: true
-        _file.content_type:
+        x-file.content_type:
           x-calculated: true
           type: string
           title: Type mime du fichier
           description: Résultat d'une détection automatique.
           readOnly: true
-        _file.content_length:
+        x-file.content_length:
           x-calculated: true
           type: integer
           title: La taille en octet du fichier
           description: Résultat d'une détection automatique.
           readOnly: true
-        _attachment_url:
+        x-attachment_url:
           x-calculated: true
           type: string
           title: URL de téléchargement unitaire du fichier joint
           readOnly: true
-        _geopoint:
+        x-geopoint:
           x-calculated: true
           type: string
           title: Coordonnée géographique
@@ -793,20 +813,20 @@ components:
             title: Latitude / Longitude
             primary: true
           readOnly: true
-        _id:
+        x-id:
           x-calculated: true
           type: string
           format: uri-reference
           title: Identifiant
           description: Identifiant unique parmi toutes les lignes du jeu de données
           readOnly: true
-        _i:
+        x-i:
           x-calculated: true
           type: integer
           title: Numéro de ligne
           description: Indice de la ligne dans le fichier d'origine
           readOnly: true
-        _rand:
+        x-rand:
           x-calculated: true
           type: integer
           title: Nombre aléatoire
@@ -1435,12 +1455,6 @@ components:
         est différent dans les documents | client_nom_incoherent: Le nom du client
         est différent dans les documents | client_adresse_incoherent: L''adresse du
         client est différent dans les documents'
-    quote_check_error_deletion_reason_code:
-      type: string
-      description: code de raison de suppression d'erreur, remplaçant le message d'erreur
-    quotes_case_error_deletion_reason_code:
-      type: string
-      description: code de raison de suppression d'erreur, remplaçant le message d'erreur
     quote_check_error_type:
       type: string
       enum:
@@ -1787,7 +1801,8 @@ components:
           nullable: true
           type: number
         type:
-          "$ref": "#/components/schemas/geste_type"
+          allOf:
+          - "$ref": "#/components/schemas/geste_type"
           nullable: true
         type_appoint:
           type: string
@@ -2121,7 +2136,6 @@ components:
             explicitement indiquée dans le texte. Si elle ne l'est pas, laissez cet
             attribut vide.
       additionalProperties: false
-      strict: true
     quote_check_read_attributes_extended_data:
       type: object
       nullable: true
@@ -2451,7 +2465,8 @@ components:
                 nullable: true
                 type: number
               type:
-                "$ref": "#/components/schemas/geste_type"
+                allOf:
+                - "$ref": "#/components/schemas/geste_type"
                 nullable: true
               type_appoint:
                 type: string
@@ -2614,9 +2629,11 @@ components:
             description: code d'erreur => message
           nullable: true
         started_at:
-          type: datetime
+          type: string
+          format: date-time
         finished_at:
-          type: datetime
+          type: string
+          format: date-time
           nullable: true
         comment:
           type: string
@@ -2646,35 +2663,6 @@ components:
       - id
       - status
       - profile
-    quote_check_feedback:
-      type: object
-      properties:
-        id:
-          type: string
-          description: UUID unique
-        quote_check_id:
-          type: string
-          nullable: false
-        validation_error_details_id:
-          type: string
-          nullable: true
-          description: requis pour feedback error detail
-        rating:
-          type: integer
-          nullable: true
-          description: requis pour feedback global hors error detail
-        email:
-          type: string
-          nullable: true
-          description: pour feedback global hors error detail
-        comment:
-          type: string
-          nullable: true
-          description: requis pour feedback error detail
-          maxLength: 1000
-      additionalProperties: false
-      required:
-      - quote_check_id
     quotes_case:
       type: object
       properties:
@@ -2692,7 +2680,8 @@ components:
         renovation_type:
           "$ref": "#/components/schemas/renovation_type"
         metadata:
-          "$ref": "#/components/schemas/quote_check_metadata"
+          allOf:
+          - "$ref": "#/components/schemas/quote_check_metadata"
           nullable: true
         result_link:
           type: string
@@ -2733,9 +2722,11 @@ components:
             description: code d'erreur => message
           nullable: true
         started_at:
-          type: datetime
+          type: string
+          format: date-time
         finished_at:
-          type: datetime
+          type: string
+          format: date-time
           nullable: true
       additionalProperties: false
       required:
@@ -2773,6 +2764,41 @@ components:
       - average_quote_check_errors_count
       - average_quote_check_cost
       - unique_visitors_count
+    quote_check_feedback:
+      type: object
+      properties:
+        id:
+          type: string
+          description: UUID unique
+        quote_check_id:
+          type: string
+          nullable: false
+        validation_error_details_id:
+          type: string
+          nullable: true
+          description: requis pour feedback error detail
+        rating:
+          type: integer
+          nullable: true
+          description: requis pour feedback global hors error detail
+        email:
+          type: string
+          nullable: true
+          description: pour feedback global hors error detail
+        comment:
+          type: string
+          nullable: true
+          description: requis pour feedback error detail
+          maxLength: 1000
+      additionalProperties: false
+      required:
+      - quote_check_id
+    quote_check_error_deletion_reason_code:
+      type: string
+      description: code de raison de suppression d'erreur, remplaçant le message d'erreur
+    quotes_case_error_deletion_reason_code:
+      type: string
+      description: code de raison de suppression d'erreur, remplaçant le message d'erreur
 servers:
 - url: https://api.staging.mon-devis-sans-oublis.beta.gouv.fr/api/v1
   description: 'Staging test server : accessible depuis CORS localhost'
