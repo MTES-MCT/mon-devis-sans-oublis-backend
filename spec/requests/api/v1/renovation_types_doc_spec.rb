@@ -5,7 +5,8 @@ require "swagger_helper"
 describe "RenovationTypes API" do
   path "/renovation_types" do
     get "Récupérer les types de rénovations disponibles" do
-      tags "Profils"
+      operationId :getRenovationTypes
+      tags "RenovationTypes"
       produces "application/json"
 
       response "200", "liste des renovation_types" do
@@ -13,11 +14,11 @@ describe "RenovationTypes API" do
                properties: {
                  data: {
                    type: :array,
-                   data: { type: "#/components/schemas/renovation_type" }
+                   items: { "$ref" => "#/components/schemas/renovation_type" }
                  },
                  options: {
                    type: :array,
-                   data: { type: "#/components/schemas/option" }
+                   items: { "$ref" => "#/components/schemas/option" }
                  }
                },
                required: ["data"]

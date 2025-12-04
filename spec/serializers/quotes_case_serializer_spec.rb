@@ -25,6 +25,10 @@ RSpec.describe QuotesCaseSerializer do
     let!(:older_check) { create(:quote_check, case: quotes_case, created_at: 2.days.ago) }
     let!(:newer_check) { create(:quote_check, case: quotes_case, created_at: 1.day.ago) }
 
+    it "returns started_at in ISO 8601 format" do
+      expect(json["started_at"]).to eq(older_check.started_at.iso8601)
+    end
+
     it "includes status" do
       expect(json["status"]).to eq quotes_case.status
     end

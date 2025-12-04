@@ -105,6 +105,7 @@ group :development, :test do
   gem "dotenv-rails"
   gem "factory_bot_rails"
   gem "foreman"
+  gem "openapi3_parser", require: false
   gem "rspec-rails"
   gem "rswag-specs" # Allows API documentation via specs
   gem "rubycritic"

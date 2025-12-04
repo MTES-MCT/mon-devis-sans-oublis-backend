@@ -234,7 +234,12 @@ class MdsoApiSchema # rubocop:disable Metrics/ClassLength
         float_type(nullable: true)
       end
     ).merge(
-      type: { "$ref" => "#/components/schemas/geste_type", nullable: true },
+      type: {
+        allOf: [
+          { "$ref" => "#/components/schemas/geste_type" }
+        ],
+        nullable: true
+      },
       deltaR: {
         oneOf: [
           { type: :string },
@@ -465,8 +470,7 @@ class MdsoApiSchema # rubocop:disable Metrics/ClassLength
           description: "Liste des villes d'immatriculation au RCS de la structure. Ne remplissez cet attribut que si la ville d'immatriculation au RCS est explicitement indiquée dans le texte. Si elle ne l'est pas, laissez cet attribut vide."
         }
       },
-      additionalProperties: false,
-      strict: true
+      additionalProperties: false
     }
     # rubocop:enable Layout/LineLength
   end

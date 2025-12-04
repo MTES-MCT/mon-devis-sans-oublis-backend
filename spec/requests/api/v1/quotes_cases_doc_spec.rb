@@ -6,7 +6,8 @@ describe "Dossier API" do
   path "/quotes_cases" do
     # TODO: i18n?
     post "Créer un dossier de devis" do
-      tags "Dossier"
+      operationId :createQuotesCase
+      tags "Dossiers"
       security [bearer_api_key: []]
       consumes "application/json"
       produces "application/json"
@@ -17,7 +18,12 @@ describe "Dossier API" do
           reference: { type: :string, nullable: true },
           profile: { "$ref" => "#/components/schemas/api_profile" },
           renovation_type: { "$ref" => "#/components/schemas/renovation_type" },
-          metadata: { "$ref" => "#/components/schemas/quote_check_metadata", nullable: true }
+          metadata: {
+            allOf: [
+              { "$ref" => "#/components/schemas/quote_check_metadata" }
+            ],
+            nullable: true
+          }
         }
       }
       let(:quotes_case) do
@@ -46,7 +52,8 @@ describe "Dossier API" do
 
   path "/quotes_cases/{id}" do
     get "Récupérer un Dossier et résultats de l'analyse" do
-      tags "Dossier"
+      operationId :getQuotesCase
+      tags "Dossiers"
       security [bearer_api_key: []]
       consumes "application/json"
       produces "application/json"
@@ -74,7 +81,8 @@ describe "Dossier API" do
     end
 
     patch "Mettre à jour un Dossier" do
-      tags "Dossier"
+      operationId :updateQuotesCase
+      tags "Dossiers"
       security [bearer_api_key: []]
       consumes "application/json"
       produces "application/json"

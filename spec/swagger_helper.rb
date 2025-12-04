@@ -11,7 +11,26 @@ require "rails_helper"
 require "openssl"
 require "uri"
 
-ademe_result_schema = JSON.parse(Rails.root.join("swagger/v1/ademe_result_schema.json").read)
+# Rename custom fields in Ademe schema to be OpenAPI compliant
+def clean_ademe_schema(schema) # rubocop:disable Metrics/MethodLength
+  case schema
+  when Hash
+    schema.transform_keys! do |key|
+      if key.start_with?("_")
+        "x-#{key[1..]}"
+      elsif %w[dateFormat examples].include?(key)
+        "x-#{key}"
+      else
+        key
+      end
+    end
+    schema.each_value { clean_ademe_schema(it) }
+  when Array
+    schema.each { clean_ademe_schema(it) }
+  end
+  schema
+end
+ademe_result_schema = clean_ademe_schema(JSON.parse(Rails.root.join("swagger/v1/ademe_result_schema.json").read))
 
 def date_type(options = {})
   options.merge(
@@ -45,6 +64,10 @@ RSpec.configure do |config|
     info: {
       title: "#{Rails.application.config.application_name} API V1",
       version: "v1",
+      contact: {
+        name: "#{Rails.application.config.application_name} Team",
+        url: "https://mon-devis-sans-oublis.beta.gouv.fr/"
+      },
       description: <<~DESC
         [Vidéo explicative de l'API](https://mon-devis-sans-oublis.notion.site/API-Partenaire-Mon-Devis-Sans-Oublis-24268d71969180419721c8a272dffc6a)
 
@@ -61,8 +84,18 @@ RSpec.configure do |config|
       DESC
     },
     paths: {},
-    produces: ["application/json"],
-    consumes: ["application/json"],
+    # produces: ["application/json"], # OpenAPI 3 uses 'content' instead
+    # consumes: ["application/json"], # OpenAPI 3 uses 'content' instead
+    tags: %w[
+      Authentification
+      Checks
+      Devis
+      Dossiers
+      ErreursDevis
+      Profils
+      RenovationTypes
+      Stats
+    ].map { |tag| { name: tag } },
     components: {
       securitySchemes: {
         # basic_auth: {
@@ -156,14 +189,6 @@ RSpec.configure do |config|
           description: "code d'erreur de validation, voir liste et correspondance sur https://github.com/#{Rails.application.config.github_repository}/blob/main/config/locales/fr/mon-devis-sans-oublis-quote-validator.yml comme ci-dessous : " + QuoteValidator::Global.error_codes.map do |code, description| # rubocop:disable Layout/LineLength
             "#{code}: #{description}"
           end.join(" | ")
-        },
-        quote_check_error_deletion_reason_code: {
-          type: :string,
-          description: "code de raison de suppression d'erreur, remplaçant le message d'erreur"
-        },
-        quotes_case_error_deletion_reason_code: {
-          type: :string,
-          description: "code de raison de suppression d'erreur, remplaçant le message d'erreur"
         },
         quote_check_error_type: {
           type: :string,
@@ -388,9 +413,10 @@ RSpec.configure do |config|
               },
               nullable: true
             },
-            started_at: { type: :datetime },
+            started_at: { type: :string, format: "date-time" },
             finished_at: {
-              type: :datetime,
+              type: :string,
+              format: "date-time",
               nullable: true
             },
             comment: {
@@ -424,33 +450,6 @@ RSpec.configure do |config|
           additionalProperties: false,
           required: %w[id status profile]
         },
-        quote_check_feedback: {
-          type: :object,
-          properties: {
-            id: {
-              type: :string,
-              description: "UUID unique"
-            },
-            quote_check_id: { type: :string, nullable: false },
-            validation_error_details_id: {
-              type: :string,
-              nullable: true,
-              description: "requis pour feedback error detail"
-            },
-            rating: { type: :integer, nullable: true, description: "requis pour feedback global hors error detail" },
-            email: { type: :string, nullable: true, description: "pour feedback global hors error detail" },
-            comment: {
-              type: :string,
-              nullable: true,
-              description: "requis pour feedback error detail",
-              maxLength: QuoteCheckFeedback.validators_on(:comment).detect do |validator|
-                validator.is_a?(ActiveModel::Validations::LengthValidator)
-              end&.options&.[](:maximum)
-            }
-          },
-          additionalProperties: false,
-          required: %w[quote_check_id]
-        },
         quotes_case: {
           type: :object,
           properties: {
@@ -466,7 +465,12 @@ RSpec.configure do |config|
             status: { "$ref" => "#/components/schemas/quote_check_status" },
             profile: { "$ref" => "#/components/schemas/profile" },
             renovation_type: { "$ref" => "#/components/schemas/renovation_type" },
-            metadata: { "$ref" => "#/components/schemas/quote_check_metadata", nullable: true },
+            metadata: {
+              allOf: [
+                { "$ref" => "#/components/schemas/quote_check_metadata" }
+              ],
+              nullable: true
+            },
             result_link: {
               type: :string,
               nullable: true,
@@ -509,11 +513,10 @@ RSpec.configure do |config|
               },
               nullable: true
             },
-            started_at: {
-              type: :datetime
-            },
+            started_at: { type: :string, format: "date-time" },
             finished_at: {
-              type: :datetime,
+              type: :string,
+              format: "date-time",
               nullable: true
             }
           },
@@ -614,6 +617,45 @@ RSpec.configure do |config|
     "v1/#{Rails.application.config.openapi_file.call('v1', 'internal')}" => common_specs.deep_merge(
       info: {
         title: "#{Rails.application.config.application_name} Internal API V1"
+      },
+      components: {
+        schemas: {
+          quote_check_feedback: {
+            type: :object,
+            properties: {
+              id: {
+                type: :string,
+                description: "UUID unique"
+              },
+              quote_check_id: { type: :string, nullable: false },
+              validation_error_details_id: {
+                type: :string,
+                nullable: true,
+                description: "requis pour feedback error detail"
+              },
+              rating: { type: :integer, nullable: true, description: "requis pour feedback global hors error detail" },
+              email: { type: :string, nullable: true, description: "pour feedback global hors error detail" },
+              comment: {
+                type: :string,
+                nullable: true,
+                description: "requis pour feedback error detail",
+                maxLength: QuoteCheckFeedback.validators_on(:comment).detect do |validator|
+                  validator.is_a?(ActiveModel::Validations::LengthValidator)
+                end&.options&.[](:maximum)
+              }
+            },
+            additionalProperties: false,
+            required: %w[quote_check_id]
+          },
+          quote_check_error_deletion_reason_code: {
+            type: :string,
+            description: "code de raison de suppression d'erreur, remplaçant le message d'erreur"
+          },
+          quotes_case_error_deletion_reason_code: {
+            type: :string,
+            description: "code de raison de suppression d'erreur, remplaçant le message d'erreur"
+          }
+        }
       }
     )
   }

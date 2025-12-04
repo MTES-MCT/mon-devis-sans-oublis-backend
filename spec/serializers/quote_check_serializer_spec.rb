@@ -11,6 +11,10 @@ RSpec.describe QuoteCheckSerializer, type: :serializer do
   let(:quote_check) { create(:quote_check) }
 
   describe "serialization" do
+    it "returns started_at in ISO 8601 format" do
+      expect(json["started_at"]).to eq(quote_check.started_at.iso8601)
+    end
+
     it "includes result_link" do
       expect(json["result_link"]).to eq(quote_check.frontend_webapp_url(mtm_campaign: "api"))
     end

@@ -5,6 +5,7 @@ require "swagger_helper"
 describe "Auth API" do
   path "/auth/check" do
     get "Récupérer l'utilisateur courant" do
+      operationId :getCurrentUser
       tags "Authentification"
       security [bearer_api_key: []]
       produces "application/json"

@@ -5,6 +5,7 @@ require "swagger_helper"
 describe "Profiles API" do
   path "/profiles" do
     get "Récupérer les profils disponibles" do
+      operationId :getProfiles
       tags "Profils"
       produces "application/json"
 
@@ -13,11 +14,11 @@ describe "Profiles API" do
                properties: {
                  data: {
                    type: :array,
-                   data: { type: "#/components/schemas/profile" }
+                   items: { "$ref" => "#/components/schemas/profile" }
                  },
                  options: {
                    type: :array,
-                   data: { type: "#/components/schemas/option" }
+                   items: { "$ref" => "#/components/schemas/option" }
                  }
                },
                required: ["data"]

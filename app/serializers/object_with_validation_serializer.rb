@@ -49,4 +49,12 @@ class ObjectWithValidationSerializer < BaseSerializer
       {}
     end
   end
+
+  protected
+
+  def attributes(*args)
+    super.transform_values do |value|
+      value.is_a?(Time) ? value.iso8601(0) : value
+    end
+  end
 end

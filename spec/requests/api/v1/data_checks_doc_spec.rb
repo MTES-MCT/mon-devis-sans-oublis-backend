@@ -5,6 +5,7 @@ require "swagger_helper"
 describe "Data Checks API" do
   path "/data_checks/geste_types" do
     get "Récupérer les types de gestes disponibles" do
+      operationId :getGesteTypes
       tags "Checks"
       produces "application/json"
 
@@ -13,11 +14,11 @@ describe "Data Checks API" do
                properties: {
                  data: {
                    type: :array,
-                   data: { type: "#/components/schemas/geste_type" }
+                   items: { "$ref" => "#/components/schemas/geste_type" }
                  },
                  options: {
                    type: :array,
-                   data: { type: "#/components/schemas/option" }
+                   items: { "$ref" => "#/components/schemas/option" }
                  }
                },
                required: ["data"]
@@ -28,6 +29,7 @@ describe "Data Checks API" do
 
   path "/data_checks/siret" do
     get "Vérifier le SIRET" do
+      operationId :checkSiret
       tags "Checks"
       produces "application/json"
 
@@ -56,6 +58,7 @@ describe "Data Checks API" do
 
   path "/data_checks/rge" do
     get "Trouver ou Valider un RGE, selon SIRET et/ou critères" do
+      operationId :checkRge
       tags "Checks"
       produces "application/json"
 
@@ -64,9 +67,13 @@ describe "Data Checks API" do
                   description: "SIRET", required: true
         parameter name: :rge, in: :query, type: :string,
                   description: "RGE à Valider, sinon Trouve un RGE selon les critères"
-        parameter name: :date, in: :query, type: :date
-        parameter name: :geste_types, in: :query, # , type: :string,
-                  type: :array, items: { type: :string },
+        parameter name: :date, in: :query, type: :string,
+                  description: "date au format AAAA-MM-JJ pour laquelle le RGE doit être valide"
+        parameter name: :geste_types, in: :query,
+                  schema: {
+                    type: :array,
+                    items: { type: :string }
+                  },
                   style: :form, explode: false,
                   example: %w[menuiserie_fenetre_toit vmc_double_flux],
                   description: "Type(s) de gestes séparés par des virgules, retournent les certificats correspondants à l'un des gestes" # rubocop:disable Layout/LineLength

@@ -5,6 +5,7 @@ require "swagger_helper"
 describe "Devis API", swagger_doc: "v1/#{Rails.application.config.openapi_file.call('v1', 'internal')}" do
   path "/quote_checks/{id}/results" do
     get "Récupérer un Devis et résultats de l'analyse au format HTML pour email" do
+      operationId :getQuoteCheckResultsHtml
       tags "Devis"
       security [bearer_api_key: []]
       consumes "application/json"
@@ -31,6 +32,7 @@ describe "Devis API", swagger_doc: "v1/#{Rails.application.config.openapi_file.c
 
   path "/quote_checks/{id}" do
     patch "Mettre à jour un Devis" do
+      operationId :updateQuoteCheck
       tags "Devis"
       security [bearer_api_key: []]
       consumes "application/json"
