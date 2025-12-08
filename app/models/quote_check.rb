@@ -8,6 +8,7 @@ class QuoteCheck < ApplicationRecord
   include QuoteCheckExpectations
   include QuoteCheckFeedbacks
   include QuoteCheckPostCheckMetadata
+  include QuoteCheckRntExpectations
   include QuoteInputMetadata
 
   alias_attribute :anonymized_text, :anonymised_text # TODO: Remove after SQL field renaming

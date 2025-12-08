@@ -18,7 +18,7 @@ module JsonOpenapi
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/CyclomaticComplexity
   # rubocop:disable Metrics/PerceivedComplexity
-  def self.make_schema_refs_inline!(schema) # rubocop:disable Layout/MethodLength
+  def self.make_schema_refs_inline!(schema) # rubocop:disable Metrics/MethodLength
     # Recursively replace $ref #/components/schemas/X objects with their corresponding X schemas
     replace_refs = lambda do |obj, components|
       case obj

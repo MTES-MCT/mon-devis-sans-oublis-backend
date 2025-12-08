@@ -100,6 +100,10 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
           row "expected_validation_errors" do
             pre JSON.pretty_generate(resource.expected_validation_errors) if resource.expected_validation_errors
           end
+
+          row "expected_rnt_input_xml" do
+            pre Nokogiri::XML(resource.expected_rnt_input_xml).to_xml(indent: 2) if resource.expected_rnt_input_xml
+          end
         end
       end
 
