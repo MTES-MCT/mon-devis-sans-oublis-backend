@@ -14,8 +14,21 @@ module QuoteCheckExpectations
     expected_validation_errors.present?
   end
 
-  def expected_validation_errors_as_array
-    return unless expected_validation_errors && !expected_validation_errors.is_a?(Array)
+  def expected_validation_errors_as_array # rubocop:disable Metrics/MethodLength
+    return unless expected_validation_errors
+
+    if expected_validation_errors.is_a?(String)
+      begin
+        self.expected_validation_errors = JSON.parse(
+          "{ \"expected_validation_errors\": #{expected_validation_errors} }"
+        ).fetch("expected_validation_errors")
+      rescue JSON::ParserError => e
+        errors.add(:expected_validation_errors,
+                   "must be a valid JSON array: #{e.message}")
+      end
+    end
+
+    return if expected_validation_errors.is_a?(Array)
 
     errors.add(:expected_validation_errors,
                "must be an array")

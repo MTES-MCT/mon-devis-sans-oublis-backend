@@ -26,6 +26,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
   scope "devis OCRable non OCRisé", :non_ocred
   scope "devis OCRisé", :ocred
   scope "avec valeurs test", :with_expected_value
+  scope "avec valeurs RNT test", :with_expected_rnt_value
   scope "fichier en erreur", :with_file_error
   scope "mauvais fichier", :with_file_type_error
   scope "devis avec corrections", :with_edits

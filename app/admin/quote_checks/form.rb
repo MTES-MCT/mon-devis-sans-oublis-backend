@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
+require "nokogiri"
+
 # rubocop:disable Rails/I18nLocaleTexts
 ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
-  permit_params :expected_validation_errors,
+  permit_params :expected_validation_errors, :expected_rnt_input_xml,
                 :file,
                 :parent_id,
                 :reference, :profile, :renovation_type,
@@ -64,23 +66,17 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
     end
     # rubocop:enable Metrics/AbcSize
 
-    def update # rubocop:disable Metrics/MethodLength
+    def update
       quote_check = resource
-
-      begin
-        # TODO: Find a proper way to parse JSON and reuse super
-        quote_check.expected_validation_errors = if params[:quote_check][:expected_validation_errors].presence
-                                                   JSON.parse(params[:quote_check][:expected_validation_errors])
-                                                 end
-      rescue JSON::ParserError
-        redirect_to edit_admin_quote_check_path, alert: "Invalid JSON format" and return
-      end
+      quote_check.assign_attributes(permitted_params[:quote_check])
 
       if quote_check.save
-        redirect_to admin_quote_check_path(quote_check), notice: "Quote check updated successfully"
-      else
-        render :edit, status: :unprocessable_entity
+        redirect_to admin_quote_check_path(quote_check), notice: "Quote check updated successfully" and return
       end
+
+      render :edit,
+             status: :unprocessable_entity,
+             alert: "Error updating quote check #{quote_check.errors.full_messages.join(', ')}" and return
     end
 
     private
@@ -183,6 +179,13 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
       end
 
       unless f.object.new_record?
+        expected_rnt_input_xml = f.object.expected_rnt_input_xml.presence ||
+                                 f.object.last_rnt_check&.sent_input_xml
+        f.input :expected_rnt_input_xml,
+                input_html: {
+                  value: expected_rnt_input_xml ? Nokogiri::XML(expected_rnt_input_xml).to_xml(indent: 2) : ""
+                }
+
         expected_validation_errors = f.object.expected_validation_errors.presence ||
                                      f.object.validation_errors
         f.input :expected_validation_errors,
