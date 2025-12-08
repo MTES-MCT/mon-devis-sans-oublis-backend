@@ -28,5 +28,9 @@ describe "OpenAPI Documentation" do # rubocop:disable RSpec/DescribeClass
         [error.context, error.message].join(' : ')
       end.join("\n")}"
     end
+
+    it "includes Auth API paths" do
+      expect(document.paths.find("/auth/check")).not_to be_nil
+    end
   end
 end
