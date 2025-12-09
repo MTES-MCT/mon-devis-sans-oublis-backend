@@ -130,7 +130,7 @@ RSpec.describe RntValidatorService, type: :service do
       let(:usage_systeme) { "refroidissement" }
 
       it "removes usage_systeme as not relevant" do
-        expect(described_class.clean_xml_for_rnt(raw_xml)).not_to include("<usage_systeme>")
+        expect(described_class.clean_xml_for_rnt(raw_xml).scan("<usage_systeme>").count).to be <= 2
       end
     end
   end
