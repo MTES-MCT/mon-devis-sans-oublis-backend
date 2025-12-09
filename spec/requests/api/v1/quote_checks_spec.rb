@@ -10,6 +10,8 @@ RSpec.describe "/api/v1/quote_checks" do
   before do
     ClamAv.download_database! unless ClamAv.database_exists?
 
+    allow(QuoteCheckRntValidateJob).to receive(:perform_later)
+
     stub_request(:post, /albert.+ocr/i)
       .to_return(
         status: 200,
@@ -210,7 +212,19 @@ RSpec.describe "/api/v1/quote_checks" do
       end
 
       it "returns error on malformed file" do
-        expect(json.fetch("error")).to eq("File missformed")
+        expect(json.fetch("message").first).to match(/File missformed/i)
+      end
+    end
+
+    context "with unknown content type" do
+      let(:file) { fixture_file_upload("quote_files/file_without_content_type") }
+
+      it "returns an unprocessable entity response" do
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+
+      it "returns error on invalid file" do
+        expect(json.fetch("message").first).to match(/Missing content_type/i)
       end
     end
   end

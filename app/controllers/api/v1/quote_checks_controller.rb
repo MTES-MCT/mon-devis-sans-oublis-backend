@@ -31,12 +31,12 @@ module Api
         upload_file = quote_check_params[:file]
 
         if upload_file.blank?
-          api_error("No file uploaded", nil, :unprocessable_entity)
+          handle_unprocessable_entity(Exception.new("No file uploaded"))
           return
         end
 
         unless upload_file.respond_to?(:tempfile)
-          api_error("File missformed", nil, :unprocessable_entity)
+          handle_unprocessable_entity(Exception.new("File missformed"))
           return
         end
 
@@ -60,6 +60,9 @@ module Api
         QuoteCheckMailer.created(@quote_check).deliver_later
 
         render json: quote_check_json, status: :created
+
+      rescue QuoteFile::ContentTypeError => e
+        handle_unprocessable_entity(e)
       end
       # rubocop:enable Metrics/MethodLength
       # rubocop:enable Metrics/AbcSize

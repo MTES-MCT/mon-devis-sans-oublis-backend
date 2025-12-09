@@ -7,6 +7,8 @@ require "mime/types"
 # AND also via active_storage-postgresq gem specific table via Postgres File OID
 # See .find_or_create_file and #content methods
 class QuoteFile < ApplicationRecord
+  class ContentTypeError < ArgumentError; end
+
   include ProcessingLogs
   include QuoteFileBackoffice
   include QuoteFileImagifiedPages
@@ -71,7 +73,7 @@ class QuoteFile < ApplicationRecord
       MIME::Types.type_for(tempfile.path).first&.content_type,
       content_type
     ].compact.first
-    raise ArgumentError, "Missing content_type for tempfile #{tempfile.path}" unless content_type
+    raise ContentTypeError, "Missing content_type for tempfile #{tempfile.path}" unless content_type
 
     {
       io: tempfile,
