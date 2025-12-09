@@ -5,8 +5,13 @@ require "nokogiri"
 require_relative "../../lib/rnt/rnt_schema"
 
 # Service to validate a QuoteCheck against the RNT (Référentiel National des Travaux)
-class RntValidatorService
+class RntValidatorService # rubocop:disable Metrics/ClassLength
   class NotProcessableError < StandardError; end
+
+  FIELDS_AS_PERCENTAGE = %w[
+    cop
+    scop
+  ].freeze
 
   attr_reader :quote_check_id, :rnt_check
 
@@ -14,7 +19,9 @@ class RntValidatorService
     @quote_check_id = quote_check_id
   end
 
-  def self.clean_xml_for_rnt(xml_for_rnt)
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/CyclomaticComplexity
+  def self.clean_xml_for_rnt(xml_for_rnt) # rubocop:disable Metrics/MethodLength
     doc = Nokogiri::XML(xml_for_rnt)
 
     # Remove all empty nodes
@@ -26,8 +33,21 @@ class RntValidatorService
       node.remove unless parent_lot_travaux.match?(/systeme/i)
     end
 
+    # Ensure float for percentage
+    FIELDS_AS_PERCENTAGE.each do |field_name|
+      doc.xpath("//#{field_name}").each do |node|
+        value = node.text.strip
+
+        numeric_value = Float(value.chomp("%"))
+        numeric_value /= 100.0 if numeric_value > 100
+        node.content = numeric_value.to_s
+      end
+    end
+
     doc.to_xml
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/AbcSize
 
   # Complete the RNT JSON with required donnees_contextuelles
   def self.complete_json_for_rnt(json, aide_financiere_collection:) # rubocop:disable Metrics/MethodLength
