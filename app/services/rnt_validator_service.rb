@@ -8,8 +8,16 @@ require_relative "../../lib/rnt/rnt_schema"
 class RntValidatorService # rubocop:disable Metrics/ClassLength
   class NotProcessableError < StandardError; end
 
+  # Fields with "unité : %"
+  # TODO: autodetect from Schema
   FIELDS_AS_PERCENTAGE = %w[
     cop
+    couverture_energie_solaire
+    efficacite_energetique_appoint
+    efficacite_energetique_chauffage_eau
+    efficacite_energetique_saisonniere
+    efficacite_saisonniere
+    rendement_pci
     scop
   ].freeze
 

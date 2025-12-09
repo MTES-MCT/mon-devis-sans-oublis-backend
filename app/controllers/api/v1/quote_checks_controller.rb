@@ -60,7 +60,6 @@ module Api
         QuoteCheckMailer.created(@quote_check).deliver_later
 
         render json: quote_check_json, status: :created
-
       rescue QuoteFile::ContentTypeError => e
         handle_unprocessable_entity(e)
       end
