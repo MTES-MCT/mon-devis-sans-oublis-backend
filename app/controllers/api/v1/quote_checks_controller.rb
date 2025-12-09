@@ -26,8 +26,9 @@ module Api
       end
 
       # rubocop:disable Metrics/AbcSize
-      # rubocop:disable Metrics/MethodLength
-      def create
+      # rubocop:disable Metrics/CyclomaticComplexity
+      # rubocop:disable Metrics/PerceivedComplexity
+      def create # rubocop:disable Metrics/MethodLength
         upload_file = quote_check_params[:file]
 
         if upload_file.blank?
@@ -63,7 +64,8 @@ module Api
       rescue QuoteFile::ContentTypeError => e
         handle_unprocessable_entity(e)
       end
-      # rubocop:enable Metrics/MethodLength
+      # rubocop:enable Metrics/PerceivedComplexity
+      # rubocop:enable Metrics/CyclomaticComplexity
       # rubocop:enable Metrics/AbcSize
 
       def update

@@ -208,7 +208,7 @@ RSpec.describe "/api/v1/quote_checks" do
       let(:file) { "Missformed" }
 
       it "returns an unprocessable entity response" do
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
 
       it "returns error on malformed file" do
@@ -220,7 +220,7 @@ RSpec.describe "/api/v1/quote_checks" do
       let(:file) { fixture_file_upload("quote_files/file_without_content_type") }
 
       it "returns an unprocessable entity response" do
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
 
       it "returns error on invalid file" do
