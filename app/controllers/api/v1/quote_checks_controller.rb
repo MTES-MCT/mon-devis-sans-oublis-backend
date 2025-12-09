@@ -35,6 +35,11 @@ module Api
           return
         end
 
+        unless upload_file.respond_to?(:tempfile)
+          api_error("File missformed", nil, :unprocessable_entity)
+          return
+        end
+
         quote_check_service = QuoteCheckService.new(
           upload_file.tempfile, upload_file.original_filename,
           quotes_case&.profile || quote_check_params[:profile],

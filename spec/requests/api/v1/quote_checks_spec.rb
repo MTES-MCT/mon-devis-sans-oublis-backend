@@ -201,6 +201,18 @@ RSpec.describe "/api/v1/quote_checks" do
         expect(QuoteCheck.find(json.fetch("id")).text).to eq("Devis 12")
       end
     end
+
+    context "with malformed file upload" do
+      let(:file) { "Missformed" }
+
+      it "returns an unprocessable entity response" do
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+
+      it "returns error on malformed file" do
+        expect(json.fetch("error")).to eq("File missformed")
+      end
+    end
   end
 
   describe "GET /api/v1/quote_checks/:id" do
