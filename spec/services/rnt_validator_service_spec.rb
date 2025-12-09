@@ -6,6 +6,8 @@ RSpec.describe RntValidatorService, type: :service do
   describe ".clean_xml_for_rnt" do
     let(:lot_travaux) { "plancher_haut" }
     let(:usage_systeme) { "" }
+    let(:cop) { "3.0" }
+    let(:scop) { "4.0" }
 
     let(:raw_xml) do
       <<~XML
@@ -41,10 +43,69 @@ RSpec.describe RntValidatorService, type: :service do
                             </isolation_sous_rampants>
                         </caracteristiques_travaux>
                     </travaux>
-                </travaux_collection>
+                    <travaux>
+                        <lot_travaux>systeme</lot_travaux>
+                        <type_travaux>pac_air_eau</type_travaux>
+                        <usage_systeme>chauffage_ecs</usage_systeme>
+                        <reference_travaux>pac_air_eau_1</reference_travaux>
+                        <cout>16000</cout>
+                        <caracteristiques_travaux>
+                            <pac_air_eau>
+                                <efficacite_saisonniere>1.7</efficacite_saisonniere>
+                                <classe_regulateur>viii</classe_regulateur>
+                                <type_installation>installation_collective</type_installation>
+                                <note_technique>true</note_technique>
+                                <calorifugeage>false</calorifugeage>
+                                <dispositif_reglage_equilibrage>false</dispositif_reglage_equilibrage>
+                                <taux_couverture>0.90</taux_couverture>
+                                <type_emetteur>autre</type_emetteur>
+                                <niveau_temperature_emetteur>basse_temperature</niveau_temperature_emetteur>
+                                <intensite_demarrage>45</intensite_demarrage>
+                                <marque_pac>HydroHeat</marque_pac>
+                                <reference_pac>HH-10K</reference_pac>
+                                <marque_regulateur>RegulSys</marque_regulateur>
+                                <reference_regulateur>RS-4.0</reference_regulateur>
+                                <puissance>10</puissance>
+                                <systeme_appoint_pac>autre</systeme_appoint_pac>
+                                <systeme_appoint_complement>radiateurs electriques</systeme_appoint_complement>
+                                <cop>#{cop}</cop>
+                                <surface_chauffee>100</surface_chauffee>
+                                <exclusion_ecs_uniquement>false</exclusion_ecs_uniquement>
+                                <exclusion_pac_basse_temperature>true</exclusion_pac_basse_temperature>
+                            </pac_air_eau>
+                        </caracteristiques_travaux>
+                    </travaux>
+                    <travaux>
+                        <lot_travaux>systeme</lot_travaux>
+                        <type_travaux>pac_air_air</type_travaux>
+                        <usage_systeme>chauffage_refroidissement</usage_systeme>
+                        <reference_travaux>pac_air_air_1</reference_travaux>
+                        <cout>8000</cout>
+                        <caracteristiques_travaux>
+                            <pac_air_air>
+                                <surface_chauffee>100</surface_chauffee>
+                                <scop>#{scop}</scop>
+                                <norme_coefficient_performance>reglement_europeen_206_2012</norme_coefficient_performance>
+                                <puissance>10</puissance>
+                                <marque_pac>ThermoPAC</marque_pac>
+                                <reference_pac>TP-14X</reference_pac>
+                            </pac_air_air>
+                        </caracteristiques_travaux>
+                    </travaux>
+                  </travaux_collection>
             </projet_travaux>
         </rnt>
       XML
+    end
+
+    context "with percentage values" do
+      let(:cop) { "300" }
+      let(:scop) { "400%" }
+
+      it "converts percentage value to float" do
+        expect(described_class.clean_xml_for_rnt(raw_xml)).to include("<cop>3.0</cop>")
+                                                          .and include("<scop>4.0</scop>")
+      end
     end
 
     it "removes empty nodes" do
