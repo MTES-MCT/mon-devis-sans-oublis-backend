@@ -3,7 +3,8 @@
 require "rails_helper"
 
 RSpec.describe RntValidatorService, type: :service do
-  describe ".clean_xml_for_rnt" do
+  describe ".clean_xml_for_rnt" do # rubocop:disable RSpec/MultipleMemoizedHelpers
+    let(:schema_version) { "0.1.0" }
     let(:lot_travaux) { "plancher_haut" }
     let(:usage_systeme) { "" }
     let(:cop) { "3.0" }
@@ -15,7 +16,7 @@ RSpec.describe RntValidatorService, type: :service do
         <rnt hashkey="string" id="string" version="string">
             <projet_travaux>
                 <donnees_contextuelles>
-                    <version>0.3</version>
+                    <version>#{schema_version}</version>
                     <contexte>devis</contexte>
                     <usage_batiment>appartement_chauffage_individuel</usage_batiment>
                     <aide_financiere_collection>
@@ -98,7 +99,7 @@ RSpec.describe RntValidatorService, type: :service do
       XML
     end
 
-    context "with percentage values" do
+    context "with percentage values" do # rubocop:disable RSpec/MultipleMemoizedHelpers
       let(:cop) { "300" }
       let(:scop) { "400%" }
 
@@ -123,7 +124,7 @@ RSpec.describe RntValidatorService, type: :service do
       end
     end
 
-    context "with systeme lot_travaux" do
+    context "with systeme lot_travaux" do # rubocop:disable RSpec/MultipleMemoizedHelpers
       let(:lot_travaux) { "systeme" }
       let(:usage_systeme) { "refroidissement" }
 
@@ -132,7 +133,7 @@ RSpec.describe RntValidatorService, type: :service do
       end
     end
 
-    context "without systeme lot_travaux" do
+    context "without systeme lot_travaux" do # rubocop:disable RSpec/MultipleMemoizedHelpers
       let(:lot_travaux) { "plancher_haut" }
       let(:usage_systeme) { "refroidissement" }
 

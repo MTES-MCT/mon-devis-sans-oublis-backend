@@ -89,7 +89,8 @@ RSpec.describe RntSchema, type: :service do
   describe "#elements_in_percentage" do
     it "returns a hash of elements in percentage" do
       elements_in_percentage = described_class.new.elements_in_percentage
-      expect(elements_in_percentage).to include("efficacite_saisonniere", "efficacite_energetique_chauffage")
+      expect(elements_in_percentage).to include("cop", "efficacite_saisonniere", "efficacite_energetique_chauffage",
+                                                "scop")
     end
   end
 end

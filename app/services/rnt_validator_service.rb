@@ -8,19 +8,6 @@ require_relative "../../lib/rnt/rnt_schema"
 class RntValidatorService # rubocop:disable Metrics/ClassLength
   class NotProcessableError < StandardError; end
 
-  # Fields with "unité : %"
-  # TODO: autodetect from Schema
-  FIELDS_AS_PERCENTAGE = %w[
-    cop
-    couverture_energie_solaire
-    efficacite_energetique_appoint
-    efficacite_energetique_chauffage_eau
-    efficacite_energetique_saisonniere
-    efficacite_saisonniere
-    rendement_pci
-    scop
-  ].freeze
-
   attr_reader :quote_check_id, :rnt_check
 
   def initialize(quote_check_id)
@@ -43,7 +30,10 @@ class RntValidatorService # rubocop:disable Metrics/ClassLength
     end
 
     # Ensure float for percentage
-    FIELDS_AS_PERCENTAGE.each do |field_name|
+    rnt_version = doc.root["version"]
+    schema_version = doc.at_xpath("/rnt/projet_travaux/donnees_contextuelles/version")&.text&.strip
+    elements_in_percentage = RntSchema.new(rnt_version:, schema_version:).elements_in_percentage
+    elements_in_percentage.each do |field_name|
       doc.xpath("//#{field_name}").each do |node|
         value = node.text.strip
 
