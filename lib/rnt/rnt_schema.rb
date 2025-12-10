@@ -3,7 +3,7 @@
 require "nokogiri"
 
 # Interact with the RNT (Référentiel National des Travaux) data Schema locally.
-class RntSchema
+class RntSchema # rubocop:disable Metrics/ClassLength
   # See versions on https://gitlab.com/referentiel-numerique-travaux/referentiel-numerique-travaux/-/blob/main/versions.yml
   VERSION = "0.4" # full RNT version for the Web Service, not only the Schema version below
   SCHEMA_VERSION = "0.1.0"
@@ -11,13 +11,16 @@ class RntSchema
   attr_reader :rnt_version, :schema_version,
               :xsd_path
 
-  def initialize(rnt_version: VERSION, schema_version: SCHEMA_VERSION, xsd_path: nil)
+  def initialize(rnt_version: VERSION, schema_version: SCHEMA_VERSION, xsd_path: nil) # rubocop:disable Metrics/CyclomaticComplexity
     # TODO: Auto detect and use last published version
     raise ArgumentError, "xsd_path or schema_version missing" unless schema_version || xsd_path
 
     @schema_version = schema_version || xsd_path.match(/v(\d+\.\d+\.\d+)/)[1]
     @xsd_path = xsd_path || Rails.root.join("lib/rnt/mdd_v#{schema_version}.xsd").to_s
-    raise ArgumentError, "xsd_path file not found: #{xsd_path}" unless File.exist?(@xsd_path)
+    unless File.exist?(@xsd_path) && schema_version.end_with?(".0")
+      @xsd_path = Rails.root.join("lib/rnt/mdd_v0.#{schema_version}.xsd").to_s
+    end
+    raise ArgumentError, "xsd_path file not found: #{@xsd_path}" unless File.exist?(@xsd_path)
 
     @rnt_version = rnt_version
   end
@@ -35,7 +38,7 @@ class RntSchema
     xsd.xpath("//xs:element").select do |element|
       documentation = element.at_xpath("xs:annotation/xs:documentation")&.text&.strip
 
-      documentation&.match?(/pour\s*100%/i) ||
+      documentation&.match?(/pour\s*\d+%/i) ||
         documentation&.match?(/unité\s*:\s*%/i)
     end
         .pluck("name")
