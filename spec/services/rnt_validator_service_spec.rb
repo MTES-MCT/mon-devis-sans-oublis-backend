@@ -116,6 +116,13 @@ RSpec.describe RntValidatorService, type: :service do
       expect(described_class.clean_xml_for_rnt(raw_xml)).to include("<surface_1solant>46</surface_1solant>")
     end
 
+    it "removes empty lines" do
+      cleaned_xml = described_class.clean_xml_for_rnt(raw_xml)
+      cleaned_xml.lines.each do |line|
+        expect(line.strip).not_to be_empty
+      end
+    end
+
     context "with systeme lot_travaux" do
       let(:lot_travaux) { "systeme" }
       let(:usage_systeme) { "refroidissement" }

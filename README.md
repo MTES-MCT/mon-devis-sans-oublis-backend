@@ -360,6 +360,22 @@ qu'elle transmet ensuite aux trois étapes ci-dessus, ce qui évite de
 répéter trois fois l'installation et la configuration du projet sans
 sacrifier le parallèlisme de ces étapes.
 
+# RNT
+
+Nous intégrons le RNT, via une sous librairie interne dans `lib/rnt` et les classes `RntSchema` et `RntValidatorService`.
+
+Pour mettre à jour :
+1. Déposez le nouveau schéma XSD dans `lib/rnt`
+2. Mettez à jour `RntSchema::SCHEMA_VERSION` en conséquence et aussi `RntSchema::VERSION`
+3. Exécutez `bundle exec rake doc:rnt_prompts`
+4. Générez le schéma au format JSON
+  - `export RNT_SCHEMA_VERSION=0.1.0`
+  - `cp lib/rnt/mdd_v$RNT_SCHEMA_VERSION.xsd lib/rnt/schema.xsd`
+  - `rails runner lib/rnt/xsd_to_openapi.rb`
+  - `cp lib/rnt/schema_openapi.json lib/rnt/mdd_v$RNT_SCHEMA_VERSION.json`
+4. Testez
+5. Commitez et déployez
+
 # Anonymisation et Export vers Metabase
 
 ## Metabase

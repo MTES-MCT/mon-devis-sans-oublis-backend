@@ -4,19 +4,22 @@ require "nokogiri"
 
 # Interact with the RNT (Référentiel National des Travaux) data Schema locally.
 class RntSchema
-  OPENAPI_PATH = Rails.root.join("lib/rnt/mdd_v0.0.3.json").to_s
   # See versions on https://gitlab.com/referentiel-numerique-travaux/referentiel-numerique-travaux/-/blob/main/versions.yml
-  VERSION = "0.3" # full RNT version for the Web Service, not only the Schema version
-  XSD_PATH = Rails.root.join("lib/rnt/mdd_v0.0.3.xsd").to_s
+  VERSION = "0.4" # full RNT version for the Web Service, not only the Schema version below
+  SCHEMA_VERSION = "0.1.0"
 
-  attr_reader :xsd_path
+  attr_reader :rnt_version, :schema_version,
+              :xsd_path
 
-  def initialize(xsd_path = XSD_PATH)
-    @xsd_path = xsd_path
-  end
+  def initialize(rnt_version: VERSION, schema_version: SCHEMA_VERSION, xsd_path: nil)
+    # TODO: Auto detect and use last published version
+    raise ArgumentError, "xsd_path or schema_version missing" unless schema_version || xsd_path
 
-  def types_travaux
-    enum_info(xsd.at_xpath("//xs:element[@name='type_travaux']"))
+    @schema_version = schema_version || xsd_path.match(/v(\d+\.\d+\.\d+)/)[1]
+    @xsd_path = xsd_path || Rails.root.join("lib/rnt/mdd_v#{schema_version}.xsd").to_s
+    raise ArgumentError, "xsd_path file not found: #{xsd_path}" unless File.exist?(@xsd_path)
+
+    @rnt_version = rnt_version
   end
 
   def caracteristiques_travaux(type_travaux)
@@ -26,6 +29,17 @@ class RntSchema
     xsd_type_travaux.xpath("./xs:complexType/xs:all/xs:element").to_h do |element|
       [element["name"], extract_elt_attributes(element)]
     end
+  end
+
+  def elements_in_percentage
+    xsd.xpath("//xs:element").select do |element|
+      documentation = element.at_xpath("xs:annotation/xs:documentation")&.text&.strip
+
+      documentation&.match?(/pour\s*100%/i) ||
+        documentation&.match?(/unité\s*:\s*%/i)
+    end
+        .pluck("name")
+        .uniq
   end
 
   def extract_elt_attributes(element) # rubocop:disable Metrics/MethodLength
@@ -42,6 +56,10 @@ class RntSchema
       # TODO: we can manage minOccurs, maxOccurs, minExclusive, maxExclusive, pattern...
       enum: type == "enum" ? enum_info(element) : nil
     }.compact
+  end
+
+  def openapi_path
+    Rails.root.join("lib/rnt/mdd_v#{schema_version}.json").to_s
   end
 
   # rubocop:disable Metrics/AbcSize
@@ -91,6 +109,10 @@ class RntSchema
     PROMPT
   end
   # rubocop:enable Metrics/AbcSize
+
+  def types_travaux
+    enum_info(xsd.at_xpath("//xs:element[@name='type_travaux']"))
+  end
 
   def valid?(xml_path)
     # Parse XML and XSD

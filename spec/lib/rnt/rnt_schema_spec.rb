@@ -27,7 +27,7 @@ RSpec.describe RntSchema, type: :service do
         )
         expect(prompt).to eq(
           <<~PROMPT
-            ### installation ventilation hybride hygroreglable :
+            ### installation ventilation hybride hygroreglable (ventilation_hybride_hygroreglable) :
 
             ```jsx
             {
@@ -38,7 +38,7 @@ RSpec.describe RntSchema, type: :service do
             puissance_extracteur: double, puissance de l'extracteur (unité : Wh/m3);
             marque_extracteur: string, nom de la marque de l'extracteur;
             reference_extracteur: string, reference de l'extrateur;
-            presence_systeme: boolean, présence d'un extracteur, d'entrées d'air et de bouches d'extraction 0 : non 1 : oui;
+            presence_systeme: boolean, présence d'un extracteur, d'entrées d'air et de bouches d'extraction - true, false;
             marque_bouches_extraction: string, nom de la marque des bouches d’extraction;
             reference_bouches_extraction: string, référence des bouches d’extraction;
             marque_entrees_air: string, marque des bouches d'entrées d’air;
@@ -55,7 +55,7 @@ RSpec.describe RntSchema, type: :service do
         prompt = described_class.new.prompt_travaux
         expect(prompt).to include(
           <<~PROMPT
-            ### installation ventilation hybride hygroreglable :
+            ### installation ventilation hybride hygroreglable (ventilation_hybride_hygroreglable) :
 
             ```jsx
             {
@@ -66,7 +66,7 @@ RSpec.describe RntSchema, type: :service do
             puissance_extracteur: double, puissance de l'extracteur (unité : Wh/m3);
             marque_extracteur: string, nom de la marque de l'extracteur;
             reference_extracteur: string, reference de l'extrateur;
-            presence_systeme: boolean, présence d'un extracteur, d'entrées d'air et de bouches d'extraction 0 : non 1 : oui;
+            presence_systeme: boolean, présence d'un extracteur, d'entrées d'air et de bouches d'extraction - true, false;
             marque_bouches_extraction: string, nom de la marque des bouches d’extraction;
             reference_bouches_extraction: string, référence des bouches d’extraction;
             marque_entrees_air: string, marque des bouches d'entrées d’air;
@@ -81,8 +81,15 @@ RSpec.describe RntSchema, type: :service do
 
   describe "#types_travaux" do
     it "returns a hash of types travaux" do
-      types = described_class.new.types_travaux
-      expect(types).to include("isolation_combles_non_amenages" => "isolation des combles non aménagés")
+      types_travaux = described_class.new.types_travaux
+      expect(types_travaux).to include("isolation_combles_non_amenages" => "isolation des combles non aménagés")
+    end
+  end
+
+  describe "#elements_in_percentage" do
+    it "returns a hash of elements in percentage" do
+      elements_in_percentage = described_class.new.elements_in_percentage
+      expect(elements_in_percentage).to include("efficacite_saisonniere", "efficacite_energetique_chauffage")
     end
   end
 end
