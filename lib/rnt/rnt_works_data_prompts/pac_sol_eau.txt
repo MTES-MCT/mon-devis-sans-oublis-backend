@@ -2,11 +2,11 @@
 
 ```jsx
 {
-efficacite_saisonniere: double, efficacité énergétique saisonnière (unité : %);
+efficacite_saisonniere: double, efficacité énergétique saisonnière - ex : pour 100%, renseignez 1.0 (unité : sans unite);
 classe_regulateur: enum(i,ii,iii,iv,v,vi,vii,viii), classe de performance du régulateur selon le règlement européen;
-note_technique: boolean, présence d'une note technique indiquant les caractéristiques de dimensionnement du générateur 0 : non 1 : oui;
-calorifugeage: boolean, présence de calorifugeage pour les réseaux de distribution d'eau 0 : non 1 : oui;
-taux_couverture: double, si PAC eau-eau collective, taux de couverture de la PAC par rapport aux besoins de chauffage (unité : sans unite);
+note_technique: boolean, présence d'une note technique indiquant les caractéristiques de dimensionnement du générateur - true, false;
+calorifugeage: boolean, présence de calorifugeage pour les réseaux de distribution d'eau - true, false;
+taux_couverture: double, si PAC eau-eau collective, taux de couverture de la PAC par rapport aux besoins de chauffage - ex : pour 100%, renseignez 1.0 (unité : sans unite);
 type_emetteur: enum(plancher_chauffant,plafond_chauffant,mur_chauffant,autre), type d'émetteur;
 niveau_temperature_emetteur: enum(basse_temperature,moyenne_temperature,haute_temperature), niveau de température des émetteurs (basse, moyenne, haute);
 marque_pac: string, nom de la marque de la PAC;
@@ -16,6 +16,5 @@ reference_regulateur: string, reference du régulateur;
 puissance: double, si PAC eau-eau collective, puissance nominale du générateur (unité : kW);
 surface_chauffee: double, surface chauffée par la PAC installée (unité : m²);
 type_installation: enum(installation_collective,installation_individuelle), type d'installation (collective ou individuelle);
-exclusion_ecs_uniquement: boolean, si PAC eau-eau collective, exclusion des appareils couvrant l'ECS uniquement 0 : non 1 : oui;
 }
 ```

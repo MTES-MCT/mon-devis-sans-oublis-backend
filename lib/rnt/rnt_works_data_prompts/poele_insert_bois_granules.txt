@@ -4,13 +4,13 @@
 {
 type_poele_insert: enum(poele,foyer_ferme,inserts_cheminees_interieures), type d'appareil (poêle, foyer fermé, inserts de cheminées intérieures);
 type_biomasse: enum(buches_de_bois,copeaux_de_bois,bois_comprime_granules,bois_comprime_briquettes,bois_comprim_sciure), type de biomasse utilisée;
-efficacite_saisonniere: double, efficacité énergétique saisonnière (unité : %);
+efficacite_saisonniere: double, efficacité énergétique saisonnière - ex : pour 100%, renseignez 1.0 (unité : sans unite);
 norme_efficacite_poele_insert: enum(nf_en_13240,nf_en_14785,nf_en_15250,nf_en_13229,nf_en_12815), norme de mesure de l'efficacité énergétique saisonnière;
 emission_particules: double, émissions saisonnières de particules (unité : mg/Nm3);
 emission_monoxyde_carbone: double, émissions saisonnières de monoxyde de carbone (CO) (unité : mg/Nm3);
 emission_oxydes_azote: double, émissions saisonnières d'oxydes d'azote (NOx) (unité : mg/Nm3);
 emission_organiques_gazeux: double, émissions saisonnières de composés organiques gazeux (unité : mg/Nm3);
-label_flamme_verte: boolean, présence du label Flamme Verte 0 : non 1 : oui;
+label_flamme_verte: boolean, présence du label Flamme Verte - true, false;
 marque_equipement: string, nom de la marque de l'équipement;
 reference_equipement: string, reference de l'équipement;
 }

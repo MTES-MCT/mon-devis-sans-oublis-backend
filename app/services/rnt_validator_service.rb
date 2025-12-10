@@ -29,6 +29,7 @@ class RntValidatorService # rubocop:disable Metrics/ClassLength
 
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/PerceivedComplexity
   def self.clean_xml_for_rnt(xml_for_rnt) # rubocop:disable Metrics/MethodLength
     doc = Nokogiri::XML(xml_for_rnt)
 
@@ -53,27 +54,29 @@ class RntValidatorService # rubocop:disable Metrics/ClassLength
     end
 
     doc.to_xml
+       .lines.reject { |line| line.strip.empty? }.join # Remove empty lines
   end
+  # rubocop:enable Metrics/PerceivedComplexity
   # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/AbcSize
 
   # Complete the RNT JSON with required donnees_contextuelles
-  def self.complete_json_for_rnt(json, aide_financiere_collection:) # rubocop:disable Metrics/MethodLength
+  def self.complete_json_for_rnt(json, aide_financiere_collection:, schema_version:) # rubocop:disable Metrics/MethodLength
     projet_travaux = json["projet_travaux"]
 
     unless projet_travaux
-      return complete_json_for_rnt({
-                                     "projet_travaux" => json
-                                   }, aide_financiere_collection:)
+      return complete_json_for_rnt(
+        { "projet_travaux" => json },
+        aide_financiere_collection:, schema_version:
+      )
     end
 
     json.merge(
       "projet_travaux" => projet_travaux.merge(
         {
           "donnees_contextuelles" => {
-            "version" => RntSchema::VERSION,
+            "version" => schema_version,
             "contexte" => "devis",
-            "usage_batiment" => "appartement_chauffage_individuel", # TODO: Remove me when optional
             "aide_financiere_collection" => Array.wrap(aide_financiere_collection)
           }.merge(projet_travaux["donnees_contextuelles"] || {})
         }
@@ -86,18 +89,20 @@ class RntValidatorService # rubocop:disable Metrics/ClassLength
   end
 
   def self.rnt_json_to_xml(json, aide_financiere_collection:) # rubocop:disable Metrics/MethodLength
-    rnt_xsd_schema = File.read(RntSchema::XSD_PATH)
+    rnt_schema = RntSchema.new
+
+    rnt_xsd_schema = File.read(rnt_schema.xsd_path)
     json_to_xml_prompt = "Transforme le JSON suivant en XML conforme au schéma du RNT (Référentiel National des Travaux) fourni. Le XML doit être strictement conforme au schéma XSD du RNT. #{rnt_xsd_schema} Ne pas ajouter d'éléments ou d'attributs non définis dans le schéma. Voici le JSON :" # rubocop:disable Layout/LineLength
     llm_call = Llms::Albert.new( # Mistral still render JSON instead of XML
       json_to_xml_prompt,
       result_format: :xml,
 
       xml_root_name: "rnt",
-      xml_root_attrs: { version: RntSchema::VERSION }
+      xml_root_attrs: { version: rnt_schema.rnt_version }
     )
 
     xml_for_rnt = llm_call.chat_completion(
-      complete_json_for_rnt(json, aide_financiere_collection:)
+      complete_json_for_rnt(json, aide_financiere_collection:, schema_version: rnt_schema.schema_version)
     )
     clean_xml_for_rnt(xml_for_rnt)
   end
@@ -106,7 +111,7 @@ class RntValidatorService # rubocop:disable Metrics/ClassLength
     # Option A: Using full RNT Schema directly
 
     # rnt_json_schema ||= JsonOpenapi.make_schema_refs_inline!(
-    #   JSON.parse(File.read(RntSchema::OPENAPI_PATH))
+    #   JSON.parse(File.read(RntSchemanew.openapi_path))
     # ).dig("components", "schemas", "rnt")
 
     # json_prompt = "Retrouver les informations du RNT (Référentiel National des Travaux) dans le texte de devis suivant." # rubocop:disable Layout/LineLength

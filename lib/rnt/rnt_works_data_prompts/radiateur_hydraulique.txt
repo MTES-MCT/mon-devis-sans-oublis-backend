@@ -2,7 +2,7 @@
 
 ```jsx
 {
-presence_chauffage_central: boolean, logement chauffé par un système de chauffage central 0 : non 1 : oui;
+presence_chauffage_central: boolean, logement chauffé par un système de chauffage central - true, false;
 dimensionnement_radiateurs: double, dimensionnement des radiateurs (unité : K);
 norme_dimensionnement_radiateur: enum(en_443,autre), norme qui a été utilisée pour le dimensionnement des radiateurs;
 nombre_radiateurs: double, nombre de radiateurs basse température mis en place (unité : sans unite);

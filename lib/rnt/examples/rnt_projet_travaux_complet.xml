@@ -2,7 +2,7 @@
 <rnt hashkey="string" id="string" version="string">
     <projet_travaux>
         <donnees_contextuelles>
-            <version>0.3</version>
+            <version>0.4</version>
             <geolocalisation>
                 <numero_fiscal_local>2A0123456789</numero_fiscal_local>
                 <id_batiment_rnb_collection>
@@ -29,7 +29,6 @@
             <aide_financiere_collection>
                 <aide_financiere>cee</aide_financiere>
                 <aide_financiere>mpr_geste</aide_financiere>
-                <aide_financiere>eco_ptz</aide_financiere>
             </aide_financiere_collection>
         </donnees_contextuelles>
         <travaux_collection>
@@ -238,7 +237,7 @@
                     <pac_sol_eau>
                         <efficacite_saisonniere>1.7</efficacite_saisonniere>
                         <classe_regulateur>viii</classe_regulateur>
-                        <type_installation>installation_collective</type_installation>
+                        <type_installation>installation_individuelle</type_installation>
                         <note_technique>true</note_technique>
                         <calorifugeage>false</calorifugeage>
                         <taux_couverture>0.90</taux_couverture>
@@ -250,7 +249,6 @@
                         <reference_regulateur>RS-4.0</reference_regulateur>
                         <puissance>10</puissance>
                         <surface_chauffee>100</surface_chauffee>
-                        <exclusion_ecs_uniquement>false</exclusion_ecs_uniquement>
                     </pac_sol_eau>
                 </caracteristiques_travaux>
             </travaux>
@@ -264,7 +262,7 @@
                     <pac_eau_eau>
                         <efficacite_saisonniere>1.7</efficacite_saisonniere>
                         <classe_regulateur>viii</classe_regulateur>
-                        <type_installation>installation_collective</type_installation>
+                        <type_installation>installation_individuelle</type_installation>
                         <note_technique>true</note_technique>
                         <calorifugeage>false</calorifugeage>
                         <taux_couverture>0.90</taux_couverture>
@@ -276,7 +274,7 @@
                         <reference_regulateur>RS-4.0</reference_regulateur>
                         <puissance>10</puissance>
                         <surface_chauffee>100</surface_chauffee>
-                        <exclusion_ecs_uniquement>false</exclusion_ecs_uniquement>
+                        <puissance_nominale_chaufferie>100</puissance_nominale_chaufferie>
                     </pac_eau_eau>
                 </caracteristiques_travaux>
             </travaux>
@@ -290,7 +288,7 @@
                     <pac_air_eau>
                         <efficacite_saisonniere>1.7</efficacite_saisonniere>
                         <classe_regulateur>viii</classe_regulateur>
-                        <type_installation>installation_collective</type_installation>
+                        <type_installation>installation_individuelle</type_installation>
                         <note_technique>true</note_technique>
                         <calorifugeage>false</calorifugeage>
                         <dispositif_reglage_equilibrage>false</dispositif_reglage_equilibrage>
@@ -307,8 +305,7 @@
                         <systeme_appoint_complement>radiateurs electriques</systeme_appoint_complement>
                         <cop>3.0</cop>
                         <surface_chauffee>100</surface_chauffee>
-                        <exclusion_ecs_uniquement>false</exclusion_ecs_uniquement>
-                        <exclusion_pac_basse_temperature>true</exclusion_pac_basse_temperature>
+                        <puissance_nominale_chaufferie>100</puissance_nominale_chaufferie>
                     </pac_air_eau>
                 </caracteristiques_travaux>
             </travaux>
@@ -365,6 +362,7 @@
                         <efficacite_saisonniere>1.1</efficacite_saisonniere>
                         <norme_efficacite_chaudiere_bio>reglement_europeen_2015_1189</norme_efficacite_chaudiere_bio>
                         <puissance_thermique>10</puissance_thermique>
+                        <etude_dimensionnement>false</etude_dimensionnement>
                         <presence_silo>true</presence_silo>
                         <presence_ballon_tampon>true</presence_ballon_tampon>
                         <emission_particules>35</emission_particules>
@@ -379,7 +377,6 @@
                         <reference_chaudiere>BMX-25</reference_chaudiere>
                         <nombre_appartement>1</nombre_appartement>
                         <surface_chauffee>100</surface_chauffee>
-                        <efficacite_energetique_saisonniere>0.85</efficacite_energetique_saisonniere>
                         <rendement_pci>0.93</rendement_pci>
                         <quantite_chaleur>0.01</quantite_chaleur>
                     </chaudiere_biomasse>
@@ -408,6 +405,13 @@
                         <nombre_emetteurs>5</nombre_emetteurs>
                         <marque_emetteur>Electra</marque_emetteur>
                         <reference_emetteur>E-1500</reference_emetteur>
+                        <programmateur_hebdomadaire>true</programmateur_hebdomadaire>
+                        <controle_distance>true</controle_distance>
+                        <controle_adaptatif_activation>true</controle_adaptatif_activation>
+                        <auto_apprentissage>true</auto_apprentissage>
+                        <variation_spatiale>0.08</variation_spatiale>
+                        <certification_radiateur>nf_electricite_3_etoiles_oeil</certification_radiateur>
+                        <efficacite_saisonniere>0.49</efficacite_saisonniere>
                     </radiateur_electrique>
                 </caracteristiques_travaux>
             </travaux>
@@ -452,12 +456,14 @@
                 <cout>4000</cout>
                 <caracteristiques_travaux>
                     <chauffe_eau_thermodynamique>
+                        <capacite_stockage_ballon>200</capacite_stockage_ballon>
                         <type_cet>air_extrait</type_cet>
                         <cop>3.0</cop>
                         <norme_cop_cet>en_16147</norme_cop_cet>
                         <efficacite_saisonniere>1.45</efficacite_saisonniere>
                         <marque_equipement>AquaPlus</marque_equipement>
                         <reference_equipement>AQ-200L</reference_equipement>
+                        <profil_soutirage>l</profil_soutirage>
                     </chauffe_eau_thermodynamique>
                 </caracteristiques_travaux>
             </travaux>
@@ -469,7 +475,7 @@
                 <cout>2000</cout>
                 <caracteristiques_travaux>
                     <ballon_ecs_effet_joule>
-                        <volume_stockage>200</volume_stockage>
+                        <capacite_stockage_ballon>200</capacite_stockage_ballon>
                         <norme_dispositif_regulation>nf_en_iso_52120_1</norme_dispositif_regulation>
                         <sonde_de_mesure>false</sonde_de_mesure>
                         <service_analyse_donnes>true</service_analyse_donnes>
@@ -488,12 +494,13 @@
                 <cout>7000</cout>
                 <caracteristiques_travaux>
                     <chauffe_eau_solaire>
+                        <type_installation>installation_individuelle</type_installation>
                         <presence_appoint>true</presence_appoint>
                         <surface_capteurs>5</surface_capteurs>
                         <certification_capteurs_solaires>cstbat</certification_capteurs_solaires>
                         <exclusion_capteurs_hybrides>false</exclusion_capteurs_hybrides>
                         <nombre_ballons>1</nombre_ballons>
-                        <capacite_stockage>300</capacite_stockage>
+                        <capacite_stockage_ballon>300</capacite_stockage_ballon>
                         <classe_energetique_ballons>Classe B</classe_energetique_ballons>
                         <efficacite_energetique_chauffage_eau>0.75</efficacite_energetique_chauffage_eau>
                         <norme_efficacite_energetique>EN 14825</norme_efficacite_energetique>
@@ -507,24 +514,6 @@
                         <couverture_energie_solaire>0.55</couverture_energie_solaire>
                         <production_solaire_utile>4200</production_solaire_utile>
                     </chauffe_eau_solaire>
-                </caracteristiques_travaux>
-            </travaux>
-            <travaux>
-                <lot_travaux>systeme</lot_travaux>
-                <type_travaux>chauffe_bain_individuel</type_travaux>
-                <usage_systeme>ecs</usage_systeme>
-                <reference_travaux>chauffe_bain_individuel_1</reference_travaux>
-                <cout>1400</cout>
-                <caracteristiques_travaux>
-                    <chauffe_bain_individuel>
-                        <surface_habitable>85</surface_habitable>
-                        <type_chauffe_bain>flux_haut_rendement</type_chauffe_bain>
-                        <rendement_chauffe_bain_haut_rendement>0.89</rendement_chauffe_bain_haut_rendement>
-                        <rendement_chauffe_bain_condensation>1.1</rendement_chauffe_bain_condensation>
-                        <norme_rendement_debit>nf_en_26</norme_rendement_debit>
-                        <type_combustible>false</type_combustible>
-                        <nombre_chauffe_bain>1</nombre_chauffe_bain>
-                    </chauffe_bain_individuel>
                 </caracteristiques_travaux>
             </travaux>
             <travaux>
@@ -568,7 +557,7 @@
                         <efficacite_energetique_chauffage>0.90</efficacite_energetique_chauffage>
                         <norme_efficacite_energetique_chauffage>EN 14825</norme_efficacite_energetique_chauffage>
                         <nombre_ballons>1</nombre_ballons>
-                        <capacite_stockage_ballons>300</capacite_stockage_ballons>
+                        <capacite_stockage_ballon>300</capacite_stockage_ballon>
                         <classe_energetique_ballons>Classe B</classe_energetique_ballons>
                         <efficacite_energetique_appoint>0.82</efficacite_energetique_appoint>
                         <profil_soutirage>l</profil_soutirage>

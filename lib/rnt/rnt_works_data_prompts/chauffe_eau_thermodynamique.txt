@@ -3,10 +3,12 @@
 ```jsx
 {
 type_cet: enum(air_extrait,autres_installations), type d'installation (sur air extrait, autres types d'installations);
-cop: double, coefficient de performance COP (unité : sans unite);
+cop: double, coefficient de performance COP - ex : pour 300%, renseignez 3.0 (unité : sans unite);
 norme_cop_cet: enum(en_16147,autre), norme qui a été utilisée pour la mesure du coefficient de performance du Chauffe eau thermodynamique;
-efficacite_saisonniere: double, efficacité énergétique saisonnière (unité : %);
+efficacite_saisonniere: double, efficacité énergétique saisonnière - ex : pour 100%, renseignez 1.0 (unité : sans unite);
 marque_equipement: string, nom de la marque de l'équipement;
 reference_equipement: string, référence de l'équipement;
+profil_soutirage: enum(m,l,xl,xxl,3xl), profil de soutirage déclaré M, L ou XL;
+capacite_stockage_ballon: int, volume de stockage du ballon (unité : L);
 }
 ```

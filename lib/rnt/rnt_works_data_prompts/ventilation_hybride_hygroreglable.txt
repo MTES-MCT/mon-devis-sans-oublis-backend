@@ -9,7 +9,7 @@ type_extracteur: enum(standard,basse_consommation), type d'extracteur (standard,
 puissance_extracteur: double, puissance de l'extracteur (unité : Wh/m3);
 marque_extracteur: string, nom de la marque de l'extracteur;
 reference_extracteur: string, reference de l'extrateur;
-presence_systeme: boolean, présence d'un extracteur, d'entrées d'air et de bouches d'extraction 0 : non 1 : oui;
+presence_systeme: boolean, présence d'un extracteur, d'entrées d'air et de bouches d'extraction - true, false;
 marque_bouches_extraction: string, nom de la marque des bouches d’extraction;
 reference_bouches_extraction: string, référence des bouches d’extraction;
 marque_entrees_air: string, marque des bouches d'entrées d’air;

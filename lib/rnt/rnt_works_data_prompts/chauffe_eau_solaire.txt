@@ -2,23 +2,24 @@
 
 ```jsx
 {
-presence_appoint: boolean, le chauffe-eau-solaire comprend un système d'appoint 0 : non 1 : oui;
+presence_appoint: boolean, le chauffe-eau-solaire comprend un système d'appoint - true, false;
 surface_capteurs: double, surface hors-tout totale de capteurs solaires vitrés thermiques installés (unité : m²);
 certification_capteurs_solaires: enum(cstbat,solarkeymark,certification_equivalente,certification_qb), certification CSTBat ou SolarKeymark ou équivalente;
-exclusion_capteurs_hybrides: boolean, exclusion de capteurs de type hybrides 0 : non 1 : oui;
+exclusion_capteurs_hybrides: boolean, exclusion de capteurs de type hybrides - true, false;
 nombre_ballons: double, nombre de ballons d’eau chaude solaires installés;
-capacite_stockage: double, capacité de stockage de chaque ballon d'eau chaude solaire (unité : L);
+capacite_stockage_ballon: double, capacité de stockage de chaque ballon d'eau chaude solaire (unité : L);
 classe_energetique_ballons: string, si capacité de stockage du ballon inférieure à 500L : classe d'efficacité énergétique du ballon d'eau chaude solaire est à minima C;
-efficacite_energetique_chauffage_eau: double, efficacité énergétique pour le chauffage de l'eau (unité : sans unite);
+efficacite_energetique_chauffage_eau: double, efficacité énergétique pour le chauffage de l'eau - ex : pour 100%, renseignez 1.0 (unité : sans unite);
 norme_efficacite_energetique: string, norme qui a été utilisée pour le calcul de l'efficacité énergétique du chauffage de l'eau (règlement (UE) n° 814/2013 du 2 août 2013);
 profil_soutirage: enum(m,l,xl,xxl,3xl), profil de soutirage déclaré M, L, XL ou XXL;
 nature_appoint: enum(electrique_joule,autre), nature de l’appoint du chauffe-eau solaire (électrique à effet Joule ou autre);
 nature_fluide_capteurs_solaires: enum(eau,eau_glycolee), nature du fluide circulant dans les capteurs solaires (eau ou eau glycolée);
 marque_equipement: string, nom de la marque de l'équipement;
 reference_equipement: string, référence de l'équipement;
-etude_dimensionnement: boolean, si chauffe-eau solaire collectif, l'étude de dimensionnement de l'installation 0 : non 1 : oui;
+etude_dimensionnement: boolean, si chauffe-eau solaire collectif, l'étude de dimensionnement de l'installation - true, false;
 besoin_ecs: double, si chauffe-eau solaire collectif, besoin annuel en eau chaude sanitaire (unité : kWh/an);
-couverture_energie_solaire: double, si chauffe-eau solaire collectif, taux de couverture par l'énergie solaire du chauffe-eau solaire colelctif (unité : %);
+couverture_energie_solaire: double, si chauffe-eau solaire collectif, taux de couverture par l'énergie solaire du chauffe-eau solaire collectif - ex : pour 100%, renseignez 1.0 (unité : sans unite);
 production_solaire_utile: double, si chauffe-eau solaire collectif, la production solaire utile (unité : kWh/an);
+type_installation: enum(installation_collective,installation_individuelle), type d'installation (collective ou individuelle);
 }
 ```

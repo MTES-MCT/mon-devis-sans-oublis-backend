@@ -4,7 +4,7 @@
 {
 surface_chauffee: double, Surface de bâtiment chauffée par le plancher chauffant hydraulique à basse température (unité : m²);
 temperature_eau: double, température de l’eau dans le réseau (unité : °C);
-dispositif_regulation: boolean, dispositif de régulation de la température de l’eau commandé par une sonde 0 : non 1 : oui;
+dispositif_regulation: boolean, dispositif de régulation de la température de l’eau commandé par une sonde - true, false;
 marque_plancher_chauffant: string, nom de la marque du plancher chauffant;
 reference_plancher_chauffant: string, reference du plancher chauffant;
 }

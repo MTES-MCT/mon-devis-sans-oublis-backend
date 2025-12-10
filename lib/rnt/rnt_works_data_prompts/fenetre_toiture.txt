@@ -10,6 +10,6 @@ norme_transmission_thermique: enum(nf_en_14351_1+a2,autre), norme qui a été ut
 surface: double, surface totale de fenêtres de toiture (unité : m²);
 marque_produit: string, nom de la marque du produit;
 reference_produit: string, reference du produit;
-remplacement_du_dormant_existant: boolean, remplacement du dormant obligatoire 0 : non 1 : oui;
+remplacement_du_dormant_existant: boolean, remplacement du dormant obligatoire - true, false;
 }
 ```
