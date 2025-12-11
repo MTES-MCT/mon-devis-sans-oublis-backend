@@ -5,6 +5,7 @@ module Api
     # Controller for QuoteChecks API
     class QuoteChecksController < BaseController
       include ActionController::MimeResponds
+      include FileUploadAsUrl
 
       before_action :authorize_request, except: %i[metadata results update]
       before_action :authorize_internal_mdso_only, only: %i[results update]
@@ -27,17 +28,11 @@ module Api
 
       # rubocop:disable Metrics/AbcSize
       # rubocop:disable Metrics/CyclomaticComplexity
-      # rubocop:disable Metrics/PerceivedComplexity
       def create # rubocop:disable Metrics/MethodLength
-        upload_file = quote_check_params[:file]
+        upload_file = file_upload_as_url(quote_check_params[:file])
 
         if upload_file.blank?
           handle_unprocessable_entity(Exception.new("No file uploaded"))
-          return
-        end
-
-        unless upload_file.respond_to?(:tempfile)
-          handle_unprocessable_entity(Exception.new("File missformed"))
           return
         end
 
@@ -61,10 +56,10 @@ module Api
         QuoteCheckMailer.created(@quote_check).deliver_later
 
         render json: quote_check_json, status: :created
-      rescue QuoteFile::ContentTypeError => e
+      rescue FileUploadAsUrl::FileUploadAsUrlError,
+             QuoteFile::ContentTypeError => e
         handle_unprocessable_entity(e)
       end
-      # rubocop:enable Metrics/PerceivedComplexity
       # rubocop:enable Metrics/CyclomaticComplexity
       # rubocop:enable Metrics/AbcSize
 

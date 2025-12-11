@@ -242,7 +242,8 @@ paths:
                 file:
                   type: string
                   format: binary
-                  description: Taille maximum de 50 MB par fichier téléversé
+                  description: Taille maximum de 50 MB par fichier téléversé, via
+                    upload direct ou URL HTTPS autorisée
                 file_text:
                   type: string
                   description: Texte brut du contenu du fichier

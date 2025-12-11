@@ -49,7 +49,7 @@ describe "Devis API" do
             type: :string,
             format: :binary,
             description:
-              "Taille maximum de #{QuoteFile::FILE_MAX_SIZE_MB} MB par fichier téléversé"
+              "Taille maximum de #{QuoteFile::FILE_MAX_SIZE_MB} MB par fichier téléversé, via upload direct ou URL HTTPS autorisée" # rubocop:disable Layout/LineLength
           },
           file_text: {
             type: :string,
