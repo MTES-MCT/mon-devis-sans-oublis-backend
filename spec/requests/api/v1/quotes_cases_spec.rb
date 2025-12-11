@@ -142,18 +142,18 @@ RSpec.describe "/api/v1/quotes_cases" do
     end
 
     context "with text format" do
-      skip "TODO: Fix StackLevel too deep"
+      skip("TODO: Fix StackLevel too deep") do
+        before do
+          get results_api_v1_quotes_case_url(quotes_case, format: :txt), headers: api_key_header
+        end
 
-      before do
-        get results_api_v1_quotes_case_url(quotes_case, format: :txt), headers: api_key_header
-      end
+        it "returns a successful response" do
+          expect(response).to be_successful
+        end
 
-      it "returns a successful response" do
-        expect(response).to be_successful
-      end
-
-      it "returns content including error details" do
-        expect(response.body).to include(quotes_case.quote_checks.first.error_details_admin.first[:message])
+        it "returns content including error details" do
+          expect(response.body).to include(quotes_case.quote_checks.first.error_details_admin.first[:message])
+        end
       end
     end
   end

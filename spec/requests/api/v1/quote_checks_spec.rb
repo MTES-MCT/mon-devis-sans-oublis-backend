@@ -171,20 +171,20 @@ RSpec.describe "/api/v1/quote_checks" do
     end
 
     context "with parent_id" do
-      skip "TODO: parent_id is not managed properly so currently hidden"
+      skip("TODO: parent_id is not managed properly so currently hidden") do
+        let(:quote_check) { create(:quote_check) }
+        let(:quote_check_params) do
+          {
+            file: file,
+            profile: "artisan",
+            renovation_type: "geste",
+            parent_id: quote_check.id
+          }
+        end
 
-      let(:quote_check) { create(:quote_check) }
-      let(:quote_check_params) do
-        {
-          file: file,
-          profile: "artisan",
-          renovation_type: "geste",
-          parent_id: quote_check.id
-        }
-      end
-
-      it "returns the parent_id" do
-        expect(json.fetch("parent_id")).to eq(quote_check.id)
+        it "returns the parent_id" do
+          expect(json.fetch("parent_id")).to eq(quote_check.id)
+        end
       end
     end
 
@@ -324,18 +324,18 @@ RSpec.describe "/api/v1/quote_checks" do
     end
 
     context "with text format" do
-      skip "TODO: Fix StackLevel too deep"
+      skip("TODO: Fix StackLevel too deep") do
+        before do
+          get results_api_v1_quote_check_url(quote_check, format: :txt), headers: api_key_header
+        end
 
-      before do
-        get results_api_v1_quote_check_url(quote_check, format: :txt), headers: api_key_header
-      end
+        it "returns a successful response" do
+          expect(response).to be_successful
+        end
 
-      it "returns a successful response" do
-        expect(response).to be_successful
-      end
-
-      it "returns content including error details" do
-        expect(response.body).to include(quote_check.reload.validation_error_details.first["title"])
+        it "returns content including error details" do
+          expect(response.body).to include(quote_check.reload.validation_error_details.first["title"])
+        end
       end
     end
   end
