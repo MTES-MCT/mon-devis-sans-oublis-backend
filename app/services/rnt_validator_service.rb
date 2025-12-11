@@ -30,8 +30,8 @@ class RntValidatorService # rubocop:disable Metrics/ClassLength
     end
 
     # Ensure float for percentage
-    rnt_version = doc.root["version"]
-    schema_version = doc.at_xpath("/rnt/projet_travaux/donnees_contextuelles/version")&.text&.strip
+    schema_version = doc.root["version"]
+    rnt_version = doc.at_xpath("/rnt/projet_travaux/donnees_contextuelles/version")&.text&.strip
     elements_in_percentage = RntSchema.new(rnt_version:, schema_version:).elements_in_percentage
     elements_in_percentage.each do |field_name|
       doc.xpath("//#{field_name}").each do |node|
@@ -51,13 +51,13 @@ class RntValidatorService # rubocop:disable Metrics/ClassLength
   # rubocop:enable Metrics/AbcSize
 
   # Complete the RNT JSON with required donnees_contextuelles
-  def self.complete_json_for_rnt(json, aide_financiere_collection:, schema_version:) # rubocop:disable Metrics/MethodLength
+  def self.complete_json_for_rnt(json, aide_financiere_collection:, rnt_version:) # rubocop:disable Metrics/MethodLength
     projet_travaux = json["projet_travaux"]
 
     unless projet_travaux
       return complete_json_for_rnt(
         { "projet_travaux" => json },
-        aide_financiere_collection:, schema_version:
+        aide_financiere_collection:, rnt_version:
       )
     end
 
@@ -65,7 +65,7 @@ class RntValidatorService # rubocop:disable Metrics/ClassLength
       "projet_travaux" => projet_travaux.merge(
         {
           "donnees_contextuelles" => {
-            "version" => schema_version,
+            "version" => rnt_version,
             "contexte" => "devis",
             "aide_financiere_collection" => Array.wrap(aide_financiere_collection)
           }.merge(projet_travaux["donnees_contextuelles"] || {})
@@ -88,11 +88,11 @@ class RntValidatorService # rubocop:disable Metrics/ClassLength
       result_format: :xml,
 
       xml_root_name: "rnt",
-      xml_root_attrs: { version: rnt_schema.rnt_version }
+      xml_root_attrs: { version: rnt_schema.schema_version }
     )
 
     xml_for_rnt = llm_call.chat_completion(
-      complete_json_for_rnt(json, aide_financiere_collection:, schema_version: rnt_schema.schema_version)
+      complete_json_for_rnt(json, aide_financiere_collection:, rnt_version: rnt_schema.rnt_version)
     )
     clean_xml_for_rnt(xml_for_rnt)
   end
