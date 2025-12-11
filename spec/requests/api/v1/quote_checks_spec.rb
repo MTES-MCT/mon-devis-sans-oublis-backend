@@ -2,6 +2,9 @@
 
 require "rails_helper"
 
+# rubocop:disable RSpec/ExampleLength
+# rubocop:disable RSpec/MultipleExpectations
+# rubocop:disable RSpec/PendingWithoutReason
 RSpec.describe "/api/v1/quote_checks" do
   subject(:json) { response.parsed_body }
 
@@ -204,15 +207,39 @@ RSpec.describe "/api/v1/quote_checks" do
       end
     end
 
-    context "with malformed file upload" do
-      let(:file) { "Missformed" }
+    context "with HTTP file URL" do
+      let(:file) { "http://perdu.com" }
 
       it "returns an unprocessable entity response" do
         expect(response).to have_http_status(:unprocessable_content)
       end
 
-      it "returns error on malformed file" do
-        expect(json.fetch("message").first).to match(/File missformed/i)
+      it "returns error on invalid file URL" do
+        expect(json.fetch("message").first).to match(/Only HTTPS URLs are allowed/i)
+      end
+    end
+
+    context "with unallowed file URL" do
+      let(:file) { "https://perdu.com" }
+
+      it "returns an unprocessable entity response", :vcr do
+        expect(response).to have_http_status(:unprocessable_content)
+      end
+
+      it "returns error on invalid file URL", :vcr do
+        expect(json.fetch("message").first).to match(%r{URI https://perdu.com is not allowed}i)
+      end
+    end
+
+    context "with allowed file URL" do
+      let(:file) { "https://mon-devis-sans-oublis.beta.gouv.fr/_next/static/media/fr--info-fill.20cbd6b5.svg" }
+
+      it "returns a created response", :vcr do
+        expect(response).to have_http_status(:created)
+      end
+
+      it "saves the QuoteFile", :vcr do
+        expect(QuoteCheck.find(json.fetch("id")).file).to be_present
       end
     end
 
@@ -390,3 +417,6 @@ RSpec.describe "/api/v1/quote_checks" do
     end
   end
 end
+# rubocop:enable RSpec/PendingWithoutReason
+# rubocop:enable RSpec/MultipleExpectations
+# rubocop:enable RSpec/ExampleLength

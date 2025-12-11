@@ -2,6 +2,7 @@
 
 require "rails_helper"
 
+# rubocop:disable RSpec/PendingWithoutReason
 RSpec.describe "/api/v1/quotes_cases" do
   subject(:json) { response.parsed_body }
 
@@ -142,7 +143,8 @@ RSpec.describe "/api/v1/quotes_cases" do
     end
 
     context "with text format" do
-      skip("TODO: Fix StackLevel too deep") do
+      # rubocop:disable RSpec/MultipleExpectations
+      skip("TODO: Fix StackLevel too deep") do # rubocop:disable RSpec/ExampleLength
         before do
           get results_api_v1_quotes_case_url(quotes_case, format: :txt), headers: api_key_header
         end
@@ -155,6 +157,8 @@ RSpec.describe "/api/v1/quotes_cases" do
           expect(response.body).to include(quotes_case.quote_checks.first.error_details_admin.first[:message])
         end
       end
+      # rubocop:enable RSpec/MultipleExpectations
     end
   end
 end
+# rubocop:enable RSpec/PendingWithoutReason

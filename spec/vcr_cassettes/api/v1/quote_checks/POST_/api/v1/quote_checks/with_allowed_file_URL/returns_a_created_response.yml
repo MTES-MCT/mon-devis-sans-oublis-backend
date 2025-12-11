@@ -1,0 +1,51 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://mon-devis-sans-oublis.beta.gouv.fr/_next/static/media/fr--info-fill.20cbd6b5.svg
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v2.14.0
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 11 Dec 2025 12:23:06 GMT
+      Content-Type:
+      - image/svg+xml
+      Content-Length:
+      - '237'
+      Connection:
+      - keep-alive
+      X-Request-Id:
+      - 88aa8a90-90d0-43c1-9cfa-a469bf86692e
+      Cache-Control:
+      - public, max-age=31536000, immutable
+      Accept-Ranges:
+      - bytes
+      Last-Modified:
+      - Thu, 04 Dec 2025 08:34:49 GMT
+      Etag:
+      - W/"ed-19ae87fec28"
+      Vary:
+      - Accept-Encoding
+      Strict-Transport-Security:
+      - max-age=31536000
+    body:
+      encoding: UTF-8
+      string: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0
+        0 24 24"><path d="M19.5,2.5h-15c-1.1,0-2,0.9-2,2v15c0,1.1,0.9,2,2,2h15c1.1,0,2-0.9,2-2v-15C21.5,3.4,20.6,2.5,19.5,2.5z
+        M13,17h-2v-6h2V17z M13,9h-2V7h2V9z"/></svg>
+
+        '
+  recorded_at: Thu, 11 Dec 2025 12:23:06 GMT
+recorded_with: VCR 6.3.1
