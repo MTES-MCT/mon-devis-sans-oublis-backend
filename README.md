@@ -102,6 +102,7 @@ cp .env.example .env.docker
 | `RNT_SKIP_SSL_VERIFICATION`                     | Ne pas vérifier la connexion SSL avec le Web Service RNT             | `false`                            | Optionnel    |
 | `SENTRY_DSN`       | DSN Sentry pour le tracking d'erreurs | `https://xxx@sentry.io/xxx`                              | Optionnel |
 | `SENTRY_ENVIRONMENT`       | Environnement Sentry pour le tracking d'erreurs | `$APP_ENV`                              | Optionnel |
+| `SENTRY_LOGS_ENABLED`       | Activer l'envoi de logs vers Sentry | `false`                              | Optionnel |
 | `WORKS_DATA_QA_DEFAULT_LLM`                     | LLM utilisé pour extraite les données travaux par défaut si disponible            | `mistral`                            | Optionnel    |
 | `WORKS_DATA_QA_DEFAULT_MODEL`                     | Modèle utilisé pour extraite les données travaux par défaut si disponible            | `mistral-large-latest`                            | Optionnel    |
 
