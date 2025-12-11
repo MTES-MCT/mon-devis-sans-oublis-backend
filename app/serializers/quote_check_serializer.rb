@@ -5,7 +5,7 @@ class QuoteCheckSerializer < ObjectWithValidationSerializer
 
   attributes :id, :status, :profile,
              :reference, :metadata,
-             :parent_id,
+             # :parent_id,
              :filename,
              :gestes,
              :started_at, :finished_at,
