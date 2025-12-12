@@ -12,7 +12,7 @@ class MdsoBrevo # rubocop:disable Metrics/ClassLength
   MAX_INBOUND_EMAILS_PER_DAY = 20
 
   def initialize(email_params)
-    @email_params = email_params.to_unsafe_h
+    @email_params = email_params.is_a?(ActionController::Parameters) ? email_params.to_unsafe_h : email_params.to_h
   end
 
   # See documentation at https://developers.brevo.com/docs/inbound-parse-webhooks

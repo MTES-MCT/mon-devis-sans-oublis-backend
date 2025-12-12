@@ -9,6 +9,10 @@ RSpec.describe QuoteCheckService, type: :service do
   let(:renovation_type) { "geste" }
   let(:source_name) { "test" }
 
+  before do
+    allow(QuoteCheckRntValidateJob).to receive(:perform_later)
+  end
+
   describe "#initialize" do
     subject(:init) { described_class.new(tempfile, filename, profile, renovation_type, source_name:) }
 

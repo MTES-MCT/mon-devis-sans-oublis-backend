@@ -39,7 +39,7 @@ class StatsService
         /particulier/televersement/renovation-ampleur
       ]
 
-      # TODO: during and afterr upload (same URL) like /artisan/dossier/[UUID]
+      # TODO: during and after upload (same URL) like /artisan/dossier/[UUID]
     ]
 
     path_visits = funnel_paths.index_with do |path_or_paths|

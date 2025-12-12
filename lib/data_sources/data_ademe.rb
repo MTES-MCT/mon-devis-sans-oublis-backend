@@ -71,7 +71,7 @@ class DataAdeme
         "domaine" => format_domaine(result["domaine"]),
         "site_internet" => format_site_internet(result["site_internet"]),
         "telephone" => format_telephone(result["telephone"])
-      )
+      ).compact
     end
   end
 
@@ -90,7 +90,7 @@ class DataAdeme
   def format_site_internet(site_internet)
     # Remove empty "http://" value that not match the Regex in documentation
     clean_site_internet = site_internet&.gsub(%r{https?://$}i, "")&.strip
-    return "" if clean_site_internet.blank?
+    return nil if clean_site_internet.blank?
 
     # Data correction for known invalid value
     return "https://www.engie-homeservices.fr/" if site_internet == "http://engie home services"

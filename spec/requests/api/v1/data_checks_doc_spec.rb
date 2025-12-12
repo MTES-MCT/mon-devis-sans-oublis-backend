@@ -38,7 +38,7 @@ describe "Data Checks API" do
 
         schema "$ref" => "#/components/schemas/data_check_result"
 
-        let(:siret) { "13002526500013" } # valid SIRET
+        let(:siret) { "33836289000034" } # valid SIRET
 
         run_test!
       end

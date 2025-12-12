@@ -40,7 +40,7 @@ RSpec.describe "/api/v1/data_checks" do
       end
 
       it "returns results" do
-        expect(json.dig("results", 0, "domaine")).to eq("Ventilation mécanique")
+        expect(json.dig("results", 0, "domaine")).to eq(["Ventilation mécanique"])
       end
 
       it "does not return error" do
@@ -63,7 +63,7 @@ RSpec.describe "/api/v1/data_checks" do
       let(:params) { { siret: "52503410400014", geste_types: "vmc_double_flux" } }
 
       it "returns results" do
-        expect(json.dig("results", 0, "domaine")).to eq("Ventilation mécanique")
+        expect(json.dig("results", 0, "domaine")).to eq(["Ventilation mécanique"])
       end
 
       # Log avec geste_types
@@ -77,7 +77,7 @@ RSpec.describe "/api/v1/data_checks" do
       let(:params) { { siret: "52503410400014", rge: "Q90513", geste_types: "vmc_double_flux" } }
 
       it "returns results" do
-        expect(json.dig("results", 0, "domaine")).to eq("Ventilation mécanique")
+        expect(json.dig("results", 0, "domaine")).to eq(["Ventilation mécanique"])
       end
     end
 
@@ -87,7 +87,7 @@ RSpec.describe "/api/v1/data_checks" do
       end
 
       it "returns results" do
-        expect(json.dig("results", 0, "domaine")).to eq("Ventilation mécanique")
+        expect(json.dig("results", 0, "domaine")).to eq(["Ventilation mécanique"])
       end
 
       # Log avec multiples geste_types
