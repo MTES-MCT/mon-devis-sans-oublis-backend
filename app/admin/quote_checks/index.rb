@@ -129,7 +129,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
       number_with_delimiter(it.tokens_count, delimiter: " ")
     end
     column "temps traitement" do
-      "#{it.processing_time.ceil(1)}s" if it.processing_time
+      duration_of_interval_in_words(it.processing_time)
     end
 
     actions defaults: false do

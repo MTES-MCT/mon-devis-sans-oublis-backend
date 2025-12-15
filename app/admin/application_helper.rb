@@ -3,6 +3,10 @@
 module ActiveAdmin
   # Specialized view helpers for ActiveAdmin
   module ViewHelpers
+    def duration_of_interval_in_words(interval_seconds)
+      "#{distance_of_time_in_words(0, interval_seconds)} (#{interval_seconds}s)" if interval_seconds
+    end
+
     def geste_errors(quote_check, geste_index)
       geste_id = QuoteValidator::Base.geste_index(
         quote_check.id, geste_index
