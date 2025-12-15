@@ -34,6 +34,20 @@ class RntSchema # rubocop:disable Metrics/ClassLength
     end
   end
 
+  def element_names_with_sources
+    xsd.xpath("//xs:element").each_with_object({}) do |element, elt_name_with_sources|
+      next unless element["name"]
+
+      appinfo = element.at_xpath("xs:annotation/xs:appinfo")
+      elt_name_with_sources[element["name"]] = (
+        (elt_name_with_sources[element["name"]] || []) +
+          [appinfo && appinfo["source"]]
+      ).compact.uniq.presence
+
+      elt_name_with_sources
+    end
+  end
+
   def elements_in_percentage
     xsd.xpath("//xs:element").select do |element|
       documentation = element.at_xpath("xs:annotation/xs:documentation")&.text&.strip
@@ -59,6 +73,13 @@ class RntSchema # rubocop:disable Metrics/ClassLength
       # TODO: we can manage minOccurs, maxOccurs, minExclusive, maxExclusive, pattern...
       enum: type == "enum" ? enum_info(element) : nil
     }.compact
+  end
+
+  def matching_path?(elt_path, source_path)
+    # prefix with / and rnt/projet_travaux/ if needed
+    # translate array indexes to generic
+    elt_path.gsub(/\[\d+\]/, "")
+            .start_with?(%r{/?(rnt/projet_travaux/)?#{source_path}})
   end
 
   def openapi_path

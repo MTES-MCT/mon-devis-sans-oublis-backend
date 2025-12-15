@@ -79,10 +79,16 @@ RSpec.describe RntSchema, type: :service do
     end
   end
 
-  describe "#types_travaux" do
-    it "returns a hash of types travaux" do
-      types_travaux = described_class.new.types_travaux
-      expect(types_travaux).to include("isolation_combles_non_amenages" => "isolation des combles non aménagés")
+  describe "#element_names_with_sources" do
+    it "returns a hash of elements with source" do # rubocop:disable RSpec/ExampleLength
+      expect(described_class.new.element_names_with_sources).to include(
+        "isolation_toiture_terrasse" => nil,
+        "traitement_humidite" => [
+          "rnt/projet_travaux/travaux_collection/travaux/caracteristiques_travaux/isolation_sous_rampants/traitement_humidite", # rubocop:disable Layout/LineLength
+          "rnt/projet_travaux/travaux_collection/travaux/caracteristiques_travaux/isolation_combles_non_amenages/traitement_humidite", # rubocop:disable Layout/LineLength
+          "rnt/projet_travaux/travaux_collection/travaux/caracteristiques_travaux/isolation_planchers_bas/traitement_humidite" # rubocop:disable Layout/LineLength
+        ]
+      )
     end
   end
 
@@ -91,6 +97,33 @@ RSpec.describe RntSchema, type: :service do
       elements_in_percentage = described_class.new.elements_in_percentage
       expect(elements_in_percentage).to include("cop", "efficacite_saisonniere", "efficacite_energetique_chauffage",
                                                 "scop")
+    end
+  end
+
+  describe "#matching_path?" do
+    # rubocop:disable RSpec/MultipleExpectations
+    it "returns true if the element path matches the source path" do # rubocop:disable RSpec/ExampleLength
+      expect(
+        described_class.new.matching_path?(
+          "/rnt/projet_travaux/donnees_contextuelles/geolocalisation/adresses/t_adresse/statut_geocodage_ban",
+          "donnees_contextuelles/geolocalisation/adresses/t_adresse/statut_geocodage_ban"
+        )
+      ).to be true
+
+      expect(
+        described_class.new.matching_path?(
+          "/rnt/projet_travaux/travaux_collection/travaux[1]/caracteristiques_travaux/isolation_combles_non_amenages/traitement_humidite", # rubocop:disable Layout/LineLength
+          "rnt/projet_travaux/travaux_collection/travaux/caracteristiques_travaux/isolation_combles_non_amenages/traitement_humidite" # rubocop:disable Layout/LineLength
+        )
+      ).to be true
+    end
+    # rubocop:enable RSpec/MultipleExpectations
+  end
+
+  describe "#types_travaux" do
+    it "returns a hash of types travaux" do
+      types_travaux = described_class.new.types_travaux
+      expect(types_travaux).to include("isolation_combles_non_amenages" => "isolation des combles non aménagés")
     end
   end
 end
