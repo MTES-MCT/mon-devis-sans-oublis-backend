@@ -38,7 +38,7 @@ module FileUploadAsUrl
       raise exception
     end
 
-    connection = Faraday.new { it.use :follow_redirects }
+    connection = Faraday.new { it.use Faraday::FollowRedirects::Middleware }
     response = connection.get(uri_s)
     unless response.success?
       exception = DownloadFileError.new("Failed to fetch file from URL #{uri_s} : #{response.status}")
