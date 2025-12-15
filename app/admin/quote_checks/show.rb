@@ -48,7 +48,7 @@ ActiveAdmin.register QuoteCheck do # rubocop:disable Metrics/BlockLength
             number_with_delimiter(it.tokens_count, delimiter: " ")
           end
           row "temps traitement (de soumission à fin d'analyse auto)" do
-            "#{resource.processing_time.ceil(1)}s" if resource.processing_time
+            duration_of_interval_in_words(resource.processing_time)
           end
 
           row "Gestes demandés" do
