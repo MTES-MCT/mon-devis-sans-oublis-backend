@@ -859,6 +859,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   faraday
+  faraday-follow_redirects
   foreman
   fuzzy-string-match
   good_job

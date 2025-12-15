@@ -83,6 +83,7 @@ gem "parallel", require: false
 # Required for langchainrb LLMs
 gem "csv" # Since Ruby > 3.4.0
 gem "faraday"
+gem "faraday-follow_redirects"
 gem "langchainrb", ">= 0.19" # Framework around LLMs
 gem "ruby_llm", require: false
 
