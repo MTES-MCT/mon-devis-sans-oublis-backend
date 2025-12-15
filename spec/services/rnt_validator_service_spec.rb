@@ -141,4 +141,37 @@ RSpec.describe RntValidatorService, type: :service do
       end
     end
   end
+
+  describe ".complete_json_for_rnt" do
+    let(:aide_financiere_collection) { ["mpr_geste", "mpr_ampleur"] }
+    let(:rnt_version) { "0.3" }
+
+    let(:json) do
+      {
+        "travaux_collection" => {
+          "travaux" => []
+        }
+      }
+    end
+    let(:completed_json) do
+      described_class.complete_json_for_rnt(
+        json,
+        aide_financiere_collection:,
+        rnt_version:
+      )
+    end
+
+    it "adds donnees_contextuelles if missing" do
+      expect(completed_json["projet_travaux"]["donnees_contextuelles"]).to include(
+        "version" => rnt_version,
+        "aide_financiere_collection" => aide_financiere_collection
+      )
+    end
+
+    it "keeps travaux_collection intact" do
+      expect(completed_json["projet_travaux"]["travaux_collection"]).to eq(
+        "travaux" => []
+      )
+    end
+  end
 end
