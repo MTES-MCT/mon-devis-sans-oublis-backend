@@ -20,6 +20,13 @@ class RntValidatorService # rubocop:disable Metrics/ClassLength
   def self.clean_xml_for_rnt(xml_for_rnt) # rubocop:disable Metrics/MethodLength
     doc = Nokogiri::XML(xml_for_rnt)
 
+    # Remove inner projet_travaux > projet_travaux wrapper node
+    doc.xpath("/rnt/projet_travaux/projet_travaux").each do |inner_node|
+      parent_node = inner_node.parent
+      inner_node.children.each { parent_node.add_child(it) }
+      inner_node.remove
+    end
+
     # Remove all empty nodes
     doc.xpath("//*[not(node())]").each(&:remove)
 

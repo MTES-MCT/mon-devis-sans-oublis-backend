@@ -98,6 +98,40 @@ RSpec.describe RntValidatorService, type: :service do
       XML
     end
 
+    context "with double projet_travaux wrapper" do # rubocop:disable RSpec/MultipleMemoizedHelpers
+      let(:raw_xml) do
+        <<~XML
+          <?xml version="1.0" encoding="UTF-8"?>
+          <rnt version="#{schema_version}">
+              <projet_travaux>
+              <donnees_contextuelles>
+                <contexte>devis</contexte>
+              </donnees_contextuelles>
+              <projet_travaux>
+                <travaux_collection>
+                    <travaux>
+                      <type_travaux>isolation_sous_rampants</type_travaux>
+                    </travaux>
+                  </travaux_collection>
+                </projet_travaux>
+            </projet_travaux>
+          </rnt>
+        XML
+      end
+
+      # rubocop:disable RSpec/MultipleExpectations
+      it "removes inner projet_travaux but keeping else" do # rubocop:disable RSpec/ExampleLength
+        cleaned_xml = described_class.clean_xml_for_rnt(raw_xml)
+        doc = Nokogiri::XML(cleaned_xml)
+        expect(doc.xpath("/rnt/projet_travaux/projet_travaux").count).to eq(0)
+        expect(doc.xpath("/rnt/projet_travaux/donnees_contextuelles/contexte").text).to eq("devis")
+        expect(
+          doc.xpath("/rnt/projet_travaux/travaux_collection/travaux/type_travaux").text
+        ).to eq("isolation_sous_rampants")
+      end
+      # rubocop:enable RSpec/MultipleExpectations
+    end
+
     context "with percentage values" do # rubocop:disable RSpec/MultipleMemoizedHelpers
       let(:cop) { "300" }
       let(:scop) { "400%" }
@@ -139,6 +173,39 @@ RSpec.describe RntValidatorService, type: :service do
       it "removes usage_systeme as not relevant" do
         expect(described_class.clean_xml_for_rnt(raw_xml).scan("<usage_systeme>").count).to be <= 2
       end
+    end
+  end
+
+  describe ".complete_json_for_rnt" do
+    let(:aide_financiere_collection) { %w[mpr_geste mpr_ampleur] }
+    let(:rnt_version) { "0.3" }
+
+    let(:json) do
+      {
+        "travaux_collection" => {
+          "travaux" => []
+        }
+      }
+    end
+    let(:completed_json) do
+      described_class.complete_json_for_rnt(
+        json,
+        aide_financiere_collection:,
+        rnt_version:
+      )
+    end
+
+    it "adds donnees_contextuelles if missing" do
+      expect(completed_json["projet_travaux"]["donnees_contextuelles"]).to include(
+        "version" => rnt_version,
+        "aide_financiere_collection" => aide_financiere_collection
+      )
+    end
+
+    it "keeps travaux_collection intact" do
+      expect(completed_json["projet_travaux"]["travaux_collection"]).to eq(
+        "travaux" => []
+      )
     end
   end
 end
