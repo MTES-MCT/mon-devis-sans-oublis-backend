@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "faraday"
+require "faraday/follow_redirects"
 
 # Concern to handle file uploads via URL paths
 module FileUploadAsUrl
