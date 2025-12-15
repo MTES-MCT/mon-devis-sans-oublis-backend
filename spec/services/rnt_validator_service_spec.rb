@@ -7,6 +7,7 @@ RSpec.describe RntValidatorService, type: :service do
     let(:schema_version) { "0.1.0" }
     let(:lot_travaux) { "plancher_haut" }
     let(:usage_systeme) { "" }
+    let(:reference_travaux) { "isolation_sous_rampants" }
     let(:cop) { "3.0" }
     let(:scop) { "4.0" }
 
@@ -28,12 +29,12 @@ RSpec.describe RntValidatorService, type: :service do
                         <lot_travaux>#{lot_travaux}</lot_travaux>
                         <type_travaux>isolation_sous_rampants</type_travaux>
                         #{usage_systeme && (usage_systeme == '' ? '<usage_systeme/>' : "<usage_systeme>#{usage_systeme}</usage_systeme>")}
-                        <reference_travaux>isolation_sous_rampants</reference_travaux>
+                        #{reference_travaux && (reference_travaux == '' ? '<reference_travaux/>' : "<reference_travaux>#{reference_travaux}</reference_travaux>")}
                         <cout/>
                         <caracteristiques_travaux>
                             <isolation_sous_rampants>
                                 <resistance_isolant>6.05</resistance_isolant>
-                                <surface_1solant>46</surface_1solant>
+                                <surface_isolant>46</surface_isolant>
                                 <fixation_isolant>autre</fixation_isolant>
                                 <materiau_isolant>laine_de_roches</materiau_isolant>
                                 <norme_resistance>nf_en_12667</norme_resistance>
@@ -42,6 +43,7 @@ RSpec.describe RntValidatorService, type: :service do
                                 <fixation_isolant_complement/>
                             </isolation_sous_rampants>
                         </caracteristiques_travaux>
+                        #{defined?(added_elements) && added_elements}
                     </travaux>
                     <travaux>
                         <lot_travaux>systeme</lot_travaux>
@@ -98,6 +100,69 @@ RSpec.describe RntValidatorService, type: :service do
       XML
     end
 
+    it "removes empty nodes" do
+      expect(described_class.clean_xml_for_rnt(raw_xml)).not_to include("<materiau_isolant_complement/>")
+    end
+
+    it "keeps valued nodes" do
+      expect(described_class.clean_xml_for_rnt(raw_xml)).to include("<surface_isolant>46</surface_isolant>")
+    end
+
+    it "removes empty lines" do
+      cleaned_xml = described_class.clean_xml_for_rnt(raw_xml)
+      cleaned_xml.lines.each do |line|
+        expect(line.strip).not_to be_empty
+      end
+    end
+
+    context "with unexpected elements" do # rubocop:disable RSpec/MultipleMemoizedHelpers
+      let(:added_elements) do
+        "<norme_efficacite_saisonniere>reglement_europeen_813_2013</norme_efficacite_saisonniere>"
+      end
+
+      it "removes unexpected elements" do
+        expect(described_class.clean_xml_for_rnt(raw_xml)).not_to include("<norme_efficacite_saisonniere>")
+      end
+    end
+
+    context "with unexpected elements for context" do # rubocop:disable RSpec/MultipleMemoizedHelpers
+      let(:added_elements) do
+        "<traitement_humidite>pare_vapeur_protection_humidite</traitement_humidite>"
+      end
+
+      it "removes unexpected elements for context" do
+        expect(described_class.clean_xml_for_rnt(raw_xml)).not_to include("<traitement_humidite>")
+      end
+    end
+
+    context "with missing reference_travaux" do # rubocop:disable RSpec/MultipleMemoizedHelpers
+      let(:reference_travaux) { "" }
+
+      it "add reference_travaux if missing" do
+        expect(
+          described_class.clean_xml_for_rnt(raw_xml)
+        ).to include("<reference_travaux>travaux-1-isolation_sous_rampants</reference_travaux>")
+      end
+    end
+
+    context "with systeme lot_travaux" do # rubocop:disable RSpec/MultipleMemoizedHelpers
+      let(:lot_travaux) { "systeme" }
+      let(:usage_systeme) { "refroidissement" }
+
+      it "keeps usage_systeme as relevant" do
+        expect(described_class.clean_xml_for_rnt(raw_xml)).to include("<usage_systeme>")
+      end
+    end
+
+    context "without systeme lot_travaux" do # rubocop:disable RSpec/MultipleMemoizedHelpers
+      let(:lot_travaux) { "plancher_haut" }
+      let(:usage_systeme) { "refroidissement" }
+
+      it "removes usage_systeme as not relevant" do
+        expect(described_class.clean_xml_for_rnt(raw_xml).scan("<usage_systeme>").count).to be <= 2
+      end
+    end
+
     context "with double projet_travaux wrapper" do # rubocop:disable RSpec/MultipleMemoizedHelpers
       let(:raw_xml) do
         <<~XML
@@ -139,39 +204,6 @@ RSpec.describe RntValidatorService, type: :service do
       it "converts percentage value to float" do
         expect(described_class.clean_xml_for_rnt(raw_xml)).to include("<cop>3.0</cop>")
                                                           .and include("<scop>4.0</scop>")
-      end
-    end
-
-    it "removes empty nodes" do
-      expect(described_class.clean_xml_for_rnt(raw_xml)).not_to include("<materiau_isolant_complement/>")
-    end
-
-    it "keeps valued nodes" do
-      expect(described_class.clean_xml_for_rnt(raw_xml)).to include("<surface_1solant>46</surface_1solant>")
-    end
-
-    it "removes empty lines" do
-      cleaned_xml = described_class.clean_xml_for_rnt(raw_xml)
-      cleaned_xml.lines.each do |line|
-        expect(line.strip).not_to be_empty
-      end
-    end
-
-    context "with systeme lot_travaux" do # rubocop:disable RSpec/MultipleMemoizedHelpers
-      let(:lot_travaux) { "systeme" }
-      let(:usage_systeme) { "refroidissement" }
-
-      it "keeps usage_systeme as relevant" do
-        expect(described_class.clean_xml_for_rnt(raw_xml)).to include("<usage_systeme>")
-      end
-    end
-
-    context "without systeme lot_travaux" do # rubocop:disable RSpec/MultipleMemoizedHelpers
-      let(:lot_travaux) { "plancher_haut" }
-      let(:usage_systeme) { "refroidissement" }
-
-      it "removes usage_systeme as not relevant" do
-        expect(described_class.clean_xml_for_rnt(raw_xml).scan("<usage_systeme>").count).to be <= 2
       end
     end
   end

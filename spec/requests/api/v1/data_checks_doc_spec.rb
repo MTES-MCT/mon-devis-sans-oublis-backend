@@ -40,7 +40,9 @@ describe "Data Checks API" do
 
         let(:siret) { "33836289000034" } # valid SIRET
 
-        run_test!
+        VCR.use_cassette("data_checks/siret_existant_200") do
+          run_test!
+        end
       end
 
       # TODO: Fix indempotency of this test

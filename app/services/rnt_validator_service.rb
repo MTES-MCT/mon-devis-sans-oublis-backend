@@ -36,10 +36,12 @@ class RntValidatorService # rubocop:disable Metrics/ClassLength
       node.remove unless parent_lot_travaux.match?(/systeme/i)
     end
 
-    # Ensure float for percentage
     schema_version = doc.root["version"]
     rnt_version = doc.at_xpath("/rnt/projet_travaux/donnees_contextuelles/version")&.text&.strip
-    elements_in_percentage = RntSchema.new(rnt_version:, schema_version:).elements_in_percentage
+    rnt_schema = RntSchema.new(rnt_version:, schema_version:)
+
+    # Ensure float for percentage
+    elements_in_percentage = rnt_schema.elements_in_percentage
     elements_in_percentage.each do |field_name|
       doc.xpath("//#{field_name}").each do |node|
         value = node.text.strip
@@ -48,6 +50,31 @@ class RntValidatorService # rubocop:disable Metrics/ClassLength
         numeric_value /= 100.0 if numeric_value > 100
         node.content = numeric_value.to_s
       end
+    end
+
+    element_names_with_sources = rnt_schema.element_names_with_sources
+    doc.xpath("//*").each do |elt|
+      # Remove elements that are not expected in RNT XML
+      unless element_names_with_sources.key?(elt.name)
+        elt.remove
+        next
+      end
+
+      # Check sources of elements and remove those not in the XSD
+      sources = element_names_with_sources.fetch(elt.name)
+      elt.remove if sources&.none? { rnt_schema.matching_path?(elt.path, it) }
+    end
+
+    # Add reference_travaux to each travaux if missing (required by RNT XSD)
+    doc.xpath("//travaux").each_with_index do |travaux_node, index|
+      reference_travaux_node = travaux_node.at_xpath("reference_travaux")
+      next if reference_travaux_node
+
+      type_travaux_node = travaux_node.at_xpath("type_travaux")
+      reference_travaux_value = type_travaux_node ? type_travaux_node.text.strip : "unknown"
+      new_node = Nokogiri::XML::Node.new("reference_travaux", doc)
+      new_node.content = "travaux-#{index + 1}-#{reference_travaux_value}"
+      travaux_node.add_child(new_node)
     end
 
     doc.to_xml
