@@ -85,6 +85,8 @@ gem "csv" # Since Ruby > 3.4.0
 gem "faraday"
 gem "faraday-follow_redirects"
 gem "langchainrb", ">= 0.19" # Framework around LLMs
+gem "net-http", "~> 0.5.0" # Pin to 0.5.x for Ruby 3.4 compatibility
+# gem "net-http-persistent" # Ensure Faraday compatibility with net/http in Ruby >= 3.4
 gem "ruby_llm", require: false
 
 gem "clamby", require: false # Virus scanning with ClamAV
