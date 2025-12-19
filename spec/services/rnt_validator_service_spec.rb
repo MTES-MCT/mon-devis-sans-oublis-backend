@@ -26,7 +26,7 @@ RSpec.describe RntValidatorService, type: :service do
                 </donnees_contextuelles>
                 <travaux_collection>
                     <travaux>
-                        <lot_travaux>#{lot_travaux}</lot_travaux>
+                        #{lot_travaux && (lot_travaux == '' ? '<lot_travaux/>' : "<lot_travaux>#{lot_travaux}</lot_travaux>")}
                         <type_travaux>isolation_sous_rampants</type_travaux>
                         #{usage_systeme && (usage_systeme == '' ? '<usage_systeme/>' : "<usage_systeme>#{usage_systeme}</usage_systeme>")}
                         #{reference_travaux && (reference_travaux == '' ? '<reference_travaux/>' : "<reference_travaux>#{reference_travaux}</reference_travaux>")}
@@ -142,6 +142,16 @@ RSpec.describe RntValidatorService, type: :service do
         expect(
           described_class.clean_xml_for_rnt(raw_xml)
         ).to include("<reference_travaux>travaux-1-isolation_sous_rampants</reference_travaux>")
+      end
+    end
+
+    context "with missing lot_travaux" do # rubocop:disable RSpec/MultipleMemoizedHelpers
+      let(:lot_travaux) { "" }
+
+      it "add lot_travaux if missing" do
+        expect(
+          described_class.clean_xml_for_rnt(raw_xml)
+        ).to include("<lot_travaux>autre</lot_travaux>")
       end
     end
 

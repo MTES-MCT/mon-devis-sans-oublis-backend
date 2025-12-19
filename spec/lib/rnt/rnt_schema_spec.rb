@@ -3,6 +3,34 @@
 require "rails_helper"
 
 RSpec.describe RntSchema, type: :service do
+  describe ".rnt_version" do
+    it "extracts the RNT version from the sent_input_xml" do # rubocop:disable RSpec/ExampleLength
+      xml = <<~XML
+        <?xml version="1.0" encoding="UTF-8"?>
+        <rnt version="0.1.0">
+          <projet_travaux>
+            <donnees_contextuelles>
+              <version>0.4</version>
+            </donnees_contextuelles>
+          </projet_travaux>
+        </rnt>
+      XML
+      expect(described_class.rnt_version(xml)).to eq("0.4")
+    end
+  end
+
+  describe ".schema_version" do
+    it "extracts the RNT version from the sent_input_xml" do # rubocop:disable RSpec/ExampleLength
+      xml = <<~XML
+        <?xml version="1.0" encoding="UTF-8"?>
+        <rnt version="0.1.0">
+          <some_data></some_data>
+        </rnt>
+      XML
+      expect(described_class.schema_version(xml)).to eq("0.1.0")
+    end
+  end
+
   describe "#caracteristiques_travaux" do
     let(:type_travaux) { "ventilation_hybride_hygroreglable" }
 
