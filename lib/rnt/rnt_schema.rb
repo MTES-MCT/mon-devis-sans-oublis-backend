@@ -11,6 +11,14 @@ class RntSchema # rubocop:disable Metrics/ClassLength
   attr_reader :rnt_version, :schema_version,
               :xsd_path
 
+  def self.rnt_version(xml_string)
+    xml_string[%r{<version>([^<]+)</version>}, 1] if xml_string
+  end
+
+  def self.schema_version(xml_string)
+    xml_string[/<rnt[^>]*version=["']([^"']+)["'][^>]*>/, 1] if xml_string
+  end
+
   def initialize(rnt_version: VERSION, schema_version: SCHEMA_VERSION, xsd_path: nil) # rubocop:disable Metrics/CyclomaticComplexity
     # TODO: Auto detect and use last published version
     raise ArgumentError, "xsd_path or schema_version missing" unless schema_version || xsd_path

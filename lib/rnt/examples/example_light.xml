@@ -2,7 +2,7 @@
 <rnt hashkey="string" id="string" version="string">
     <projet_travaux>
         <donnees_contextuelles>
-            <version>0.3</version>
+            <version>0.4</version>
             <contexte>devis</contexte>
             <usage_batiment>appartement_chauffage_individuel</usage_batiment>
             <aide_financiere_collection>
@@ -12,10 +12,38 @@
         </donnees_contextuelles>
         <travaux_collection>
             <travaux>
+                <type_travaux>pac_air_eau</type_travaux>
+                <lot_travaux>autre</lot_travaux>
+                <caracteristiques_travaux>
+                    <pac_air_eau>
+                        <efficacite_saisonniere>1.77</efficacite_saisonniere>
+                        <classe_regulateur>iv</classe_regulateur>
+                        <note_technique>true</note_technique>
+                        <calorifugeage>true</calorifugeage>
+                        <dispositif_reglage_equilibrage>true</dispositif_reglage_equilibrage>
+                        <type_emetteur>autre</type_emetteur>
+                        <niveau_temperature_emetteur>basse_temperature</niveau_temperature_emetteur>
+                        <marque_pac>DE DIETRICH</marque_pac>
+                        <reference_pac>7792421</reference_pac>
+                        <marque_regulateur>DE DIETRICH</marque_regulateur>
+                        <reference_regulateur>AD 338</reference_regulateur>
+                        <puissance>8.0</puissance>
+                        <systeme_appoint_pac>pac_air_eau</systeme_appoint_pac>
+                        <type_installation>installation_individuelle</type_installation>
+                    </pac_air_eau>
+                </caracteristiques_travaux>
+                <reference_travaux>travaux-1-pac_air_eau</reference_travaux>
+            </travaux>
+            <travaux>
                 <lot_travaux>autre</lot_travaux>
                 <type_travaux>pac_air_eau</type_travaux>
                 <usage_systeme>chauffage</usage_systeme>
-                <reference_travaux></reference_travaux>
+                <reference_travaux>travaux-2-pac_air_eau</reference_travaux>
+                <caracteristiques_travaux>
+                    <pac_air_eau>
+                        <type_installation>installation_individuelle</type_installation>
+                    </pac_air_eau>
+                </caracteristiques_travaux>
             </travaux>
         </travaux_collection>
     </projet_travaux>

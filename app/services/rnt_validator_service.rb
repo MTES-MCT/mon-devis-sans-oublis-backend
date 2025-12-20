@@ -77,7 +77,17 @@ class RntValidatorService # rubocop:disable Metrics/ClassLength
       travaux_node.add_child(new_node)
     end
 
-    doc.to_xml
+    # Add ajouter lot_travaux if missing
+    doc.xpath("//travaux").each do |travaux_node|
+      lot_travaux_node = travaux_node.at_xpath("lot_travaux")
+      next if lot_travaux_node
+
+      new_node = Nokogiri::XML::Node.new("lot_travaux", doc)
+      new_node.content = "autre"
+      travaux_node.add_child(new_node)
+    end
+
+    doc.to_xml(indent: 2)
        .lines.reject { |line| line.strip.empty? }.join # Remove empty lines
   end
   # rubocop:enable Metrics/PerceivedComplexity
