@@ -146,6 +146,10 @@ class RntSchema # rubocop:disable Metrics/ClassLength
     enum_info(xsd.at_xpath("//xs:element[@name='type_travaux']"))
   end
 
+  def usage_batiment_default
+    "maison_individuelle"
+  end
+
   def valid?(xml_path)
     # Parse XML and XSD
     xml_doc = Nokogiri::XML(File.read(xml_path), &:strict)
