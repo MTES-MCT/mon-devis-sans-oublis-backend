@@ -89,7 +89,7 @@ class RntValidatorService # rubocop:disable Metrics/ClassLength
     end
 
     # Add usage_batiment if aide_financiere "mpr_ampleur" or "mpr_geste"
-    if donnees_contextuelles.at_xpath("aide_financiere_collection/aide_financiere")&.text&.match?(/mpr_(ampleur|geste)/)
+    if donnees_contextuelles&.at_xpath("aide_financiere_collection/aide_financiere")&.text&.match?(/mpr_(ampleur|geste)/) # rubocop:disable Style/SafeNavigationChainLength
       usage_batiment_node = donnees_contextuelles.at_xpath("usage_batiment")
       unless usage_batiment_node
         new_node = Nokogiri::XML::Node.new("usage_batiment", doc)
