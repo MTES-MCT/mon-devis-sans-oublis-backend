@@ -33,12 +33,13 @@ RSpec.describe JsonToXml, type: :service do
     end
 
     it "converts a simple JSON object to XML" do
-      json = '{"name": "John", "age": 30, "city": "New York"}'
+      json = '{"name": "John", "age": 30, "city": "New York", "zipcode": null}'
       xml = described_class.convert(json, root_name: "person")
       expect(xml).to include("<person>")
       expect(xml).to include("<name>John</name>")
       expect(xml).to include("<age>30</age>")
       expect(xml).to include("<city>New York</city>")
+      expect(xml).to include("<zipcode></zipcode>")
       expect(xml).to include("</person>")
     end
 
@@ -80,17 +81,16 @@ RSpec.describe JsonToXml, type: :service do
     end
 
     it "handles mixed content in JSON" do
-      json = '{"name": "John", "hobbies": ["reading", "traveling"], "address": {"street": "123 Main St", "city": "New York"}}' # rubocop:disable Layout/LineLength
+      json = '{"name": "John", "hobbies": ["reading", "traveling"], "address": {"street": "123 Main St", "city": "New York"}, "tags": [{ "tag": "one" }, { "tag": "two" }]}' # rubocop:disable Layout/LineLength
       xml = described_class.convert(json, root_name: "person")
       expect(xml).to include("<person>")
       expect(xml).to include("<name>John</name>")
-      expect(xml).to include("<hobbies>")
-      expect(xml.scan("<hobbies>reading</hobbies>").size).to eq(1)
-      expect(xml.scan("<hobbies>traveling</hobbies>").size).to eq(1)
+      expect(xml).to include("<hobbies>readingtraveling</hobbies>")
       expect(xml).to include("</hobbies>")
       expect(xml).to include("<address>")
       expect(xml).to include("<street>123 Main St</street>")
       expect(xml).to include("<city>New York</city>")
+      expect(xml).to include("<tag>two</tag>")
       expect(xml).to include("</address>")
       expect(xml).to include("</person>")
     end

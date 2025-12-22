@@ -6,28 +6,18 @@ require "nokogiri"
 
 # Utility class to convert JSON to XML
 class JsonToXml
-  # rubocop:disable Metrics/CyclomaticComplexity
-  def self.build_xml_from_hash(xml, data) # rubocop:disable Metrics/MethodLength
+  def self.build_xml_from_hash(xml, data)
     case data
     when Hash
       data.each do |key, value|
-        if value.is_a?(Array)
-          value.each do |item|
-            xml.send(key) { build_xml_from_hash(xml, item) }
-          end
-        elsif value.is_a?(Hash)
-          xml.send(key) { build_xml_from_hash(xml, value) }
-        else
-          xml.send(key, value)
-        end
+        xml.send(key) { build_xml_from_hash(xml, value) }
       end
     when Array
-      data.each { |item| build_xml_from_hash(xml, item) }
+      data.each { build_xml_from_hash(xml, it) }
     else
       xml.text(data.to_s)
     end
   end
-  # rubocop:enable Metrics/CyclomaticComplexity
 
   def self.convert(json_string, options = {})
     root_name = options[:root_name] || "root"

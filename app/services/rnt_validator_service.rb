@@ -37,7 +37,8 @@ class RntValidatorService # rubocop:disable Metrics/ClassLength
     end
 
     schema_version = doc.root["version"]
-    rnt_version = doc.at_xpath("/rnt/projet_travaux/donnees_contextuelles/version")&.text&.strip
+    donnees_contextuelles = doc.at_xpath("/rnt/projet_travaux/donnees_contextuelles")
+    rnt_version = donnees_contextuelles&.at_xpath("version")&.text&.strip # rubocop:disable Style/SafeNavigationChainLength
     rnt_schema = RntSchema.new(rnt_version:, schema_version:)
 
     # Ensure float for percentage
@@ -85,6 +86,16 @@ class RntValidatorService # rubocop:disable Metrics/ClassLength
       new_node = Nokogiri::XML::Node.new("lot_travaux", doc)
       new_node.content = "autre"
       travaux_node.add_child(new_node)
+    end
+
+    # Add usage_batiment if aide_financiere "mpr_ampleur" or "mpr_geste"
+    if donnees_contextuelles.at_xpath("aide_financiere_collection/aide_financiere")&.text&.match?(/mpr_(ampleur|geste)/)
+      usage_batiment_node = donnees_contextuelles.at_xpath("usage_batiment")
+      unless usage_batiment_node
+        new_node = Nokogiri::XML::Node.new("usage_batiment", doc)
+        new_node.content = rnt_schema.usage_batiment_default
+        donnees_contextuelles.add_child(new_node)
+      end
     end
 
     doc.to_xml(indent: 2)

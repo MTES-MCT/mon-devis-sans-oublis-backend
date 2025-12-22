@@ -5,6 +5,7 @@ require "rails_helper"
 RSpec.describe RntValidatorService, type: :service do
   describe ".clean_xml_for_rnt" do # rubocop:disable RSpec/MultipleMemoizedHelpers
     let(:schema_version) { "0.1.0" }
+    let(:usage_batiment) { "appartement_chauffage_individuel" }
     let(:lot_travaux) { "plancher_haut" }
     let(:usage_systeme) { "" }
     let(:reference_travaux) { "isolation_sous_rampants" }
@@ -18,7 +19,7 @@ RSpec.describe RntValidatorService, type: :service do
             <projet_travaux>
                 <donnees_contextuelles>
                     <contexte>devis</contexte>
-                    <usage_batiment>appartement_chauffage_individuel</usage_batiment>
+                    #{usage_batiment && (usage_batiment == '' ? '<usage_batiment/>' : "<usage_batiment>#{usage_batiment}</usage_batiment>")}
                     <aide_financiere_collection>
                         <aide_financiere>mpr_geste</aide_financiere>
                         <aide_financiere>mpr_ampleur</aide_financiere>
@@ -205,6 +206,16 @@ RSpec.describe RntValidatorService, type: :service do
         ).to eq("isolation_sous_rampants")
       end
       # rubocop:enable RSpec/MultipleExpectations
+    end
+
+    context "with aide_financiere_collection needing usage_batiment" do # rubocop:disable RSpec/MultipleMemoizedHelpers
+      let(:usage_batiment) { "" }
+
+      it "adds usage_batiment if missing" do
+        expect(
+          described_class.clean_xml_for_rnt(raw_xml)
+        ).to include("<usage_batiment>maison_individuelle</usage_batiment>")
+      end
     end
 
     context "with percentage values" do # rubocop:disable RSpec/MultipleMemoizedHelpers

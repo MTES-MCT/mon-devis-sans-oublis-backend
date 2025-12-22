@@ -77,30 +77,38 @@ class XsdToOpenapi # rubocop:disable Metrics/ClassLength
     complex_type_name = complex_type_node.name.sub("xs:", "")
 
     # TODO: Manage xs:attribute
+    child_el = nil
     complex_type_node.xpath("./xs:complexType|./xs:element|./xs:choice/xs:element", "xs" => @xs).each do |el|
       property_name = el["name"] || el["ref"]
       property = parse_element_or_complex(el)
       properties[property_name] = property if property_name
+      child_el = el
     end
 
     return { "oneOf" => properties.values } if complex_type_node.element_children.first.name.sub("xs:", "") == "choice"
 
-    props = {
-      "type" => "object",
-      "properties" => properties,
-      "additionalProperties" => false # For LLM
-    }.merge(props)
-
     case complex_type_name
     when "all"
-      props["required"] = properties.keys # allOf maybe? like oneOf up-above
+      {
+        "type" => "object",
+        "properties" => properties,
+        "additionalProperties" => false, # For LLM
+        "required" => properties.keys # allOf maybe? like oneOf up-above
+      }.merge(props)
     when "sequence"
-    # Do nothing, order matters
+      {
+        "type" => "array",
+        "items" => {
+          "type" => "object",
+          "properties" => properties,
+          "additionalProperties" => false # For LLM
+        }
+      }.merge(child_el && child_el["minOccurs"] ? { "minItems" => Integer(child_el["minOccurs"]) } : {})
+        .merge(child_el && child_el["maxOccurs"] && child_el["maxOccurs"] != "unbounded" ? { "maxItems" => Integer(child_el["maxOccurs"]) } : {}) # rubocop:disable Layout/LineLength
+        .merge(props)
     else
       raise NotImplementedError, "complex_type_name '#{complex_type_name}' not implemented"
     end
-
-    props
   end
   # rubocop:enable Metrics/PerceivedComplexity
   # rubocop:enable Metrics/CyclomaticComplexity
