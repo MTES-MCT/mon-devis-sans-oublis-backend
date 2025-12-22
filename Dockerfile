@@ -25,6 +25,7 @@ RUN sed -i 's#<policy domain="coder" rights="none" pattern="PDF" />#<policy doma
 # (namely the NPM steps)
 WORKDIR /bundle
 COPY Gemfile Gemfile.lock ./
+COPY lib/rnt ./lib/rnt
 RUN bundle config set without "$BUNDLE_WITHOUT" && bundle install
 
 # Move to the main folder

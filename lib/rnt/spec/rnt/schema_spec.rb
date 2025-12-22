@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require_relative "../lib/rnt/schema"
 
-RSpec.describe RntSchema, type: :service do
+RSpec.describe Rnt::Schema, type: :service do
   describe ".rnt_version" do
     it "extracts the RNT version from the sent_input_xml" do # rubocop:disable RSpec/ExampleLength
       xml = <<~XML

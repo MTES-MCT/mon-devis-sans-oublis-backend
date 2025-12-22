@@ -75,6 +75,8 @@ gem "mini_magick", require: false
 gem "pdf-reader", require: false
 # gem "rtesseract", require: false
 
+gem "rnt", path: "lib/rnt"
+
 # Efficiency
 gem "concurrent-ruby", require: false
 gem "dotenv_validator"

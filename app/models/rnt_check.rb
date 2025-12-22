@@ -12,10 +12,10 @@ class RntCheck < ApplicationRecord
   end
 
   def rnt_version
-    RntSchema.new.rnt_version(sent_input_xml)
+    Rnt::Schema.new.rnt_version(sent_input_xml)
   end
 
   def schema_version
-    RntSchema.new.schema_version(sent_input_xml)
+    Rnt::Schema.new.schema_version(sent_input_xml)
   end
 end

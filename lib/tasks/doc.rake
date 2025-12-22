@@ -11,17 +11,17 @@ namespace :doc do # rubocop:disable Metrics/BlockLength
 
   desc "Generate RNT prompts documentation"
   task rnt_prompts: :environment do
-    require_relative "../../lib/rnt/rnt_schema"
+    require_relative "../../lib/rnt/lib/rnt/schema"
 
-    directory = Rails.root.join("lib/rnt/rnt_works_data_prompts")
+    directory = Rails.root.join("lib/rnt_for_mdso/rnt_works_data_prompts")
     FileUtils.mkdir_p(directory)
 
-    global_prompt = RntSchema.new.prompt_travaux
+    global_prompt = Rnt::Schema.new.prompt_travaux
     Rails.root.join(directory, "global.txt").write(global_prompt)
 
-    types_travaux = RntSchema.new.types_travaux
+    types_travaux = Rnt::Schema.new.types_travaux
     types_travaux.each do |type, description|
-      type_travaux_prompt = RntSchema.new.prompt_travaux(type, description)
+      type_travaux_prompt = Rnt::Schema.new.prompt_travaux(type, description)
       Rails.root.join(directory, "#{type}.txt").write(type_travaux_prompt)
     end
   end
