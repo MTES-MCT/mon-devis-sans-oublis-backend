@@ -50,10 +50,11 @@ module MesDevisSansOublis
     loader = Rails.autoloaders.main
     # 1) Load lib/ as a whole as usual
     loader.push_dir Rails.root.join("lib")
+    # except custom gems
+    loader.ignore Rails.root.join("lib/rnt")
     # 2) Make these subfolders FLAT (no namespace from folder names)
     loader.collapse Rails.root.join("lib/tools")
     loader.collapse Rails.root.join("lib/data_sources")
-    loader.collapse Rails.root.join("lib/rnt")
 
     # Don't generate system test files.
     config.generators.system_tests = nil
