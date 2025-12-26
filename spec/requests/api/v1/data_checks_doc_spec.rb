@@ -2,7 +2,7 @@
 
 require "swagger_helper"
 
-describe "Data Checks API" do
+describe "Data Checks API", :vcr do
   path "/data_checks/geste_types" do
     get "Récupérer les types de gestes disponibles" do
       operationId :getGesteTypes
@@ -40,20 +40,16 @@ describe "Data Checks API" do
 
         let(:siret) { "33836289000034" } # valid SIRET
 
-        VCR.use_cassette("data_checks/siret_existant_200") do
-          run_test!
-        end
+        run_test!
       end
 
-      # TODO: Fix indempotency of this test
+      # skip "SIRENE API is indempotent, so no need to test non-existing SIRET"
       # response "404", "SIRET inexistant" do
       #   schema "$ref" => "#/components/schemas/data_check_result"
 
       #   let(:siret) { "12345678900000" } # wrong SIRET
 
-      #   VCR.use_cassette("data_checks/siret_inexistant_404") do
-      #     run_test!
-      #   end
+      #   run_test!
       # end
     end
   end

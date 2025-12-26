@@ -6,8 +6,8 @@ require "webmock/rspec"
 WebMock.disable_net_connect!(allow_localhost: true)
 
 VCR.configure do |config|
-  config.cassette_library_dir = "spec/vcr_cassettes" # Directory where cassettes will be stored
-  config.hook_into :webmock # Use WebMock to intercept HTTP requests
+  config.cassette_library_dir = "spec/vcr_cassettes"
+  config.hook_into :webmock
   config.configure_rspec_metadata! # Automatically tag RSpec examples with cassette metadata
   config.allow_http_connections_when_no_cassette = true # So we can upsert new cassettes
   config.ignore_localhost = true
