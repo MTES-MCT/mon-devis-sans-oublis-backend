@@ -127,7 +127,7 @@ class XsdToOpenapi # rubocop:disable Metrics/ClassLength
   # rubocop:disable Metrics/CyclomaticComplexity
   # rubocop:disable Metrics/PerceivedComplexity
   def parse_element_or_complex(node) # rubocop:disable Metrics/MethodLength
-    puts "Parsing node: #{node.name} #{node['name'] || node['ref']}" # rubocop:disable Rails/Output
+    puts "Parsing node: #{node.name} #{node['name'] || node['ref']}"
 
     props = {}
 
@@ -169,7 +169,7 @@ class XsdToOpenapi # rubocop:disable Metrics/ClassLength
 
     if simple_type
       base = simple_type["base"]&.sub("xs:", "") || "string"
-      enums = simple_type.xpath("./xs:enumeration", "xs" => @xs).map { it["value"] } # rubocop:disable Rails/Pluck
+      enums = simple_type.xpath("./xs:enumeration", "xs" => @xs).map { it["value"] }
       props["type"] = map_type(base)
       props["enum"] = enums if enums.any?
     elsif !ref
@@ -217,5 +217,5 @@ if __FILE__ == $PROGRAM_NAME
   openapi_yaml = XsdToOpenapi.new(ARGV[0] || File.expand_path("schema.xsd", dir)).to_yaml
   File.write(ARGV[1] || File.expand_path("schema_openapi.yaml", dir), YAML.dump(openapi_yaml))
   File.write(File.expand_path("schema_openapi.json", dir), JSON.pretty_generate(openapi_yaml))
-  puts YAML.dump(openapi_yaml) # rubocop:disable Rails/Output
+  puts YAML.dump(openapi_yaml)
 end

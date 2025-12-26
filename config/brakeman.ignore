@@ -3,6 +3,29 @@
     {
       "warning_type": "SSL Verification Bypass",
       "warning_code": 71,
+      "fingerprint": "513e279d741ed222f9e8b09dcbd1afaa01372945d589b042f7d6586ff9e9e580",
+      "check_name": "SSLVerify",
+      "message": "SSL certificate verification was bypassed",
+      "file": "lib/rnt/lib/rnt/web_service.rb",
+      "line": 24,
+      "link": "https://brakemanscanner.org/docs/warning_types/ssl_verification_bypass/",
+      "code": "Net::HTTP.start(URI(\"https://api.brevo.com/v3\").host, URI(\"https://api.brevo.com/v3\").port, :use_ssl => true, :verify_mode => (OpenSSL::SSL::VERIFY_NONE))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Rnt::WebService",
+        "method": "validate"
+      },
+      "user_input": null,
+      "confidence": "High",
+      "cwe_id": [
+        295
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SSL Verification Bypass",
+      "warning_code": 71,
       "fingerprint": "7e6fc87e6fb8d87e2e74751f7b43b39df2a880972ad2c659b0fcec8979f8fa7a",
       "check_name": "SSLVerify",
       "message": "SSL certificate verification was bypassed",
@@ -49,29 +72,6 @@
     {
       "warning_type": "SSL Verification Bypass",
       "warning_code": 71,
-      "fingerprint": "aa4a9330b10f8cdd70319dc2794b2e3316028a7d655f218629b840b0ce5d5409",
-      "check_name": "SSLVerify",
-      "message": "SSL certificate verification was bypassed",
-      "file": "lib/data_sources/rnt.rb",
-      "line": 23,
-      "link": "https://brakemanscanner.org/docs/warning_types/ssl_verification_bypass/",
-      "code": "Net::HTTP.start(URI(\"https://api.brevo.com/v3\").host, URI(\"https://api.brevo.com/v3\").port, :use_ssl => true, :verify_mode => (OpenSSL::SSL::VERIFY_NONE))",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Rnt",
-        "method": "validate"
-      },
-      "user_input": null,
-      "confidence": "High",
-      "cwe_id": [
-        295
-      ],
-      "note": ""
-    },
-    {
-      "warning_type": "SSL Verification Bypass",
-      "warning_code": 71,
       "fingerprint": "e53a1f1153cfb2918c06d85a133180805bd5c4e5533daa4d97410eb9b6b76320",
       "check_name": "SSLVerify",
       "message": "SSL certificate verification was bypassed",
@@ -93,5 +93,5 @@
       "note": ""
     }
   ],
-  "brakeman_version": "7.1.0"
+  "brakeman_version": "7.1.1"
 }

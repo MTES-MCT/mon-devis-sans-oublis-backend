@@ -2,7 +2,8 @@
 
 require "nokogiri"
 
-require_relative "../../lib/rnt/rnt_schema"
+require_relative "../../lib/rnt/lib/rnt/schema"
+require_relative "../../lib/rnt/lib/rnt/web_service"
 
 # Service to validate a QuoteCheck against the RNT (Référentiel National des Travaux)
 class RntValidatorService # rubocop:disable Metrics/ClassLength
@@ -39,7 +40,7 @@ class RntValidatorService # rubocop:disable Metrics/ClassLength
     schema_version = doc.root["version"]
     donnees_contextuelles = doc.at_xpath("/rnt/projet_travaux/donnees_contextuelles")
     rnt_version = donnees_contextuelles&.at_xpath("version")&.text&.strip # rubocop:disable Style/SafeNavigationChainLength
-    rnt_schema = RntSchema.new(rnt_version:, schema_version:)
+    rnt_schema = Rnt::Schema.new(rnt_version:, schema_version:)
 
     # Ensure float for percentage
     elements_in_percentage = rnt_schema.elements_in_percentage
@@ -89,7 +90,8 @@ class RntValidatorService # rubocop:disable Metrics/ClassLength
     end
 
     # Add usage_batiment if aide_financiere "mpr_ampleur" or "mpr_geste"
-    if donnees_contextuelles&.at_xpath("aide_financiere_collection/aide_financiere")&.text&.match?(/mpr_(ampleur|geste)/) # rubocop:disable Style/SafeNavigationChainLength
+    if donnees_contextuelles&.at_xpath("aide_financiere_collection/aide_financiere") # rubocop:disable Style/SafeNavigationChainLength
+                            &.text&.match?(/mpr_(ampleur|geste)/)
       usage_batiment_node = donnees_contextuelles.at_xpath("usage_batiment")
       unless usage_batiment_node
         new_node = Nokogiri::XML::Node.new("usage_batiment", doc)
@@ -134,7 +136,7 @@ class RntValidatorService # rubocop:disable Metrics/ClassLength
   end
 
   def self.rnt_json_to_xml(json, aide_financiere_collection:) # rubocop:disable Metrics/MethodLength
-    rnt_schema = RntSchema.new
+    rnt_schema = Rnt::Schema.new
 
     rnt_xsd_schema = File.read(rnt_schema.xsd_path)
     json_to_xml_prompt = "Transforme le JSON suivant en XML conforme au schéma du RNT (Référentiel National des Travaux) fourni. Le XML doit être strictement conforme au schéma XSD du RNT. #{rnt_xsd_schema} Ne pas ajouter d'éléments ou d'attributs non définis dans le schéma. Voici le JSON :" # rubocop:disable Layout/LineLength
@@ -156,7 +158,7 @@ class RntValidatorService # rubocop:disable Metrics/ClassLength
     # Option A: Using full RNT Schema directly
 
     # rnt_json_schema ||= JsonOpenapi.make_schema_refs_inline!(
-    #   JSON.parse(File.read(RntSchemanew.openapi_path))
+    #   JSON.parse(File.read(Rnt::Schema.new.openapi_path))
     # ).dig("components", "schemas", "rnt")
 
     # json_prompt = "Retrouver les informations du RNT (Référentiel National des Travaux) dans le texte de devis suivant." # rubocop:disable Layout/LineLength
@@ -168,7 +170,7 @@ class RntValidatorService # rubocop:disable Metrics/ClassLength
     # ).chat_completion(text).deep_transform_keys(&:to_s)
 
     # Option B: Using only the relevant subset of the RNT Schema for Works (travaux)
-    prompt = Rails.root.join("lib/rnt/rnt_works_data_prompts/global.txt").read
+    prompt = Rails.root.join("lib/rnt_for_mdso/rnt_works_data_prompts/global.txt").read
     travaux_json = Llms::Mistral.new(prompt, result_format: :json).chat_completion(text)
     {
       "projet_travaux" => {
@@ -202,7 +204,7 @@ class RntValidatorService # rubocop:disable Metrics/ClassLength
     )
     # 3. Validate XML against RNT schema using RNT Web service
     @rnt_check = RntCheck.create!(quote_check:, sent_input_xml: quote_check_rnt_xml, sent_at: Time.current)
-    rnt_validation_response = Rnt.new.validate(quote_check_rnt_xml)
+    rnt_validation_response = Rnt::WebService.new.validate(quote_check_rnt_xml)
     @rnt_check.update!(
       result_json: rnt_validation_response,
       result_at: Time.current

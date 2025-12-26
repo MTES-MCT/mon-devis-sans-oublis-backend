@@ -99,7 +99,6 @@ cp .env.example .env.docker
 | `QUOTE_CHECK_EMAIL_RECIPIENTS`       | Emails pour être informé des dépôts | `toto@gouv.fr,tata@gouv.fr`                              | Optionnel |
 | `RAILS_ENV`                     | Environnement global du framework             | `production` ou `development` en local                            | Optionnel    |
 | `RAILS_INBOUND_EMAIL_PASSWORD`                     | Secret pour authentifier les appels emails             | via `bin/rails secret`                            | Optionnel    |
-| `RNT_SKIP_SSL_VERIFICATION`                     | Ne pas vérifier la connexion SSL avec le Web Service RNT             | `false`                            | Optionnel    |
 | `SENTRY_DSN`       | DSN Sentry pour le tracking d'erreurs | `https://xxx@sentry.io/xxx`                              | Optionnel |
 | `SENTRY_ENVIRONMENT`       | Environnement Sentry pour le tracking d'erreurs | `$APP_ENV`                              | Optionnel |
 | `SENTRY_LOGS_ENABLED`       | Activer l'envoi de logs vers Sentry | `false`                              | Optionnel |
@@ -363,19 +362,13 @@ sacrifier le parallèlisme de ces étapes.
 
 # RNT
 
-Nous intégrons le RNT, via une sous librairie interne dans `lib/rnt` et les classes `RntSchema` et `RntValidatorService`.
+Nous intégrons le RNT, via une sous librairie interne dans `lib/rnt` et les classes `Rnt::Schema` et `RntValidatorService`.
 
 Pour mettre à jour :
-1. Déposez le nouveau schéma XSD dans `lib/rnt`
-2. Mettez à jour `RntSchema::SCHEMA_VERSION` en conséquence et aussi `RntSchema::VERSION`
-3. Exécutez `bundle exec rake doc:rnt_prompts`
-4. Générez le schéma au format JSON
-  - `export RNT_SCHEMA_VERSION=0.1.0`
-  - `cp lib/rnt/mdd_v$RNT_SCHEMA_VERSION.xsd lib/rnt/schema.xsd`
-  - `rails runner lib/rnt/xsd_to_openapi.rb`
-  - `cp lib/rnt/schema_openapi.json lib/rnt/mdd_v$RNT_SCHEMA_VERSION.json`
-4. Testez
-5. Commitez et déployez
+1. Suivez les instructions de `lib/rnt`
+2. Puis exécutez `bundle exec rake doc:rnt_prompts`
+3. Testez
+4. Commitez et déployez
 
 # Anonymisation et Export vers Metabase
 

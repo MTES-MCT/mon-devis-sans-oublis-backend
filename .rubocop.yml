@@ -38,3 +38,7 @@ RSpec/NestedGroups:
   Enabled: true
   Exclude:
     - 'spec/**/*_doc_spec.rb'
+
+Rails:
+  Exclude:
+    - 'lib/rnt/**/*'
