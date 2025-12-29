@@ -107,11 +107,12 @@ group :development, :test do
   gem "debug", platforms: %i[mri windows]
   gem "dotenv-rails"
   gem "factory_bot_rails"
+  gem "flog", "~> 4.8.0", require: false # Avoid /usr/local/bundle/gems/flog-4.9.1/lib/flog.rb:237:in 'Flog#initialize': can't modify frozen Hash: {all: true, continue: true, methods: true} (FrozenError) # rubocop:disable Layout/LineLength
   gem "foreman"
   gem "openapi3_parser", require: false
   gem "rspec-rails"
   gem "rswag-specs" # Allows API documentation via specs
-  gem "rubycritic"
+  gem "rubycritic", require: false
 end
 
 group :test do
