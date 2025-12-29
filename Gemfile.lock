@@ -138,9 +138,6 @@ GEM
     bundler-audit (0.9.3)
       bundler (>= 1.2.0)
       thor (~> 1.0)
-    bundler-stats (2.4.0)
-      bundler (>= 1.9, < 3)
-      thor (>= 0.19.0, < 2.0)
     capybara (3.40.0)
       addressable
       matrix
@@ -592,8 +589,7 @@ GEM
       json
       require_all (~> 3.0)
       ruby-progressbar
-    rails_stats (2.0.1)
-      bundler-stats (>= 2.1)
+    rails_stats (1.0.2)
       rake
     railties (8.1.1)
       actionpack (= 8.1.1)
@@ -850,7 +846,6 @@ DEPENDENCIES
   brakeman
   brevo
   bundler-audit
-  bundler-stats
   capybara
   clamby
   committee
@@ -964,7 +959,6 @@ CHECKSUMS
   brevo (4.0.0) sha256=016aff0108a8c90b55bbc414a30900f796c654ebc5d79c857d9b5fb37606fd05
   builder (3.3.0) sha256=497918d2f9dca528fdca4b88d84e4ef4387256d984b8154e9d5d3fe5a9c8835f
   bundler-audit (0.9.3) sha256=81c8766c71e47d0d28a0f98c7eed028539f21a6ea3cd8f685eb6f42333c9b4e9
-  bundler-stats (2.4.0) sha256=1b70a6e356759fc70e1e0ad3de0fd3672f14b112802577766941de9c6c3b4dc9
   capybara (3.40.0) sha256=42dba720578ea1ca65fd7a41d163dd368502c191804558f6e0f71b391054aeef
   case_transform (0.2) sha256=e2ad4418dceeb227cf474cc332cd5004c95c136c04186c1cceaad8ab8de6fe3b
   childprocess (5.1.0) sha256=9a8d484be2fd4096a0e90a0cd3e449a05bc3aa33f8ac9e4d6dcef6ac1455b6ec
@@ -1144,7 +1138,7 @@ CHECKSUMS
   rails-erd (1.7.2) sha256=0b17d0fba25d319d8da8af7a3e5e2149d02d6187cc7351e8be43423f07c48bcd
   rails-html-sanitizer (1.6.2) sha256=35fce2ca8242da8775c83b6ba9c1bcaad6751d9eb73c1abaa8403475ab89a560
   rails_best_practices (1.23.3) sha256=543ea7d7a26fdb91fb0c54496defaf1b266e3e89ac9e05a879fcd8c4f8b03b0c
-  rails_stats (2.0.1) sha256=456d40ba539baa0ae504c3c31e1c467643c3b6da316de76855d140c8c172cc16
+  rails_stats (1.0.2) sha256=1bb5ec0eceb8250654e7451ef7119fbf3b06b9d6c0f0e6b9dcf65312ced8caa6
   railties (8.1.1) sha256=fb0c7038b147bea41bf6697fa443ff1c5c47d3bb1eedd9ecf1bceeb90efcb868
   rainbow (3.1.1) sha256=039491aa3a89f42efa1d6dec2fc4e62ede96eb6acd95e52f1ad581182b79bc6a
   rake (13.3.1) sha256=8c9e89d09f66a26a01264e7e3480ec0607f0c497a861ef16063604b1b08eb19c
@@ -1234,7 +1228,7 @@ CHECKSUMS
   zeitwerk (2.7.4) sha256=2bef90f356bdafe9a6c2bd32bcd804f83a4f9b8bc27f3600fff051eb3edcec8b
 
 RUBY VERSION
-   ruby 3.4.8p72
+  ruby 3.4.8
 
 BUNDLED WITH
-   2.7.2
+  4.0.3
