@@ -136,7 +136,7 @@ group :test do
 end
 
 group :development do
-  gem "bundler-stats"
+  # gem "bundler-stats" # TODO: re-enable when compatible with bundler > 2.4
   gem "licensed" # Requires native cmake and pkg-config libraries for rugged gem dependency
   gem "memory_profiler"
   gem "next_rails"
