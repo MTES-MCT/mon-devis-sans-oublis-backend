@@ -38,7 +38,7 @@ namespace :doc do # rubocop:disable Metrics/BlockLength
       ademe_swagger.dig("paths", "/lines", "get", "responses", "200", "content", "application/json", # rubocop:disable Style/ItBlockParameter
                         "schema", "properties", "results", "items", "properties")
                    .transform_values! do
-        it.except("x-cardinality")
+                     it.except("x-cardinality")
       end
     Rails.root.join("swagger/v1/ademe_result_schema.json")
          .write(JSON.pretty_generate(ademe_result_schema))

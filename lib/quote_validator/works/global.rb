@@ -37,17 +37,17 @@ module QuoteValidator
       def qualifications_per_geste_type # rubocop:disable Metrics/MethodLength
         @qualifications_per_geste_type ||= RgeValidator.rge_qualifications(siret:)
                                                        .each_with_object({}) do |qualification, hash|
-          geste_types = MdsoAdemeMapping.ademe_geste_types(
-            nom_certificat: qualification.fetch("nom_certificat"),
-            domaine: qualification.fetch("domaine")
-          ).compact.uniq
+                                                         geste_types = MdsoAdemeMapping.ademe_geste_types(
+                                                           nom_certificat: qualification.fetch("nom_certificat"),
+                                                           domaine: qualification.fetch("domaine")
+                                                         ).compact.uniq
 
-          geste_types.each do |type|
-            hash[type] ||= []
-            hash[type] << qualification
-          end
+                                                         geste_types.each do |type|
+                                                           hash[type] ||= []
+                                                           hash[type] << qualification
+                                                         end
 
-          hash
+                                                         hash
         end
       rescue QuoteValidator::Base::ArgumentError
         @qualifications_per_geste_type = {}
