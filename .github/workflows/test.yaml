@@ -1,6 +1,7 @@
+---
 name: CI tests
 
-on:
+"on":
   push:
   workflow_call:
   workflow_dispatch:
@@ -122,8 +123,8 @@ jobs:
       - run: docker load --input /tmp/rails-template.tar
       - run: |
           docker run \
-            --rm \
-            rails-template \
+            -e NO_DATABASE="true" \
+            --rm rails-template \
             bash -c "bundle exec rubycritic \
               --no-browser \
               --format console \
