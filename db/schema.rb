@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_08_083342) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_06_080257) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -176,6 +176,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_08_083342) do
     t.datetime "commented_at"
     t.datetime "created_at", null: false
     t.string "email"
+    t.string "email_domain"
     t.string "email_subject"
     t.string "email_to"
     t.text "expected_rnt_input_xml"
@@ -214,6 +215,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_08_083342) do
     t.index "\"left\"((validation_errors)::text, 1)", name: "index_validation_errors_not_null", where: "(validation_errors IS NOT NULL)"
     t.index ["case_id"], name: "index_quote_checks_on_case_id"
     t.index ["email"], name: "index_quote_checks_on_email"
+    t.index ["email_domain"], name: "index_quote_checks_on_email_domain"
     t.index ["email_to"], name: "index_quote_checks_on_email_to"
     t.index ["file_id"], name: "index_quote_checks_on_file_id"
     t.index ["finished_at"], name: "index_quote_checks_on_finished_at"
@@ -249,6 +251,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_08_083342) do
   create_table "quotes_cases", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email"
+    t.string "email_domain"
     t.string "email_subject"
     t.string "email_to"
     t.datetime "finished_at"
@@ -266,6 +269,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_08_083342) do
     t.jsonb "validation_errors"
     t.string "validation_version"
     t.index ["email"], name: "index_quotes_cases_on_email"
+    t.index ["email_domain"], name: "index_quotes_cases_on_email_domain"
     t.index ["email_to"], name: "index_quotes_cases_on_email_to"
     t.index ["reference"], name: "index_quotes_cases_on_reference"
     t.index ["renovation_type"], name: "index_quotes_cases_on_renovation_type"
