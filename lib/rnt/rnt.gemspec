@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description   = "A Ruby library for interacting with the RNT (Référentiel National des Travaux) data schema locally, providing XML validation and data extraction capabilities via official Web Services." # rubocop:disable Layout/LineLength
   spec.homepage      = "https://gitlab.com/referentiel-numerique-travaux/referentiel-numerique-travaux"
 
-  spec.required_ruby_version = ">= 3.4.0"
+  spec.required_ruby_version = ">= 3.4.0" # rubocop:disable Gemspec/RequiredRubyVersion
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/MTES-MCT/mon-devis-sans-oublis-backend/tree/main/lib/rnt"
