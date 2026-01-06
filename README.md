@@ -410,11 +410,11 @@ Le processus d'anonymisation est géré par **6 scripts** situés dans le dossie
 
 ### Scripts SQL
 
-- **`anonymize-data.sql`** : Création des tables avec données anonymisées dans un schéma temporaire
-- **`export-anonymized-data.sql`** : Export des données anonymisées vers fichiers CSV
-- **`cleanup-metabase.sql`** : Nettoyage et recréation du schéma `mdso_analytics`
-- **`import-csv-to-metabase.sql`** : Import des CSV vers le schéma `mdso_analytics`
-- **`cleanup-anonymized-source-data.sql`** : Suppression du schéma temporaire dans la DB source
+- **`1-anonymize-data.sql`** : Création des tables avec données anonymisées dans un schéma temporaire
+- **`2-export-anonymized-data.sql`** : Export des données anonymisées vers fichiers CSV
+- **`3-cleanup-metabase.sql`** : Nettoyage et recréation du schéma `mdso_analytics`
+- **`4-import-csv-to-metabase.sql`** : Import des CSV vers le schéma `mdso_analytics`
+- **`5-cleanup-anonymized-source-data.sql`** : Suppression du schéma temporaire dans la DB source
 
 ## Variables d'environnement requises
 

@@ -79,7 +79,13 @@ if [ -z "$TARGET_DB_URL" ]; then
 fi
 
 # Vérification des fichiers SQL nécessaires
-REQUIRED_FILES=("anonymize-data.sql" "cleanup-metabase.sql" "export-anonymized-data.sql" "import-csv-to-metabase.sql" "cleanup-anonymized-source-data.sql")
+REQUIRED_FILES=(
+  "1-anonymize-data.sql"
+  "2-cleanup-metabase.sql"
+  "3-export-anonymized-data.sql"
+  "4-import-csv-to-metabase.sql"
+  "5-cleanup-anonymized-source-data.sql"
+)
 for file in "${REQUIRED_FILES[@]}"; do
     if [ ! -f "$SCRIPT_DIR/$file" ]; then
         echo "Erreur: Fichier $SCRIPT_DIR/$file introuvable"
@@ -91,7 +97,7 @@ done
 cleanup_csv_files
 
 echo "Étape 1: Création des tables anonymisées dans la DB source..."
-psql $SOURCE_DB_URL -f "$SCRIPT_DIR/anonymize-data.sql"
+psql $SOURCE_DB_URL -f "$SCRIPT_DIR/1-anonymize-data.sql"
 
 # Log de démarrage
 psql $SOURCE_DB_URL -c "INSERT INTO export_logs (status, message) VALUES ('started', 'Export CSV en cours');"
@@ -102,7 +108,7 @@ echo "Étape 2: Export des données anonymisées vers CSV..."
 cd "$WORK_DIR"
 
 # Utilisation du chemin absolu pour le fichier SQL
-psql $SOURCE_DB_URL -f "$SCRIPT_DIR/export-anonymized-data.sql"
+psql $SOURCE_DB_URL -f "$SCRIPT_DIR/3-export-anonymized-data.sql"
 
 # Vérification que les CSV ont été créés
 echo "Vérification des fichiers CSV créés..."
@@ -120,17 +126,17 @@ done
 cd "$INITIAL_DIR"
 
 echo "Étape 3: Nettoyage de la DB Metabase..."
-psql $TARGET_DB_URL -f "$SCRIPT_DIR/cleanup-metabase.sql"
+psql $TARGET_DB_URL -f "$SCRIPT_DIR/2-cleanup-metabase.sql"
 
 echo "Étape 4: Import des CSV vers Metabase..."
 # Se placer dans le répertoire des CSV pour l'import
 cd "$WORK_DIR"
-psql $TARGET_DB_URL -f "$SCRIPT_DIR/import-csv-to-metabase.sql"
+psql $TARGET_DB_URL -f "$SCRIPT_DIR/4-import-csv-to-metabase.sql"
 # Retour au répertoire initial
 cd "$INITIAL_DIR"
 
 echo "Étape 5: Nettoyage du schéma temporaire..."
-psql $SOURCE_DB_URL -f "$SCRIPT_DIR/cleanup-anonymized-source-data.sql"
+psql $SOURCE_DB_URL -f "$SCRIPT_DIR/5-cleanup-anonymized-source-data.sql"
 
 # Comptage des enregistrements exportés
 TOTAL_RECORDS=$(psql $TARGET_DB_URL -t -c "

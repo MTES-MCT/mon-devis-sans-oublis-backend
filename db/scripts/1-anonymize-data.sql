@@ -19,6 +19,7 @@ CREATE TABLE export_anonymized.quote_checks AS
 SELECT 
     id,
     profile,
+    email_domain,
     renovation_type,
     source_name,
     validation_controls_count,
@@ -49,6 +50,7 @@ CREATE TABLE export_anonymized.quotes_cases AS
 SELECT 
     id,
     profile,
+    email_domain,
     renovation_type,
     source_name,
     validation_controls_count,

@@ -6,6 +6,7 @@ BEGIN;
 CREATE TABLE mdso_analytics.quote_checks (
     id UUID,
     profile VARCHAR(50),
+    email_domain VARCHAR(100),
     renovation_type VARCHAR(100),
     source_name VARCHAR(100),
     validation_controls_count INTEGER,
@@ -30,6 +31,7 @@ CREATE TABLE mdso_analytics.quote_checks (
 CREATE TABLE mdso_analytics.quotes_cases (
     id UUID,
     profile VARCHAR(50),
+    email_domain VARCHAR(100),
     renovation_type VARCHAR(100),
     source_name VARCHAR(100),
     validation_controls_count INTEGER,

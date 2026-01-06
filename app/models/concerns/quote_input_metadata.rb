@@ -25,6 +25,8 @@ module QuoteInputMetadata
 
     validates :renovation_type, presence: true, inclusion: { in: RENOVATION_TYPES }
 
+    before_validation :fill_email_domain, if: :email_changed?
+
     before_validation :format_metadata
     validate :metadata_data
 
@@ -71,6 +73,10 @@ module QuoteInputMetadata
     self.metadata ||= {}
     self.metadata["gestes"] = values&.filter(&:presence).presence
     self.metadata.presence
+  end
+
+  def fill_email_domain
+    self.email_domain = email&.split("@")&.last&.downcase&.strip # rubocop:disable Style/SafeNavigationChainLength
   end
 
   # rubocop:disable Metrics/AbcSize
