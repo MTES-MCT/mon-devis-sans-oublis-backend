@@ -1,4 +1,4 @@
-FROM ruby:3.4-slim
+FROM ruby:4.0-slim
 
 ARG BUNDLE_WITHOUT
 ENV BUNDLE_WITHOUT=$BUNDLE_WITHOUT
@@ -12,6 +12,8 @@ RUN apt-get update && apt-get upgrade -y && \
     apt-get install --no-install-recommends -y \
         build-essential git \
         cmake pkg-config \
+        # curl clang libclang-dev required for commonmarker gem based on Rust
+        curl clang libclang-dev \
         libpq-dev libyaml-dev \
         nodejs npm && \
     grep -vE '^\s*#' /app/Aptfile | xargs -r apt-get install --no-install-recommends -y && \
