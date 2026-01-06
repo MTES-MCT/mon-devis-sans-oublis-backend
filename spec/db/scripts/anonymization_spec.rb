@@ -6,7 +6,7 @@ require "rails_helper"
 # rubocop:disable RSpec/DescribeClass
 RSpec.describe "Database Anonymization Script" do
   # Centralisation du chemin du script pour éviter la répétition
-  let(:anonymization_script) { Rails.root.join("db/scripts/anonymize-data.sql").read }
+  let(:anonymization_script) { Rails.root.join("db/scripts/1-anonymize-data.sql").read }
 
   # Création de données de test
   # Ces données contiennent des informations sensibles à anonymiser
