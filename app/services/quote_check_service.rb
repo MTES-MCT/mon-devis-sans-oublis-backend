@@ -141,7 +141,8 @@ class QuoteCheckService # rubocop:disable Metrics/ClassLength
       )
 
       raise QuoteReader::NoFileContentError unless quote_reader.text&.strip.presence
-    rescue QuoteReader::UnsupportedFileType
+    rescue QuoteReader::UnsupportedFileType => e
+      ErrorNotifier.notify(e)
       add_error("unsupported_file_format",
                 category: "file",
                 type: "error")
