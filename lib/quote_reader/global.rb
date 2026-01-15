@@ -39,6 +39,8 @@ module QuoteReader
       case content_type
       when "application/pdf"
         return Pdf.new(content).extract_text unless force_ocr
+      when %r{^text/}i
+        return content.force_encoding("UTF-8")
       end
 
       ocr_to_use = ocr || DEFAULT_OCR if force_ocr || QuoteFile.new(content_type:).only_ocrable?
